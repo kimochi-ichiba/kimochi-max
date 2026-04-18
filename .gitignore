@@ -1,0 +1,18 @@
+# ログファイル
+*.log
+*.tmp
+__pycache__/
+*.pyc
+*.pyo
+.env
+.env.local
+
+# キャッシュ・一時データ
+data_cache/
+*.bak_before_reset
+
+# バックテスト結果画像
+backtest_result.png
+
+# macOS
+.DS_Store
