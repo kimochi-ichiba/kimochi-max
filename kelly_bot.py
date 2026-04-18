@@ -157,7 +157,7 @@ class KellyBot:
 
     # ---- Kelly計算 ----
     def compute_kelly_leverage(self, df: pd.DataFrame) -> float:
-        """過去60日のデータから Kelly推奨レバレッジを算出"""
+        """過去60日のデータから Kelly推奨レバレッジを算出（整数化）"""
         returns = df["close"].pct_change().dropna()
         if len(returns) < self.config.lookback_days:
             return 0.0
@@ -167,7 +167,9 @@ class KellyBot:
         if var_ann <= 0 or mean_ann <= 0:
             return 0.0
         kelly_f = (mean_ann / var_ann) * self.config.kelly_fraction
-        return float(np.clip(kelly_f, 0, self.config.max_leverage))
+        # 取引所は整数レバしか受け付けないため四捨五入で整数化
+        kelly_int = int(round(float(np.clip(kelly_f, 0, self.config.max_leverage))))
+        return float(kelly_int)
 
     # ---- データ取得 ----
     def fetch_ohlcv(self, symbol: str, days: int = 120) -> pd.DataFrame:
