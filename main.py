@@ -420,7 +420,38 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
   /* ─── スキャンタブ ─── */
   #scan-result-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
   #scan-result-wrap table{min-width:600px;font-size:12px}
-  #scan-btn{padding:12px 24px;font-size:14px;min-height:44px;touch-action:manipulation}
+  #scan-btn{
+    padding:20px 32px;
+    font-size:18px;
+    font-weight:700;
+    min-height:64px;
+    min-width:240px;
+    touch-action:manipulation;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,200,100,0.25);
+    transition:transform 0.1s, box-shadow 0.1s;
+  }
+  #scan-btn:active{transform:scale(0.97);box-shadow:0 2px 6px rgba(0,200,100,0.15)}
+  /* iPhone/スマホ向け: ボタンをさらに大きく＆画面幅いっぱいに */
+  @media (max-width: 600px){
+    #scan-btn{
+      padding:24px 20px;
+      font-size:22px;
+      min-height:76px;
+      width:100%;
+      max-width:none;
+    }
+    .pfc #scan-btn{width:100%}
+    /* スキャン結果の買い/売りボタンも大きく */
+    .entry-btn{
+      padding:16px 24px !important;
+      font-size:17px !important;
+      min-height:56px !important;
+      min-width:110px !important;
+      border-radius:12px !important;
+    }
+    .entry-btn:active{transform:scale(0.95)}
+  }
 
   /* ─── ログ ─── */
   .logrow{padding:8px 12px;font-size:12px;gap:10px}
@@ -458,6 +489,10 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
   <div class="sb"><div class="sb-val" id="s-wr">—</div><div class="sb-lbl">勝率</div><div class="sb-sub" id="s-wrs">0勝0敗</div></div>
   <div class="sb"><div class="sb-val y" id="s-lv">—</div><div class="sb-lbl">レバレッジ</div><div class="sb-sub" id="s-st">正常稼働中</div></div>
   <div class="sb"><div class="sb-val b" id="s-ps">0件</div><div class="sb-lbl">保有中</div><div class="sb-sub" id="s-sc"></div></div>
+  <div class="sb"><div class="sb-val c" id="s-elapsed">—</div><div class="sb-lbl">検証経過</div><div class="sb-sub" id="s-scancount">スキャン 0回</div></div>
+  <div class="sb"><div class="sb-val r" id="s-streak">0</div><div class="sb-lbl">連敗</div><div class="sb-sub" id="s-streak-max">最大連敗 0</div></div>
+  <div class="sb"><div class="sb-val g" id="s-pf">—</div><div class="sb-lbl">PF (利益係数)</div><div class="sb-sub" id="s-sharpe">Sharpe —</div></div>
+  <div class="sb"><div class="sb-val o" id="s-fees">—</div><div class="sb-lbl">手数料累計</div><div class="sb-sub" id="s-fees-ratio">損益比 —</div></div>
 </div>
 
 <!-- DD バー -->
@@ -516,6 +551,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
   <div class="tb" id="t-pf"   onclick="sw('pf')">📊 ポートフォリオ</div>
   <div class="tb" id="t-scan" onclick="sw('scan')">🔍 手動スキャン</div>
   <div class="tb" id="t-hist" onclick="sw('hist')">📋 取引履歴</div>
+  <div class="tb" id="t-analysis" onclick="sw('analysis')">📈 分析</div>
   <div class="tb mob-only" id="t-log" onclick="sw('log')">📝 ログ</div>
 </div>
 
@@ -693,6 +729,61 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
           <tr><td colspan="7"><div class="empty"><div class="ei">📋</div><div class="et">取引履歴なし</div><div class="es">クローズしたトレードが表示されます</div></div></td></tr>
         </tbody>
       </table>
+      </div>
+    </div>
+
+    <!-- 📈 分析タブ -->
+    <div class="tpane" id="p-analysis">
+      <!-- 日次リターン棒グラフ -->
+      <div class="chart-wrap">
+        <div class="chart-toolbar">
+          <span class="chart-title">📊 日次リターン（直近30日）</span>
+          <span class="chart-title" id="daily-sum" style="font-size:11px;color:var(--muted2)"></span>
+        </div>
+        <div id="daily-chart" style="height:240px;background:var(--bg2);border-radius:8px;padding:12px;display:flex;align-items:flex-end;gap:4px;overflow-x:auto"></div>
+      </div>
+
+      <!-- 時間帯別勝率ヒートマップ -->
+      <div class="chart-wrap">
+        <div class="chart-toolbar">
+          <span class="chart-title">🕐 時間帯別勝率ヒートマップ (ローカル時間)</span>
+        </div>
+        <div id="hourly-heatmap" style="background:var(--bg2);border-radius:8px;padding:12px">
+          <div style="display:grid;grid-template-columns:repeat(24,1fr);gap:3px" id="heatmap-grid"></div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted2);margin-top:6px">
+            <span>0時</span><span>6時</span><span>12時</span><span>18時</span><span>23時</span>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px;font-size:11px;color:var(--muted2);align-items:center">
+            <span>勝率:</span>
+            <span style="background:#00e67640;padding:2px 6px;border-radius:3px;color:var(--green)">≥60%</span>
+            <span style="background:#ffca2840;padding:2px 6px;border-radius:3px;color:var(--yellow)">40-60%</span>
+            <span style="background:#f4433640;padding:2px 6px;border-radius:3px;color:var(--red)">&lt;40%</span>
+            <span style="background:var(--bg4);padding:2px 6px;border-radius:3px;color:var(--muted)">データなし</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 通知設定 -->
+      <div class="chart-wrap">
+        <div class="chart-toolbar">
+          <span class="chart-title">🔔 LINE/Discord通知設定</span>
+        </div>
+        <div style="background:var(--bg2);border-radius:8px;padding:14px;font-size:12px;line-height:1.8">
+          <div style="color:var(--text);font-weight:700;margin-bottom:10px">異常検知時の通知設定方法</div>
+          <div style="color:var(--muted2);margin-bottom:6px">1. 以下の環境変数をシェルで設定:</div>
+          <pre style="background:var(--bg);padding:10px;border-radius:6px;font-size:11px;color:var(--cyan);overflow-x:auto;margin:6px 0">export DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/..."
+export LINE_NOTIFY_TOKEN="YOUR_LINE_TOKEN"</pre>
+          <div style="color:var(--muted2);margin:10px 0 6px 0">2. 通知条件:</div>
+          <ul style="color:var(--text);padding-left:18px;margin:4px 0">
+            <li>連敗 4回以上</li>
+            <li>ドローダウン 5%以上</li>
+            <li>1日の損失 -3%超過</li>
+            <li>ボット停止・クールダウン発動</li>
+          </ul>
+          <div style="color:var(--muted2);margin-top:10px;font-size:11px">
+            ※ 現在の通知状態: <span id="notif-status" style="color:var(--yellow);font-weight:700">未設定（環境変数なし）</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -918,7 +1009,7 @@ function setTf(tf) {
 // ─── タブ切替 ───
 function sw(tab) {
   _tab = tab;
-  [["live","t-live","p-live"],["pf","t-pf","p-pf"],["scan","t-scan","p-scan"],["hist","t-hist","p-hist"]].forEach(([n,ti,pi])=>{
+  [["live","t-live","p-live"],["pf","t-pf","p-pf"],["scan","t-scan","p-scan"],["hist","t-hist","p-hist"],["analysis","t-analysis","p-analysis"]].forEach(([n,ti,pi])=>{
     $(ti).classList.toggle("on", n===tab);
     $(pi).classList.toggle("on", n===tab);
   });
@@ -999,10 +1090,14 @@ function renderScanResults(candidates) {
         ? `<span style="background:#333;color:#888;font-size:9px;padding:2px 6px;border-radius:4px">様子見</span>`
         : `<span style="background:#4a2000;color:#ffcc80;font-size:9px;padding:2px 6px;border-radius:4px">弱シグナル</span>`;
     const entryBtn = (!isHold)
-      ? `<button onclick="doManualEntry('${c.symbol}','${c.signal}')"
+      ? `<button class="entry-btn" onclick="doManualEntry('${c.symbol}','${c.signal}')"
           style="background:${isLong ? 'linear-gradient(135deg,#1b5e20,#2e7d32)' : 'linear-gradient(135deg,#7f0000,#c62828)'};
-                 color:#fff;border:none;padding:5px 14px;border-radius:6px;font-size:11px;
-                 font-weight:700;cursor:pointer;white-space:nowrap">
+                 color:#fff;border:none;border-radius:10px;
+                 font-weight:800;cursor:pointer;white-space:nowrap;
+                 padding:12px 22px;font-size:15px;min-height:48px;min-width:96px;
+                 box-shadow:0 3px 8px rgba(0,0,0,0.25);
+                 touch-action:manipulation;
+                 transition:transform 0.1s, box-shadow 0.1s">
           ${isLong ? '🟢 買い' : '🔴 売り'}
         </button>`
       : `<span style="color:var(--muted2);font-size:11px">—</span>`;
@@ -1091,6 +1186,97 @@ async function update() {
   // 冷却中のときだけ「冷却解除・再開」ボタンを表示
   if($("btn-resume")) $("btn-resume").style.display = d.is_cooling_down?"inline-block":"none";
   setS("s-ps", posK.length+"/"+(d.max_positions||5)+"件", "b", "", "s-sc", (d.scanned_count||0)+"/"+(d.watch_symbols?.length||25)+"銘柄");
+
+  // ─── ① 検証経過（equity_history最古データから計算。無ければbot_started_at） ───
+  // _firstEqTs は初回/api/equityフェッチ時にキャッシュ。ボット起動より前の「真の開始時刻」
+  if (!window._firstEqTs) {
+    try {
+      const eq = await (await fetch("/api/equity")).json();
+      if (eq.history && eq.history.length > 0) {
+        const first = eq.history[0];
+        window._firstEqTs = first.ts || first.timestamp || first.time || d.bot_started_at;
+      } else {
+        window._firstEqTs = d.bot_started_at;
+      }
+    } catch { window._firstEqTs = d.bot_started_at; }
+  }
+  const startTs = window._firstEqTs || d.bot_started_at;
+  if (startTs) {
+    const elapsedSec = Math.floor(Date.now()/1000 - startTs);
+    const days = Math.floor(elapsedSec / 86400);
+    const hours = Math.floor((elapsedSec % 86400) / 3600);
+    const mins = Math.floor((elapsedSec % 3600) / 60);
+    let elapsedText;
+    if (days > 0) elapsedText = `${days}日${hours}h`;
+    else if (hours > 0) elapsedText = `${hours}h${mins}m`;
+    else elapsedText = `${mins}分`;
+    setS("s-elapsed", elapsedText, "c");
+    $("s-scancount").textContent = `スキャン ${(d.scan_count||0).toLocaleString()}回`;
+  }
+
+  // ─── ② 連敗ストリーク（現在・過去最大）───
+  const curStreak = d.consecutive_losses || 0;
+  let maxStreak = 0, tmpStreak = 0;
+  const th = d.trade_history || [];
+  // trade_historyは新しい順なので逆順で走査
+  for (let i = th.length - 1; i >= 0; i--) {
+    if (th[i].won === false) { tmpStreak++; if (tmpStreak > maxStreak) maxStreak = tmpStreak; }
+    else tmpStreak = 0;
+  }
+  if (curStreak > maxStreak) maxStreak = curStreak;
+  setS("s-streak", curStreak.toString(), curStreak >= 4 ? "r" : curStreak >= 2 ? "y" : "g");
+  $("s-streak-max").textContent = `最大連敗 ${maxStreak}`;
+
+  // ─── ③ プロフィットファクター(PF)・Sharpe比 ───
+  let sumWin = 0, sumLoss = 0, pnlArr = [];
+  for (const t of th) {
+    const p = t.pnl || 0;
+    if (p > 0) sumWin += p;
+    else sumLoss += Math.abs(p);
+    pnlArr.push(p);
+  }
+  const pf = sumLoss > 0 ? sumWin / sumLoss : (sumWin > 0 ? 99 : 0);
+  setS("s-pf", pf >= 99 ? "∞" : pf.toFixed(2), pf >= 1.5 ? "g" : pf >= 1.0 ? "y" : "r");
+  // Sharpe比（簡易: トレード単位でのmean/std × sqrt(N)）
+  let sharpe = 0;
+  if (pnlArr.length >= 5) {
+    const mean = pnlArr.reduce((a,b)=>a+b,0) / pnlArr.length;
+    const variance = pnlArr.reduce((a,b)=>a+(b-mean)**2,0) / pnlArr.length;
+    const std = Math.sqrt(variance);
+    sharpe = std > 0 ? mean / std * Math.sqrt(pnlArr.length) : 0;
+  }
+  $("s-sharpe").textContent = `Sharpe ${sharpe.toFixed(2)}`;
+
+  // ─── ⑤ 手数料累計・1回あたり手数料（実データベース）───
+  // size_usdが入ってる場合はその値で、無い場合は現在のオープンポジション平均で推定
+  const feeRate = 0.0004;  // Binance futures taker (往復で×2)
+  // オープンポジションから平均ポジションサイズを計算（size_usdのフォールバック用）
+  let openSizeAvg = 100;
+  if (posK.length > 0) {
+    const openSizes = posK.map(k => posM[k].size_usd || 0).filter(s => s > 0);
+    if (openSizes.length > 0) {
+      openSizeAvg = openSizes.reduce((a,b)=>a+b, 0) / openSizes.length;
+    }
+  }
+  let totalFees = 0;
+  let realFeeCount = 0;  // 実size_usdで計算できた件数
+  for (const t of th) {
+    const sz = (t.size_usd && t.size_usd > 0) ? t.size_usd : openSizeAvg;
+    if (t.size_usd && t.size_usd > 0) realFeeCount++;
+    totalFees += sz * feeRate * 2;  // 往復で×2
+  }
+  // closed_tradesが多ければ全体推定に補正（trade_historyは直近50件のみ）
+  const totalTrades = d.closed_trades || th.length;
+  if (totalTrades > th.length && th.length > 0) {
+    totalFees = totalFees * (totalTrades / th.length);
+  }
+  const avgFeePerTrade = totalTrades > 0 ? totalFees / totalTrades : 0;
+
+  setS("s-fees", "$"+totalFees.toFixed(2), "o");
+  // サブ表示：1回あたり + 損益比 + データソース精度
+  const feeRatio = rpnl !== 0 ? (totalFees / Math.abs(rpnl) * 100) : 0;
+  const dataHint = realFeeCount >= th.length ? "実" : realFeeCount > 0 ? "推" : "概";
+  $("s-fees-ratio").textContent = `${dataHint}$${avgFeePerTrade.toFixed(3)}/回・損益比${feeRatio.toFixed(1)}%`;
 
   // DD
   $("ddnum").textContent = "-"+dd.toFixed(2)+"%";
@@ -1392,6 +1578,91 @@ async function chartLoop() {
   await updateChart();
 }
 
+// ─── ① 日次リターン棒グラフ描画 ───
+function renderDailyReturns(trade_history) {
+  const container = document.getElementById("daily-chart");
+  if (!container) return;
+  // 日付ごとに損益を集計
+  const byDay = {};
+  for (const t of trade_history || []) {
+    if (!t.exit_time) continue;
+    const d = new Date(t.exit_time * 1000);
+    const key = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+    byDay[key] = (byDay[key] || 0) + (t.pnl || 0);
+  }
+  const days = Object.keys(byDay).sort().slice(-30);
+  if (days.length === 0) {
+    container.innerHTML = '<div style="color:var(--muted2);margin:auto">📊 データなし（トレード完了後に表示）</div>';
+    document.getElementById("daily-sum").textContent = "";
+    return;
+  }
+  const values = days.map(d => byDay[d]);
+  const maxAbs = Math.max(...values.map(Math.abs), 1);
+  const totalSum = values.reduce((a,b)=>a+b, 0);
+  const winDays = values.filter(v=>v>0).length;
+  const lossDays = values.filter(v=>v<0).length;
+
+  container.innerHTML = days.map((d, i) => {
+    const v = values[i];
+    const heightPct = Math.abs(v) / maxAbs * 95;
+    const color = v >= 0 ? "#00e676" : "#f44336";
+    const shortDay = d.slice(5); // MM-DD
+    return `<div style="flex:1;min-width:18px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;cursor:default" title="${d}: $${v.toFixed(2)}">
+      <div style="background:${color};width:100%;height:${heightPct}%;border-radius:2px 2px 0 0;min-height:2px"></div>
+      <div style="font-size:9px;color:var(--muted2);transform:rotate(-45deg);white-space:nowrap;margin-top:4px">${shortDay}</div>
+    </div>`;
+  }).join("");
+
+  document.getElementById("daily-sum").textContent =
+    `30日合計 $${totalSum.toFixed(2)} | 勝ち${winDays}日 / 負け${lossDays}日`;
+}
+
+// ─── ⑥ 時間帯別勝率ヒートマップ ───
+function renderHourlyHeatmap(trade_history) {
+  const grid = document.getElementById("heatmap-grid");
+  if (!grid) return;
+  // 0-23時ごとに勝率計算
+  const byHour = Array.from({length:24}, () => ({w:0, l:0}));
+  for (const t of trade_history || []) {
+    if (!t.exit_time) continue;
+    const h = new Date(t.exit_time * 1000).getHours();
+    if (t.won) byHour[h].w++;
+    else byHour[h].l++;
+  }
+  grid.innerHTML = byHour.map((b, h) => {
+    const total = b.w + b.l;
+    let color, label;
+    if (total === 0) { color = "var(--bg4)"; label = "—"; }
+    else {
+      const wr = b.w / total * 100;
+      label = wr.toFixed(0) + "%";
+      if (wr >= 60) color = "rgba(0,230,118," + Math.min(wr/100 + 0.2, 1) + ")";
+      else if (wr >= 40) color = "rgba(255,202,40," + Math.min(wr/100 + 0.2, 1) + ")";
+      else color = "rgba(244,67,54," + Math.min((100-wr)/100 + 0.2, 1) + ")";
+    }
+    return `<div style="background:${color};border-radius:3px;padding:8px 2px;text-align:center;font-size:10px;font-weight:700;color:#000;min-height:32px" title="${h}時: ${b.w}勝${b.l}敗">${h}<br>${label}</div>`;
+  }).join("");
+}
+
+// ─── ⑦ 通知状態チェック ───
+async function updateNotifStatus() {
+  const el = document.getElementById("notif-status");
+  if (!el) return;
+  try {
+    const r = await fetch("/api/notif-status");
+    if (r.ok) {
+      const d = await r.json();
+      if (d.configured) {
+        el.textContent = `✅ 設定済み (${(d.channels || []).join(", ")})`;
+        el.style.color = "var(--green)";
+      } else {
+        el.textContent = "未設定（環境変数なし）";
+        el.style.color = "var(--yellow)";
+      }
+    }
+  } catch {}
+}
+
 // ─── 起動 ───
 window.addEventListener("load",()=>{
   requestNotifyPermission();
@@ -1402,7 +1673,23 @@ window.addEventListener("load",()=>{
   setInterval(chartLoop, 5000);
   setInterval(() => {
     if (_tab === "pf") { updateEqChart(); updateRanking(); }
-  }, 30000);
+    if (_tab === "analysis") {
+      // 分析タブ表示中: trade_historyを取り直して描画
+      fetch("/api/state").then(r => r.json()).then(d => {
+        renderDailyReturns(d.trade_history || []);
+        renderHourlyHeatmap(d.trade_history || []);
+      }).catch(()=>{});
+      updateNotifStatus();
+    }
+  }, 10000);
+  // 初回: 分析タブ選択時に描画
+  document.getElementById("t-analysis").addEventListener("click", () => {
+    fetch("/api/state").then(r => r.json()).then(d => {
+      renderDailyReturns(d.trade_history || []);
+      renderHourlyHeatmap(d.trade_history || []);
+    }).catch(()=>{});
+    updateNotifStatus();
+  });
 });
 </script>
 </body>
@@ -1496,6 +1783,16 @@ def api_equity():
     if _bot is None:
         return jsonify({"history": []})
     return jsonify(_sanitize({"history": _bot.get_equity_history()}))
+
+
+@app.route("/api/notif-status")
+def api_notif_status():
+    """通知設定（LINE/Discord Webhook）の有無を返す"""
+    import os as _os
+    channels = []
+    if _os.environ.get("DISCORD_WEBHOOK_URL"): channels.append("Discord")
+    if _os.environ.get("LINE_NOTIFY_TOKEN"): channels.append("LINE")
+    return jsonify({"configured": len(channels) > 0, "channels": channels})
 
 
 @app.route("/api/market_context")
