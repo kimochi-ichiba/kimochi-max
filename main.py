@@ -561,72 +561,46 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
 
     <!-- ライブ取引タブ -->
     <div class="tpane on" id="p-live">
-      <!-- チャート -->
-      <div class="chart-wrap">
-        <div class="chart-toolbar">
-          <span class="chart-title" id="chart-sym-title">📈 BTC/USDT チャート</span>
-          <div style="display:flex;gap:8px;align-items:center">
-            <!-- 銘柄セレクター -->
-            <select id="sym-select" onchange="setChartSym(this.value)"
-              style="background:var(--bg4);border:1px solid var(--border2);color:var(--text);padding:3px 8px;border-radius:6px;font-size:12px;cursor:pointer">
-              <option value="BTC/USDT">BTC/USDT</option>
-              <option value="ETH/USDT">ETH/USDT</option>
-              <option value="BNB/USDT">BNB/USDT</option>
-              <option value="SOL/USDT">SOL/USDT</option>
-              <option value="XRP/USDT">XRP/USDT</option>
-              <option value="DOGE/USDT">DOGE/USDT</option>
-              <option value="ADA/USDT">ADA/USDT</option>
-              <option value="AVAX/USDT">AVAX/USDT</option>
-              <option value="TRX/USDT">TRX/USDT</option>
-              <option value="DOT/USDT">DOT/USDT</option>
-              <option value="LINK/USDT">LINK/USDT</option>
-              <option value="LTC/USDT">LTC/USDT</option>
-              <option value="NEAR/USDT">NEAR/USDT</option>
-              <option value="UNI/USDT">UNI/USDT</option>
-              <option value="ATOM/USDT">ATOM/USDT</option>
-              <option value="XLM/USDT">XLM/USDT</option>
-              <option value="ETC/USDT">ETC/USDT</option>
-              <option value="BCH/USDT">BCH/USDT</option>
-              <option value="HBAR/USDT">HBAR/USDT</option>
-              <option value="OP/USDT">OP/USDT</option>
-              <option value="ARB/USDT">ARB/USDT</option>
-              <option value="APT/USDT">APT/USDT</option>
-              <option value="FIL/USDT">FIL/USDT</option>
-              <option value="VET/USDT">VET/USDT</option>
-              <option value="ALGO/USDT">ALGO/USDT</option>
-            </select>
-            <div class="tf-switcher">
-              <button class="tf-btn"    id="tfb-1m"  onclick="setTf('1m')">1分</button>
-              <button class="tf-btn on" id="tfb-5m"  onclick="setTf('5m')">5分</button>
-              <button class="tf-btn"    id="tfb-15m" onclick="setTf('15m')">15分</button>
-            </div>
-          </div>
+      <!-- ライブ取引 改善版UI -->
+
+      <!-- ① 保有ポジションサマリー（最上部で一目確認） -->
+      <div class="chart-wrap" style="padding:10px 14px">
+        <div class="chart-toolbar" style="margin-bottom:8px">
+          <span class="chart-title">🎯 保有ポジション</span>
+          <span id="live-pos-count" style="font-size:11px;color:var(--muted2);margin-left:auto">0件</span>
         </div>
-        <div id="chart-el"></div>
-        <div class="legend-bar" id="legend-bar" style="display:none">
-          <div class="leg-item"><div class="leg-dash" style="color:var(--blue)"></div><span class="leg-label">📍 エントリー価格</span></div>
-          <div class="leg-item"><div class="leg-line" style="background:var(--green)"></div><span class="leg-label">🎯 利確目標（TP）</span></div>
-          <div class="leg-item"><div class="leg-line" style="background:var(--red)"></div><span class="leg-label">🛑 損切りライン（SL）</span></div>
-          <div class="leg-item" id="leg-detail" style="margin-left:auto;font-size:10px;color:var(--muted2)"></div>
+        <div id="live-positions" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px">
+          <div style="color:var(--muted2);font-size:12px;padding:8px">保有ポジションなし — エントリー待機中</div>
         </div>
       </div>
 
-      <!-- シグナル一覧テーブル（25銘柄） -->
-      <div class="table-scroll-wrap">
-      <table class="ttable">
-        <thead>
-          <tr>
-            <th style="width:90px">状態</th>
-            <th>銘柄</th>
-            <th style="width:110px">AI信頼度</th>
-            <th style="width:115px">現在価格</th>
-            <th style="width:80px">シグナル</th>
-            <th style="width:150px">TP目標 / SL</th>
-            <th style="width:100px;text-align:right">含み損益</th>
-          </tr>
-        </thead>
-        <tbody id="ltbody"></tbody>
-      </table>
+      <!-- ② シグナル一覧 見やすく改善 -->
+      <div class="chart-wrap" style="padding:10px 14px">
+        <div class="chart-toolbar" style="margin-bottom:6px">
+          <span class="chart-title">🔍 シグナル一覧</span>
+          <div style="display:flex;gap:6px;margin-left:auto;font-size:11px">
+            <button id="live-filter-all" onclick="setLiveFilter('all')" style="background:var(--blue-bg);color:var(--blue);border:1px solid #4fc3f740;padding:3px 10px;border-radius:5px;cursor:pointer">すべて</button>
+            <button id="live-filter-long" onclick="setLiveFilter('long')" style="background:var(--bg4);color:var(--muted2);border:1px solid var(--border2);padding:3px 10px;border-radius:5px;cursor:pointer">🟢 LONG</button>
+            <button id="live-filter-short" onclick="setLiveFilter('short')" style="background:var(--bg4);color:var(--muted2);border:1px solid var(--border2);padding:3px 10px;border-radius:5px;cursor:pointer">🔴 SHORT</button>
+            <button id="live-filter-hot" onclick="setLiveFilter('hot')" style="background:var(--bg4);color:var(--muted2);border:1px solid var(--border2);padding:3px 10px;border-radius:5px;cursor:pointer">🔥 スコア0.5以上</button>
+          </div>
+        </div>
+        <div class="table-scroll-wrap">
+        <table class="ttable">
+          <thead>
+            <tr>
+              <th style="width:80px">状態</th>
+              <th>銘柄</th>
+              <th style="width:120px">AI信頼度</th>
+              <th style="width:115px">現在価格</th>
+              <th style="width:90px">シグナル</th>
+              <th style="width:160px">TP / SL</th>
+              <th style="width:110px;text-align:right">含み損益</th>
+            </tr>
+          </thead>
+          <tbody id="ltbody"></tbody>
+        </table>
+        </div>
       </div>
     </div>
 
@@ -907,6 +881,7 @@ async function updateRanking() {
 // ─── TradingView チャート初期化 ───
 function initChart() {
   if (_chart) return;
+  if (!$("chart-el")) return;  // チャート削除された場合はスキップ
   const LC = LightweightCharts;
   _chart = LC.createChart($("chart-el"), {
     layout:{background:{color:"#060d17"},textColor:"#7a9ab8"},
@@ -930,7 +905,7 @@ function initChart() {
 
 function setChartSym(sym) {
   _chartSym = sym;
-  $("chart-sym-title").textContent = "📈 " + sym + " チャート";
+  const t = $("chart-sym-title"); if (t) t.textContent = "📈 " + sym + " チャート";
   updateChart();
 }
 
@@ -957,7 +932,7 @@ async function updateChart() {
 
   const pos = Object.values(d.positions||{});
   if (pos.length > 0) {
-    $("legend-bar").style.display = "flex";
+    const lb = $("legend-bar"); if (lb) lb.style.display = "flex";
     pos.forEach(p => {
       // エントリーライン（青点線）
       if (p.entry_price) {
@@ -994,7 +969,7 @@ async function updateChart() {
       }
     });
   } else {
-    $("legend-bar").style.display = "none";
+    const lb2 = $("legend-bar"); if (lb2) lb2.style.display = "none";
   }
 }
 
@@ -1150,6 +1125,27 @@ async function ctrlBot(a) {
 // ─── ログクリア ───
 function clrLog() { _logCleared=true; _logCache=[]; $("logbox").innerHTML=""; }
 
+// ─── ライブ取引タブ フィルター ───
+let _liveFilter = "all";
+function setLiveFilter(mode) {
+  _liveFilter = mode;
+  const btns = ["all","long","short","hot"];
+  btns.forEach(b => {
+    const el = $("live-filter-" + b);
+    if (!el) return;
+    if (b === mode) {
+      el.style.background = "var(--blue-bg)";
+      el.style.color = "var(--blue)";
+      el.style.border = "1px solid #4fc3f740";
+    } else {
+      el.style.background = "var(--bg4)";
+      el.style.color = "var(--muted2)";
+      el.style.border = "1px solid var(--border2)";
+    }
+  });
+  update();  // 即座に再描画
+}
+
 // ─── メイン更新 ───
 async function update() {
   let d;
@@ -1203,13 +1199,18 @@ async function update() {
   const startTs = window._firstEqTs || d.bot_started_at;
   if (startTs) {
     const elapsedSec = Math.floor(Date.now()/1000 - startTs);
-    const days = Math.floor(elapsedSec / 86400);
-    const hours = Math.floor((elapsedSec % 86400) / 3600);
+    const totalHours = Math.floor(elapsedSec / 3600);
     const mins = Math.floor((elapsedSec % 3600) / 60);
+    const secs = elapsedSec % 60;
     let elapsedText;
-    if (days > 0) elapsedText = `${days}日${hours}h`;
-    else if (hours > 0) elapsedText = `${hours}h${mins}m`;
-    else elapsedText = `${mins}分`;
+    if (totalHours >= 1) {
+      // 「25時間35分」形式（分まで表示して動きを見える化）
+      elapsedText = `${totalHours}時間${mins}分`;
+    } else if (mins >= 1) {
+      elapsedText = `${mins}分${secs}秒`;
+    } else {
+      elapsedText = `${secs}秒`;
+    }
     setS("s-elapsed", elapsedText, "c");
     $("s-scancount").textContent = `スキャン ${(d.scan_count||0).toLocaleString()}回`;
   }
@@ -1381,6 +1382,42 @@ async function update() {
   const tb = $("ltbody");
   const maxPos = d.max_positions || 5;
 
+  // ─── 保有ポジションカード表示 ───
+  const livePos = $("live-positions");
+  const livePosCnt = $("live-pos-count");
+  if (livePos) {
+    if (posK.length === 0) {
+      livePos.innerHTML = '<div style="color:var(--muted2);font-size:12px;padding:8px">保有ポジションなし — エントリー待機中</div>';
+      if (livePosCnt) livePosCnt.textContent = `0件 / 最大${maxPos}件`;
+    } else {
+      const cards = posK.map(sym => {
+        const p = posM[sym];
+        const upnl = p.upnl || 0;
+        const upnlPct = p.upnl_pct || 0;
+        const cls = upnl >= 0 ? "g" : "r";
+        const ageMin = Math.floor((p.age_s || 0) / 60);
+        const sideTxt = p.side === "long" ? "🟢 LONG" : "🔴 SHORT";
+        return `<div style="background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:4px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-weight:800;font-size:14px">${sym}</span>
+            <span style="font-size:11px;color:var(--muted2)">${sideTxt} ${p.leverage}x</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted2)">
+            <span>エントリー: $${p.entry_price}</span>
+            <span>現在: $${p.current_price}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+            <span class="${cls}" style="font-weight:900;font-size:16px">${upnl>=0?"+":""}$${upnl.toFixed(2)}</span>
+            <span class="${cls}" style="font-size:12px;font-weight:700">${upnlPct>=0?"+":""}${upnlPct.toFixed(2)}%</span>
+          </div>
+          <div style="font-size:10px;color:var(--muted)">保有${ageMin}分 | TP $${p.tp_price?.toFixed?.(p.tp_price > 1 ? 2 : 5) || p.tp_price} / SL $${p.sl_price?.toFixed?.(p.sl_price > 1 ? 2 : 5) || p.sl_price}</div>
+        </div>`;
+      }).join("");
+      livePos.innerHTML = cards;
+      if (livePosCnt) livePosCnt.textContent = `${posK.length}件 / 最大${maxPos}件`;
+    }
+  }
+
   if (Object.keys(perSig).length === 0) {
     tb.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="ei">🔍</div><div class="et">銘柄スキャン中...</div><div class="es">25銘柄を順番にスキャンしています<br>最初のシグナルまで約30秒かかります</div></div></td></tr>`;
   } else {
@@ -1401,6 +1438,15 @@ async function update() {
       const ps  = perSig[sym];
       const pos = posM[sym];
       if (!ps && !pos) return;  // まだスキャンしていない銘柄はスキップ
+
+      // ── フィルター適用 ──
+      if (_liveFilter === "long") {
+        if (pos?.side !== "long" && ps?.signal !== "LONG") return;
+      } else if (_liveFilter === "short") {
+        if (pos?.side !== "short" && ps?.signal !== "SHORT") return;
+      } else if (_liveFilter === "hot") {
+        if (!pos && (ps?.score || 0) < 0.5) return;
+      }
 
       const sigDir  = ps?.signal || "HOLD";
       const score2  = ps?.score  || 0;
