@@ -1,0 +1,5713 @@
+{
+  "balance": 9942.47701871305,
+  "initial_balance": 10000.0,
+  "peak_balance": 10020.8921,
+  "day_start_balance": 10000.0,
+  "consecutive_losses": 1,
+  "consecutive_wins": 0,
+  "saved_at": 1776379412.6567721,
+  "positions": {
+    "UTK/USDT": {
+      "symbol": "UTK/USDT",
+      "side": "short",
+      "entry_price": 0.00795,
+      "quantity": 9594.141072812967,
+      "tp_price": 0.006907697210817848,
+      "sl_price": 0.008471151394591077,
+      "leverage": 2.0,
+      "entry_atr": 0.00029780079690918646,
+      "is_dead_cat_bounce": false,
+      "entry_time": 1776375554.310546,
+      "trail_peak": 0.00795,
+      "tp1_done": false,
+      "tp2_done": false,
+      "counter_trend": false
+    },
+    "LUNC/USDT": {
+      "symbol": "LUNC/USDT",
+      "side": "short",
+      "entry_price": 4.471e-05,
+      "quantity": 5560534.467190345,
+      "tp_price": 4.399650126678984e-05,
+      "sl_price": 4.515593670825635e-05,
+      "leverage": 2.0,
+      "entry_atr": 1.783746833025401e-07,
+      "is_dead_cat_bounce": true,
+      "entry_time": 1776376784.5077262,
+      "trail_peak": 4.444e-05,
+      "tp1_done": false,
+      "tp2_done": false,
+      "counter_trend": false
+    },
+    "YGG/USDT": {
+      "symbol": "YGG/USDT",
+      "side": "short",
+      "entry_price": 0.04235,
+      "quantity": 5870.401322977103,
+      "tp_price": 0.04128334866491826,
+      "sl_price": 0.043016657084426084,
+      "leverage": 2.0,
+      "entry_atr": 0.00026666283377043505,
+      "is_dead_cat_bounce": true,
+      "entry_time": 1776376791.50679,
+      "trail_peak": 0.04218,
+      "tp1_done": false,
+      "tp2_done": false,
+      "counter_trend": false
+    },
+    "ASTER/USDT": {
+      "symbol": "ASTER/USDT",
+      "side": "short",
+      "entry_price": 0.689,
+      "quantity": 360.83636578821523,
+      "tp_price": 0.6814331223390905,
+      "sl_price": 0.6937292985380684,
+      "leverage": 3.0,
+      "entry_atr": 0.0018917194152273792,
+      "is_dead_cat_bounce": true,
+      "entry_time": 1776376977.3759181,
+      "trail_peak": 0.687,
+      "tp1_done": false,
+      "tp2_done": false,
+      "counter_trend": true
+    },
+    "ROBO/USDT": {
+      "symbol": "ROBO/USDT",
+      "side": "short",
+      "entry_price": 0.0217,
+      "quantity": 2004.9698066780663,
+      "tp_price": 0.02042444320099678,
+      "sl_price": 0.021634900000000002,
+      "leverage": 3.0,
+      "entry_atr": 0.00020825417126583236,
+      "is_dead_cat_bounce": true,
+      "entry_time": 1776377344.123592,
+      "trail_peak": 0.02115,
+      "tp1_done": true,
+      "tp2_done": false,
+      "counter_trend": true
+    },
+    "CFX/USDT": {
+      "symbol": "CFX/USDT",
+      "side": "short",
+      "entry_price": 0.06644,
+      "quantity": 3507.3269886527264,
+      "tp_price": 0.06396284921056472,
+      "sl_price": 0.06767857539471764,
+      "leverage": 3.0,
+      "entry_atr": 0.0004954301578870551,
+      "is_dead_cat_bounce": true,
+      "entry_time": 1776378846.072601,
+      "trail_peak": 0.06636,
+      "tp1_done": false,
+      "tp2_done": false,
+      "counter_trend": true
+    }
+  },
+  "trade_history": [
+    {
+      "symbol": "ZAMA/USDT",
+      "side": "long",
+      "entry_price": 0.03209,
+      "exit_price": 0.03211,
+      "size_usd": 70.0,
+      "pnl": -0.0124,
+      "pnl_pct": -0.02,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335244.711684,
+      "exit_time": 1776335260.004079,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "MAV/USDT",
+      "side": "long",
+      "entry_price": 0.016,
+      "exit_price": 0.016,
+      "size_usd": 69.9999132,
+      "pnl": -0.056,
+      "pnl_pct": -0.08,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335306.307029,
+      "exit_time": 1776335328.886379,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "BB/USDT",
+      "side": "long",
+      "entry_price": 0.0306,
+      "exit_price": 0.0307,
+      "size_usd": 69.9999132,
+      "pnl": 0.1728,
+      "pnl_pct": 0.25,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776335276.898207,
+      "exit_time": 1776335340.944306,
+      "exit_reason": "trailing"
+    },
+    {
+      "symbol": "COMP/USDT",
+      "side": "long",
+      "entry_price": 22.67,
+      "exit_price": 22.68,
+      "size_usd": 69.9999132,
+      "pnl": -0.0251,
+      "pnl_pct": -0.04,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335327.0214589,
+      "exit_time": 1776335359.146453,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "PIXEL/USDT",
+      "side": "long",
+      "entry_price": 0.00833,
+      "exit_price": 0.0083,
+      "size_usd": 69.9999132,
+      "pnl": -0.6162,
+      "pnl_pct": -0.88,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776335321.690994,
+      "exit_time": 1776335427.7029278,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "IO/USDT",
+      "side": "long",
+      "entry_price": 0.1098,
+      "exit_price": 0.1099,
+      "size_usd": 70.0007308,
+      "pnl": 0.0078,
+      "pnl_pct": 0.01,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776335350.838409,
+      "exit_time": 1776335439.0843918,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "AXL/USDT",
+      "side": "long",
+      "entry_price": 0.0621,
+      "exit_price": 0.0607,
+      "size_usd": 34.99812084999999,
+      "pnl": -0.817,
+      "pnl_pct": -2.33,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335435.350558,
+      "exit_time": 1776335453.812226,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "AVNT/USDT",
+      "side": "long",
+      "entry_price": 0.1406,
+      "exit_price": 0.1402,
+      "size_usd": 69.9999132,
+      "pnl": -0.2551,
+      "pnl_pct": -0.36,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335311.6791492,
+      "exit_time": 1776335494.513922,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "XAI/USDT",
+      "side": "long",
+      "entry_price": 0.0101,
+      "exit_price": 0.01011,
+      "size_usd": 70.00055509999999,
+      "pnl": 0.0133,
+      "pnl_pct": 0.02,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776335374.9227772,
+      "exit_time": 1776335497.934193,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "ARB/USDT",
+      "side": "long",
+      "entry_price": 0.1182,
+      "exit_price": 0.1183,
+      "size_usd": 70.0,
+      "pnl": 0.0064,
+      "pnl_pct": 0.01,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776335255.2841358,
+      "exit_time": 1776335513.371167,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "SAGA/USDT",
+      "side": "long",
+      "entry_price": 0.02942,
+      "exit_price": 0.02902,
+      "size_usd": 35.00027754999999,
+      "pnl": -0.5039,
+      "pnl_pct": -1.44,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335370.559721,
+      "exit_time": 1776335522.031828,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "POL/USDT",
+      "side": "long",
+      "entry_price": 0.0873,
+      "exit_price": 0.0873,
+      "size_usd": 69.9999132,
+      "pnl": -0.056,
+      "pnl_pct": -0.08,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335298.947893,
+      "exit_time": 1776335532.067179,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "TUT/USDT",
+      "side": "long",
+      "entry_price": 0.01102,
+      "exit_price": 0.01103,
+      "size_usd": 70.00055509999999,
+      "pnl": 0.0075,
+      "pnl_pct": 0.01,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776335371.420588,
+      "exit_time": 1776335563.52971,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "SANTOS/USDT",
+      "side": "long",
+      "entry_price": 1.148,
+      "exit_price": 1.144,
+      "size_usd": 139.977859,
+      "pnl": -0.5997,
+      "pnl_pct": -0.43,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335520.2496629,
+      "exit_time": 1776335576.038558,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "TNSR/USDT",
+      "side": "long",
+      "entry_price": 0.0405,
+      "exit_price": 0.0405,
+      "size_usd": 69.99952119999999,
+      "pnl": -0.056,
+      "pnl_pct": -0.08,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335335.260848,
+      "exit_time": 1776335582.1087759,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "HUMA/USDT",
+      "side": "long",
+      "entry_price": 0.0176,
+      "exit_price": 0.0176,
+      "size_usd": 70.00055509999999,
+      "pnl": -0.056,
+      "pnl_pct": -0.08,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335366.105918,
+      "exit_time": 1776335582.220764,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "ARKM/USDT",
+      "side": "long",
+      "entry_price": 0.1238,
+      "exit_price": 0.1251,
+      "size_usd": 69.99999999999999,
+      "pnl": 0.6791,
+      "pnl_pct": 0.97,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776335230.184618,
+      "exit_time": 1776335593.186466,
+      "exit_reason": "trailing"
+    },
+    {
+      "symbol": "MANTRA/USDT",
+      "side": "long",
+      "entry_price": 0.01104,
+      "exit_price": 0.01101,
+      "size_usd": 69.9887916,
+      "pnl": -0.4924,
+      "pnl_pct": -0.7,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776335497.439389,
+      "exit_time": 1776335605.6480918,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "DYDX/USDT",
+      "side": "long",
+      "entry_price": 0.1089,
+      "exit_price": 0.10899,
+      "size_usd": 69.9999132,
+      "pnl": 0.0019,
+      "pnl_pct": 0.0,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776335295.4021919,
+      "exit_time": 1776335608.929404,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "ORDI/USDT",
+      "side": "long",
+      "entry_price": 5.092,
+      "exit_price": 5.027,
+      "size_usd": 34.9927011,
+      "pnl": -0.9494,
+      "pnl_pct": -2.71,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776335530.798054,
+      "exit_time": 1776335624.980175,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "MAV/USDT",
+      "side": "long",
+      "entry_price": 0.01604,
+      "exit_price": 0.016,
+      "size_usd": 69.98008079999998,
+      "pnl": -0.2305,
+      "pnl_pct": -0.33,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335585.121851,
+      "exit_time": 1776335632.257034,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "LDO/USDT",
+      "side": "long",
+      "entry_price": 0.3966,
+      "exit_price": 0.3968,
+      "size_usd": 69.99629629999998,
+      "pnl": -0.0414,
+      "pnl_pct": -0.06,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776335446.649292,
+      "exit_time": 1776335643.1157482,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "XRP/USDT",
+      "side": "long",
+      "entry_price": 1.4146,
+      "exit_price": 1.4131,
+      "size_usd": 69.97285189999997,
+      "pnl": -0.3905,
+      "pnl_pct": -0.56,
+      "leverage": 3.0,
+      "won": false,
+      "entry_time": 1776335644.3210502,
+      "exit_time": 1776335682.480541,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "COMP/USDT",
+      "side": "long",
+      "entry_price": 22.76,
+      "exit_price": 22.74,
+      "size_usd": 69.98483449999998,
+      "pnl": -0.1175,
+      "pnl_pct": -0.17,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335597.788844,
+      "exit_time": 1776335687.026957,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "GALA/USDT",
+      "side": "long",
+      "entry_price": 0.0032,
+      "exit_price": 0.0032,
+      "size_usd": 69.98506269999999,
+      "pnl": -0.056,
+      "pnl_pct": -0.08,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335572.985695,
+      "exit_time": 1776335693.258913,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "IMX/USDT",
+      "side": "long",
+      "entry_price": 0.165,
+      "exit_price": 0.1646,
+      "size_usd": 69.98140099999996,
+      "pnl": -0.2256,
+      "pnl_pct": -0.32,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335611.810692,
+      "exit_time": 1776335698.47722,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "TRUMP/USDT",
+      "side": "long",
+      "entry_price": 2.899,
+      "exit_price": 2.901,
+      "size_usd": 69.98501019999999,
+      "pnl": -0.0077,
+      "pnl_pct": -0.01,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335535.53674,
+      "exit_time": 1776335722.950536,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "BERA/USDT",
+      "side": "long",
+      "entry_price": 0.415,
+      "exit_price": 0.415,
+      "size_usd": 69.99952119999999,
+      "pnl": -0.056,
+      "pnl_pct": -0.08,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335334.383075,
+      "exit_time": 1776335727.363909,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "IO/USDT",
+      "side": "long",
+      "entry_price": 0.1096,
+      "exit_price": 0.1097,
+      "size_usd": 69.98138769999998,
+      "pnl": 0.0079,
+      "pnl_pct": 0.01,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776335607.803416,
+      "exit_time": 1776335737.5740569,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "YGG/USDT",
+      "side": "long",
+      "entry_price": 0.04047,
+      "exit_price": 0.04051,
+      "size_usd": 69.97475519999998,
+      "pnl": 0.0132,
+      "pnl_pct": 0.02,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776335628.8041081,
+      "exit_time": 1776335761.10403,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "DYDX/USDT",
+      "side": "long",
+      "entry_price": 0.1091,
+      "exit_price": 0.10915,
+      "size_usd": 69.96929589999999,
+      "pnl": -0.0239,
+      "pnl_pct": -0.03,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335691.289286,
+      "exit_time": 1776335769.226519,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "AXS/USDT",
+      "side": "long",
+      "entry_price": 1.146,
+      "exit_price": 1.147,
+      "size_usd": 69.96687879999998,
+      "pnl": 0.0051,
+      "pnl_pct": 0.01,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776335728.148607,
+      "exit_time": 1776335783.402237,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "ATOM/USDT",
+      "side": "long",
+      "entry_price": 1.8,
+      "exit_price": 1.797,
+      "size_usd": 69.96693409999997,
+      "pnl": -0.3452,
+      "pnl_pct": -0.49,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776335737.5811782,
+      "exit_time": 1776335808.5137641,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "TIA/USDT",
+      "side": "long",
+      "entry_price": 0.3499,
+      "exit_price": 0.3506,
+      "size_usd": 69.9905773,
+      "pnl": 0.1681,
+      "pnl_pct": 0.24,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776335456.27357,
+      "exit_time": 1776335822.003298,
+      "exit_reason": "trailing"
+    },
+    {
+      "symbol": "XAI/USDT",
+      "side": "long",
+      "entry_price": 0.01011,
+      "exit_price": 0.01012,
+      "size_usd": 69.9888847,
+      "pnl": 0.0132,
+      "pnl_pct": 0.02,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776335502.063026,
+      "exit_time": 1776335823.624458,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "AXL/USDT",
+      "side": "long",
+      "entry_price": 0.0612,
+      "exit_price": 0.0616,
+      "size_usd": 34.982239249999985,
+      "pnl": 0.2007,
+      "pnl_pct": 0.57,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776335808.7306602,
+      "exit_time": 1776335853.028088,
+      "exit_reason": "trailing"
+    },
+    {
+      "symbol": "TST/USDT",
+      "side": "long",
+      "entry_price": 0.01067,
+      "exit_price": 0.01067,
+      "size_usd": 69.96732469999998,
+      "pnl": -0.056,
+      "pnl_pct": -0.08,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335714.116941,
+      "exit_time": 1776335856.1062558,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "IO/USDT",
+      "side": "long",
+      "entry_price": 0.1097,
+      "exit_price": 0.1094,
+      "size_usd": 69.96676049999998,
+      "pnl": -0.2473,
+      "pnl_pct": -0.35,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335862.022617,
+      "exit_time": 1776335886.7028742,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "EDU/USDT",
+      "side": "long",
+      "entry_price": 0.0477,
+      "exit_price": 0.0481,
+      "size_usd": 69.96693409999999,
+      "pnl": 0.5308,
+      "pnl_pct": 0.76,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776335751.995147,
+      "exit_time": 1776335912.22931,
+      "exit_reason": "trailing"
+    },
+    {
+      "symbol": "POL/USDT",
+      "side": "long",
+      "entry_price": 0.0874,
+      "exit_price": 0.0872,
+      "size_usd": 69.98008079999998,
+      "pnl": -0.2161,
+      "pnl_pct": -0.31,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335583.470331,
+      "exit_time": 1776335925.5671349,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "AVNT/USDT",
+      "side": "long",
+      "entry_price": 0.1402,
+      "exit_price": 0.1413,
+      "size_usd": 69.98008079999998,
+      "pnl": 0.4931,
+      "pnl_pct": 0.7,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776335590.1405618,
+      "exit_time": 1776335925.613874,
+      "exit_reason": "tp"
+    },
+    {
+      "symbol": "YGG/USDT",
+      "side": "long",
+      "entry_price": 0.04051,
+      "exit_price": 0.04043,
+      "size_usd": 69.96702649999997,
+      "pnl": -0.1941,
+      "pnl_pct": -0.28,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335761.5325592,
+      "exit_time": 1776336016.066433,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "AXS/USDT",
+      "side": "long",
+      "entry_price": 1.147,
+      "exit_price": 1.145,
+      "size_usd": 69.96676049999996,
+      "pnl": -0.178,
+      "pnl_pct": -0.25,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335860.354552,
+      "exit_time": 1776336025.947863,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "ARKM/USDT",
+      "side": "long",
+      "entry_price": 0.1242,
+      "exit_price": 0.1228,
+      "size_usd": 69.96502939999996,
+      "pnl": -0.8446,
+      "pnl_pct": -1.21,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335899.107344,
+      "exit_time": 1776336047.3936179,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "TREE/USDT",
+      "side": "long",
+      "entry_price": 0.0677,
+      "exit_price": 0.0674,
+      "size_usd": 139.93149519999997,
+      "pnl": -1.4641,
+      "pnl_pct": -1.05,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776335831.976486,
+      "exit_time": 1776336070.49916,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "UNI/USDT",
+      "side": "long",
+      "entry_price": 3.263,
+      "exit_price": 3.257,
+      "size_usd": 69.97068399999998,
+      "pnl": -0.1846,
+      "pnl_pct": -0.26,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335931.5847528,
+      "exit_time": 1776336275.190471,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "ZAMA/USDT",
+      "side": "long",
+      "entry_price": 0.03258,
+      "exit_price": 0.03232,
+      "size_usd": 139.90383679999994,
+      "pnl": -1.2284,
+      "pnl_pct": -0.88,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776336104.919193,
+      "exit_time": 1776336338.049283,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "XRP/USDT",
+      "side": "long",
+      "entry_price": 1.4133,
+      "exit_price": 1.4116,
+      "size_usd": 69.96689489999999,
+      "pnl": -0.4204,
+      "pnl_pct": -0.6,
+      "leverage": 3.0,
+      "won": false,
+      "entry_time": 1776335784.592475,
+      "exit_time": 1776336367.096755,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "IMX/USDT",
+      "side": "long",
+      "entry_price": 0.1645,
+      "exit_price": 0.1639,
+      "size_usd": 69.96932529999997,
+      "pnl": -0.3112,
+      "pnl_pct": -0.44,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776336022.90497,
+      "exit_time": 1776336408.2904708,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "LDO/USDT",
+      "side": "long",
+      "entry_price": 0.3975,
+      "exit_price": 0.3959,
+      "size_usd": 69.97068399999998,
+      "pnl": -0.3376,
+      "pnl_pct": -0.48,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335930.688258,
+      "exit_time": 1776336484.264894,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "BB/USDT",
+      "side": "long",
+      "entry_price": 0.0311,
+      "exit_price": 0.0308,
+      "size_usd": 139.88405479999994,
+      "pnl": -1.4613,
+      "pnl_pct": -1.04,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776336348.9042718,
+      "exit_time": 1776336490.906858,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "TRUMP/USDT",
+      "side": "long",
+      "entry_price": 2.903,
+      "exit_price": 2.905,
+      "size_usd": 69.96689489999997,
+      "pnl": -0.0078,
+      "pnl_pct": -0.01,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335793.2879128,
+      "exit_time": 1776336513.921869,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "TIA/USDT",
+      "side": "long",
+      "entry_price": 0.3508,
+      "exit_price": 0.3511,
+      "size_usd": 69.96574759999999,
+      "pnl": 0.0077,
+      "pnl_pct": 0.01,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776335831.2857401,
+      "exit_time": 1776336517.479109,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "KAT/USDT",
+      "side": "long",
+      "entry_price": 0.0084,
+      "exit_price": 0.0084,
+      "size_usd": 69.96693409999997,
+      "pnl": -0.1119,
+      "pnl_pct": -0.16,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776335752.5707252,
+      "exit_time": 1776336599.217689,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "CHR/USDT",
+      "side": "long",
+      "entry_price": 0.01941,
+      "exit_price": 0.0194,
+      "size_usd": 69.96216709999997,
+      "pnl": -0.092,
+      "pnl_pct": -0.13,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776336059.786241,
+      "exit_time": 1776336645.7283032,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "AXS/USDT",
+      "side": "long",
+      "entry_price": 1.145,
+      "exit_price": 1.142,
+      "size_usd": 69.95062619999997,
+      "pnl": -0.2392,
+      "pnl_pct": -0.34,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776336275.545214,
+      "exit_time": 1776336667.505826,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "MAV/USDT",
+      "side": "long",
+      "entry_price": 0.01603,
+      "exit_price": 0.01598,
+      "size_usd": 69.96732469999998,
+      "pnl": -0.2742,
+      "pnl_pct": -0.39,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335699.774938,
+      "exit_time": 1776336677.962713,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "TRB/USDT",
+      "side": "long",
+      "entry_price": 17.94,
+      "exit_price": 17.8,
+      "size_usd": 139.8690859999999,
+      "pnl": -1.2034,
+      "pnl_pct": -0.86,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776336484.475682,
+      "exit_time": 1776336734.156636,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "CFG/USDT",
+      "side": "long",
+      "entry_price": 0.2232,
+      "exit_price": 0.2268,
+      "size_usd": 139.87816919999992,
+      "pnl": 2.1442,
+      "pnl_pct": 1.53,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776336374.0987468,
+      "exit_time": 1776336798.983243,
+      "exit_reason": "tp"
+    },
+    {
+      "symbol": "AR/USDT",
+      "side": "long",
+      "entry_price": 2.15,
+      "exit_price": 2.12,
+      "size_usd": 69.91929209999995,
+      "pnl": -1.0316,
+      "pnl_pct": -1.48,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776336704.0389278,
+      "exit_time": 1776336809.515096,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "ORDI/USDT",
+      "side": "long",
+      "entry_price": 5.114,
+      "exit_price": 4.988,
+      "size_usd": 34.95964604999997,
+      "pnl": -0.8893,
+      "pnl_pct": -2.54,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776336689.24931,
+      "exit_time": 1776336814.108578,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "EDU/USDT",
+      "side": "long",
+      "entry_price": 0.0482,
+      "exit_price": 0.0487,
+      "size_usd": 69.96807929999996,
+      "pnl": 0.6698,
+      "pnl_pct": 0.96,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776336035.068119,
+      "exit_time": 1776336972.4752781,
+      "exit_reason": "trailing"
+    },
+    {
+      "symbol": "TURBO/USDT",
+      "side": "long",
+      "entry_price": 0.001165,
+      "exit_price": 0.001161,
+      "size_usd": 69.92431389999994,
+      "pnl": -0.296,
+      "pnl_pct": -0.42,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776336492.897137,
+      "exit_time": 1776337207.654988,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "0G/USDT",
+      "side": "long",
+      "entry_price": 0.605,
+      "exit_price": 0.603,
+      "size_usd": 70.0007308,
+      "pnl": -0.2874,
+      "pnl_pct": -0.41,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335352.578261,
+      "exit_time": 1776337235.735082,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "DYM/USDT",
+      "side": "long",
+      "entry_price": 0.0199,
+      "exit_price": 0.0205,
+      "size_usd": 69.92352989999995,
+      "pnl": 2.0523,
+      "pnl_pct": 2.94,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776336615.311336,
+      "exit_time": 1776337247.6264582,
+      "exit_reason": "tp"
+    },
+    {
+      "symbol": "TAO/USDT",
+      "side": "short",
+      "entry_price": 239.6,
+      "exit_price": 238.1,
+      "size_usd": 19.978375199999988,
+      "pnl": 0.1091,
+      "pnl_pct": 0.55,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776336571.73384,
+      "exit_time": 1776337258.9012449,
+      "exit_reason": "tp"
+    },
+    {
+      "symbol": "HUMA/USDT",
+      "side": "long",
+      "entry_price": 0.01769,
+      "exit_price": 0.01789,
+      "size_usd": 139.87381239999993,
+      "pnl": 1.4695,
+      "pnl_pct": 1.05,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776336414.4061718,
+      "exit_time": 1776337467.214634,
+      "exit_reason": "tp"
+    },
+    {
+      "symbol": "TIA/USDT",
+      "side": "long",
+      "entry_price": 0.3519,
+      "exit_price": 0.3483,
+      "size_usd": 69.91243139999996,
+      "pnl": -0.7711,
+      "pnl_pct": -1.1,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776336854.4509592,
+      "exit_time": 1776337643.550739,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "AXL/USDT",
+      "side": "long",
+      "entry_price": 0.0601,
+      "exit_price": 0.0613,
+      "size_usd": 34.98437249999999,
+      "pnl": 0.6705,
+      "pnl_pct": 1.92,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776335912.255209,
+      "exit_time": 1776337660.3179939,
+      "exit_reason": "trailing"
+    },
+    {
+      "symbol": "NIL/USDT",
+      "side": "long",
+      "entry_price": 0.03795,
+      "exit_price": 0.03762,
+      "size_usd": 139.84862639999992,
+      "pnl": -1.328,
+      "pnl_pct": -0.95,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776336533.950613,
+      "exit_time": 1776337899.2366521,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "ZBT/USDT",
+      "side": "long",
+      "entry_price": 0.1118,
+      "exit_price": 0.1133,
+      "size_usd": 69.92288589999994,
+      "pnl": 0.8822,
+      "pnl_pct": 1.26,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776336647.8063948,
+      "exit_time": 1776337954.567163,
+      "exit_reason": "tp"
+    },
+    {
+      "symbol": "AR/USDT",
+      "side": "long",
+      "entry_price": 2.15,
+      "exit_price": 2.12,
+      "size_usd": 139.8342399999999,
+      "pnl": -2.063,
+      "pnl_pct": -1.48,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776337005.2542021,
+      "exit_time": 1776338109.873912,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "COMP/USDT",
+      "side": "long",
+      "entry_price": 22.78,
+      "exit_price": 22.9,
+      "size_usd": 139.84851859999992,
+      "pnl": 0.6248,
+      "pnl_pct": 0.45,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776336515.013203,
+      "exit_time": 1776338222.668216,
+      "exit_reason": "tp"
+    },
+    {
+      "symbol": "ZAMA/USDT",
+      "side": "long",
+      "entry_price": 0.03234,
+      "exit_price": 0.03235,
+      "size_usd": 69.92587769999994,
+      "pnl": -0.0343,
+      "pnl_pct": -0.05,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776336803.808425,
+      "exit_time": 1776338233.285016,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "COW/USDT",
+      "side": "short",
+      "entry_price": 0.203,
+      "exit_price": 0.2014,
+      "size_usd": 19.978375199999988,
+      "pnl": 0.1415,
+      "pnl_pct": 0.71,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776336544.0534441,
+      "exit_time": 1776338835.119152,
+      "exit_reason": "tp"
+    },
+    {
+      "symbol": "DASH/USDT",
+      "side": "short",
+      "entry_price": 37.9,
+      "exit_price": 37.49,
+      "size_usd": 39.95630279999998,
+      "pnl": 0.4003,
+      "pnl_pct": 1.01,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776336607.861346,
+      "exit_time": 1776339142.8860748,
+      "exit_reason": "tp"
+    },
+    {
+      "symbol": "GIGGLE/USDT",
+      "side": "short",
+      "entry_price": 39.03,
+      "exit_price": 39.44,
+      "size_usd": 39.94906759999998,
+      "pnl": -0.4516,
+      "pnl_pct": -1.12,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776336775.2056909,
+      "exit_time": 1776339716.5384161,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "SANTOS/USDT",
+      "side": "long",
+      "entry_price": 1.143,
+      "exit_price": 1.142,
+      "size_usd": 69.97314169999997,
+      "pnl": -0.1172,
+      "pnl_pct": -0.17,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335639.635815,
+      "exit_time": 1776339944.004575,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "POLY/USDT",
+      "side": "long",
+      "entry_price": 0.2696,
+      "exit_price": 0.2696,
+      "size_usd": 140.0011102,
+      "pnl": -0.112,
+      "pnl_pct": -0.08,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335368.731704,
+      "exit_time": 1776345703.188993,
+      "exit_reason": "stagnation"
+    },
+    {
+      "symbol": "RDNT/USDT",
+      "side": "short",
+      "entry_price": 0.00328,
+      "exit_price": 0.00328,
+      "size_usd": 10.0000793,
+      "pnl": -0.008,
+      "pnl_pct": -0.08,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776335407.57445,
+      "exit_time": 1776345703.385483,
+      "exit_reason": "stagnation"
+    },
+    {
+      "symbol": "TREE/USDT",
+      "side": "long",
+      "entry_price": 0.0676,
+      "exit_price": 0.0679,
+      "size_usd": 69.91243139999996,
+      "pnl": 0.2543,
+      "pnl_pct": 0.36,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776336847.439592,
+      "exit_time": 1776345703.4654038,
+      "exit_reason": "stagnation"
+    },
+    {
+      "symbol": "TRUMP/USDT",
+      "side": "long",
+      "entry_price": 2.91,
+      "exit_price": 2.985,
+      "size_usd": 69.91086829999995,
+      "pnl": 1.7459,
+      "pnl_pct": 2.5,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776336780.755999,
+      "exit_time": 1776345712.616993,
+      "exit_reason": "tp"
+    },
+    {
+      "symbol": "XRP/USDT",
+      "side": "long",
+      "entry_price": 1.4293,
+      "exit_price": 1.4059,
+      "size_usd": 1297.1343057005745,
+      "pnl": -22.2739,
+      "pnl_pct": -1.72,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776347080.737966,
+      "exit_time": 1776348013.6193159,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "DOGE/USDT",
+      "side": "long",
+      "entry_price": 0.09725,
+      "exit_price": 0.09547,
+      "size_usd": 583.3033509076049,
+      "pnl": -11.143,
+      "pnl_pct": -1.91,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776347081.61944,
+      "exit_time": 1776348044.917844,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "OP/USDT",
+      "side": "long",
+      "entry_price": 0.129,
+      "exit_price": 0.1254,
+      "size_usd": 761.5644014603641,
+      "pnl": -21.8622,
+      "pnl_pct": -2.87,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776347090.703406,
+      "exit_time": 1776348800.890957,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "FIL/USDT",
+      "side": "long",
+      "entry_price": 0.984,
+      "exit_price": 0.982,
+      "size_usd": 275.8424057453904,
+      "pnl": -0.7813,
+      "pnl_pct": -0.28,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776348097.729878,
+      "exit_time": 1776352081.826544,
+      "exit_reason": "stagnation"
+    },
+    {
+      "symbol": "DOT/USDT",
+      "side": "long",
+      "entry_price": 1.297,
+      "exit_price": 1.298,
+      "size_usd": 44.70741629999996,
+      "pnl": -0.0013,
+      "pnl_pct": -0.0,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776352695.2081778,
+      "exit_time": 1776353402.8255858,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "UNI/USDT",
+      "side": "long",
+      "entry_price": 3.322,
+      "exit_price": 3.351,
+      "size_usd": 44.707416299999956,
+      "pnl": 0.3545,
+      "pnl_pct": 0.79,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776352695.872728,
+      "exit_time": 1776353810.199914,
+      "exit_reason": "tp"
+    },
+    {
+      "symbol": "SOL/USDT",
+      "side": "long",
+      "entry_price": 86.06,
+      "exit_price": 86.65,
+      "size_usd": 44.70741629999996,
+      "pnl": 0.2707,
+      "pnl_pct": 0.61,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776352694.8827672,
+      "exit_time": 1776353836.6482959,
+      "exit_reason": "tp"
+    },
+    {
+      "symbol": "XRP/USDT",
+      "side": "long",
+      "entry_price": 1.42,
+      "exit_price": 1.4289,
+      "size_usd": 44.707416299999956,
+      "pnl": 0.2444,
+      "pnl_pct": 0.55,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776352143.325761,
+      "exit_time": 1776353846.94828,
+      "exit_reason": "tp"
+    },
+    {
+      "symbol": "OP/USDT",
+      "side": "long",
+      "entry_price": 0.1273,
+      "exit_price": 0.1303,
+      "size_usd": 44.70741629999996,
+      "pnl": 1.0178,
+      "pnl_pct": 2.28,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776353246.893198,
+      "exit_time": 1776353852.277258,
+      "exit_reason": "tp"
+    },
+    {
+      "symbol": "OP/USDT",
+      "side": "long",
+      "entry_price": 0.131,
+      "exit_price": 0.1291,
+      "size_usd": 89.4318074999999,
+      "pnl": -1.3686,
+      "pnl_pct": -1.53,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776355786.245125,
+      "exit_time": 1776356087.873993,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "DOT/USDT",
+      "side": "long",
+      "entry_price": 1.33,
+      "exit_price": 1.313,
+      "size_usd": 89.43180749999992,
+      "pnl": -1.2147,
+      "pnl_pct": -1.36,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776355421.257495,
+      "exit_time": 1776356651.796031,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "ARB/USDT",
+      "side": "long",
+      "entry_price": 0.1248,
+      "exit_price": 0.1229,
+      "size_usd": 44.71590374999996,
+      "pnl": -0.7165,
+      "pnl_pct": -1.6,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776355785.842741,
+      "exit_time": 1776356941.7522979,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "FIL/USDT",
+      "side": "long",
+      "entry_price": 1.012,
+      "exit_price": 0.997,
+      "size_usd": 44.70427889999995,
+      "pnl": -0.6984,
+      "pnl_pct": -1.56,
+      "leverage": 1.0,
+      "won": false,
+      "entry_time": 1776356655.531859,
+      "exit_time": 1776357233.886145,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "APT/USDT",
+      "side": "long",
+      "entry_price": 0.982,
+      "exit_price": 0.984,
+      "size_usd": 22.352139449999974,
+      "pnl": 0.0276,
+      "pnl_pct": 0.12,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776356795.926979,
+      "exit_time": 1776359402.9115598,
+      "exit_reason": "trailing"
+    },
+    {
+      "symbol": "AAVE/USDT",
+      "side": "long",
+      "entry_price": 111.8,
+      "exit_price": 111.89,
+      "size_usd": 223.49018024999978,
+      "pnl": 0.0011,
+      "pnl_pct": 0.0,
+      "leverage": 1.0,
+      "won": true,
+      "entry_time": 1776361749.079363,
+      "exit_time": 1776362879.115298,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "PENDLE/USDT",
+      "side": "short",
+      "entry_price": 1.23,
+      "exit_price": 1.228,
+      "size_usd": 124.16122499999985,
+      "pnl": 0.2051,
+      "pnl_pct": 0.17,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776363136.486953,
+      "exit_time": 1776363215.339278,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "W/USDT",
+      "side": "short",
+      "entry_price": 0.0131,
+      "exit_price": 0.0131,
+      "size_usd": 62.08061249999994,
+      "pnl": -0.0993,
+      "pnl_pct": -0.16,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776363152.3595798,
+      "exit_time": 1776363216.5104399,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "PENDLE/USDT",
+      "side": "short",
+      "entry_price": 1.228,
+      "exit_price": 1.227,
+      "size_usd": 124.16378874999984,
+      "pnl": 0.0036,
+      "pnl_pct": 0.0,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776363215.368147,
+      "exit_time": 1776363278.464021,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "W/USDT",
+      "side": "short",
+      "entry_price": 0.0131,
+      "exit_price": 0.013,
+      "size_usd": 62.08127374999992,
+      "pnl": 0.8485,
+      "pnl_pct": 1.38,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776363216.539681,
+      "exit_time": 1776363279.828234,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "PENDLE/USDT",
+      "side": "short",
+      "entry_price": 1.227,
+      "exit_price": 1.23,
+      "size_usd": 124.16259249999985,
+      "pnl": -0.8058,
+      "pnl_pct": -0.65,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776363278.493133,
+      "exit_time": 1776363341.818953,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "W/USDT",
+      "side": "short",
+      "entry_price": 0.013,
+      "exit_price": 0.013,
+      "size_usd": 62.08659937499992,
+      "pnl": -0.0993,
+      "pnl_pct": -0.16,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776363279.856603,
+      "exit_time": 1776363342.971093,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "PENDLE/USDT",
+      "side": "short",
+      "entry_price": 1.23,
+      "exit_price": 1.233,
+      "size_usd": 124.16312624999985,
+      "pnl": -0.8043,
+      "pnl_pct": -0.65,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776363341.847417,
+      "exit_time": 1776363405.088625,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "W/USDT",
+      "side": "short",
+      "entry_price": 0.013,
+      "exit_price": 0.013,
+      "size_usd": 62.080942499999914,
+      "pnl": -0.0993,
+      "pnl_pct": -0.16,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776363343.00053,
+      "exit_time": 1776363406.254456,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "PENDLE/USDT",
+      "side": "short",
+      "entry_price": 1.233,
+      "exit_price": 1.231,
+      "size_usd": 124.15183124999983,
+      "pnl": 0.2041,
+      "pnl_pct": 0.16,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776363405.117471,
+      "exit_time": 1776363475.70015,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "AAVE/USDT",
+      "side": "short",
+      "entry_price": 112.13,
+      "exit_price": 112.43,
+      "size_usd": 124.15058999999985,
+      "pnl": -0.863,
+      "pnl_pct": -0.69,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776363442.014409,
+      "exit_time": 1776363513.281295,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "PENDLE/USDT",
+      "side": "short",
+      "entry_price": 1.231,
+      "exit_price": 1.233,
+      "size_usd": 124.15314124999986,
+      "pnl": -0.6021,
+      "pnl_pct": -0.48,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776363475.728944,
+      "exit_time": 1776363544.1229959,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "AAVE/USDT",
+      "side": "short",
+      "entry_price": 112.43,
+      "exit_price": 112.35,
+      "size_usd": 124.14235374999988,
+      "pnl": -0.022,
+      "pnl_pct": -0.02,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776363513.310694,
+      "exit_time": 1776363576.974928,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "PENDLE/USDT",
+      "side": "short",
+      "entry_price": 1.233,
+      "exit_price": 1.232,
+      "size_usd": 124.13482749999987,
+      "pnl": 0.0027,
+      "pnl_pct": 0.0,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776363544.152013,
+      "exit_time": 1776363607.967892,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "PENDLE/USDT",
+      "side": "short",
+      "entry_price": 1.232,
+      "exit_price": 1.232,
+      "size_usd": 124.13458624999984,
+      "pnl": -0.1986,
+      "pnl_pct": -0.16,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776363608.08024,
+      "exit_time": 1776363671.425184,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "PENDLE/USDT",
+      "side": "short",
+      "entry_price": 1.232,
+      "exit_price": 1.234,
+      "size_usd": 124.13210374999986,
+      "pnl": -0.6016,
+      "pnl_pct": -0.48,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776363671.454164,
+      "exit_time": 1776363787.780114,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "AAVE/USDT",
+      "side": "short",
+      "entry_price": 112.24,
+      "exit_price": 112.33,
+      "size_usd": 62.06229187499993,
+      "pnl": -0.1988,
+      "pnl_pct": -0.32,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776363990.975609,
+      "exit_time": 1776364078.11093,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "PENDLE/USDT",
+      "side": "short",
+      "entry_price": 1.238,
+      "exit_price": 1.237,
+      "size_usd": 62.061049374999925,
+      "pnl": 0.001,
+      "pnl_pct": 0.0,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776364172.206402,
+      "exit_time": 1776364235.404652,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "W/USDT",
+      "side": "short",
+      "entry_price": 0.013,
+      "exit_price": 0.0131,
+      "size_usd": 62.075294999999926,
+      "pnl": -1.0543,
+      "pnl_pct": -1.69,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776363406.282655,
+      "exit_time": 1776364375.831817,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "AAVE/USDT",
+      "side": "long",
+      "entry_price": 112.78,
+      "exit_price": 115.56,
+      "size_usd": 67.02594007499992,
+      "pnl": 3.1971,
+      "pnl_pct": 4.77,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776364320.805975,
+      "exit_time": 1776367160.457236,
+      "exit_reason": "tp"
+    },
+    {
+      "symbol": "ADA/USDT",
+      "side": "short",
+      "entry_price": 0.2589,
+      "exit_price": 0.259,
+      "size_usd": 124.20823163710197,
+      "pnl": -0.2947,
+      "pnl_pct": -0.24,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776367355.5653381,
+      "exit_time": 1776367457.128763,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "ARB/USDT",
+      "side": "short",
+      "entry_price": 0.1295,
+      "exit_price": 0.1295,
+      "size_usd": 124.20823163710197,
+      "pnl": -0.1987,
+      "pnl_pct": -0.16,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776367361.274868,
+      "exit_time": 1776367457.558382,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "PENDLE/USDT",
+      "side": "short",
+      "entry_price": 1.284,
+      "exit_price": 1.285,
+      "size_usd": 124.20823163710197,
+      "pnl": -0.3922,
+      "pnl_pct": -0.32,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776367406.494466,
+      "exit_time": 1776367488.698143,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "COMP/USDT",
+      "side": "short",
+      "entry_price": 23.47,
+      "exit_price": 23.46,
+      "size_usd": 124.20823163710197,
+      "pnl": -0.0929,
+      "pnl_pct": -0.07,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776367411.137822,
+      "exit_time": 1776367488.938876,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "MANA/USDT",
+      "side": "short",
+      "entry_price": 0.0958,
+      "exit_price": 0.096,
+      "size_usd": 124.20823163710197,
+      "pnl": -0.7173,
+      "pnl_pct": -0.58,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776367415.225983,
+      "exit_time": 1776367489.2576041,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "STX/USDT",
+      "side": "short",
+      "entry_price": 0.2429,
+      "exit_price": 0.2429,
+      "size_usd": 124.20823163710197,
+      "pnl": -0.1987,
+      "pnl_pct": -0.16,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776367418.586533,
+      "exit_time": 1776367489.498782,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "BONK/USDT",
+      "side": "short",
+      "entry_price": 6.68e-06,
+      "exit_price": 6.67e-06,
+      "size_usd": 124.18455038710196,
+      "pnl": 0.1731,
+      "pnl_pct": 0.14,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776367489.885053,
+      "exit_time": 1776367555.277372,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "W/USDT",
+      "side": "short",
+      "entry_price": 0.0132,
+      "exit_price": 0.0132,
+      "size_usd": 62.092275193550975,
+      "pnl": -0.0993,
+      "pnl_pct": -0.16,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776367489.9836822,
+      "exit_time": 1776367555.3481019,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "UNI/USDT",
+      "side": "short",
+      "entry_price": 3.436,
+      "exit_price": 3.439,
+      "size_usd": 124.18547288710195,
+      "pnl": -0.4156,
+      "pnl_pct": -0.33,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776367720.082575,
+      "exit_time": 1776367792.656277,
+      "exit_reason": "signal_flip"
+    },
+    {
+      "symbol": "ARB/USDT",
+      "side": "short",
+      "entry_price": 0.1301,
+      "exit_price": 0.1317,
+      "size_usd": 124.18027788710194,
+      "pnl": -3.2531,
+      "pnl_pct": -2.59,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776367988.85361,
+      "exit_time": 1776368885.931586,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "STX/USDT",
+      "side": "short",
+      "entry_price": 0.2435,
+      "exit_price": 0.245,
+      "size_usd": 124.18027788710194,
+      "pnl": -1.7286,
+      "pnl_pct": -1.38,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776368047.4325628,
+      "exit_time": 1776369639.913725,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "SHIB/USDT",
+      "side": "long",
+      "entry_price": 6.25e-06,
+      "exit_price": 6.31e-06,
+      "size_usd": 134.09410814999984,
+      "pnl": 2.3601,
+      "pnl_pct": 1.76,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776362673.281593,
+      "exit_time": 1776370120.5129511,
+      "exit_reason": "trailing"
+    },
+    {
+      "symbol": "ADA/USDT",
+      "side": "short",
+      "entry_price": 0.2593,
+      "exit_price": 0.2598,
+      "size_usd": 124.18027788710194,
+      "pnl": -0.6776,
+      "pnl_pct": -0.54,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776367958.314694,
+      "exit_time": 1776370660.1706371,
+      "exit_reason": "stagnation"
+    },
+    {
+      "symbol": "PEPE/USDT",
+      "side": "short",
+      "entry_price": 4.01e-06,
+      "exit_price": 4.02e-06,
+      "size_usd": 62.09013894355097,
+      "pnl": -0.409,
+      "pnl_pct": -0.66,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776367967.2035918,
+      "exit_time": 1776370670.594172,
+      "exit_reason": "stagnation"
+    },
+    {
+      "symbol": "UNI/USDT",
+      "side": "short",
+      "entry_price": 3.45,
+      "exit_price": 3.452,
+      "size_usd": 124.18027788710195,
+      "pnl": -0.3427,
+      "pnl_pct": -0.28,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776367970.421809,
+      "exit_time": 1776370670.6309602,
+      "exit_reason": "stagnation"
+    },
+    {
+      "symbol": "SOL/USDT",
+      "side": "short",
+      "entry_price": 89.86,
+      "exit_price": 89.69,
+      "size_usd": 124.13961413710194,
+      "pnl": 0.2711,
+      "pnl_pct": 0.22,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776368905.285642,
+      "exit_time": 1776371607.402724,
+      "exit_reason": "stagnation"
+    },
+    {
+      "symbol": "DOGE/USDT",
+      "side": "short",
+      "entry_price": 0.09924,
+      "exit_price": 0.09886,
+      "size_usd": 74.50816673226116,
+      "pnl": 0.4514,
+      "pnl_pct": 0.61,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776368085.082825,
+      "exit_time": 1776373695.9891672,
+      "exit_reason": "sl"
+    },
+    {
+      "symbol": "ARB/USDT",
+      "side": "short",
+      "entry_price": 0.1323,
+      "exit_price": 0.1267,
+      "size_usd": 18.617700995565293,
+      "pnl": 1.5463,
+      "pnl_pct": 8.68,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776369853.78614,
+      "exit_time": 1776374861.629865,
+      "exit_reason": "tp"
+    },
+    {
+      "symbol": "COMP/USDT",
+      "side": "short",
+      "entry_price": 23.62,
+      "exit_price": 23.55,
+      "size_usd": 124.16880509551777,
+      "pnl": 0.5373,
+      "pnl_pct": 0.43,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776372191.672719,
+      "exit_time": 1776375002.034501,
+      "exit_reason": "stagnation"
+    },
+    {
+      "symbol": "MANA/USDT",
+      "side": "short",
+      "entry_price": 0.0961,
+      "exit_price": 0.0949,
+      "size_usd": 24.205280119234878,
+      "pnl": 0.5658,
+      "pnl_pct": 2.37,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776370720.877821,
+      "exit_time": 1776375928.2443242,
+      "exit_reason": "tp"
+    },
+    {
+      "symbol": "HBAR/USDT",
+      "side": "short",
+      "entry_price": 0.09142,
+      "exit_price": 0.09033,
+      "size_usd": 48.42803456225193,
+      "pnl": 1.0773,
+      "pnl_pct": 2.25,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776373822.331537,
+      "exit_time": 1776375937.65396,
+      "exit_reason": "tp"
+    },
+    {
+      "symbol": "AXL/USDT",
+      "side": "short",
+      "entry_price": 0.0704,
+      "exit_price": 0.07,
+      "size_usd": 19.49911317442983,
+      "pnl": 0.1904,
+      "pnl_pct": 0.98,
+      "leverage": 2.0,
+      "won": true,
+      "entry_time": 1776376694.967485,
+      "exit_time": 1776376953.77178,
+      "exit_reason": "trailing"
+    },
+    {
+      "symbol": "SPK/USDT",
+      "side": "short",
+      "entry_price": 0.022929,
+      "exit_price": 0.023143,
+      "size_usd": 124.30574801404015,
+      "pnl": -2.5192,
+      "pnl_pct": -2.01,
+      "leverage": 2.0,
+      "won": false,
+      "entry_time": 1776376832.147876,
+      "exit_time": 1776378720.317368,
+      "exit_reason": "sl"
+    }
+  ],
+  "equity_history": [
+    {
+      "time": 1776322048,
+      "value": 10014.57
+    },
+    {
+      "time": 1776322109,
+      "value": 10019.27
+    },
+    {
+      "time": 1776322169,
+      "value": 10016.92
+    },
+    {
+      "time": 1776322230,
+      "value": 10014.13
+    },
+    {
+      "time": 1776322291,
+      "value": 10017.95
+    },
+    {
+      "time": 1776322352,
+      "value": 10009.43
+    },
+    {
+      "time": 1776322413,
+      "value": 10011.27
+    },
+    {
+      "time": 1776322474,
+      "value": 10010.28
+    },
+    {
+      "time": 1776322534,
+      "value": 10010.76
+    },
+    {
+      "time": 1776322594,
+      "value": 10009.76
+    },
+    {
+      "time": 1776322655,
+      "value": 10007.37
+    },
+    {
+      "time": 1776322715,
+      "value": 10003.11
+    },
+    {
+      "time": 1776322775,
+      "value": 10001.23
+    },
+    {
+      "time": 1776322836,
+      "value": 10002.11
+    },
+    {
+      "time": 1776322897,
+      "value": 10002.59
+    },
+    {
+      "time": 1776322958,
+      "value": 10002.47
+    },
+    {
+      "time": 1776323018,
+      "value": 10003.52
+    },
+    {
+      "time": 1776323079,
+      "value": 10003.97
+    },
+    {
+      "time": 1776323140,
+      "value": 10004.36
+    },
+    {
+      "time": 1776323206,
+      "value": 9996.08
+    },
+    {
+      "time": 1776323266,
+      "value": 9991.77
+    },
+    {
+      "time": 1776323327,
+      "value": 9986.86
+    },
+    {
+      "time": 1776323390,
+      "value": 9987.32
+    },
+    {
+      "time": 1776323458,
+      "value": 9990.31
+    },
+    {
+      "time": 1776323519,
+      "value": 9989.82
+    },
+    {
+      "time": 1776323579,
+      "value": 9993.46
+    },
+    {
+      "time": 1776323640,
+      "value": 9996.56
+    },
+    {
+      "time": 1776323701,
+      "value": 9994.74
+    },
+    {
+      "time": 1776323761,
+      "value": 9995.17
+    },
+    {
+      "time": 1776323822,
+      "value": 10006.21
+    },
+    {
+      "time": 1776323883,
+      "value": 10004.97
+    },
+    {
+      "time": 1776323943,
+      "value": 10007.73
+    },
+    {
+      "time": 1776324004,
+      "value": 10005.32
+    },
+    {
+      "time": 1776324065,
+      "value": 9996.95
+    },
+    {
+      "time": 1776324068,
+      "value": 9999.23
+    },
+    {
+      "time": 1776324128,
+      "value": 9990.61
+    },
+    {
+      "time": 1776324189,
+      "value": 9993.78
+    },
+    {
+      "time": 1776324250,
+      "value": 9994.07
+    },
+    {
+      "time": 1776324314,
+      "value": 9991.19
+    },
+    {
+      "time": 1776324374,
+      "value": 9991.28
+    },
+    {
+      "time": 1776324435,
+      "value": 9984.49
+    },
+    {
+      "time": 1776324495,
+      "value": 9982.01
+    },
+    {
+      "time": 1776324555,
+      "value": 9983.11
+    },
+    {
+      "time": 1776324616,
+      "value": 9994.23
+    },
+    {
+      "time": 1776324677,
+      "value": 9988.03
+    },
+    {
+      "time": 1776324737,
+      "value": 9990.54
+    },
+    {
+      "time": 1776324798,
+      "value": 9998.73
+    },
+    {
+      "time": 1776324859,
+      "value": 10008.82
+    },
+    {
+      "time": 1776324920,
+      "value": 10018.71
+    },
+    {
+      "time": 1776325169,
+      "value": 10015.66
+    },
+    {
+      "time": 1776325234,
+      "value": 10002.69
+    },
+    {
+      "time": 1776325302,
+      "value": 9993.17
+    },
+    {
+      "time": 1776325370,
+      "value": 9991.22
+    },
+    {
+      "time": 1776325437,
+      "value": 10000.75
+    },
+    {
+      "time": 1776325516,
+      "value": 9987.6
+    },
+    {
+      "time": 1776325578,
+      "value": 9986.35
+    },
+    {
+      "time": 1776325639,
+      "value": 10001.88
+    },
+    {
+      "time": 1776325700,
+      "value": 10010.4
+    },
+    {
+      "time": 1776325760,
+      "value": 10030.22
+    },
+    {
+      "time": 1776325821,
+      "value": 10021.91
+    },
+    {
+      "time": 1776325881,
+      "value": 10020.77
+    },
+    {
+      "time": 1776325941,
+      "value": 10015.56
+    },
+    {
+      "time": 1776326002,
+      "value": 10014.99
+    },
+    {
+      "time": 1776326055,
+      "value": 9976.51
+    },
+    {
+      "time": 1776326115,
+      "value": 9949.05
+    },
+    {
+      "time": 1776326175,
+      "value": 9966.32
+    },
+    {
+      "time": 1776326238,
+      "value": 9941.6
+    },
+    {
+      "time": 1776326299,
+      "value": 9917.79
+    },
+    {
+      "time": 1776326371,
+      "value": 9890.82
+    },
+    {
+      "time": 1776326432,
+      "value": 9873.91
+    },
+    {
+      "time": 1776326495,
+      "value": 9922.25
+    },
+    {
+      "time": 1776326556,
+      "value": 9896.53
+    },
+    {
+      "time": 1776326619,
+      "value": 9884.27
+    },
+    {
+      "time": 1776326682,
+      "value": 9897.72
+    },
+    {
+      "time": 1776326758,
+      "value": 9863.38
+    },
+    {
+      "time": 1776326820,
+      "value": 9849.45
+    },
+    {
+      "time": 1776326883,
+      "value": 9816.37
+    },
+    {
+      "time": 1776326944,
+      "value": 9788.98
+    },
+    {
+      "time": 1776327004,
+      "value": 9777.12
+    },
+    {
+      "time": 1776327072,
+      "value": 9765.98
+    },
+    {
+      "time": 1776327135,
+      "value": 9766.91
+    },
+    {
+      "time": 1776327197,
+      "value": 9776.17
+    },
+    {
+      "time": 1776327258,
+      "value": 9775.54
+    },
+    {
+      "time": 1776327320,
+      "value": 9774.71
+    },
+    {
+      "time": 1776327381,
+      "value": 9781.25
+    },
+    {
+      "time": 1776327444,
+      "value": 9772.41
+    },
+    {
+      "time": 1776327507,
+      "value": 9769.32
+    },
+    {
+      "time": 1776327570,
+      "value": 9773.02
+    },
+    {
+      "time": 1776327632,
+      "value": 9758.97
+    },
+    {
+      "time": 1776327693,
+      "value": 9760.6
+    },
+    {
+      "time": 1776327755,
+      "value": 9755.84
+    },
+    {
+      "time": 1776327815,
+      "value": 9750.79
+    },
+    {
+      "time": 1776327878,
+      "value": 9750.68
+    },
+    {
+      "time": 1776327963,
+      "value": 9742.24
+    },
+    {
+      "time": 1776328023,
+      "value": 9744.23
+    },
+    {
+      "time": 1776328086,
+      "value": 9745.08
+    },
+    {
+      "time": 1776328149,
+      "value": 9735.07
+    },
+    {
+      "time": 1776328211,
+      "value": 9728.92
+    },
+    {
+      "time": 1776328272,
+      "value": 9723.3
+    },
+    {
+      "time": 1776328333,
+      "value": 9715.91
+    },
+    {
+      "time": 1776328395,
+      "value": 9723.6
+    },
+    {
+      "time": 1776328457,
+      "value": 9733.0
+    },
+    {
+      "time": 1776328519,
+      "value": 9729.35
+    },
+    {
+      "time": 1776328620,
+      "value": 9720.02
+    },
+    {
+      "time": 1776328683,
+      "value": 9720.64
+    },
+    {
+      "time": 1776328743,
+      "value": 9718.39
+    },
+    {
+      "time": 1776328806,
+      "value": 9721.97
+    },
+    {
+      "time": 1776328867,
+      "value": 9721.36
+    },
+    {
+      "time": 1776328927,
+      "value": 9718.42
+    },
+    {
+      "time": 1776328988,
+      "value": 9720.38
+    },
+    {
+      "time": 1776329050,
+      "value": 9721.27
+    },
+    {
+      "time": 1776329111,
+      "value": 9726.46
+    },
+    {
+      "time": 1776329178,
+      "value": 9726.79
+    },
+    {
+      "time": 1776329239,
+      "value": 9726.82
+    },
+    {
+      "time": 1776329302,
+      "value": 9727.13
+    },
+    {
+      "time": 1776329362,
+      "value": 9722.2
+    },
+    {
+      "time": 1776329422,
+      "value": 9721.91
+    },
+    {
+      "time": 1776329483,
+      "value": 9721.62
+    },
+    {
+      "time": 1776329545,
+      "value": 9718.74
+    },
+    {
+      "time": 1776329606,
+      "value": 9714.89
+    },
+    {
+      "time": 1776329668,
+      "value": 9715.98
+    },
+    {
+      "time": 1776329729,
+      "value": 9715.18
+    },
+    {
+      "time": 1776329791,
+      "value": 9717.36
+    },
+    {
+      "time": 1776329851,
+      "value": 9717.73
+    },
+    {
+      "time": 1776329912,
+      "value": 9715.16
+    },
+    {
+      "time": 1776329972,
+      "value": 9711.28
+    },
+    {
+      "time": 1776330034,
+      "value": 9707.73
+    },
+    {
+      "time": 1776330128,
+      "value": 9712.64
+    },
+    {
+      "time": 1776330188,
+      "value": 9708.37
+    },
+    {
+      "time": 1776330253,
+      "value": 9709.74
+    },
+    {
+      "time": 1776330313,
+      "value": 9706.85
+    },
+    {
+      "time": 1776330373,
+      "value": 9704.72
+    },
+    {
+      "time": 1776330434,
+      "value": 9706.95
+    },
+    {
+      "time": 1776330494,
+      "value": 9711.22
+    },
+    {
+      "time": 1776330556,
+      "value": 9708.89
+    },
+    {
+      "time": 1776330617,
+      "value": 9703.59
+    },
+    {
+      "time": 1776330679,
+      "value": 9704.55
+    },
+    {
+      "time": 1776330741,
+      "value": 9706.47
+    },
+    {
+      "time": 1776330802,
+      "value": 9706.24
+    },
+    {
+      "time": 1776330865,
+      "value": 9707.6
+    },
+    {
+      "time": 1776330928,
+      "value": 9706.26
+    },
+    {
+      "time": 1776330990,
+      "value": 9707.43
+    },
+    {
+      "time": 1776331052,
+      "value": 9708.36
+    },
+    {
+      "time": 1776331114,
+      "value": 9706.02
+    },
+    {
+      "time": 1776331175,
+      "value": 9704.48
+    },
+    {
+      "time": 1776331236,
+      "value": 9703.68
+    },
+    {
+      "time": 1776331298,
+      "value": 9703.78
+    },
+    {
+      "time": 1776331359,
+      "value": 9706.47
+    },
+    {
+      "time": 1776331420,
+      "value": 9707.09
+    },
+    {
+      "time": 1776331482,
+      "value": 9708.67
+    },
+    {
+      "time": 1776331542,
+      "value": 9706.6
+    },
+    {
+      "time": 1776331604,
+      "value": 9707.81
+    },
+    {
+      "time": 1776331665,
+      "value": 9707.36
+    },
+    {
+      "time": 1776331726,
+      "value": 9706.77
+    },
+    {
+      "time": 1776331786,
+      "value": 9707.57
+    },
+    {
+      "time": 1776331834,
+      "value": 9707.29
+    },
+    {
+      "time": 1776331895,
+      "value": 9706.63
+    },
+    {
+      "time": 1776331956,
+      "value": 9707.22
+    },
+    {
+      "time": 1776332016,
+      "value": 9708.37
+    },
+    {
+      "time": 1776332078,
+      "value": 9706.91
+    },
+    {
+      "time": 1776332140,
+      "value": 9705.59
+    },
+    {
+      "time": 1776332200,
+      "value": 9704.28
+    },
+    {
+      "time": 1776332260,
+      "value": 9705.14
+    },
+    {
+      "time": 1776332320,
+      "value": 9704.88
+    },
+    {
+      "time": 1776332382,
+      "value": 9705.8
+    },
+    {
+      "time": 1776332442,
+      "value": 9702.85
+    },
+    {
+      "time": 1776332503,
+      "value": 9704.06
+    },
+    {
+      "time": 1776332565,
+      "value": 9704.65
+    },
+    {
+      "time": 1776332627,
+      "value": 9703.19
+    },
+    {
+      "time": 1776332687,
+      "value": 9702.83
+    },
+    {
+      "time": 1776332749,
+      "value": 9703.35
+    },
+    {
+      "time": 1776332821,
+      "value": 9703.35
+    },
+    {
+      "time": 1776332882,
+      "value": 9703.35
+    },
+    {
+      "time": 1776332943,
+      "value": 9703.35
+    },
+    {
+      "time": 1776333004,
+      "value": 9703.35
+    },
+    {
+      "time": 1776333065,
+      "value": 9703.35
+    },
+    {
+      "time": 1776333126,
+      "value": 9703.35
+    },
+    {
+      "time": 1776333186,
+      "value": 9703.35
+    },
+    {
+      "time": 1776333247,
+      "value": 9703.35
+    },
+    {
+      "time": 1776333308,
+      "value": 9703.35
+    },
+    {
+      "time": 1776333369,
+      "value": 9703.35
+    },
+    {
+      "time": 1776333430,
+      "value": 9703.35
+    },
+    {
+      "time": 1776333491,
+      "value": 9703.35
+    },
+    {
+      "time": 1776333552,
+      "value": 9703.35
+    },
+    {
+      "time": 1776333613,
+      "value": 9703.35
+    },
+    {
+      "time": 1776333674,
+      "value": 9703.35
+    },
+    {
+      "time": 1776333735,
+      "value": 9703.35
+    },
+    {
+      "time": 1776333796,
+      "value": 9703.35
+    },
+    {
+      "time": 1776333857,
+      "value": 9703.35
+    },
+    {
+      "time": 1776333918,
+      "value": 9703.35
+    },
+    {
+      "time": 1776333979,
+      "value": 9703.35
+    },
+    {
+      "time": 1776334039,
+      "value": 9703.35
+    },
+    {
+      "time": 1776334176,
+      "value": 9703.35
+    },
+    {
+      "time": 1776334237,
+      "value": 9665.15
+    },
+    {
+      "time": 1776334297,
+      "value": 9665.15
+    },
+    {
+      "time": 1776334357,
+      "value": 9665.15
+    },
+    {
+      "time": 1776334417,
+      "value": 9665.15
+    },
+    {
+      "time": 1776334478,
+      "value": 9665.15
+    },
+    {
+      "time": 1776334505,
+      "value": 9665.15
+    },
+    {
+      "time": 1776334565,
+      "value": 9665.15
+    },
+    {
+      "time": 1776334625,
+      "value": 9665.15
+    },
+    {
+      "time": 1776334646,
+      "value": 10000.0
+    },
+    {
+      "time": 1776334707,
+      "value": 10000.0
+    },
+    {
+      "time": 1776334767,
+      "value": 10000.0
+    },
+    {
+      "time": 1776334827,
+      "value": 10000.0
+    },
+    {
+      "time": 1776334887,
+      "value": 10000.0
+    },
+    {
+      "time": 1776334948,
+      "value": 10000.0
+    },
+    {
+      "time": 1776335008,
+      "value": 10000.0
+    },
+    {
+      "time": 1776335068,
+      "value": 10000.0
+    },
+    {
+      "time": 1776335129,
+      "value": 10000.0
+    },
+    {
+      "time": 1776335189,
+      "value": 10000.0
+    },
+    {
+      "time": 1776335201,
+      "value": 10000.0
+    },
+    {
+      "time": 1776335262,
+      "value": 9999.87
+    },
+    {
+      "time": 1776335323,
+      "value": 10000.41
+    },
+    {
+      "time": 1776335384,
+      "value": 9999.25
+    },
+    {
+      "time": 1776335445,
+      "value": 9999.88
+    },
+    {
+      "time": 1776335506,
+      "value": 10000.2
+    },
+    {
+      "time": 1776335568,
+      "value": 9999.3
+    },
+    {
+      "time": 1776335630,
+      "value": 9996.66
+    },
+    {
+      "time": 1776335691,
+      "value": 9995.92
+    },
+    {
+      "time": 1776335752,
+      "value": 9996.62
+    },
+    {
+      "time": 1776335815,
+      "value": 9996.12
+    },
+    {
+      "time": 1776335871,
+      "value": 9996.11
+    },
+    {
+      "time": 1776335931,
+      "value": 9996.39
+    },
+    {
+      "time": 1776335992,
+      "value": 9997.11
+    },
+    {
+      "time": 1776336053,
+      "value": 9996.25
+    },
+    {
+      "time": 1776336116,
+      "value": 9995.34
+    },
+    {
+      "time": 1776336176,
+      "value": 9994.85
+    },
+    {
+      "time": 1776336237,
+      "value": 9994.93
+    },
+    {
+      "time": 1776336298,
+      "value": 9994.12
+    },
+    {
+      "time": 1776336358,
+      "value": 9993.11
+    },
+    {
+      "time": 1776336419,
+      "value": 9993.24
+    },
+    {
+      "time": 1776336480,
+      "value": 9992.12
+    },
+    {
+      "time": 1776336541,
+      "value": 9989.86
+    },
+    {
+      "time": 1776336603,
+      "value": 9989.2
+    },
+    {
+      "time": 1776336663,
+      "value": 9989.51
+    },
+    {
+      "time": 1776336723,
+      "value": 9988.0
+    },
+    {
+      "time": 1776336746,
+      "value": 9988.87
+    },
+    {
+      "time": 1776336807,
+      "value": 9988.49
+    },
+    {
+      "time": 1776336868,
+      "value": 9987.67
+    },
+    {
+      "time": 1776336929,
+      "value": 9988.59
+    },
+    {
+      "time": 1776336991,
+      "value": 9989.12
+    },
+    {
+      "time": 1776337051,
+      "value": 9989.19
+    },
+    {
+      "time": 1776337098,
+      "value": 9990.53
+    },
+    {
+      "time": 1776337158,
+      "value": 9990.98
+    },
+    {
+      "time": 1776337220,
+      "value": 9990.2
+    },
+    {
+      "time": 1776337280,
+      "value": 9990.29
+    },
+    {
+      "time": 1776337341,
+      "value": 9991.07
+    },
+    {
+      "time": 1776337403,
+      "value": 9990.74
+    },
+    {
+      "time": 1776337464,
+      "value": 9991.71
+    },
+    {
+      "time": 1776337525,
+      "value": 9991.57
+    },
+    {
+      "time": 1776337585,
+      "value": 9991.22
+    },
+    {
+      "time": 1776337646,
+      "value": 9992.53
+    },
+    {
+      "time": 1776337706,
+      "value": 9992.43
+    },
+    {
+      "time": 1776337810,
+      "value": 9992.56
+    },
+    {
+      "time": 1776337871,
+      "value": 9991.89
+    },
+    {
+      "time": 1776337932,
+      "value": 9991.5
+    },
+    {
+      "time": 1776337999,
+      "value": 9989.84
+    },
+    {
+      "time": 1776338059,
+      "value": 9990.15
+    },
+    {
+      "time": 1776338119,
+      "value": 9989.41
+    },
+    {
+      "time": 1776338180,
+      "value": 9989.28
+    },
+    {
+      "time": 1776338241,
+      "value": 9989.27
+    },
+    {
+      "time": 1776338301,
+      "value": 9989.26
+    },
+    {
+      "time": 1776338361,
+      "value": 9989.33
+    },
+    {
+      "time": 1776338422,
+      "value": 9989.48
+    },
+    {
+      "time": 1776338483,
+      "value": 9989.84
+    },
+    {
+      "time": 1776338544,
+      "value": 9989.51
+    },
+    {
+      "time": 1776338605,
+      "value": 9989.57
+    },
+    {
+      "time": 1776338665,
+      "value": 9989.59
+    },
+    {
+      "time": 1776338725,
+      "value": 9989.5
+    },
+    {
+      "time": 1776338786,
+      "value": 9989.71
+    },
+    {
+      "time": 1776338847,
+      "value": 9989.8
+    },
+    {
+      "time": 1776338908,
+      "value": 9989.78
+    },
+    {
+      "time": 1776338968,
+      "value": 9989.82
+    },
+    {
+      "time": 1776339029,
+      "value": 9989.81
+    },
+    {
+      "time": 1776339089,
+      "value": 9989.7
+    },
+    {
+      "time": 1776339150,
+      "value": 9989.99
+    },
+    {
+      "time": 1776339211,
+      "value": 9990.01
+    },
+    {
+      "time": 1776339272,
+      "value": 9990.06
+    },
+    {
+      "time": 1776339333,
+      "value": 9989.8
+    },
+    {
+      "time": 1776339393,
+      "value": 9989.73
+    },
+    {
+      "time": 1776339454,
+      "value": 9989.79
+    },
+    {
+      "time": 1776339514,
+      "value": 9989.74
+    },
+    {
+      "time": 1776339575,
+      "value": 9989.63
+    },
+    {
+      "time": 1776339636,
+      "value": 9989.68
+    },
+    {
+      "time": 1776339697,
+      "value": 9989.5
+    },
+    {
+      "time": 1776339757,
+      "value": 9989.17
+    },
+    {
+      "time": 1776339818,
+      "value": 9989.09
+    },
+    {
+      "time": 1776339880,
+      "value": 9989.29
+    },
+    {
+      "time": 1776339940,
+      "value": 9989.19
+    },
+    {
+      "time": 1776340001,
+      "value": 9989.02
+    },
+    {
+      "time": 1776340061,
+      "value": 9989.02
+    },
+    {
+      "time": 1776340121,
+      "value": 9988.92
+    },
+    {
+      "time": 1776340182,
+      "value": 9989.07
+    },
+    {
+      "time": 1776340242,
+      "value": 9989.04
+    },
+    {
+      "time": 1776340303,
+      "value": 9988.87
+    },
+    {
+      "time": 1776340363,
+      "value": 9989.1
+    },
+    {
+      "time": 1776340407,
+      "value": 9989.17
+    },
+    {
+      "time": 1776340473,
+      "value": 9989.09
+    },
+    {
+      "time": 1776340533,
+      "value": 9989.17
+    },
+    {
+      "time": 1776340594,
+      "value": 9989.17
+    },
+    {
+      "time": 1776340654,
+      "value": 9989.07
+    },
+    {
+      "time": 1776340714,
+      "value": 9989.07
+    },
+    {
+      "time": 1776340775,
+      "value": 9989.09
+    },
+    {
+      "time": 1776340836,
+      "value": 9989.19
+    },
+    {
+      "time": 1776340896,
+      "value": 9989.24
+    },
+    {
+      "time": 1776340957,
+      "value": 9989.23
+    },
+    {
+      "time": 1776341017,
+      "value": 9989.5
+    },
+    {
+      "time": 1776341078,
+      "value": 9989.5
+    },
+    {
+      "time": 1776341138,
+      "value": 9989.67
+    },
+    {
+      "time": 1776341199,
+      "value": 9989.62
+    },
+    {
+      "time": 1776341260,
+      "value": 9989.45
+    },
+    {
+      "time": 1776341320,
+      "value": 9989.45
+    },
+    {
+      "time": 1776341381,
+      "value": 9989.63
+    },
+    {
+      "time": 1776341441,
+      "value": 9989.6
+    },
+    {
+      "time": 1776341501,
+      "value": 9989.75
+    },
+    {
+      "time": 1776341562,
+      "value": 9989.79
+    },
+    {
+      "time": 1776341622,
+      "value": 9989.72
+    },
+    {
+      "time": 1776341683,
+      "value": 9989.75
+    },
+    {
+      "time": 1776341743,
+      "value": 9989.72
+    },
+    {
+      "time": 1776341803,
+      "value": 9989.72
+    },
+    {
+      "time": 1776341863,
+      "value": 9989.84
+    },
+    {
+      "time": 1776341924,
+      "value": 9989.87
+    },
+    {
+      "time": 1776341984,
+      "value": 9989.79
+    },
+    {
+      "time": 1776342045,
+      "value": 9989.75
+    },
+    {
+      "time": 1776342106,
+      "value": 9989.7
+    },
+    {
+      "time": 1776342166,
+      "value": 9989.7
+    },
+    {
+      "time": 1776342227,
+      "value": 9989.7
+    },
+    {
+      "time": 1776342287,
+      "value": 9989.65
+    },
+    {
+      "time": 1776342347,
+      "value": 9989.7
+    },
+    {
+      "time": 1776342408,
+      "value": 9989.65
+    },
+    {
+      "time": 1776342469,
+      "value": 9989.63
+    },
+    {
+      "time": 1776342529,
+      "value": 9989.47
+    },
+    {
+      "time": 1776342590,
+      "value": 9989.45
+    },
+    {
+      "time": 1776342705,
+      "value": 9989.68
+    },
+    {
+      "time": 1776342765,
+      "value": 9989.47
+    },
+    {
+      "time": 1776342825,
+      "value": 9989.4
+    },
+    {
+      "time": 1776342886,
+      "value": 9989.5
+    },
+    {
+      "time": 1776342946,
+      "value": 9989.5
+    },
+    {
+      "time": 1776343007,
+      "value": 9989.37
+    },
+    {
+      "time": 1776343068,
+      "value": 9989.42
+    },
+    {
+      "time": 1776343128,
+      "value": 9989.67
+    },
+    {
+      "time": 1776343189,
+      "value": 9989.67
+    },
+    {
+      "time": 1776343250,
+      "value": 9989.76
+    },
+    {
+      "time": 1776343311,
+      "value": 9989.68
+    },
+    {
+      "time": 1776343371,
+      "value": 9989.74
+    },
+    {
+      "time": 1776343431,
+      "value": 9989.56
+    },
+    {
+      "time": 1776343492,
+      "value": 9989.66
+    },
+    {
+      "time": 1776343553,
+      "value": 9989.89
+    },
+    {
+      "time": 1776343613,
+      "value": 9989.81
+    },
+    {
+      "time": 1776343673,
+      "value": 9989.81
+    },
+    {
+      "time": 1776343734,
+      "value": 9989.84
+    },
+    {
+      "time": 1776343794,
+      "value": 9989.94
+    },
+    {
+      "time": 1776343854,
+      "value": 9989.89
+    },
+    {
+      "time": 1776343915,
+      "value": 9989.81
+    },
+    {
+      "time": 1776343975,
+      "value": 9989.86
+    },
+    {
+      "time": 1776344036,
+      "value": 9989.96
+    },
+    {
+      "time": 1776344096,
+      "value": 9989.81
+    },
+    {
+      "time": 1776344157,
+      "value": 9989.94
+    },
+    {
+      "time": 1776344218,
+      "value": 9990.09
+    },
+    {
+      "time": 1776344274,
+      "value": 9989.91
+    },
+    {
+      "time": 1776344335,
+      "value": 9989.89
+    },
+    {
+      "time": 1776344395,
+      "value": 9990.02
+    },
+    {
+      "time": 1776344455,
+      "value": 9989.99
+    },
+    {
+      "time": 1776344516,
+      "value": 9990.11
+    },
+    {
+      "time": 1776344577,
+      "value": 9990.23
+    },
+    {
+      "time": 1776344637,
+      "value": 9990.23
+    },
+    {
+      "time": 1776344698,
+      "value": 9990.15
+    },
+    {
+      "time": 1776344758,
+      "value": 9990.63
+    },
+    {
+      "time": 1776344818,
+      "value": 9990.52
+    },
+    {
+      "time": 1776344878,
+      "value": 9990.52
+    },
+    {
+      "time": 1776344939,
+      "value": 9990.57
+    },
+    {
+      "time": 1776344999,
+      "value": 9990.59
+    },
+    {
+      "time": 1776345059,
+      "value": 9990.57
+    },
+    {
+      "time": 1776345119,
+      "value": 9990.59
+    },
+    {
+      "time": 1776345180,
+      "value": 9990.7
+    },
+    {
+      "time": 1776345240,
+      "value": 9990.87
+    },
+    {
+      "time": 1776345300,
+      "value": 9990.99
+    },
+    {
+      "time": 1776345361,
+      "value": 9990.94
+    },
+    {
+      "time": 1776345421,
+      "value": 9990.94
+    },
+    {
+      "time": 1776345481,
+      "value": 9991.01
+    },
+    {
+      "time": 1776345542,
+      "value": 9991.18
+    },
+    {
+      "time": 1776345602,
+      "value": 9991.21
+    },
+    {
+      "time": 1776345701,
+      "value": 9991.0
+    },
+    {
+      "time": 1776345729,
+      "value": 9991.04
+    },
+    {
+      "time": 1776345790,
+      "value": 9991.04
+    },
+    {
+      "time": 1776345850,
+      "value": 9991.04
+    },
+    {
+      "time": 1776345911,
+      "value": 9991.04
+    },
+    {
+      "time": 1776345971,
+      "value": 9991.04
+    },
+    {
+      "time": 1776346032,
+      "value": 9991.04
+    },
+    {
+      "time": 1776346092,
+      "value": 9991.04
+    },
+    {
+      "time": 1776346153,
+      "value": 9991.04
+    },
+    {
+      "time": 1776346213,
+      "value": 9991.04
+    },
+    {
+      "time": 1776346274,
+      "value": 9991.04
+    },
+    {
+      "time": 1776346334,
+      "value": 9991.04
+    },
+    {
+      "time": 1776346395,
+      "value": 9991.04
+    },
+    {
+      "time": 1776346455,
+      "value": 9991.04
+    },
+    {
+      "time": 1776346516,
+      "value": 9991.04
+    },
+    {
+      "time": 1776346576,
+      "value": 9991.04
+    },
+    {
+      "time": 1776346637,
+      "value": 9991.04
+    },
+    {
+      "time": 1776346697,
+      "value": 9991.04
+    },
+    {
+      "time": 1776346758,
+      "value": 9991.04
+    },
+    {
+      "time": 1776346818,
+      "value": 9991.04
+    },
+    {
+      "time": 1776346879,
+      "value": 9991.04
+    },
+    {
+      "time": 1776346939,
+      "value": 9991.04
+    },
+    {
+      "time": 1776347000,
+      "value": 9991.04
+    },
+    {
+      "time": 1776347075,
+      "value": 9991.04
+    },
+    {
+      "time": 1776347132,
+      "value": 9990.02
+    },
+    {
+      "time": 1776347193,
+      "value": 9987.86
+    },
+    {
+      "time": 1776347254,
+      "value": 9987.47
+    },
+    {
+      "time": 1776347314,
+      "value": 9985.31
+    },
+    {
+      "time": 1776347375,
+      "value": 9984.6
+    },
+    {
+      "time": 1776347436,
+      "value": 9979.48
+    },
+    {
+      "time": 1776347496,
+      "value": 9977.73
+    },
+    {
+      "time": 1776347557,
+      "value": 9966.96
+    },
+    {
+      "time": 1776347617,
+      "value": 9958.53
+    },
+    {
+      "time": 1776347694,
+      "value": 9933.05
+    },
+    {
+      "time": 1776347754,
+      "value": 9943.0
+    },
+    {
+      "time": 1776347814,
+      "value": 9945.72
+    },
+    {
+      "time": 1776347875,
+      "value": 9942.51
+    },
+    {
+      "time": 1776347936,
+      "value": 9946.8
+    },
+    {
+      "time": 1776347996,
+      "value": 9950.31
+    },
+    {
+      "time": 1776348057,
+      "value": 9941.09
+    },
+    {
+      "time": 1776348117,
+      "value": 9941.66
+    },
+    {
+      "time": 1776348178,
+      "value": 9941.97
+    },
+    {
+      "time": 1776348238,
+      "value": 9943.12
+    },
+    {
+      "time": 1776348299,
+      "value": 9943.71
+    },
+    {
+      "time": 1776348359,
+      "value": 9939.91
+    },
+    {
+      "time": 1776348420,
+      "value": 9942.56
+    },
+    {
+      "time": 1776348480,
+      "value": 9941.07
+    },
+    {
+      "time": 1776348577,
+      "value": 9939.91
+    },
+    {
+      "time": 1776348638,
+      "value": 9940.78
+    },
+    {
+      "time": 1776348698,
+      "value": 9938.73
+    },
+    {
+      "time": 1776348759,
+      "value": 9937.86
+    },
+    {
+      "time": 1776348820,
+      "value": 9934.64
+    },
+    {
+      "time": 1776348881,
+      "value": 9934.36
+    },
+    {
+      "time": 1776348941,
+      "value": 9934.36
+    },
+    {
+      "time": 1776349002,
+      "value": 9932.68
+    },
+    {
+      "time": 1776349062,
+      "value": 9932.96
+    },
+    {
+      "time": 1776349123,
+      "value": 9932.4
+    },
+    {
+      "time": 1776349183,
+      "value": 9932.4
+    },
+    {
+      "time": 1776349243,
+      "value": 9931.84
+    },
+    {
+      "time": 1776349308,
+      "value": 9932.4
+    },
+    {
+      "time": 1776349369,
+      "value": 9932.4
+    },
+    {
+      "time": 1776349430,
+      "value": 9932.12
+    },
+    {
+      "time": 1776349490,
+      "value": 9931.56
+    },
+    {
+      "time": 1776349551,
+      "value": 9931.84
+    },
+    {
+      "time": 1776349611,
+      "value": 9932.68
+    },
+    {
+      "time": 1776349671,
+      "value": 9932.4
+    },
+    {
+      "time": 1776349732,
+      "value": 9933.52
+    },
+    {
+      "time": 1776349792,
+      "value": 9932.96
+    },
+    {
+      "time": 1776349852,
+      "value": 9933.52
+    },
+    {
+      "time": 1776350004,
+      "value": 9934.64
+    },
+    {
+      "time": 1776350065,
+      "value": 9934.92
+    },
+    {
+      "time": 1776350125,
+      "value": 9935.76
+    },
+    {
+      "time": 1776350185,
+      "value": 9935.76
+    },
+    {
+      "time": 1776350326,
+      "value": 9936.04
+    },
+    {
+      "time": 1776350387,
+      "value": 9934.64
+    },
+    {
+      "time": 1776350448,
+      "value": 9934.64
+    },
+    {
+      "time": 1776350508,
+      "value": 9934.36
+    },
+    {
+      "time": 1776350568,
+      "value": 9934.64
+    },
+    {
+      "time": 1776350629,
+      "value": 9934.36
+    },
+    {
+      "time": 1776350689,
+      "value": 9933.8
+    },
+    {
+      "time": 1776350750,
+      "value": 9934.64
+    },
+    {
+      "time": 1776350810,
+      "value": 9934.92
+    },
+    {
+      "time": 1776350899,
+      "value": 9934.08
+    },
+    {
+      "time": 1776350960,
+      "value": 9934.08
+    },
+    {
+      "time": 1776351067,
+      "value": 9934.08
+    },
+    {
+      "time": 1776351128,
+      "value": 9934.08
+    },
+    {
+      "time": 1776351189,
+      "value": 9933.8
+    },
+    {
+      "time": 1776351286,
+      "value": 9934.36
+    },
+    {
+      "time": 1776351347,
+      "value": 9934.64
+    },
+    {
+      "time": 1776351465,
+      "value": 9934.36
+    },
+    {
+      "time": 1776351554,
+      "value": 9934.64
+    },
+    {
+      "time": 1776351615,
+      "value": 9934.66
+    },
+    {
+      "time": 1776351675,
+      "value": 9934.64
+    },
+    {
+      "time": 1776351732,
+      "value": 9934.63
+    },
+    {
+      "time": 1776351793,
+      "value": 9934.96
+    },
+    {
+      "time": 1776351853,
+      "value": 9934.72
+    },
+    {
+      "time": 1776351913,
+      "value": 9934.42
+    },
+    {
+      "time": 1776351993,
+      "value": 9934.49
+    },
+    {
+      "time": 1776352053,
+      "value": 9935.01
+    },
+    {
+      "time": 1776352114,
+      "value": 9934.97
+    },
+    {
+      "time": 1776352174,
+      "value": 9935.24
+    },
+    {
+      "time": 1776352234,
+      "value": 9935.4
+    },
+    {
+      "time": 1776352296,
+      "value": 9934.81
+    },
+    {
+      "time": 1776352356,
+      "value": 9934.81
+    },
+    {
+      "time": 1776352416,
+      "value": 9934.87
+    },
+    {
+      "time": 1776352476,
+      "value": 9935.19
+    },
+    {
+      "time": 1776352537,
+      "value": 9935.24
+    },
+    {
+      "time": 1776352597,
+      "value": 9935.03
+    },
+    {
+      "time": 1776352658,
+      "value": 9935.22
+    },
+    {
+      "time": 1776352707,
+      "value": 9935.09
+    },
+    {
+      "time": 1776352767,
+      "value": 9935.1
+    },
+    {
+      "time": 1776352827,
+      "value": 9935.57
+    },
+    {
+      "time": 1776352888,
+      "value": 9935.5
+    },
+    {
+      "time": 1776352949,
+      "value": 9935.68
+    },
+    {
+      "time": 1776353010,
+      "value": 9935.78
+    },
+    {
+      "time": 1776353070,
+      "value": 9935.49
+    },
+    {
+      "time": 1776353130,
+      "value": 9935.59
+    },
+    {
+      "time": 1776353190,
+      "value": 9935.57
+    },
+    {
+      "time": 1776353251,
+      "value": 9935.51
+    },
+    {
+      "time": 1776353312,
+      "value": 9935.52
+    },
+    {
+      "time": 1776353372,
+      "value": 9935.14
+    },
+    {
+      "time": 1776353433,
+      "value": 9934.99
+    },
+    {
+      "time": 1776353494,
+      "value": 9935.22
+    },
+    {
+      "time": 1776353527,
+      "value": 9935.13
+    },
+    {
+      "time": 1776353555,
+      "value": 9935.34
+    },
+    {
+      "time": 1776353615,
+      "value": 9935.23
+    },
+    {
+      "time": 1776353675,
+      "value": 9935.52
+    },
+    {
+      "time": 1776353736,
+      "value": 9935.5
+    },
+    {
+      "time": 1776353796,
+      "value": 9935.74
+    },
+    {
+      "time": 1776353856,
+      "value": 9937.05
+    },
+    {
+      "time": 1776353917,
+      "value": 9936.9
+    },
+    {
+      "time": 1776353977,
+      "value": 9936.99
+    },
+    {
+      "time": 1776354037,
+      "value": 9937.01
+    },
+    {
+      "time": 1776354098,
+      "value": 9936.99
+    },
+    {
+      "time": 1776354159,
+      "value": 9937.05
+    },
+    {
+      "time": 1776354219,
+      "value": 9937.1
+    },
+    {
+      "time": 1776354280,
+      "value": 9937.12
+    },
+    {
+      "time": 1776354340,
+      "value": 9937.14
+    },
+    {
+      "time": 1776354400,
+      "value": 9937.14
+    },
+    {
+      "time": 1776354461,
+      "value": 9937.18
+    },
+    {
+      "time": 1776354549,
+      "value": 9937.14
+    },
+    {
+      "time": 1776354609,
+      "value": 9936.94
+    },
+    {
+      "time": 1776354641,
+      "value": 9936.97
+    },
+    {
+      "time": 1776354701,
+      "value": 9936.87
+    },
+    {
+      "time": 1776354761,
+      "value": 9936.8
+    },
+    {
+      "time": 1776354843,
+      "value": 9936.61
+    },
+    {
+      "time": 1776354903,
+      "value": 9936.76
+    },
+    {
+      "time": 1776354963,
+      "value": 9936.68
+    },
+    {
+      "time": 1776355024,
+      "value": 9936.75
+    },
+    {
+      "time": 1776355084,
+      "value": 9936.73
+    },
+    {
+      "time": 1776355144,
+      "value": 9936.9
+    },
+    {
+      "time": 1776355205,
+      "value": 9937.16
+    },
+    {
+      "time": 1776355266,
+      "value": 9936.9
+    },
+    {
+      "time": 1776355326,
+      "value": 9936.87
+    },
+    {
+      "time": 1776355386,
+      "value": 9936.84
+    },
+    {
+      "time": 1776355447,
+      "value": 9937.48
+    },
+    {
+      "time": 1776355507,
+      "value": 9936.53
+    },
+    {
+      "time": 1776355568,
+      "value": 9937.22
+    },
+    {
+      "time": 1776355628,
+      "value": 9936.91
+    },
+    {
+      "time": 1776355689,
+      "value": 9937.34
+    },
+    {
+      "time": 1776355750,
+      "value": 9937.18
+    },
+    {
+      "time": 1776355810,
+      "value": 9936.6
+    },
+    {
+      "time": 1776355871,
+      "value": 9936.34
+    },
+    {
+      "time": 1776355931,
+      "value": 9935.0
+    },
+    {
+      "time": 1776355991,
+      "value": 9934.1
+    },
+    {
+      "time": 1776356052,
+      "value": 9933.88
+    },
+    {
+      "time": 1776356112,
+      "value": 9934.16
+    },
+    {
+      "time": 1776356172,
+      "value": 9933.91
+    },
+    {
+      "time": 1776356228,
+      "value": 9934.05
+    },
+    {
+      "time": 1776356337,
+      "value": 9934.25
+    },
+    {
+      "time": 1776356398,
+      "value": 9934.37
+    },
+    {
+      "time": 1776356459,
+      "value": 9934.81
+    },
+    {
+      "time": 1776356520,
+      "value": 9934.81
+    },
+    {
+      "time": 1776356580,
+      "value": 9934.29
+    },
+    {
+      "time": 1776356641,
+      "value": 9934.03
+    },
+    {
+      "time": 1776356701,
+      "value": 9933.87
+    },
+    {
+      "time": 1776356762,
+      "value": 9933.93
+    },
+    {
+      "time": 1776356823,
+      "value": 9933.63
+    },
+    {
+      "time": 1776356884,
+      "value": 9933.59
+    },
+    {
+      "time": 1776356944,
+      "value": 9933.1
+    },
+    {
+      "time": 1776357005,
+      "value": 9933.01
+    },
+    {
+      "time": 1776357065,
+      "value": 9933.23
+    },
+    {
+      "time": 1776357126,
+      "value": 9933.19
+    },
+    {
+      "time": 1776357186,
+      "value": 9933.03
+    },
+    {
+      "time": 1776357247,
+      "value": 9932.57
+    },
+    {
+      "time": 1776357356,
+      "value": 9932.55
+    },
+    {
+      "time": 1776357416,
+      "value": 9932.6
+    },
+    {
+      "time": 1776357476,
+      "value": 9932.71
+    },
+    {
+      "time": 1776357537,
+      "value": 9932.94
+    },
+    {
+      "time": 1776357598,
+      "value": 9932.94
+    },
+    {
+      "time": 1776357658,
+      "value": 9932.94
+    },
+    {
+      "time": 1776357718,
+      "value": 9932.87
+    },
+    {
+      "time": 1776357779,
+      "value": 9932.82
+    },
+    {
+      "time": 1776357840,
+      "value": 9932.96
+    },
+    {
+      "time": 1776357901,
+      "value": 9932.94
+    },
+    {
+      "time": 1776357961,
+      "value": 9932.89
+    },
+    {
+      "time": 1776358022,
+      "value": 9932.94
+    },
+    {
+      "time": 1776358083,
+      "value": 9932.94
+    },
+    {
+      "time": 1776358144,
+      "value": 9932.94
+    },
+    {
+      "time": 1776358204,
+      "value": 9932.94
+    },
+    {
+      "time": 1776358265,
+      "value": 9932.89
+    },
+    {
+      "time": 1776358326,
+      "value": 9932.85
+    },
+    {
+      "time": 1776358386,
+      "value": 9932.82
+    },
+    {
+      "time": 1776358447,
+      "value": 9932.85
+    },
+    {
+      "time": 1776358508,
+      "value": 9932.87
+    },
+    {
+      "time": 1776358569,
+      "value": 9932.91
+    },
+    {
+      "time": 1776358629,
+      "value": 9932.91
+    },
+    {
+      "time": 1776358689,
+      "value": 9932.89
+    },
+    {
+      "time": 1776358749,
+      "value": 9932.89
+    },
+    {
+      "time": 1776358810,
+      "value": 9932.85
+    },
+    {
+      "time": 1776358871,
+      "value": 9932.98
+    },
+    {
+      "time": 1776358932,
+      "value": 9932.94
+    },
+    {
+      "time": 1776358993,
+      "value": 9932.91
+    },
+    {
+      "time": 1776359054,
+      "value": 9933.01
+    },
+    {
+      "time": 1776359114,
+      "value": 9933.03
+    },
+    {
+      "time": 1776359175,
+      "value": 9933.05
+    },
+    {
+      "time": 1776359236,
+      "value": 9933.05
+    },
+    {
+      "time": 1776359296,
+      "value": 9932.96
+    },
+    {
+      "time": 1776359356,
+      "value": 9932.96
+    },
+    {
+      "time": 1776359416,
+      "value": 9932.9
+    },
+    {
+      "time": 1776359477,
+      "value": 9932.9
+    },
+    {
+      "time": 1776359537,
+      "value": 9932.9
+    },
+    {
+      "time": 1776359597,
+      "value": 9932.9
+    },
+    {
+      "time": 1776359658,
+      "value": 9932.9
+    },
+    {
+      "time": 1776359718,
+      "value": 9932.9
+    },
+    {
+      "time": 1776359778,
+      "value": 9932.9
+    },
+    {
+      "time": 1776359838,
+      "value": 9932.9
+    },
+    {
+      "time": 1776359968,
+      "value": 9932.9
+    },
+    {
+      "time": 1776360028,
+      "value": 9932.9
+    },
+    {
+      "time": 1776360088,
+      "value": 9932.9
+    },
+    {
+      "time": 1776360148,
+      "value": 9932.9
+    },
+    {
+      "time": 1776360209,
+      "value": 9932.9
+    },
+    {
+      "time": 1776360269,
+      "value": 9932.9
+    },
+    {
+      "time": 1776360329,
+      "value": 9932.9
+    },
+    {
+      "time": 1776360389,
+      "value": 9932.9
+    },
+    {
+      "time": 1776360499,
+      "value": 9932.9
+    },
+    {
+      "time": 1776360560,
+      "value": 9932.9
+    },
+    {
+      "time": 1776360620,
+      "value": 9932.9
+    },
+    {
+      "time": 1776360697,
+      "value": 9932.9
+    },
+    {
+      "time": 1776360757,
+      "value": 9932.9
+    },
+    {
+      "time": 1776360817,
+      "value": 9932.9
+    },
+    {
+      "time": 1776360877,
+      "value": 9932.9
+    },
+    {
+      "time": 1776360965,
+      "value": 9932.9
+    },
+    {
+      "time": 1776361025,
+      "value": 9932.9
+    },
+    {
+      "time": 1776361086,
+      "value": 9932.9
+    },
+    {
+      "time": 1776361146,
+      "value": 9932.9
+    },
+    {
+      "time": 1776361209,
+      "value": 9932.9
+    },
+    {
+      "time": 1776361269,
+      "value": 9932.9
+    },
+    {
+      "time": 1776361329,
+      "value": 9932.9
+    },
+    {
+      "time": 1776361442,
+      "value": 9932.9
+    },
+    {
+      "time": 1776361502,
+      "value": 9932.9
+    },
+    {
+      "time": 1776361563,
+      "value": 9932.7
+    },
+    {
+      "time": 1776361624,
+      "value": 9933.0
+    },
+    {
+      "time": 1776361685,
+      "value": 9932.94
+    },
+    {
+      "time": 1776361746,
+      "value": 9933.04
+    },
+    {
+      "time": 1776361805,
+      "value": 9933.08
+    },
+    {
+      "time": 1776361866,
+      "value": 9932.66
+    },
+    {
+      "time": 1776361944,
+      "value": 9932.66
+    },
+    {
+      "time": 1776362004,
+      "value": 9933.2
+    },
+    {
+      "time": 1776362065,
+      "value": 9932.74
+    },
+    {
+      "time": 1776362125,
+      "value": 9932.98
+    },
+    {
+      "time": 1776362186,
+      "value": 9933.04
+    },
+    {
+      "time": 1776362247,
+      "value": 9933.46
+    },
+    {
+      "time": 1776362335,
+      "value": 9933.76
+    },
+    {
+      "time": 1776362396,
+      "value": 9933.92
+    },
+    {
+      "time": 1776362456,
+      "value": 9933.52
+    },
+    {
+      "time": 1776362517,
+      "value": 9934.56
+    },
+    {
+      "time": 1776362578,
+      "value": 9934.9
+    },
+    {
+      "time": 1776362657,
+      "value": 9933.48
+    },
+    {
+      "time": 1776362718,
+      "value": 9932.05
+    },
+    {
+      "time": 1776362832,
+      "value": 9933.14
+    },
+    {
+      "time": 1776362893,
+      "value": 9930.75
+    },
+    {
+      "time": 1776362954,
+      "value": 9931.47
+    },
+    {
+      "time": 1776363014,
+      "value": 9930.75
+    },
+    {
+      "time": 1776363081,
+      "value": 9930.75
+    },
+    {
+      "time": 1776363141,
+      "value": 9932.18
+    },
+    {
+      "time": 1776363201,
+      "value": 9931.67
+    },
+    {
+      "time": 1776363262,
+      "value": 9933.44
+    },
+    {
+      "time": 1776363322,
+      "value": 9932.02
+    },
+    {
+      "time": 1776363383,
+      "value": 9932.35
+    },
+    {
+      "time": 1776363444,
+      "value": 9930.78
+    },
+    {
+      "time": 1776363504,
+      "value": 9931.5
+    },
+    {
+      "time": 1776363565,
+      "value": 9931.5
+    },
+    {
+      "time": 1776363626,
+      "value": 9931.08
+    },
+    {
+      "time": 1776363686,
+      "value": 9931.28
+    },
+    {
+      "time": 1776363733,
+      "value": 9930.48
+    },
+    {
+      "time": 1776363794,
+      "value": 9930.68
+    },
+    {
+      "time": 1776363854,
+      "value": 9930.68
+    },
+    {
+      "time": 1776363975,
+      "value": 9930.68
+    },
+    {
+      "time": 1776364035,
+      "value": 9931.1
+    },
+    {
+      "time": 1776364096,
+      "value": 9931.2
+    },
+    {
+      "time": 1776364156,
+      "value": 9930.48
+    },
+    {
+      "time": 1776364216,
+      "value": 9931.3
+    },
+    {
+      "time": 1776364304,
+      "value": 9931.2
+    },
+    {
+      "time": 1776364364,
+      "value": 9930.96
+    },
+    {
+      "time": 1776364415,
+      "value": 9930.3
+    },
+    {
+      "time": 1776364476,
+      "value": 9931.71
+    },
+    {
+      "time": 1776364537,
+      "value": 9931.18
+    },
+    {
+      "time": 1776364597,
+      "value": 9931.43
+    },
+    {
+      "time": 1776364657,
+      "value": 9931.51
+    },
+    {
+      "time": 1776364718,
+      "value": 9931.28
+    },
+    {
+      "time": 1776364778,
+      "value": 9931.2
+    },
+    {
+      "time": 1776364838,
+      "value": 9930.9
+    },
+    {
+      "time": 1776364899,
+      "value": 9933.04
+    },
+    {
+      "time": 1776364959,
+      "value": 9933.86
+    },
+    {
+      "time": 1776365019,
+      "value": 9932.05
+    },
+    {
+      "time": 1776365110,
+      "value": 9931.81
+    },
+    {
+      "time": 1776365170,
+      "value": 9930.94
+    },
+    {
+      "time": 1776365230,
+      "value": 9933.6
+    },
+    {
+      "time": 1776365301,
+      "value": 9936.58
+    },
+    {
+      "time": 1776365362,
+      "value": 9936.26
+    },
+    {
+      "time": 1776365422,
+      "value": 9934.63
+    },
+    {
+      "time": 1776365482,
+      "value": 9935.88
+    },
+    {
+      "time": 1776365543,
+      "value": 9937.67
+    },
+    {
+      "time": 1776365603,
+      "value": 9940.6
+    },
+    {
+      "time": 1776365663,
+      "value": 9939.1
+    },
+    {
+      "time": 1776365723,
+      "value": 9938.66
+    },
+    {
+      "time": 1776365783,
+      "value": 9938.7
+    },
+    {
+      "time": 1776365843,
+      "value": 9938.82
+    },
+    {
+      "time": 1776365904,
+      "value": 9938.06
+    },
+    {
+      "time": 1776365964,
+      "value": 9939.77
+    },
+    {
+      "time": 1776366025,
+      "value": 9939.85
+    },
+    {
+      "time": 1776366085,
+      "value": 9938.88
+    },
+    {
+      "time": 1776366146,
+      "value": 9938.86
+    },
+    {
+      "time": 1776366206,
+      "value": 9940.07
+    },
+    {
+      "time": 1776366267,
+      "value": 9939.65
+    },
+    {
+      "time": 1776366328,
+      "value": 9940.52
+    },
+    {
+      "time": 1776366388,
+      "value": 9940.84
+    },
+    {
+      "time": 1776366449,
+      "value": 9939.43
+    },
+    {
+      "time": 1776366510,
+      "value": 9939.67
+    },
+    {
+      "time": 1776366571,
+      "value": 9941.02
+    },
+    {
+      "time": 1776366632,
+      "value": 9941.77
+    },
+    {
+      "time": 1776366692,
+      "value": 9940.48
+    },
+    {
+      "time": 1776366756,
+      "value": 9940.34
+    },
+    {
+      "time": 1776366816,
+      "value": 9939.93
+    },
+    {
+      "time": 1776366877,
+      "value": 9939.89
+    },
+    {
+      "time": 1776366948,
+      "value": 9940.9
+    },
+    {
+      "time": 1776367009,
+      "value": 9941.32
+    },
+    {
+      "time": 1776367069,
+      "value": 9941.86
+    },
+    {
+      "time": 1776367130,
+      "value": 9942.15
+    },
+    {
+      "time": 1776367190,
+      "value": 9941.81
+    },
+    {
+      "time": 1776367269,
+      "value": 9941.81
+    },
+    {
+      "time": 1776367348,
+      "value": 9941.38
+    },
+    {
+      "time": 1776367408,
+      "value": 9941.33
+    },
+    {
+      "time": 1776367469,
+      "value": 9940.28
+    },
+    {
+      "time": 1776367530,
+      "value": 9939.86
+    },
+    {
+      "time": 1776367591,
+      "value": 9938.27
+    },
+    {
+      "time": 1776367651,
+      "value": 9939.56
+    },
+    {
+      "time": 1776367711,
+      "value": 9939.56
+    },
+    {
+      "time": 1776367772,
+      "value": 9939.34
+    },
+    {
+      "time": 1776367832,
+      "value": 9938.28
+    },
+    {
+      "time": 1776367892,
+      "value": 9938.28
+    },
+    {
+      "time": 1776367951,
+      "value": 9938.71
+    },
+    {
+      "time": 1776367976,
+      "value": 9938.02
+    },
+    {
+      "time": 1776368037,
+      "value": 9938.71
+    },
+    {
+      "time": 1776368097,
+      "value": 9939.57
+    },
+    {
+      "time": 1776368157,
+      "value": 9936.04
+    },
+    {
+      "time": 1776368218,
+      "value": 9937.27
+    },
+    {
+      "time": 1776368279,
+      "value": 9935.27
+    },
+    {
+      "time": 1776368340,
+      "value": 9936.02
+    },
+    {
+      "time": 1776368435,
+      "value": 9936.87
+    },
+    {
+      "time": 1776368497,
+      "value": 9935.42
+    },
+    {
+      "time": 1776368557,
+      "value": 9934.72
+    },
+    {
+      "time": 1776368617,
+      "value": 9934.88
+    },
+    {
+      "time": 1776368734,
+      "value": 9934.07
+    },
+    {
+      "time": 1776368795,
+      "value": 9933.8
+    },
+    {
+      "time": 1776368855,
+      "value": 9933.32
+    },
+    {
+      "time": 1776368916,
+      "value": 9933.35
+    },
+    {
+      "time": 1776368976,
+      "value": 9932.95
+    },
+    {
+      "time": 1776369037,
+      "value": 9934.33
+    },
+    {
+      "time": 1776369097,
+      "value": 9934.09
+    },
+    {
+      "time": 1776369158,
+      "value": 9934.33
+    },
+    {
+      "time": 1776369218,
+      "value": 9933.35
+    },
+    {
+      "time": 1776369279,
+      "value": 9933.09
+    },
+    {
+      "time": 1776369372,
+      "value": 9932.66
+    },
+    {
+      "time": 1776369488,
+      "value": 9932.01
+    },
+    {
+      "time": 1776369548,
+      "value": 9930.79
+    },
+    {
+      "time": 1776369608,
+      "value": 9930.93
+    },
+    {
+      "time": 1776369668,
+      "value": 9928.51
+    },
+    {
+      "time": 1776369729,
+      "value": 9928.46
+    },
+    {
+      "time": 1776369789,
+      "value": 9931.41
+    },
+    {
+      "time": 1776369850,
+      "value": 9932.19
+    },
+    {
+      "time": 1776369911,
+      "value": 9930.26
+    },
+    {
+      "time": 1776369972,
+      "value": 9929.82
+    },
+    {
+      "time": 1776370032,
+      "value": 9931.64
+    },
+    {
+      "time": 1776370093,
+      "value": 9931.04
+    },
+    {
+      "time": 1776370190,
+      "value": 9931.46
+    },
+    {
+      "time": 1776370321,
+      "value": 9930.37
+    },
+    {
+      "time": 1776370382,
+      "value": 9929.96
+    },
+    {
+      "time": 1776370459,
+      "value": 9930.35
+    },
+    {
+      "time": 1776370520,
+      "value": 9928.46
+    },
+    {
+      "time": 1776370581,
+      "value": 9930.77
+    },
+    {
+      "time": 1776370641,
+      "value": 9929.92
+    },
+    {
+      "time": 1776370701,
+      "value": 9930.77
+    },
+    {
+      "time": 1776370761,
+      "value": 9932.78
+    },
+    {
+      "time": 1776370821,
+      "value": 9935.93
+    },
+    {
+      "time": 1776370882,
+      "value": 9937.54
+    },
+    {
+      "time": 1776370942,
+      "value": 9936.96
+    },
+    {
+      "time": 1776371003,
+      "value": 9935.39
+    },
+    {
+      "time": 1776371064,
+      "value": 9935.3
+    },
+    {
+      "time": 1776371124,
+      "value": 9935.34
+    },
+    {
+      "time": 1776371184,
+      "value": 9935.08
+    },
+    {
+      "time": 1776371245,
+      "value": 9935.42
+    },
+    {
+      "time": 1776371305,
+      "value": 9935.15
+    },
+    {
+      "time": 1776371365,
+      "value": 9934.86
+    },
+    {
+      "time": 1776371426,
+      "value": 9934.91
+    },
+    {
+      "time": 1776371486,
+      "value": 9935.8
+    },
+    {
+      "time": 1776371546,
+      "value": 9935.66
+    },
+    {
+      "time": 1776371606,
+      "value": 9938.1
+    },
+    {
+      "time": 1776371667,
+      "value": 9937.99
+    },
+    {
+      "time": 1776371727,
+      "value": 9938.74
+    },
+    {
+      "time": 1776371795,
+      "value": 9937.75
+    },
+    {
+      "time": 1776371855,
+      "value": 9938.27
+    },
+    {
+      "time": 1776371916,
+      "value": 9937.35
+    },
+    {
+      "time": 1776371976,
+      "value": 9937.71
+    },
+    {
+      "time": 1776372036,
+      "value": 9938.78
+    },
+    {
+      "time": 1776372097,
+      "value": 9938.61
+    },
+    {
+      "time": 1776372157,
+      "value": 9938.27
+    },
+    {
+      "time": 1776372218,
+      "value": 9938.19
+    },
+    {
+      "time": 1776372278,
+      "value": 9937.86
+    },
+    {
+      "time": 1776372339,
+      "value": 9938.26
+    },
+    {
+      "time": 1776372400,
+      "value": 9938.33
+    },
+    {
+      "time": 1776372461,
+      "value": 9937.75
+    },
+    {
+      "time": 1776372522,
+      "value": 9937.81
+    },
+    {
+      "time": 1776372560,
+      "value": 9938.56
+    },
+    {
+      "time": 1776372620,
+      "value": 9938.56
+    },
+    {
+      "time": 1776372681,
+      "value": 9938.08
+    },
+    {
+      "time": 1776372741,
+      "value": 9938.73
+    },
+    {
+      "time": 1776372802,
+      "value": 9938.93
+    },
+    {
+      "time": 1776372863,
+      "value": 9938.61
+    },
+    {
+      "time": 1776372871,
+      "value": 9938.61
+    },
+    {
+      "time": 1776372931,
+      "value": 9938.56
+    },
+    {
+      "time": 1776372992,
+      "value": 9938.47
+    },
+    {
+      "time": 1776373044,
+      "value": 9938.09
+    },
+    {
+      "time": 1776373104,
+      "value": 9938.16
+    },
+    {
+      "time": 1776373165,
+      "value": 9938.44
+    },
+    {
+      "time": 1776373219,
+      "value": 9937.63
+    },
+    {
+      "time": 1776373279,
+      "value": 9937.0
+    },
+    {
+      "time": 1776373340,
+      "value": 9937.55
+    },
+    {
+      "time": 1776373400,
+      "value": 9938.06
+    },
+    {
+      "time": 1776373412,
+      "value": 9938.08
+    },
+    {
+      "time": 1776373473,
+      "value": 9938.69
+    },
+    {
+      "time": 1776373534,
+      "value": 9938.48
+    },
+    {
+      "time": 1776373594,
+      "value": 9938.98
+    },
+    {
+      "time": 1776373655,
+      "value": 9939.15
+    },
+    {
+      "time": 1776373716,
+      "value": 9939.4
+    },
+    {
+      "time": 1776373776,
+      "value": 9939.83
+    },
+    {
+      "time": 1776373836,
+      "value": 9939.23
+    },
+    {
+      "time": 1776373897,
+      "value": 9939.83
+    },
+    {
+      "time": 1776373958,
+      "value": 9940.2
+    },
+    {
+      "time": 1776374019,
+      "value": 9941.64
+    },
+    {
+      "time": 1776374079,
+      "value": 9941.85
+    },
+    {
+      "time": 1776374139,
+      "value": 9941.94
+    },
+    {
+      "time": 1776374154,
+      "value": 9942.28
+    },
+    {
+      "time": 1776374215,
+      "value": 9942.1
+    },
+    {
+      "time": 1776374275,
+      "value": 9941.57
+    },
+    {
+      "time": 1776374336,
+      "value": 9940.93
+    },
+    {
+      "time": 1776374396,
+      "value": 9941.38
+    },
+    {
+      "time": 1776374457,
+      "value": 9943.13
+    },
+    {
+      "time": 1776374518,
+      "value": 9945.15
+    },
+    {
+      "time": 1776374579,
+      "value": 9945.29
+    },
+    {
+      "time": 1776374617,
+      "value": 9944.93
+    },
+    {
+      "time": 1776374678,
+      "value": 9945.42
+    },
+    {
+      "time": 1776374738,
+      "value": 9945.84
+    },
+    {
+      "time": 1776374799,
+      "value": 9945.83
+    },
+    {
+      "time": 1776374859,
+      "value": 9945.42
+    },
+    {
+      "time": 1776374920,
+      "value": 9945.2
+    },
+    {
+      "time": 1776374980,
+      "value": 9944.91
+    },
+    {
+      "time": 1776375040,
+      "value": 9944.96
+    },
+    {
+      "time": 1776375101,
+      "value": 9945.16
+    },
+    {
+      "time": 1776375250,
+      "value": 9944.98
+    },
+    {
+      "time": 1776375310,
+      "value": 9944.96
+    },
+    {
+      "time": 1776375371,
+      "value": 9944.93
+    },
+    {
+      "time": 1776375431,
+      "value": 9944.68
+    },
+    {
+      "time": 1776375492,
+      "value": 9944.61
+    },
+    {
+      "time": 1776375552,
+      "value": 9944.55
+    },
+    {
+      "time": 1776375612,
+      "value": 9944.39
+    },
+    {
+      "time": 1776375673,
+      "value": 9944.34
+    },
+    {
+      "time": 1776375734,
+      "value": 9944.41
+    },
+    {
+      "time": 1776375794,
+      "value": 9944.32
+    },
+    {
+      "time": 1776375854,
+      "value": 9944.46
+    },
+    {
+      "time": 1776375926,
+      "value": 9944.52
+    },
+    {
+      "time": 1776375987,
+      "value": 9944.46
+    },
+    {
+      "time": 1776376048,
+      "value": 9944.46
+    },
+    {
+      "time": 1776376108,
+      "value": 9944.46
+    },
+    {
+      "time": 1776376169,
+      "value": 9944.46
+    },
+    {
+      "time": 1776376230,
+      "value": 9944.46
+    },
+    {
+      "time": 1776376291,
+      "value": 9944.46
+    },
+    {
+      "time": 1776376352,
+      "value": 9944.46
+    },
+    {
+      "time": 1776376413,
+      "value": 9944.46
+    },
+    {
+      "time": 1776376473,
+      "value": 9944.46
+    },
+    {
+      "time": 1776376534,
+      "value": 9944.46
+    },
+    {
+      "time": 1776376594,
+      "value": 9944.46
+    },
+    {
+      "time": 1776376655,
+      "value": 9944.46
+    },
+    {
+      "time": 1776376715,
+      "value": 9943.3
+    },
+    {
+      "time": 1776376775,
+      "value": 9943.52
+    },
+    {
+      "time": 1776376836,
+      "value": 9943.07
+    },
+    {
+      "time": 1776376895,
+      "value": 9942.39
+    },
+    {
+      "time": 1776376955,
+      "value": 9944.07
+    },
+    {
+      "time": 1776377016,
+      "value": 9943.93
+    },
+    {
+      "time": 1776377076,
+      "value": 9943.17
+    },
+    {
+      "time": 1776377181,
+      "value": 9943.68
+    },
+    {
+      "time": 1776377241,
+      "value": 9944.07
+    },
+    {
+      "time": 1776377302,
+      "value": 9944.21
+    },
+    {
+      "time": 1776377362,
+      "value": 9944.15
+    },
+    {
+      "time": 1776377422,
+      "value": 9944.78
+    },
+    {
+      "time": 1776377483,
+      "value": 9944.78
+    },
+    {
+      "time": 1776377544,
+      "value": 9945.46
+    },
+    {
+      "time": 1776377604,
+      "value": 9945.12
+    },
+    {
+      "time": 1776377668,
+      "value": 9945.66
+    },
+    {
+      "time": 1776377779,
+      "value": 9946.8
+    },
+    {
+      "time": 1776377839,
+      "value": 9947.0
+    },
+    {
+      "time": 1776377900,
+      "value": 9946.16
+    },
+    {
+      "time": 1776377960,
+      "value": 9947.36
+    },
+    {
+      "time": 1776378021,
+      "value": 9947.39
+    },
+    {
+      "time": 1776378082,
+      "value": 9947.42
+    },
+    {
+      "time": 1776378142,
+      "value": 9947.37
+    },
+    {
+      "time": 1776378202,
+      "value": 9947.83
+    },
+    {
+      "time": 1776378263,
+      "value": 9947.24
+    },
+    {
+      "time": 1776378324,
+      "value": 9947.19
+    },
+    {
+      "time": 1776378419,
+      "value": 9946.87
+    },
+    {
+      "time": 1776378480,
+      "value": 9946.5
+    },
+    {
+      "time": 1776378595,
+      "value": 9946.06
+    },
+    {
+      "time": 1776378658,
+      "value": 9945.82
+    },
+    {
+      "time": 1776378718,
+      "value": 9943.96
+    },
+    {
+      "time": 1776378779,
+      "value": 9944.56
+    },
+    {
+      "time": 1776378841,
+      "value": 9945.46
+    },
+    {
+      "time": 1776378903,
+      "value": 9945.15
+    },
+    {
+      "time": 1776378964,
+      "value": 9945.39
+    },
+    {
+      "time": 1776379034,
+      "value": 9945.9
+    },
+    {
+      "time": 1776379157,
+      "value": 9945.9
+    }
+  ]
+}

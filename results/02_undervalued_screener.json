@@ -1,0 +1,15 @@
+[
+  {
+    "id": "official-trump",
+    "symbol": "TRUMP",
+    "name": "Official Trump",
+    "price": 2.89,
+    "mc_b": 0.67,
+    "vol_mc_pct": 30.05,
+    "chg_7d": -0.3,
+    "chg_30d": -23.71,
+    "chg_90d": 0,
+    "ath_drop_pct": 96.1,
+    "rsi_14": 42.7
+  }
+]

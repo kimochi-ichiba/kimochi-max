@@ -1,0 +1,11 @@
+[
+  {
+    "time": "2026-04-18T07:17:55.115012",
+    "passed": 9,
+    "total": 10,
+    "critical": 0,
+    "errors": 0,
+    "warns": 1,
+    "health_score": 90.0
+  }
+]

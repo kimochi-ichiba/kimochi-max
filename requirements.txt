@@ -1,0 +1,9 @@
+ccxt>=4.0.0
+pandas>=2.0.0
+ta>=0.11.0
+numpy>=1.24.0
+flask>=2.0.0
+python-dotenv>=1.0.0
+matplotlib>=3.7.0
+# ↓ Python 3.11以上の環境ではより多機能なこちらを使用可能
+# pandas_ta>=0.3.14b

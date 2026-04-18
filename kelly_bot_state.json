@@ -1,0 +1,27 @@
+{
+  "last_rebalance": "2026-04-18 07:03:20.273998",
+  "positions": {
+    "BTC/USDT:USDT": {
+      "entry_price": 77459.78239999998,
+      "size": 0.020273048418394262,
+      "leverage": 1.8366618936531969,
+      "entry_time": "2026-04-18 07:03:20.273803",
+      "initial_margin": 854.0577924485559
+    }
+  },
+  "total_capital": 3000.0,
+  "start_capital": 3000.0,
+  "trades_history": [
+    {
+      "time": "2026-04-18 07:03:20.273827",
+      "action": "open",
+      "symbol": "BTC/USDT:USDT",
+      "entry_price": 77459.78239999998,
+      "size": 0.020273048418394262,
+      "leverage": 1.8366618936531969,
+      "alloc": 855.0
+    }
+  ],
+  "last_rebalance_capital": 3000.0,
+  "cooldown_active": false
+}
