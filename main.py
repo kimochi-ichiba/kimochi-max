@@ -62,21 +62,8 @@ def _add_no_cache_headers(response):
 
 @app.before_request
 def _require_basic_auth():
-    """環境変数 BASIC_AUTH_USER/BASIC_AUTH_PASS が設定されているときだけBasic認証を要求。
-    外部公開時（cloudflare tunnel経由など）のセキュリティ用。"""
-    from flask import request, Response
-    import os
-    required_user = os.environ.get("BASIC_AUTH_USER")
-    required_pass = os.environ.get("BASIC_AUTH_PASS")
-    if not required_user or not required_pass:
-        return  # 環境変数なし → 認証スキップ（LAN内アクセス用）
-    auth = request.authorization
-    if not auth or auth.username != required_user or auth.password != required_pass:
-        return Response(
-            "🔐 パスワードが必要です\n",
-            401,
-            {"WWW-Authenticate": 'Basic realm="Kimochi Max"'}
-        )
+    """認証は無効化（ユーザー指示: iPhone/MacBookからパスワード不要で見れるように）"""
+    return  # 常に認証スキップ
 
 
 def _sanitize(obj):

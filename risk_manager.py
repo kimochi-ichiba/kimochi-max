@@ -355,10 +355,14 @@ class RiskManager:
         return tp, sl
 
     # ── 取引結果の記録 ─────────────────────────────
-    def record_trade(self, trade: TradeRecord):
-        """取引結果を記録し、連続損失カウンターを更新する"""
+    def record_trade(self, trade: TradeRecord, partial_already_credited: float = 0.0):
+        """取引結果を記録し、連続損失カウンターを更新する。
+        partial_already_credited: TP1/TP2/TP3で既に残高加算済みの累計（二重計上を防ぐため差し引く）
+        """
         self.trade_history.append(trade)
-        self.update_balance(self.balance + trade.pnl)
+        # trade.pnl は部分利確を含む total。既に加算済みの分を差し引いて残高を更新
+        net_balance_change = trade.pnl - partial_already_credited
+        self.update_balance(self.balance + net_balance_change)
 
         if trade.won:
             # 勝ちトレード → 連続損失リセット・連勝カウント増加

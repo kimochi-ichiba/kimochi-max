@@ -70,6 +70,9 @@ class Position:
         self.entry_score       = 0.0         # エントリースコア（100点満点）
         self.entry_fg          = 0           # エントリー時のFear & Greedスコア
         self.entry_btc_trend   = ""          # エントリー時のBTCトレンド
+        # タイムラグ解消: TP1/TP2/TP3 部分利確で既に残高加算済みの累計を記録
+        # 最終クローズの record_trade 時に差し引くことで二重計上を防ぐ
+        self._partial_realized = 0.0
 
     def current_pnl(self, current_price: float) -> float:
         if self.side == "long":
@@ -2822,6 +2825,8 @@ class TradingBot:
                     self.risk.update_balance(self.risk.balance + pnl_part)
                     # v49.0: 部分利確PnLを累積
                     self._partial_pnl[symbol] = self._partial_pnl.get(symbol, 0.0) + pnl_part
+                    # タイムラグ修正: 最終クローズ時に二重計上を防ぐため累計を記録
+                    pos._partial_realized = getattr(pos, '_partial_realized', 0.0) + pnl_part
                     self._log(
                         f"🎯 [Phase3/TP1] {symbol} {self.config.tp1_close_pct*100:.0f}%決済 +{pnl_part:.2f}USD "
                         f"| SL→TP1-buffer({fmt_price(new_sl_f3)}) | 次目標:TP2(ATR×{self.config.tp2_atr_mult}) | 残り{pos.quantity:.6f}枚",
@@ -2907,6 +2912,8 @@ class TradingBot:
                     self.risk.update_balance(self.risk.balance + pnl_part)
                     # v49.0: 部分利確PnL累積
                     self._partial_pnl[symbol] = self._partial_pnl.get(symbol, 0.0) + pnl_part
+                    # タイムラグ修正: 二重計上防止用累計
+                    pos._partial_realized = getattr(pos, '_partial_realized', 0.0) + pnl_part
                     self._log(
                         f"🎯 [Phase4/TP2] {symbol} 35%追加利確 +{pnl_part:.2f}USD "
                         f"| SL→TP1レベル | 残り40%→Runner(ATR×{self.config.tp_atr_mult:.1f})トレーリング | 残り{pos.quantity:.6f}枚",
@@ -2962,6 +2969,8 @@ class TradingBot:
                 self.risk.update_balance(self.risk.balance + pnl_part)
                 # v49.0: 部分利確PnL累積
                 self._partial_pnl[symbol] = self._partial_pnl.get(symbol, 0.0) + pnl_part
+                # タイムラグ修正: 二重計上防止用累計
+                pos._partial_realized = getattr(pos, '_partial_realized', 0.0) + pnl_part
                 self._log(
                     f"🎯 [Phase4.5/TP3] {symbol} 30%追加利確 +{pnl_part:.2f}USD "
                     f"| SL→+1.5ATR({fmt_price(new_sl_tp3)}) "
@@ -3366,7 +3375,9 @@ class TradingBot:
             entry_fg=getattr(pos, 'entry_fg', 0),
             entry_btc_trend=getattr(pos, 'entry_btc_trend', ""),
         )
-        self.risk.record_trade(record)
+        # タイムラグ修正: 部分利確で既に加算済みの累計を record_trade に渡す
+        _partial_already = getattr(pos, '_partial_realized', 0.0)
+        self.risk.record_trade(record, partial_already_credited=_partial_already)
         # 追記専用台帳にも即座に保存（bot_state.jsonの破損・上書きに備える最終防衛線）
         self._append_to_ledger(record)
 
