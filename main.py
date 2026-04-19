@@ -517,8 +517,9 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
   <div class="sb"><div class="sb-val" id="s-eq">—</div><div class="sb-lbl">総資産</div><div class="sb-sub" id="s-eq2"></div></div>
   <div class="sb"><div class="sb-val" id="s-up">—</div><div class="sb-lbl">含み損益</div><div class="sb-sub" id="s-up2"></div></div>
   <div class="sb"><div class="sb-val" id="s-rp">—</div><div class="sb-lbl">確定損益</div><div class="sb-sub" id="s-rp2"></div></div>
+  <div class="sb" style="background:linear-gradient(135deg,#2c0a0a 0%,#3d0e0e 100%);border:1px solid #5d1a1a"><div class="sb-val r" id="s-tax" style="font-weight:900">—</div><div class="sb-lbl" style="color:#ff9090">💰 推定税金</div><div class="sb-sub" id="s-tax-sub">雑所得 <select id="tax-rate-select" onchange="setTaxRate(this.value)" style="background:#3d0e0e;color:#ffb0b0;border:1px solid #5d1a1a;font-size:10px;padding:1px 4px;border-radius:3px;cursor:pointer"><option value="0.15">15%</option><option value="0.20">20%</option><option value="0.30" selected>30%</option><option value="0.33">33%</option><option value="0.43">43%</option><option value="0.50">50%</option><option value="0.55">55%</option></select></div></div>
+  <div class="sb" style="background:linear-gradient(135deg,#0a2c17 0%,#0e3d22 100%);border:1px solid #1a5d33"><div class="sb-val g" id="s-aftertax" style="font-weight:900">—</div><div class="sb-lbl" style="color:#90ff90">💵 税引き後利益</div><div class="sb-sub" id="s-aftertax2">実現利益 − 税金</div></div>
   <div class="sb"><div class="sb-val" id="s-td">—</div><div class="sb-lbl">本日損益</div><div class="sb-sub" id="s-td2"></div></div>
-  <div class="sb"><div class="sb-val" id="s-aftertax" style="color:#ffcc80">—</div><div class="sb-lbl">税引き後利益</div><div class="sb-sub" id="s-aftertax2">日本税率20.315%</div></div>
   <div class="sb"><div class="sb-val" id="s-wr">—</div><div class="sb-lbl">勝率</div><div class="sb-sub" id="s-wrs">0勝0敗</div></div>
   <div class="sb"><div class="sb-val y" id="s-lv">—</div><div class="sb-lbl">レバレッジ</div><div class="sb-sub" id="s-st">正常稼働中</div></div>
   <div class="sb"><div class="sb-val b" id="s-ps">0件</div><div class="sb-lbl">保有中</div><div class="sb-sub" id="s-sc"></div></div>
@@ -1158,6 +1159,12 @@ async function ctrlBot(a) {
 // ─── ログクリア ───
 function clrLog() { _logCleared=true; _logCache=[]; $("logbox").innerHTML=""; }
 
+// ─── 💰 税率切替関数（localStorage保存）───
+function setTaxRate(rate) {
+  localStorage.setItem("taxRate", rate);
+  update();  // 即座に再計算
+}
+
 // ─── ライブ取引タブ フィルター ───
 let _liveFilter = "all";
 function setLiveFilter(mode) {
@@ -1208,22 +1215,43 @@ async function update() {
   setS("s-up", SIGN(upnl)+USD(upnl), COL(upnl), "", "s-up2", PCT((upnl/(d.initial||1))*100/100));
   setS("s-rp", SIGN(rpnl)+USD(rpnl), COL(rpnl), "", "s-rp2", d.realized_pnl_pct!=null?PCT(d.realized_pnl_pct):"");
   setS("s-td", SIGN(today)+USD(today), COL(today), "", "s-td2", PCT(todayPct));
-  // 税引き後利益（日本の仮想通貨税率 20.315%）
-  // 確定損益(rpnl)のプラス分のみ課税対象。マイナスは税金なし
-  const taxRate = 0.20315;
-  const totalProfit = rpnl + upnl;  // 含み益も加算した想定利益
-  const taxAmount = totalProfit > 0 ? totalProfit * taxRate : 0;
-  const afterTax = totalProfit - taxAmount;
-  const aftertaxPct = d.initial ? (afterTax / d.initial) * 100 : 0;
+
+  // ─── 💰 税金計算（日本の仮想通貨は雑所得・総合課税）───
+  // 課税対象: 実現損益(rpnl)のみ ※含み益(upnl)は確定前なので対象外
+  // 税率: 利益額と所得区分に応じて15〜55%（住民税10%込み）
+  // 税率はUIのセレクターで選択可能、localStorageに保存
+  const savedRate = localStorage.getItem("taxRate") || "0.30";
+  const taxRate = parseFloat(savedRate);
+  const taxRateSelect = document.getElementById("tax-rate-select");
+  if (taxRateSelect && taxRateSelect.value !== savedRate) taxRateSelect.value = savedRate;
+
+  // 実現利益がプラスの時だけ税金計算（マイナスなら税金ゼロ）
+  const taxableProfit = rpnl > 0 ? rpnl : 0;
+  const taxAmount = taxableProfit * taxRate;
+  const afterTax = rpnl - taxAmount;  // 実現利益 - 税金
+
+  // 💰 推定税金ボックス
+  const taxEl = $("s-tax");
+  if (taxEl) {
+    taxEl.textContent = taxAmount > 0 ? "-" + USD(taxAmount) : "$0.00";
+  }
+  const taxSubEl = $("s-tax-sub");
+  if (taxSubEl) {
+    // 選択肢のラベルを取得
+    const sel = document.getElementById("tax-rate-select");
+    const label = sel ? sel.options[sel.selectedIndex].text : (taxRate*100).toFixed(0)+"%";
+  }
+
+  // 💵 税引き後利益ボックス
   const aftertaxEl = $("s-aftertax");
   if (aftertaxEl) {
     aftertaxEl.textContent = SIGN(afterTax) + USD(afterTax);
-    aftertaxEl.style.color = afterTax >= 0 ? "#4caf50" : "#ef5350";
   }
   const aftertax2El = $("s-aftertax2");
   if (aftertax2El) {
-    if (totalProfit > 0) {
-      aftertax2El.textContent = `税 ${USD(-taxAmount)} (${aftertaxPct.toFixed(2)}%)`;
+    if (rpnl > 0) {
+      const afterTaxPct = d.initial ? (afterTax / d.initial * 100) : 0;
+      aftertax2El.textContent = `税${(taxRate*100).toFixed(0)}%適用後 +${afterTaxPct.toFixed(2)}%`;
     } else {
       aftertax2El.textContent = "損失時は税金なし";
     }
@@ -1236,36 +1264,41 @@ async function update() {
   if($("btn-resume")) $("btn-resume").style.display = d.is_cooling_down?"inline-block":"none";
   setS("s-ps", posK.length+"/"+(d.max_positions||5)+"件", "b", "", "s-sc", (d.scanned_count||0)+"/"+(d.watch_symbols?.length||25)+"銘柄");
 
-  // ─── ① 検証経過（equity_history最古データから計算。無ければbot_started_at） ───
-  // _firstEqTs は初回/api/equityフェッチ時にキャッシュ。ボット起動より前の「真の開始時刻」
-  if (!window._firstEqTs) {
-    try {
-      const eq = await (await fetch("/api/equity")).json();
-      if (eq.history && eq.history.length > 0) {
-        const first = eq.history[0];
-        window._firstEqTs = first.ts || first.timestamp || first.time || d.bot_started_at;
-      } else {
-        window._firstEqTs = d.bot_started_at;
-      }
-    } catch { window._firstEqTs = d.bot_started_at; }
-  }
-  const startTs = window._firstEqTs || d.bot_started_at;
-  if (startTs) {
-    const elapsedSec = Math.floor(Date.now()/1000 - startTs);
-    const totalHours = Math.floor(elapsedSec / 3600);
-    const mins = Math.floor((elapsedSec % 3600) / 60);
-    const secs = elapsedSec % 60;
-    let elapsedText;
-    if (totalHours >= 1) {
-      // 「25時間35分」形式（分まで表示して動きを見える化）
-      elapsedText = `${totalHours}時間${mins}分`;
-    } else if (mins >= 1) {
-      elapsedText = `${mins}分${secs}秒`;
-    } else {
-      elapsedText = `${secs}秒`;
-    }
-    setS("s-elapsed", elapsedText, "c");
+  // ─── ① 検証経過 ───
+  // サーバ側で計算された elapsed_text を優先使用（ブラウザキャッシュ影響を受けない）
+  if (d.elapsed_text) {
+    setS("s-elapsed", d.elapsed_text, "c");
     $("s-scancount").textContent = `スキャン ${(d.scan_count||0).toLocaleString()}回`;
+  } else {
+    // フォールバック: JS側で計算（古いサーバ用）
+    if (!window._firstEqTs) {
+      try {
+        const eq = await (await fetch("/api/equity")).json();
+        if (eq.history && eq.history.length > 0) {
+          const first = eq.history[0];
+          window._firstEqTs = first.ts || first.timestamp || first.time || d.bot_started_at;
+        } else {
+          window._firstEqTs = d.bot_started_at;
+        }
+      } catch { window._firstEqTs = d.bot_started_at; }
+    }
+    const startTs = window._firstEqTs || d.bot_started_at;
+    if (startTs) {
+      const elapsedSec = Math.floor(Date.now()/1000 - startTs);
+      const totalHours = Math.floor(elapsedSec / 3600);
+      const mins = Math.floor((elapsedSec % 3600) / 60);
+      const secs = elapsedSec % 60;
+      let elapsedText;
+      if (totalHours >= 1) {
+        elapsedText = `${totalHours}時間${mins}分`;
+      } else if (mins >= 1) {
+        elapsedText = `${mins}分${secs}秒`;
+      } else {
+        elapsedText = `${secs}秒`;
+      }
+      setS("s-elapsed", elapsedText, "c");
+      $("s-scancount").textContent = `スキャン ${(d.scan_count||0).toLocaleString()}回`;
+    }
   }
 
   // ─── ② 連敗ストリーク（現在・過去最大）───
@@ -1809,7 +1842,31 @@ def api_state():
     """ボットの現在状態を返すメインエンドポイント"""
     if _bot is None:
         return jsonify({"error": "ボットが起動していません"})
-    return jsonify(_sanitize(_bot.get_account_status()))
+    state = _bot.get_account_status()
+    # ── サーバー側で経過時間テキストを計算（ブラウザキャッシュ対策）──
+    try:
+        import time as _time
+        started = None
+        eh = getattr(_bot, "_equity_history", None) or []
+        if eh:
+            first = eh[0]
+            started = first.get("time") or first.get("ts") or first.get("timestamp")
+        if not started:
+            started = getattr(_bot, "_bot_started_at", _time.time())
+        elapsed_sec = max(0, int(_time.time() - started))
+        hours = elapsed_sec // 3600
+        mins = (elapsed_sec % 3600) // 60
+        secs = elapsed_sec % 60
+        if hours >= 1:
+            state["elapsed_text"] = f"{hours}時間{mins}分"
+        elif mins >= 1:
+            state["elapsed_text"] = f"{mins}分{secs}秒"
+        else:
+            state["elapsed_text"] = f"{secs}秒"
+        state["elapsed_sec"] = elapsed_sec
+    except Exception:
+        pass
+    return jsonify(_sanitize(state))
 
 
 @app.route("/api/signal")
