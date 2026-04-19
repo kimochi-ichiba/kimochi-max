@@ -45,7 +45,7 @@ class Config:
     # ── 取引所・銘柄 ──────────────────────────────
     exchange_id: str        = "binance"
     symbol: str             = "BTC/USDT"   # チャート表示・デフォルト銘柄
-    market_type: str        = "spot"        # spot=現物（多銘柄対応のため変更）
+    market_type: str        = "future"      # future=先物（レバレッジ取引・SIM運用前提）
     testnet: bool           = False         # Falseにして公開APIで全銘柄アクセス可能に
 
     # ── 監視する銘柄リスト（時価総額・出来高上位50銘柄）────
