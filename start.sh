@@ -13,6 +13,11 @@ PID_FILE="/tmp/crypto-bot-pro.pid"
 
 echo "🚀 crypto-bot-pro を24時間モードで起動します..."
 
+# 起動前スナップショット（絶対にデータを失わないため）
+if [ -f "pre_deploy_snapshot.sh" ]; then
+  bash pre_deploy_snapshot.sh
+fi
+
 # 古いプロセスを停止
 if [ -f "$PID_FILE" ]; then
   OLD_PID=$(cat "$PID_FILE")

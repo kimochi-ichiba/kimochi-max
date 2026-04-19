@@ -271,6 +271,37 @@ class TradingBot:
 
     # ── 状態の保存・復元 ─────────────────────────────
     STATE_FILE = Path(__file__).parent / "bot_state.json"
+    # 追記専用トレード台帳（絶対に上書きされない、取引のたびに1行追記）
+    LEDGER_FILE = Path(__file__).parent / "trade_ledger.jsonl"
+
+    def _append_to_ledger(self, trade):
+        """取引クローズのたびに追記専用JSONL台帳に1行追記する。
+        このファイルは絶対に上書き・削除されず、取引履歴の最終的な正本となる。
+        """
+        try:
+            record = {
+                "symbol":      getattr(trade, "symbol", ""),
+                "side":        getattr(trade, "side", ""),
+                "entry_price": getattr(trade, "entry_price", 0.0),
+                "exit_price":  getattr(trade, "exit_price", 0.0),
+                "size_usd":    getattr(trade, "size_usd", 0.0),
+                "pnl":         getattr(trade, "pnl", 0.0),
+                "pnl_pct":     getattr(trade, "pnl_pct", 0.0),
+                "leverage":    getattr(trade, "leverage", 1.0),
+                "won":         getattr(trade, "won", False),
+                "entry_time":  getattr(trade, "entry_time", 0),
+                "exit_time":   getattr(trade, "exit_time", 0),
+                "exit_reason": getattr(trade, "exit_reason", ""),
+                "entry_score": getattr(trade, "entry_score", 0.0),
+                "entry_fg":    getattr(trade, "entry_fg", 0),
+                "entry_btc_trend": getattr(trade, "entry_btc_trend", ""),
+                "ledger_saved_at": time.time(),
+            }
+            with open(self.LEDGER_FILE, "a", encoding="utf-8") as f:
+                f.write(json.dumps(record, ensure_ascii=False) + "\n")
+                f.flush()
+        except Exception as e:
+            logger.error(f"⚠️ 台帳への追記に失敗（重大）: {e}")
 
     def _save_state(self):
         """取引履歴・残高・オープンポジションをJSONファイルに保存する"""
@@ -342,31 +373,41 @@ class TradingBot:
                 "sl_cooldown":       sl_cooldown_data,  # v62.0: 再起動後もクールダウン維持
                 "be_triggered":      be_triggered_data, # v64.0: BE済みフラグを永続化
             }
-            # 取引履歴ロストガード: 既存ファイルの取引件数より新しい件数が大幅に減る場合は
-            # 緊急バックアップを作ってから上書きする（誤上書きによる履歴消失を防ぐ）
+            # 取引履歴ロストガード（厳格モード）:
+            # 既存ファイルの取引件数・スキャン回数が減る書き込みは原則すべて拒否する。
+            # 減るということはバグか事故なので、常に既存を優先して保全する。
             import os as _os
             try:
                 if self.STATE_FILE.exists():
                     with open(self.STATE_FILE, "r", encoding="utf-8") as _f_chk:
                         _existing = json.load(_f_chk)
-                    _existing_count = len(_existing.get("trade_history", []))
+                    _existing_trades = _existing.get("trade_history", [])
+                    _existing_count = len(_existing_trades)
                     _new_count = len(trades_data)
-                    # 既存が10件以上 かつ 新規が既存の半分未満なら異常
-                    if _existing_count >= 10 and _new_count < _existing_count / 2:
+                    _existing_scan = _existing.get("scan_count", 0) or 0
+
+                    # 件数減少を検出: 既存を優先保全
+                    if _existing_count > _new_count:
                         _backup_dir = self.STATE_FILE.parent / "state_backups"
                         _backup_dir.mkdir(exist_ok=True)
-                        _emerg = _backup_dir / f"bot_state_EMERGENCY_{int(time.time())}_{_existing_count}trades.json"
+                        _rej = _backup_dir / f"bot_state_REJECTED_{int(time.time())}_would_be_{_new_count}trades.json"
                         import shutil as _shutil
-                        _shutil.copy(self.STATE_FILE, _emerg)
+                        with open(_rej, "w", encoding="utf-8") as _rf:
+                            json.dump(state, _rf, ensure_ascii=False, indent=2)
                         logger.warning(
-                            f"⚠️ 取引履歴が大幅減少を検出 ({_existing_count}件→{_new_count}件)。"
-                            f"緊急バックアップを作成: {_emerg.name}"
+                            f"🛡️ 取引履歴減少を検出 ({_existing_count}件→{_new_count}件)。"
+                            f"既存を保全し保存内容を棄却: {_rej.name}"
                         )
-                        # 減少が50%未満の場合は既存履歴を新規にマージして保全する
-                        # （新規は新しいセッションからで空、既存は豊富な履歴があるケース）
-                        if _new_count == 0 and _existing_count > 0:
-                            state["trade_history"] = _existing.get("trade_history", [])
-                            logger.warning(f"   → 既存の{_existing_count}件を保全（新規は空のため上書き回避）")
+                        # 既存の取引履歴を維持（上書きしない）
+                        state["trade_history"] = _existing_trades
+                        trades_data = _existing_trades
+                    # scan_count減少も保全
+                    if _existing_scan > state.get("scan_count", 0):
+                        logger.warning(
+                            f"🛡️ scan_count減少を検出 ({_existing_scan}→{state.get('scan_count',0)})。"
+                            f"既存値を維持"
+                        )
+                        state["scan_count"] = _existing_scan
             except Exception as _guard_err:
                 logger.debug(f"ロストガードチェックエラー（無視）: {_guard_err}")
 
@@ -3305,6 +3346,8 @@ class TradingBot:
             entry_btc_trend=getattr(pos, 'entry_btc_trend', ""),
         )
         self.risk.record_trade(record)
+        # 追記専用台帳にも即座に保存（bot_state.jsonの破損・上書きに備える最終防衛線）
+        self._append_to_ledger(record)
 
         # ── Feature 9: TP達成後の再エントリーウォッチ ───────────
         # TPを達成した銘柄を30分間監視リストに入れ、再エントリー時にボーナスを与える。
