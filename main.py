@@ -50,6 +50,16 @@ app   = Flask(__name__)
 _bot: TradingBot = None
 
 
+@app.after_request
+def _add_no_cache_headers(response):
+    """全レスポンスにキャッシュ無効化ヘッダーを付与。
+    ブラウザが古いHTMLをキャッシュして新UIが反映されない問題を防ぐ。"""
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
+
 def _sanitize(obj):
     """
     numpy の特殊型（numpy.bool_, numpy.float64 など）を
@@ -81,6 +91,9 @@ DASHBOARD_HTML = r"""<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>自動売買 Pro — BTC/USDT</title>
 <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 <style>
