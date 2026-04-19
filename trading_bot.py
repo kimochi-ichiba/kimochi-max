@@ -341,10 +341,37 @@ class TradingBot:
                 "sl_cooldown":       sl_cooldown_data,  # v62.0: 再起動後もクールダウン維持
                 "be_triggered":      be_triggered_data, # v64.0: BE済みフラグを永続化
             }
+            # 取引履歴ロストガード: 既存ファイルの取引件数より新しい件数が大幅に減る場合は
+            # 緊急バックアップを作ってから上書きする（誤上書きによる履歴消失を防ぐ）
+            import os as _os
+            try:
+                if self.STATE_FILE.exists():
+                    with open(self.STATE_FILE, "r", encoding="utf-8") as _f_chk:
+                        _existing = json.load(_f_chk)
+                    _existing_count = len(_existing.get("trade_history", []))
+                    _new_count = len(trades_data)
+                    # 既存が10件以上 かつ 新規が既存の半分未満なら異常
+                    if _existing_count >= 10 and _new_count < _existing_count / 2:
+                        _backup_dir = self.STATE_FILE.parent / "state_backups"
+                        _backup_dir.mkdir(exist_ok=True)
+                        _emerg = _backup_dir / f"bot_state_EMERGENCY_{int(time.time())}_{_existing_count}trades.json"
+                        import shutil as _shutil
+                        _shutil.copy(self.STATE_FILE, _emerg)
+                        logger.warning(
+                            f"⚠️ 取引履歴が大幅減少を検出 ({_existing_count}件→{_new_count}件)。"
+                            f"緊急バックアップを作成: {_emerg.name}"
+                        )
+                        # 減少が50%未満の場合は既存履歴を新規にマージして保全する
+                        # （新規は新しいセッションからで空、既存は豊富な履歴があるケース）
+                        if _new_count == 0 and _existing_count > 0:
+                            state["trade_history"] = _existing.get("trade_history", [])
+                            logger.warning(f"   → 既存の{_existing_count}件を保全（新規は空のため上書き回避）")
+            except Exception as _guard_err:
+                logger.debug(f"ロストガードチェックエラー（無視）: {_guard_err}")
+
             # v40.0: アトミック書き込み（tmp→renameで中断時のファイル破損を防止）
             # 旧方式: open("w")で直接書き込み → 中断するとファイルが壊れる
             # 新方式: 一時ファイルに書き込み完了後にrename → 常に完全なファイルが存在
-            import os as _os
             tmp_path = self.STATE_FILE.with_suffix(".json.tmp")
             with open(tmp_path, "w", encoding="utf-8") as f:
                 json.dump(state, f, ensure_ascii=False, indent=2)
