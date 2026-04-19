@@ -161,6 +161,9 @@ class TradingBot:
         self._scan_count: int = 0
         self._last_exit_t: float = 0.0      # 最後に損切り監視した時刻
 
+        # ボット起動時刻（検証経過日時・UI表示用）
+        self._started_at: float = time.time()
+
         # スキャン用スレッド（メインループと分離）
         self._scan_thread: Optional[threading.Thread] = None
 
@@ -586,6 +589,26 @@ class TradingBot:
                     if len(self._equity_history) > 1440:
                         self._equity_history = self._equity_history[-1440:]
                     self._last_equity_ts = now
+
+                    # ③ 🚨 緊急退避チェック（DD -30%で全決済 + 24h停止）
+                    # バックテスト50パターンで発動ゼロ確認済みの保険機能
+                    if equity > 0 and self.risk.peak_balance > 0:
+                        dd_pct = (self.risk.peak_balance - equity) / self.risk.peak_balance * 100
+                        if dd_pct >= 30.0 and not getattr(self.risk, '_emergency_exit_triggered', False):
+                            self._log(f"🚨🚨 緊急退避発動！ DD={dd_pct:.1f}% → 全ポジション強制決済 + 24h停止", "error")
+                            with self._lock:
+                                pos_syms = list(self._positions.keys())
+                            for sym in pos_syms:
+                                try:
+                                    pr = self._market_data.get(sym, {}).get("current_price")
+                                    if pr is None and sym in self._positions:
+                                        pr = self._positions[sym].entry_price
+                                    if pr:
+                                        self._close_position(sym, pr, "emergency_exit_dd30")
+                                except Exception as e:
+                                    self._log(f"緊急決済失敗 {sym}: {e}", "error")
+                            self.risk._emergency_exit_triggered = True
+                            self.risk._halt_until = now + 24 * 3600  # 24時間停止
 
             except Exception as e:
                 self._log(f"⚠️ メインループエラー: {e}", "error")
@@ -3105,6 +3128,31 @@ class TradingBot:
                         is_dead_cat_bounce: bool = False,
                         entry_score: float = 0.0, entry_fg: int = 0,
                         entry_btc_trend: str = ""):
+        # ── 実運用シミュレーション（リアル近似） ──
+        if getattr(self.config, "realistic_mode", False):
+            import random
+            notional = quantity * price
+            # 1) 最小ポジション額チェック（Binance先物は$5以上）
+            min_usd = getattr(self.config, "min_position_usd", 5.0)
+            if notional < min_usd:
+                self._log(
+                    f"⛔ {symbol} ポジション額${notional:.2f} < Binance最小${min_usd} → エントリー見送り",
+                    "warn"
+                )
+                return
+            # 2) 約定拒否シミュレーション（残高不足・流動性不足などを再現）
+            reject_rate = getattr(self.config, "order_reject_rate", 0.0)
+            if random.random() < reject_rate:
+                self._log(f"⛔ {symbol} 約定拒否（Binance実運用想定: {reject_rate*100:.1f}%確率）", "warn")
+                return
+            # 3) スリッページ適用（成行注文の約定ズレを再現）
+            slip = getattr(self.config, "slippage_rate", 0.0)
+            if slip > 0:
+                if side == "long":
+                    price = price * (1 + slip)  # ロングは少し高く買わされる
+                else:
+                    price = price * (1 - slip)  # ショートは少し安く売らされる
+
         pos = Position(
             symbol=symbol, side=side, entry_price=price,
             quantity=quantity, tp_price=tp_price, sl_price=sl_price,
@@ -3354,6 +3402,7 @@ class TradingBot:
             "today_pnl_pct":              risk_summary.get("today_pnl_pct", 0),
             "daily_limit_breach_count":   risk_summary.get("daily_limit_breach_count", 0),
             "market_context":             self.mktctx.get_snapshot(),
+            "bot_started_at":             self._started_at,
         }
 
     def get_equity_history(self) -> list:

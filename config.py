@@ -407,7 +407,14 @@ class Config:
     backtest_start: str = "2024-01-01"
     backtest_end: str   = "2024-12-31"
     backtest_tf: str    = "1h"             # バックテストで使う時間軸（高速化のため1h）
-    commission_rate: float = 0.0004        # 手数料（Binance先物Maker0.02%→往復0.04%）
+    commission_rate: float = 0.0005        # 手数料（Binance先物Taker0.05%→往復0.10%現実値）
+
+    # ── 実運用シミュレーション（リアル近似） ─────────
+    realistic_mode: bool = True             # True: 実運用に近い挙動を再現（推奨）
+    min_position_usd: float = 5.0           # Binance先物の最小ポジション額 $5
+    slippage_rate: float = 0.0003           # 想定スリッページ 0.03%（市場注文の平均ズレ）
+    order_reject_rate: float = 0.02         # 約定拒否率 2%（残高不足・流動性不足等）
+    tax_rate_jp: float = 0.20315            # 日本の税率 20.315%（所得300万円以下想定・住民税込）
 
     # ── ログ設定 ─────────────────────────────────
     log_level: str  = "INFO"

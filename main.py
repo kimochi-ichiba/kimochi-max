@@ -486,6 +486,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
   <div class="sb"><div class="sb-val" id="s-up">—</div><div class="sb-lbl">含み損益</div><div class="sb-sub" id="s-up2"></div></div>
   <div class="sb"><div class="sb-val" id="s-rp">—</div><div class="sb-lbl">確定損益</div><div class="sb-sub" id="s-rp2"></div></div>
   <div class="sb"><div class="sb-val" id="s-td">—</div><div class="sb-lbl">本日損益</div><div class="sb-sub" id="s-td2"></div></div>
+  <div class="sb"><div class="sb-val" id="s-aftertax" style="color:#ffcc80">—</div><div class="sb-lbl">税引き後利益</div><div class="sb-sub" id="s-aftertax2">日本税率20.315%</div></div>
   <div class="sb"><div class="sb-val" id="s-wr">—</div><div class="sb-lbl">勝率</div><div class="sb-sub" id="s-wrs">0勝0敗</div></div>
   <div class="sb"><div class="sb-val y" id="s-lv">—</div><div class="sb-lbl">レバレッジ</div><div class="sb-sub" id="s-st">正常稼働中</div></div>
   <div class="sb"><div class="sb-val b" id="s-ps">0件</div><div class="sb-lbl">保有中</div><div class="sb-sub" id="s-sc"></div></div>
@@ -1175,6 +1176,26 @@ async function update() {
   setS("s-up", SIGN(upnl)+USD(upnl), COL(upnl), "", "s-up2", PCT((upnl/(d.initial||1))*100/100));
   setS("s-rp", SIGN(rpnl)+USD(rpnl), COL(rpnl), "", "s-rp2", d.realized_pnl_pct!=null?PCT(d.realized_pnl_pct):"");
   setS("s-td", SIGN(today)+USD(today), COL(today), "", "s-td2", PCT(todayPct));
+  // 税引き後利益（日本の仮想通貨税率 20.315%）
+  // 確定損益(rpnl)のプラス分のみ課税対象。マイナスは税金なし
+  const taxRate = 0.20315;
+  const totalProfit = rpnl + upnl;  // 含み益も加算した想定利益
+  const taxAmount = totalProfit > 0 ? totalProfit * taxRate : 0;
+  const afterTax = totalProfit - taxAmount;
+  const aftertaxPct = d.initial ? (afterTax / d.initial) * 100 : 0;
+  const aftertaxEl = $("s-aftertax");
+  if (aftertaxEl) {
+    aftertaxEl.textContent = SIGN(afterTax) + USD(afterTax);
+    aftertaxEl.style.color = afterTax >= 0 ? "#4caf50" : "#ef5350";
+  }
+  const aftertax2El = $("s-aftertax2");
+  if (aftertax2El) {
+    if (totalProfit > 0) {
+      aftertax2El.textContent = `税 ${USD(-taxAmount)} (${aftertaxPct.toFixed(2)}%)`;
+    } else {
+      aftertax2El.textContent = "損失時は税金なし";
+    }
+  }
   setS("s-wr", wr.toFixed(1)+"%", wr>=55?"g":wr>=45?"y":"r", "", "s-wrs", won+"勝"+lost+"敗");
   setS("s-lv", lev.toFixed(1)+"倍", "y");
   $("s-st").textContent = d.is_halted?"⚠️ 24h停止中":d.is_cooling_down?"⏳ 冷却中":"✅ 正常稼働";
