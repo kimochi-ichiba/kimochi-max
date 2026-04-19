@@ -517,7 +517,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
   <div class="sb"><div class="sb-val" id="s-eq">—</div><div class="sb-lbl">総資産</div><div class="sb-sub" id="s-eq2"></div></div>
   <div class="sb"><div class="sb-val" id="s-up">—</div><div class="sb-lbl">含み損益</div><div class="sb-sub" id="s-up2"></div></div>
   <div class="sb"><div class="sb-val" id="s-rp">—</div><div class="sb-lbl">確定損益</div><div class="sb-sub" id="s-rp2"></div></div>
-  <div class="sb" style="background:linear-gradient(135deg,#2c0a0a 0%,#3d0e0e 100%);border:1px solid #5d1a1a"><div class="sb-val r" id="s-tax" style="font-weight:900">—</div><div class="sb-lbl" style="color:#ff9090">💰 推定税金</div><div class="sb-sub" id="s-tax-sub">雑所得 <select id="tax-rate-select" onchange="setTaxRate(this.value)" style="background:#3d0e0e;color:#ffb0b0;border:1px solid #5d1a1a;font-size:10px;padding:1px 4px;border-radius:3px;cursor:pointer"><option value="0.15">15%</option><option value="0.20">20%</option><option value="0.30" selected>30%</option><option value="0.33">33%</option><option value="0.43">43%</option><option value="0.50">50%</option><option value="0.55">55%</option></select></div></div>
+  <div class="sb" style="background:linear-gradient(135deg,#2c0a0a 0%,#3d0e0e 100%);border:1px solid #5d1a1a"><div class="sb-val r" id="s-tax" style="font-weight:900">—</div><div class="sb-lbl" style="color:#ff9090">💰 推定税金(日本)</div><div class="sb-sub" id="s-tax-sub">雑所得 <select id="tax-rate-select" onchange="setTaxRate(this.value)" style="background:#3d0e0e;color:#ffb0b0;border:1px solid #5d1a1a;font-size:10px;padding:1px 4px;border-radius:3px;cursor:pointer" title="日本の仮想通貨FXは雑所得・総合課税（所得税+住民税10%）"><option value="auto" selected>自動(累進)</option><option value="0.15">〜195万(15%)</option><option value="0.20">〜330万(20%)</option><option value="0.30">〜695万(30%)</option><option value="0.33">〜900万(33%)</option><option value="0.43">〜1800万(43%)</option><option value="0.50">〜4000万(50%)</option><option value="0.55">4000万超(55%)</option></select></div></div>
   <div class="sb" style="background:linear-gradient(135deg,#0a2c17 0%,#0e3d22 100%);border:1px solid #1a5d33"><div class="sb-val g" id="s-aftertax" style="font-weight:900">—</div><div class="sb-lbl" style="color:#90ff90">💵 税引き後利益</div><div class="sb-sub" id="s-aftertax2">実現利益 − 税金</div></div>
   <div class="sb"><div class="sb-val" id="s-td">—</div><div class="sb-lbl">本日損益</div><div class="sb-sub" id="s-td2"></div></div>
   <div class="sb"><div class="sb-val" id="s-wr">—</div><div class="sb-lbl">勝率</div><div class="sb-sub" id="s-wrs">0勝0敗</div></div>
@@ -1216,18 +1216,65 @@ async function update() {
   setS("s-rp", SIGN(rpnl)+USD(rpnl), COL(rpnl), "", "s-rp2", d.realized_pnl_pct!=null?PCT(d.realized_pnl_pct):"");
   setS("s-td", SIGN(today)+USD(today), COL(today), "", "s-td2", PCT(todayPct));
 
-  // ─── 💰 税金計算（日本の仮想通貨は雑所得・総合課税）───
+  // ─── 💰 税金計算（日本の仮想通貨FX・雑所得・総合課税）───
   // 課税対象: 実現損益(rpnl)のみ ※含み益(upnl)は確定前なので対象外
-  // 税率: 利益額と所得区分に応じて15〜55%（住民税10%込み）
-  // 税率はUIのセレクターで選択可能、localStorageに保存
-  const savedRate = localStorage.getItem("taxRate") || "0.30";
-  const taxRate = parseFloat(savedRate);
+  // 日本の仮想通貨FXは株FXと違い「申告分離課税20%」ではなく累進課税（最大55%）
+  // 「auto」: 年間利益を予測して累進ブラケットで税額を計算
+  // 固定税率: 手動で選択した合計税率を適用
+  const JPY_PER_USD = 150;  // USD→JPY換算レート（変動するので目安）
+
+  // 日本の累進税額計算（年間課税所得→税額）※雑所得のみと仮定
+  function japanProgressiveTax(profitJPY) {
+    if (profitJPY <= 0) return 0;
+    // 所得税 = 課税所得 × 税率 − 控除額
+    const brackets = [
+      { limit: 1950000,  rate: 0.05, deduction: 0 },
+      { limit: 3300000,  rate: 0.10, deduction: 97500 },
+      { limit: 6950000,  rate: 0.20, deduction: 427500 },
+      { limit: 9000000,  rate: 0.23, deduction: 636000 },
+      { limit: 18000000, rate: 0.33, deduction: 1536000 },
+      { limit: 40000000, rate: 0.40, deduction: 2796000 },
+      { limit: Infinity, rate: 0.45, deduction: 4796000 },
+    ];
+    let incomeTax = 0;
+    for (const b of brackets) {
+      if (profitJPY <= b.limit) {
+        incomeTax = profitJPY * b.rate - b.deduction;
+        break;
+      }
+    }
+    const reconstTax = incomeTax * 0.021;    // 復興特別所得税2.1%
+    const residentTax = profitJPY * 0.10;    // 住民税10%
+    return incomeTax + reconstTax + residentTax;
+  }
+
+  const savedRate = localStorage.getItem("taxRate") || "auto";
   const taxRateSelect = document.getElementById("tax-rate-select");
   if (taxRateSelect && taxRateSelect.value !== savedRate) taxRateSelect.value = savedRate;
 
   // 実現利益がプラスの時だけ税金計算（マイナスなら税金ゼロ）
   const taxableProfit = rpnl > 0 ? rpnl : 0;
-  const taxAmount = taxableProfit * taxRate;
+  let taxAmount = 0;
+  let effectiveRate = 0;
+  let taxModeLabel = "";
+
+  if (savedRate === "auto") {
+    // 年間利益予測 → 累進税額 → 現時点の割合に換算
+    const elapsedSec = Math.max(d.elapsed_sec || 1, 3600);  // 最低1時間
+    const annualizeRatio = (365 * 24 * 3600) / elapsedSec;
+    const annualProfitUSD = taxableProfit * annualizeRatio;
+    const annualProfitJPY = annualProfitUSD * JPY_PER_USD;
+    const annualTaxJPY = japanProgressiveTax(annualProfitJPY);
+    effectiveRate = annualProfitJPY > 0 ? annualTaxJPY / annualProfitJPY : 0;
+    taxAmount = taxableProfit * effectiveRate;  // 現時点の実現益に実効税率を適用
+    taxModeLabel = `累進 年予測$${annualProfitUSD.toFixed(0)}→実効${(effectiveRate*100).toFixed(1)}%`;
+  } else {
+    const taxRate = parseFloat(savedRate);
+    effectiveRate = taxRate;
+    taxAmount = taxableProfit * taxRate;
+    taxModeLabel = `固定${(taxRate*100).toFixed(0)}%`;
+  }
+
   const afterTax = rpnl - taxAmount;  // 実現利益 - 税金
 
   // 💰 推定税金ボックス
@@ -1236,11 +1283,7 @@ async function update() {
     taxEl.textContent = taxAmount > 0 ? "-" + USD(taxAmount) : "$0.00";
   }
   const taxSubEl = $("s-tax-sub");
-  if (taxSubEl) {
-    // 選択肢のラベルを取得
-    const sel = document.getElementById("tax-rate-select");
-    const label = sel ? sel.options[sel.selectedIndex].text : (taxRate*100).toFixed(0)+"%";
-  }
+  // (ラベルの「雑所得」部分だけ残す。セレクター自体はHTMLに埋め込み済み)
 
   // 💵 税引き後利益ボックス
   const aftertaxEl = $("s-aftertax");
@@ -1251,7 +1294,7 @@ async function update() {
   if (aftertax2El) {
     if (rpnl > 0) {
       const afterTaxPct = d.initial ? (afterTax / d.initial * 100) : 0;
-      aftertax2El.textContent = `税${(taxRate*100).toFixed(0)}%適用後 +${afterTaxPct.toFixed(2)}%`;
+      aftertax2El.textContent = `${taxModeLabel} +${afterTaxPct.toFixed(2)}%`;
     } else {
       aftertax2El.textContent = "損失時は税金なし";
     }
@@ -1846,13 +1889,15 @@ def api_state():
     # ── サーバー側で経過時間テキストを計算（ブラウザキャッシュ対策）──
     try:
         import time as _time
-        started = None
-        eh = getattr(_bot, "_equity_history", None) or []
-        if eh:
-            first = eh[0]
-            started = first.get("time") or first.get("ts") or first.get("timestamp")
+        # 永続化された検証開始時刻を優先（再起動しても維持される）
+        started = getattr(_bot, "_validation_started_at", None)
         if not started:
-            started = getattr(_bot, "_bot_started_at", _time.time())
+            eh = getattr(_bot, "_equity_history", None) or []
+            if eh:
+                first = eh[0]
+                started = first.get("time") or first.get("ts") or first.get("timestamp")
+        if not started:
+            started = getattr(_bot, "_started_at", _time.time())
         elapsed_sec = max(0, int(_time.time() - started))
         hours = elapsed_sec // 3600
         mins = (elapsed_sec % 3600) // 60

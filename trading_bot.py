@@ -163,6 +163,8 @@ class TradingBot:
 
         # ボット起動時刻（検証経過日時・UI表示用）
         self._started_at: float = time.time()
+        # 検証開始時刻（永続化。再起動しても維持され、UIの「検証経過」表示に使う）
+        self._validation_started_at: float = time.time()
 
         # スキャン用スレッド（メインループと分離）
         self._scan_thread: Optional[threading.Thread] = None
@@ -332,6 +334,7 @@ class TradingBot:
                 "consecutive_losses":   self.risk._consecutive_losses,
                 "consecutive_wins":     getattr(self.risk, "_consecutive_wins", 0),
                 "saved_at":             time.time(),
+                "validation_started_at": self._validation_started_at,  # 検証経過の正確な計測用
                 "positions":            positions_data,
                 "trade_history":     trades_data,
                 "equity_history":    list(self._equity_history),
@@ -441,6 +444,17 @@ class TradingBot:
                     self._equity_history.append(eq)
             if len(self._equity_history) > 1440:
                 self._equity_history = self._equity_history[-1440:]
+
+            # 検証開始時刻を復元（永続化されたものを優先。なければequity_history最古から推定）
+            saved_val_start = state.get("validation_started_at")
+            if saved_val_start and saved_val_start > 0:
+                self._validation_started_at = float(saved_val_start)
+            elif self._equity_history:
+                first_ts = self._equity_history[0].get("time")
+                if first_ts and first_ts > 0:
+                    self._validation_started_at = float(first_ts)
+            _elapsed_h = (time.time() - self._validation_started_at) / 3600
+            logger.info(f"⏱️ 検証開始時刻を復元: 経過{_elapsed_h:.1f}時間")
 
             # v62.0: SLクールダウンを復元（再起動後も同一銘柄への再エントリーを禁止）
             _now_for_load = time.time()
