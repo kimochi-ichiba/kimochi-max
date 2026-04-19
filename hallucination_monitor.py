@@ -406,6 +406,29 @@ def run_check():
     if r: issues.append(r)
     else: log("✅ [15] ポジションサイズ妥当")
 
+    # === パフォーマンス自動診断 & 改善 ===
+    try:
+        sys.path.insert(0, str(ROOT))
+        from auto_improver import run_diagnosis
+        diag_result = run_diagnosis()
+        if diag_result:
+            result, analysis = diag_result
+            status = result.get("status", "")
+            if status == "healthy":
+                if analysis and analysis.get("last10"):
+                    wr = analysis["last10"].get("win_rate", 0)
+                    log(f"🟢 [診断] パフォーマンス健全（直近10件勝率{wr:.1f}%, 連敗{analysis.get('consec_loss',0)}）")
+            elif status == "insufficient_data":
+                log(f"⚪ [診断] データ不足（{analysis.get('count', 0)}件、10件以上で分析開始）")
+            elif status == "recovered":
+                log(f"✨ [診断] {result.get('message','パフォーマンス回復')}")
+            elif status in ("improved", "alerted"):
+                log(f"🔴 [診断] 問題検出: {'; '.join(result.get('issues', []))}", "WARN")
+                for act in result.get("actions", []):
+                    log(f"   🔧 改善適用: {act}", "WARN")
+    except Exception as e:
+        log(f"⚠️ 自動診断エラー: {e}", "ERROR")
+
     # 判定
     if issues:
         log(f"🔴 重大異常 {len(issues)}件", "ALERT")

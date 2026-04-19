@@ -2031,41 +2031,75 @@ class TradingBot:
                 else:
                     sl_price = current_price + _adaptive_sl_dist
 
-        # ── L3戦略 ADXトレンド強度フィルター（v94.0強化版） ─────────────
-        # config.adx_threshold(=25.0) を閾値として実運用化
-        # L3バックテストでこのフィルター無しだとPFが1.17→1.77へ劇的改善
+        # ═══════════════════════════════════════════════════════════════
+        # L3戦略フィルター（PROM $42損失の原因を根絶する強化版）
+        # ═══════════════════════════════════════════════════════════════
+
+        # ── BTCトレンド強制一致（最優先・絶対に失敗しない形で実装）──────
+        # 【バグ修正】旧コード getattr(self, "_btc_trend", ...) は属性名が違い常に"range"で誤作動していた
+        # 【原因確定】PROM -$42 損失はBTC=downなのにLONG許可された事による
+        try:
+            _btc_trend_now = self._get_btc_trend()  # 正しいメソッド呼び出し
+        except Exception:
+            _btc_trend_now = "range"
+        if _btc_trend_now == "up" and direction == "short":
+            logger.info(f"🛡️ L3 {symbol} BTC上昇中のSHORT → 強制見送り")
+            return
+        if _btc_trend_now == "down" and direction == "long":
+            logger.info(f"🛡️ L3 {symbol} BTC下降中のLONG → 強制見送り（PROM-$42の再発防止）")
+            return
+
+        # ── 自動改善オーバーライド判定（auto_improver.py が書き込む）─────
+        try:
+            import json as _json, os as _os
+            _override_path = _os.path.join(_os.path.dirname(__file__), 'runtime_override.json')
+            if _os.path.exists(_override_path):
+                with open(_override_path) as _of:
+                    _ov = _json.load(_of)
+                import datetime as _dt
+                _rev = _ov.get("revert_at")
+                if _rev:
+                    _rev_dt = _dt.datetime.fromisoformat(_rev)
+                    if _dt.datetime.now() > _rev_dt:
+                        _os.unlink(_override_path)
+                    else:
+                        _blacklist = _ov.get("symbol_blacklist", [])
+                        if symbol in _blacklist:
+                            logger.info(f"🔒 [自動改善] {symbol} ブラックリスト中 → 見送り（理由: {_ov.get('reason','')}）")
+                            return
+                        _avoid_fg = _ov.get("avoid_fg_band")
+                        if _avoid_fg:
+                            _fg_band_now = "fear(<25)" if fg_score < 25 else ("neutral(25-60)" if fg_score < 60 else "greed(>60)")
+                            if _fg_band_now == _avoid_fg:
+                                logger.info(f"🔒 [自動改善] F&G {_avoid_fg} 回避中 → 見送り")
+                                return
+        except Exception as _oe:
+            logger.debug(f"オーバーライド判定エラー: {_oe}")
+
+        # ── ADX / ATR% フィルター（強度確認）──────────────────────────
         try:
             with self._lock:
                 _md = self._market_data.get(symbol, {}).get("ohlcv", {})
             _df_primary = _md.get(self.config.primary_tf)
-            if _df_primary is not None and "adx" in _df_primary.columns and len(_df_primary) >= 2:
-                _adx_val = float(_df_primary["adx"].iloc[-1])
+            if _df_primary is not None and len(_df_primary) >= 2:
                 import pandas as pd
-                if not pd.isna(_adx_val) and _adx_val < self.config.adx_threshold:
-                    logger.debug(f"L3 {symbol} ADX={_adx_val:.1f} < {self.config.adx_threshold} 横ばい相場 → エントリー見送り")
-                    return
-
-                # ── L3戦略 ATR% 最低ボラティリティ要求 ───────────────────────
-                # ATR / 現在価格 × 100 が min_atr_pct(=0.5%) 未満なら取引しない
-                # 動かない相場では手数料負けするため除外
-                if "atr" in _df_primary.columns and len(_df_primary) >= 2:
+                if "adx" in _df_primary.columns:
+                    _adx_val = float(_df_primary["adx"].iloc[-1])
+                    if not pd.isna(_adx_val) and _adx_val < self.config.adx_threshold:
+                        logger.info(f"🛡️ L3 {symbol} ADX={_adx_val:.1f} < {self.config.adx_threshold} 横ばい → 見送り")
+                        return
+                if "atr" in _df_primary.columns:
                     _atr_val_filt = float(_df_primary["atr"].iloc[-1])
                     _close_val = float(_df_primary["close"].iloc[-1])
                     if not pd.isna(_atr_val_filt) and _close_val > 0:
                         _atr_pct = (_atr_val_filt / _close_val) * 100
                         if _atr_pct < self.config.min_atr_pct:
-                            logger.debug(f"L3 {symbol} ATR%={_atr_pct:.2f}% < {self.config.min_atr_pct}% ボラ不足 → 見送り")
+                            logger.info(f"🛡️ L3 {symbol} ATR%={_atr_pct:.2f}% < {self.config.min_atr_pct}% ボラ不足 → 見送り")
                             return
-
-                # ── L3戦略 BTCトレンド方向の強制一致 ─────────────────────────
-                # BTC"up"→LONGのみ許可、"down"→SHORTのみ許可、"range"は両方許可
-                _btc_trend_val = getattr(self, "_btc_trend", "range")
-                if _btc_trend_val == "up" and direction == "short":
-                    logger.debug(f"L3 {symbol} BTC上昇中のSHORT → 見送り")
-                    return
-                if _btc_trend_val == "down" and direction == "long":
-                    logger.debug(f"L3 {symbol} BTC下降中のLONG → 見送り")
-                    return
+                        # PROM対策: ATR%が異常に大きい銘柄（>5%）も回避（スリッページ・乱高下で大損リスク）
+                        if _atr_pct > 5.0:
+                            logger.info(f"🛡️ L3 {symbol} ATR%={_atr_pct:.2f}% > 5% 高ボラすぎ → 見送り（急変動で大損リスク）")
+                            return
         except Exception:
             pass
 
