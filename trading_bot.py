@@ -335,6 +335,7 @@ class TradingBot:
                 "consecutive_wins":     getattr(self.risk, "_consecutive_wins", 0),
                 "saved_at":             time.time(),
                 "validation_started_at": self._validation_started_at,  # 検証経過の正確な計測用
+                "scan_count":           self._scan_count,  # スキャン回数を永続化（再起動で0に戻らないように）
                 "positions":            positions_data,
                 "trade_history":     trades_data,
                 "equity_history":    list(self._equity_history),
@@ -482,6 +483,12 @@ class TradingBot:
                     self._validation_started_at = float(first_ts)
             _elapsed_h = (time.time() - self._validation_started_at) / 3600
             logger.info(f"⏱️ 検証開始時刻を復元: 経過{_elapsed_h:.1f}時間")
+
+            # スキャン回数を復元（再起動で0に戻らないように）
+            saved_scan = state.get("scan_count", 0)
+            if saved_scan > 0:
+                self._scan_count = int(saved_scan)
+                logger.info(f"🔍 スキャン回数を復元: {self._scan_count:,}回")
 
             # v62.0: SLクールダウンを復元（再起動後も同一銘柄への再エントリーを禁止）
             _now_for_load = time.time()
