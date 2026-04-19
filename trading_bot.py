@@ -724,7 +724,7 @@ class TradingBot:
         # ════ 動的モード: Binance 24h出来高ランキング上位200銘柄 ════
         # v36.0: ccxt.fetch_tickers()→fetcher.fetch_top_symbols()（Session直接HTTP）に統一
         try:
-            raw_symbols = self.fetcher.fetch_top_symbols(200)
+            raw_symbols = self.fetcher.fetch_top_symbols(300)  # L3-T1改良: 200→300銘柄
 
             # ブラックリスト除外（ユーザー設定の取引禁止銘柄）
             blacklist = set(self.config.symbol_blacklist or [])
