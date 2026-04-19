@@ -54,10 +54,11 @@ class Config:
     # 追加基準: Binance 24h出来高 $50M以上 / ブラックリスト除外済み
     watch_symbols: list = field(default_factory=lambda: [
         # ── 元の25銘柄（実績あり）────────────────────────────
+        # 2026-04-19 ハルシネーション修正: PEPE/SHIB/BONKはBinance Futuresで1000x表記
         "BTC/USDT",  "ETH/USDT",  "BNB/USDT",  "SOL/USDT",  "ADA/USDT",
         "XLM/USDT",  "AVAX/USDT", "TRX/USDT",  "LINK/USDT", "LTC/USDT",
         "NEAR/USDT", "ARB/USDT",  "SUI/USDT",  "APT/USDT",  "INJ/USDT",
-        "PEPE/USDT", "SHIB/USDT", "AAVE/USDT", "UNI/USDT",  "ATOM/USDT",
+        "1000PEPE/USDT", "1000SHIB/USDT", "AAVE/USDT", "UNI/USDT",  "ATOM/USDT",
         "ICP/USDT",  "TON/USDT",  "WIF/USDT",  "JUP/USDT",  "SEI/USDT",
         # ── 新規追加25銘柄（流動性高め・上位50時価総額）────────
         # AI/新興セクター（高ボリューム・トレンド銘柄）
@@ -66,7 +67,7 @@ class Config:
         "RENDER/USDT",# Render: AI/GPU分散処理, 人気急増
         "PENDLE/USDT",# Pendle: 利回りトレーディング, DeFi注目株
         # DeFi Blue Chips（確立した分散型金融プロジェクト）
-        "MKR/USDT",   # Maker: DAI発行・DeFi老舗
+        # 2026-04-19: MKR除外（SETTLING＝上場廃止予定）
         "CRV/USDT",   # Curve: ステーブルスワップ最大手
         "SNX/USDT",   # Synthetix: 合成資産DeFi
         "COMP/USDT",  # Compound: 貸し借りDeFi
@@ -85,10 +86,10 @@ class Config:
         "KAVA/USDT",  # Kava: クロスチェーンDeFi
         # インフラ・データ
         "GRT/USDT",   # The Graph: ブロックチェーンデータ
-        "BAL/USDT",   # Balancer: 分散型AMM
+        # 2026-04-19: BAL除外（SETTLING＝上場廃止予定）
         "ENS/USDT",   # ENS: イーサリアム名前解決
         # 高流動性ミーム系（厳選・Binance上位ボリューム）
-        "BONK/USDT",  # BONK: Solanaミーム, 出来高トップクラス
+        "1000BONK/USDT",  # BONK: Solanaミーム, 1000x表記
         "W/USDT",     # Wormhole: クロスチェーンブリッジ
         "ONDO/USDT",  # Ondo Finance: RWA（実物資産）トークン化
     ])

@@ -1,36 +1,54 @@
 {
-  "balance": 10000,
+  "balance": 10238.432199091227,
   "initial_balance": 10000,
-  "peak_balance": 10000,
+  "peak_balance": 10238.432199091227,
   "day_start_balance": 10000,
   "consecutive_losses": 0,
-  "consecutive_wins": 0,
-  "saved_at": 1776445029.745899,
+  "consecutive_wins": 1,
+  "saved_at": 1776582316.770946,
   "positions": {
-    "DENT/USDT": {
-      "symbol": "DENT/USDT",
-      "side": "short",
-      "entry_price": 0.000119,
-      "quantity": 4347798.671579331,
-      "tp_price": 9.474203454050726e-05,
-      "sl_price": 0.0001243906589909984,
+    "RAD/USDT": {
+      "symbol": "RAD/USDT",
+      "side": "long",
+      "entry_price": 0.2570771,
+      "quantity": 377.793503743803,
+      "tp_price": 0.2856212158387084,
+      "sl_price": 0.26858235366451666,
       "leverage": 3.0,
-      "entry_atr": 6.7383237387479825e-06,
+      "entry_atr": 0.014272057919354217,
       "is_dead_cat_bounce": false,
-      "entry_time": 1776441469.436764,
-      "trail_peak": 0.000116,
-      "tp1_done": false,
+      "entry_time": 1776581185.631758,
+      "trail_peak": 0.28,
+      "tp1_done": true,
       "tp2_done": false,
       "tp3_done": false,
       "tp1_close_skipped": false,
       "tp2_close_skipped": false,
-      "counter_trend": false,
+      "counter_trend": true,
+      "entry_score": 90.0,
+      "entry_fg": 27,
+      "entry_btc_trend": "down"
+    }
+  },
+  "trade_history": [
+    {
+      "symbol": "DENT/USDT",
+      "side": "short",
+      "entry_price": 0.000119,
+      "exit_price": 9.1e-05,
+      "size_usd": 25.352014053979076,
+      "pnl": 121.221,
+      "pnl_pct": 92.01,
+      "leverage": 3.0,
+      "won": true,
+      "entry_time": 1776441469.436764,
+      "exit_time": 1776580937.569071,
+      "exit_reason": "tp",
       "entry_score": 100.0,
       "entry_fg": 21,
       "entry_btc_trend": "up"
     }
-  },
-  "trade_history": [],
+  ],
   "equity_history": [
     {
       "time": 1776437539,
@@ -411,8 +429,102 @@
     {
       "time": 1776444989,
       "value": 10008.7
+    },
+    {
+      "time": 1776580936,
+      "value": 10224.62
+    },
+    {
+      "time": 1776580996,
+      "value": 10224.62
+    },
+    {
+      "time": 1776581057,
+      "value": 10224.62
+    },
+    {
+      "time": 1776581117,
+      "value": 10224.62
+    },
+    {
+      "time": 1776581177,
+      "value": 10224.62
+    },
+    {
+      "time": 1776581237,
+      "value": 10223.27
+    },
+    {
+      "time": 1776581298,
+      "value": 10224.53
+    },
+    {
+      "time": 1776581358,
+      "value": 10227.04
+    },
+    {
+      "time": 1776581419,
+      "value": 10225.78
+    },
+    {
+      "time": 1776581480,
+      "value": 10227.04
+    },
+    {
+      "time": 1776581541,
+      "value": 10232.08
+    },
+    {
+      "time": 1776581601,
+      "value": 10230.82
+    },
+    {
+      "time": 1776581662,
+      "value": 10229.56
+    },
+    {
+      "time": 1776581723,
+      "value": 10225.78
+    },
+    {
+      "time": 1776581784,
+      "value": 10224.53
+    },
+    {
+      "time": 1776581845,
+      "value": 10227.04
+    },
+    {
+      "time": 1776581906,
+      "value": 10227.04
+    },
+    {
+      "time": 1776581967,
+      "value": 10224.53
+    },
+    {
+      "time": 1776582027,
+      "value": 10227.04
+    },
+    {
+      "time": 1776582088,
+      "value": 10234.6
+    },
+    {
+      "time": 1776582148,
+      "value": 10244.07
+    },
+    {
+      "time": 1776582209,
+      "value": 10244.07
+    },
+    {
+      "time": 1776582269,
+      "value": 10245.96
     }
   ],
   "sl_cooldown": {},
-  "be_triggered": {}
+  "be_triggered": {
+    "RAD/USDT": true
+  }
 }
