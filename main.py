@@ -113,7 +113,9 @@ DASHBOARD_HTML = r"""<!DOCTYPE html>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>自動売買 Pro — BTC/USDT</title>
+<title>自動売買 Pro — 日本税制対応版 v20260419b</title>
+<!-- Build: 20260419-jp-tax-v2 — 新UI確認用マーカー -->
+<script>console.log("%c✅ 新UIロード済み: 日本税制対応版 v20260419b", "color:#00e676;font-weight:bold;font-size:14px");</script>
 <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 <style>
 :root{
