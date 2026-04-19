@@ -1,5 +1,5 @@
 #!/bin/bash
-# ハルシネーション監視を10分毎にバックグラウンド実行
+# ハルシネーション監視を5分毎に多取引所クロスチェック（Binance/MEXC/Bitget/CoinGecko）
 cd "$(dirname "$0")"
 
 LOG="$(pwd)/hallucination_check.log"
@@ -13,7 +13,7 @@ if [ -f "$PID_FILE" ]; then
   fi
 fi
 
-echo "🚀 ハルシネーション監視を10分毎に起動..."
+echo "🚀 ハルシネーション監視を5分毎に起動（多取引所クロスチェック版）..."
 nohup python3 hallucination_monitor.py --daemon >> "$LOG" 2>&1 &
 NEW_PID=$!
 echo "$NEW_PID" > "$PID_FILE"
