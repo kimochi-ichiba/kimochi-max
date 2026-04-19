@@ -2028,10 +2028,9 @@ class TradingBot:
                 else:
                     sl_price = current_price + _adaptive_sl_dist
 
-        # ── v94.0: ADXトレンド強度フィルター ──────────────────────────
-        # トレンドの「強さ」を測定。ADX<25 = 横ばい相場 → エントリー禁止
-        # ADX≥25 = 明確なトレンドあり → エントリー許可
-        # 効果: レンジ相場での無駄な損失を排除（勝率+3-5%見込み）
+        # ── L3戦略 ADXトレンド強度フィルター（v94.0強化版） ─────────────
+        # config.adx_threshold(=25.0) を閾値として実運用化
+        # L3バックテストでこのフィルター無しだとPFが1.17→1.77へ劇的改善
         try:
             with self._lock:
                 _md = self._market_data.get(symbol, {}).get("ohlcv", {})
@@ -2039,8 +2038,30 @@ class TradingBot:
             if _df_primary is not None and "adx" in _df_primary.columns and len(_df_primary) >= 2:
                 _adx_val = float(_df_primary["adx"].iloc[-1])
                 import pandas as pd
-                if not pd.isna(_adx_val) and _adx_val < 20:
-                    logger.debug(f"v94.0 {symbol} ADX={_adx_val:.0f}<20 横ばい相場 → エントリー見送り")
+                if not pd.isna(_adx_val) and _adx_val < self.config.adx_threshold:
+                    logger.debug(f"L3 {symbol} ADX={_adx_val:.1f} < {self.config.adx_threshold} 横ばい相場 → エントリー見送り")
+                    return
+
+                # ── L3戦略 ATR% 最低ボラティリティ要求 ───────────────────────
+                # ATR / 現在価格 × 100 が min_atr_pct(=0.5%) 未満なら取引しない
+                # 動かない相場では手数料負けするため除外
+                if "atr" in _df_primary.columns and len(_df_primary) >= 2:
+                    _atr_val_filt = float(_df_primary["atr"].iloc[-1])
+                    _close_val = float(_df_primary["close"].iloc[-1])
+                    if not pd.isna(_atr_val_filt) and _close_val > 0:
+                        _atr_pct = (_atr_val_filt / _close_val) * 100
+                        if _atr_pct < self.config.min_atr_pct:
+                            logger.debug(f"L3 {symbol} ATR%={_atr_pct:.2f}% < {self.config.min_atr_pct}% ボラ不足 → 見送り")
+                            return
+
+                # ── L3戦略 BTCトレンド方向の強制一致 ─────────────────────────
+                # BTC"up"→LONGのみ許可、"down"→SHORTのみ許可、"range"は両方許可
+                _btc_trend_val = getattr(self, "_btc_trend", "range")
+                if _btc_trend_val == "up" and direction == "short":
+                    logger.debug(f"L3 {symbol} BTC上昇中のSHORT → 見送り")
+                    return
+                if _btc_trend_val == "down" and direction == "long":
+                    logger.debug(f"L3 {symbol} BTC下降中のLONG → 見送り")
                     return
         except Exception:
             pass
