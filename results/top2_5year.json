@@ -1,0 +1,197 @@
+{
+  "strategies": {
+    "DL アグレッシブ (1.5/2.5/3.5)": {
+      "2020 ブルラン開始": {
+        "total_return_pct": 201.58,
+        "monthly_avg": 12.03,
+        "win_rate_pct": 41.7,
+        "max_dd_pct": 59.72
+      },
+      "2021 ピーク&暴落": {
+        "total_return_pct": -63.16,
+        "monthly_avg": 8.63,
+        "win_rate_pct": 33.3,
+        "max_dd_pct": 93.34
+      },
+      "2022 ベアマーケット": {
+        "total_return_pct": 0.0,
+        "monthly_avg": 0.0,
+        "win_rate_pct": 0.0,
+        "max_dd_pct": 0.0
+      },
+      "2023 回復": {
+        "total_return_pct": 150.83,
+        "monthly_avg": 10.79,
+        "win_rate_pct": 50.0,
+        "max_dd_pct": 44.18
+      },
+      "2024 新高値": {
+        "total_return_pct": 87.08,
+        "monthly_avg": 16.1,
+        "win_rate_pct": 66.7,
+        "max_dd_pct": 75.2
+      },
+      "▶ 5年通期": {
+        "total_return_pct": 491.6,
+        "monthly_avg": 10.24,
+        "win_rate_pct": 33.3,
+        "max_dd_pct": 94.43
+      }
+    },
+    "DL 素早く (1/2/3 @20/25/30)": {
+      "2020 ブルラン開始": {
+        "total_return_pct": 163.93,
+        "monthly_avg": 10.02,
+        "win_rate_pct": 50.0,
+        "max_dd_pct": 56.28
+      },
+      "2021 ピーク&暴落": {
+        "total_return_pct": -66.24,
+        "monthly_avg": 8.98,
+        "win_rate_pct": 33.3,
+        "max_dd_pct": 93.06
+      },
+      "2022 ベアマーケット": {
+        "total_return_pct": 0.0,
+        "monthly_avg": 0.0,
+        "win_rate_pct": 0.0,
+        "max_dd_pct": 0.0
+      },
+      "2023 回復": {
+        "total_return_pct": 134.48,
+        "monthly_avg": 9.96,
+        "win_rate_pct": 50.0,
+        "max_dd_pct": 39.21
+      },
+      "2024 新高値": {
+        "total_return_pct": 102.39,
+        "monthly_avg": 16.23,
+        "win_rate_pct": 58.3,
+        "max_dd_pct": 69.1
+      },
+      "▶ 5年通期": {
+        "total_return_pct": 394.09,
+        "monthly_avg": 9.74,
+        "win_rate_pct": 35.0,
+        "max_dd_pct": 94.5
+      }
+    },
+    "DL MAX 2x 推奨 (1/2 @20/30)": {
+      "2020 ブルラン開始": {
+        "total_return_pct": 130.38,
+        "monthly_avg": 7.85,
+        "win_rate_pct": 50.0,
+        "max_dd_pct": 42.8
+      },
+      "2021 ピーク&暴落": {
+        "total_return_pct": -30.66,
+        "monthly_avg": 5.72,
+        "win_rate_pct": 33.3,
+        "max_dd_pct": 78.86
+      },
+      "2022 ベアマーケット": {
+        "total_return_pct": 0.0,
+        "monthly_avg": 0.0,
+        "win_rate_pct": 0.0,
+        "max_dd_pct": 0.0
+      },
+      "2023 回復": {
+        "total_return_pct": 118.33,
+        "monthly_avg": 8.15,
+        "win_rate_pct": 50.0,
+        "max_dd_pct": 28.6
+      },
+      "2024 新高値": {
+        "total_return_pct": 82.77,
+        "monthly_avg": 9.67,
+        "win_rate_pct": 58.3,
+        "max_dd_pct": 53.54
+      },
+      "▶ 5年通期": {
+        "total_return_pct": 638.28,
+        "monthly_avg": 6.71,
+        "win_rate_pct": 36.7,
+        "max_dd_pct": 81.12
+      }
+    },
+    "DL 標準 3x (1/2/3 @20/30/40)": {
+      "2020 ブルラン開始": {
+        "total_return_pct": 210.78,
+        "monthly_avg": 11.52,
+        "win_rate_pct": 50.0,
+        "max_dd_pct": 51.15
+      },
+      "2021 ピーク&暴落": {
+        "total_return_pct": -43.04,
+        "monthly_avg": 7.05,
+        "win_rate_pct": 41.7,
+        "max_dd_pct": 87.57
+      },
+      "2022 ベアマーケット": {
+        "total_return_pct": 0.0,
+        "monthly_avg": 0.0,
+        "win_rate_pct": 0.0,
+        "max_dd_pct": 0.0
+      },
+      "2023 回復": {
+        "total_return_pct": 129.98,
+        "monthly_avg": 9.28,
+        "win_rate_pct": 50.0,
+        "max_dd_pct": 38.34
+      },
+      "2024 新高値": {
+        "total_return_pct": 61.5,
+        "monthly_avg": 11.29,
+        "win_rate_pct": 66.7,
+        "max_dd_pct": 69.81
+      },
+      "▶ 5年通期": {
+        "total_return_pct": 627.34,
+        "monthly_avg": 8.55,
+        "win_rate_pct": 33.3,
+        "max_dd_pct": 88.9
+      }
+    }
+  },
+  "btc_buy_hold": {
+    "2020 ブルラン開始": 301.62,
+    "2021 ピーク&暴落": 60.53,
+    "2022 ベアマーケット": -65.2,
+    "2023 回復": 153.9,
+    "2024 新高値": 109.72,
+    "▶ 5年通期": 1188.76
+  },
+  "periods": [
+    {
+      "start": "2020-01-01",
+      "end": "2020-12-31",
+      "label": "2020 ブルラン開始"
+    },
+    {
+      "start": "2021-01-01",
+      "end": "2021-12-31",
+      "label": "2021 ピーク&暴落"
+    },
+    {
+      "start": "2022-01-01",
+      "end": "2022-12-31",
+      "label": "2022 ベアマーケット"
+    },
+    {
+      "start": "2023-01-01",
+      "end": "2023-12-31",
+      "label": "2023 回復"
+    },
+    {
+      "start": "2024-01-01",
+      "end": "2024-12-31",
+      "label": "2024 新高値"
+    },
+    {
+      "start": "2020-01-01",
+      "end": "2024-12-31",
+      "label": "▶ 5年通期"
+    }
+  ],
+  "initial_capital": 10000.0
+}
