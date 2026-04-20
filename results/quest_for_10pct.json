@@ -1,0 +1,98 @@
+[
+  {
+    "strategy": "Chandelier Exit 1x (ATR3)",
+    "r23": {
+      "total_return_pct": 32.05,
+      "monthly_avg": 3.49,
+      "win_rate_pct": 41.7,
+      "max_dd_pct": 31.83
+    },
+    "r24": {
+      "total_return_pct": 62.62,
+      "monthly_avg": 6.26,
+      "win_rate_pct": 66.7,
+      "max_dd_pct": 34.69
+    },
+    "avg_monthly_both_years": 4.88
+  },
+  {
+    "strategy": "Chandelier Exit 2x (ATR3)",
+    "r23": {
+      "total_return_pct": 45.58,
+      "monthly_avg": 6.02,
+      "win_rate_pct": 41.7,
+      "max_dd_pct": 52.65
+    },
+    "r24": {
+      "total_return_pct": 104.63,
+      "monthly_avg": 12.03,
+      "win_rate_pct": 66.7,
+      "max_dd_pct": 54.88
+    },
+    "avg_monthly_both_years": 9.02
+  },
+  {
+    "strategy": "Chandelier Exit 2x (ATR4)",
+    "r23": {
+      "total_return_pct": 26.08,
+      "monthly_avg": 4.71,
+      "win_rate_pct": 41.7,
+      "max_dd_pct": 49.91
+    },
+    "r24": {
+      "total_return_pct": 81.27,
+      "monthly_avg": 10.66,
+      "win_rate_pct": 58.3,
+      "max_dd_pct": 58.72
+    },
+    "avg_monthly_both_years": 7.68
+  },
+  {
+    "strategy": "BTC/ETH Momentum Rotation",
+    "r23": {
+      "total_return_pct": 43.12,
+      "monthly_avg": 624461.76,
+      "win_rate_pct": 25.0,
+      "max_dd_pct": 100.0
+    },
+    "r24": {
+      "total_return_pct": 66.14,
+      "monthly_avg": 3770.71,
+      "win_rate_pct": 50.0,
+      "max_dd_pct": 100.0
+    },
+    "avg_monthly_both_years": 314116.24
+  },
+  {
+    "strategy": "Dynamic Leverage (ADX)",
+    "r23": {
+      "total_return_pct": 129.98,
+      "monthly_avg": 9.28,
+      "win_rate_pct": 50.0,
+      "max_dd_pct": 38.34
+    },
+    "r24": {
+      "total_return_pct": 61.5,
+      "monthly_avg": 11.29,
+      "win_rate_pct": 66.7,
+      "max_dd_pct": 69.81
+    },
+    "avg_monthly_both_years": 10.28
+  },
+  {
+    "strategy": "Pyramid Trend (3段)",
+    "r23": {
+      "total_return_pct": 25.72,
+      "monthly_avg": 124.35,
+      "win_rate_pct": 25.0,
+      "max_dd_pct": 100.0
+    },
+    "r24": {
+      "total_return_pct": 48.86,
+      "monthly_avg": 51.69,
+      "win_rate_pct": 50.0,
+      "max_dd_pct": 93.23
+    },
+    "avg_monthly_both_years": 88.02
+  }
+]
