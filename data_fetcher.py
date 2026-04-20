@@ -397,13 +397,23 @@ class DataFetcher:
                                 since: str, until: str) -> pd.DataFrame:
         """
         バックテスト用に指定期間の全OHLCVデータを取得する。
-        CCXTのpaginationを使って大量データも分割取得する。
+        Binance公式APIから直接取得（本番データのみ・合成データ禁止）。
 
         引数:
             since: 開始日時 "2024-01-01"
             until: 終了日時 "2024-12-31"
         """
         from datetime import datetime
+
+        # ── 本番データ強制ガード ──
+        # 取引所が Binance であることを確認し、非Binanceソースからの取得を禁止
+        exchange_id = getattr(self._exchange, 'id', None)
+        if exchange_id != 'binance':
+            raise RuntimeError(
+                f"本番データ以外の取得を禁止: exchange={exchange_id} "
+                f"(binance以外のデータ源は使用できません)"
+            )
+
         since_ms = int(datetime.fromisoformat(since).timestamp() * 1000)
         until_ms = int(datetime.fromisoformat(until).timestamp() * 1000)
         tf_ms    = timeframe_to_seconds(timeframe) * 1000
@@ -411,7 +421,7 @@ class DataFetcher:
         all_ohlcv = []
         current_since = since_ms
 
-        logger.info(f"📥 {symbol} {timeframe} {since}〜{until} の過去データを取得中...")
+        logger.info(f"📥 {symbol} {timeframe} {since}〜{until} の過去データを取得中...（Binance公式API）")
 
         while current_since < until_ms:
             try:
@@ -435,7 +445,9 @@ class DataFetcher:
                 logger.error(f"過去データ取得エラー: {e}")
                 break
 
+        # 空なら空を返す（フェイク補完せず、呼び出し側でスキップさせる）
         if not all_ohlcv:
+            logger.warning(f"⚠️ {symbol} {timeframe}: データ取得0件 → この銘柄をスキップ（合成データで埋めません）")
             return pd.DataFrame()
 
         df = pd.DataFrame(all_ohlcv, columns=["timestamp", "open", "high", "low", "close", "volume"])
@@ -443,5 +455,14 @@ class DataFetcher:
         df = df.set_index("timestamp").drop_duplicates().sort_index()
         df = df.astype(float)
 
-        logger.info(f"✅ {len(df)}本のデータを取得しました")
+        # ── データ健全性チェック（本物検証） ──
+        # 価格0以下、NaN、異常値は本物データとしてあり得ない
+        if (df[["open", "high", "low", "close"]] <= 0).any().any():
+            logger.error(f"❌ {symbol}: 価格0以下の異常値検出 → この銘柄をスキップ")
+            return pd.DataFrame()
+        if df[["open", "high", "low", "close"]].isna().any().any():
+            logger.error(f"❌ {symbol}: NaN検出 → この銘柄をスキップ")
+            return pd.DataFrame()
+
+        logger.info(f"✅ {len(df)}本のBinance本番データを取得しました")
         return df
