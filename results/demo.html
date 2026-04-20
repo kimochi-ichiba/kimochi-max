@@ -3,15 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#060d17">
 <title>H11 Bot — BTC/ACH/USDT</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
-:root{
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/*  テーマ: ダーク (デフォルト)                          */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root, html[data-theme="dark"]{
   --bg:#060d17;--bg2:#091523;--bg3:#0d1c2e;--bg4:#112338;
   --border:#162840;--border2:#1d3350;
   --text:#c8d8ea;--muted:#304d66;--muted2:#4e7291;
@@ -21,41 +25,77 @@
   --blue:#4fc3f7;--blue-bg:#4fc3f712;
   --cyan:#26c6da;--orange:#ffa726;
   --purple:#ab47bc;--purple-bg:#ab47bc12;
+  --card-shadow:0 2px 8px rgba(0,0,0,0.3);
+  --white-pure:#fff;
 }
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helvetica Neue","Hiragino Kaku Gothic ProN",sans-serif;font-size:13px;height:100%;overflow:hidden}
 
-/* ─── ヘッダー ─── */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/*  テーマ: ライト                                        */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+html[data-theme="light"]{
+  --bg:#f0f4f9;--bg2:#ffffff;--bg3:#f6f9fc;--bg4:#e3eaf4;
+  --border:#cfd8e3;--border2:#b8c7d6;
+  --text:#1a2332;--muted:#6b7d93;--muted2:#475466;
+  --green:#16a34a;--green-bg:#16a34a14;
+  --red:#dc2626;--red-bg:#dc262614;
+  --yellow:#ca8a04;--yellow-bg:#ca8a0414;
+  --blue:#0284c7;--blue-bg:#0284c714;
+  --cyan:#0891b2;--orange:#ea580c;
+  --purple:#9333ea;--purple-bg:#9333ea14;
+  --card-shadow:0 2px 8px rgba(0,0,0,0.08);
+  --white-pure:#1a2332;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helvetica Neue","Hiragino Kaku Gothic ProN",sans-serif;font-size:13px;min-height:100%;transition:background .3s,color .3s}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/*  アニメーション                                        */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes pulse-green{0%{background:var(--green-bg);box-shadow:0 0 0 0 rgba(0,230,118,.5)}100%{background:transparent;box-shadow:0 0 0 20px rgba(0,230,118,0)}}
+@keyframes pulse-red{0%{background:var(--red-bg);box-shadow:0 0 0 0 rgba(244,67,54,.5)}100%{background:transparent;box-shadow:0 0 0 20px rgba(244,67,54,0)}}
+@keyframes slideIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes countup{from{transform:translateY(-3px);opacity:.6}to{transform:translateY(0);opacity:1}}
+@keyframes badgeGlow{0%,100%{box-shadow:0 0 8px rgba(255,202,40,.4)}50%{box-shadow:0 0 16px rgba(255,202,40,.8)}}
+.flash-g{animation:pulse-green .8s ease-out}
+.flash-r{animation:pulse-red .8s ease-out}
+.counting{animation:countup .4s ease-out}
+
+/* ━━━ ヘッダー ━━━ */
 .hdr{
   background:var(--bg2);border-bottom:1px solid var(--border);
-  padding:0 18px;height:48px;display:flex;align-items:center;gap:12px;
-  flex-shrink:0;
+  padding:0 18px;height:48px;display:flex;align-items:center;gap:10px;
+  flex-shrink:0;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px);
 }
-.hdr-logo{font-size:16px;font-weight:900;color:#fff;letter-spacing:-.5px}
+.hdr-logo{font-size:16px;font-weight:900;color:var(--white-pure);letter-spacing:-.5px}
 .hdr-logo em{color:var(--yellow);font-style:normal}
 .live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;
   box-shadow:0 0 8px var(--green);animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
 .hbadge{padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;white-space:nowrap}
 .hb-sim{background:#0a2c17;color:var(--green);border:1px solid #174d28}
+html[data-theme="light"] .hb-sim{background:#d1fae5;color:#065f46;border-color:#86efac}
 .hb-sym{background:var(--bg4);color:var(--blue);border:1px solid var(--border2)}
-.hb-lev{background:var(--yellow-bg);color:var(--yellow);border:1px solid #3d3000}
-.hb-strat{background:var(--purple-bg);color:var(--purple);border:1px solid #ab47bc40}
-.hdr-right{margin-left:auto;font-size:11px;color:var(--muted2)}
+.hb-lev{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow)}
+.hb-strat{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple)}
+.hdr-right{margin-left:auto;display:flex;gap:10px;align-items:center}
+.theme-toggle{cursor:pointer;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:5px 10px;border-radius:8px;font-size:13px;transition:.2s;user-select:none}
+.theme-toggle:hover{background:var(--bg4)}
+.updated-text{font-size:11px;color:var(--muted2)}
 
-/* ─── 統計バー ─── */
+/* ━━━ 統計バー ━━━ */
 .statsbar{
   display:grid;grid-template-columns:repeat(7,1fr);
   background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;
 }
-.sb{padding:10px 16px;border-right:1px solid var(--border);min-width:0}
+.sb{padding:10px 16px;border-right:1px solid var(--border);min-width:0;transition:background .5s}
 .sb:last-child{border-right:none}
-.sb-val{font-size:21px;font-weight:900;letter-spacing:-.6px;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sb-lbl{font-size:9px;color:var(--muted2);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-top:3px}
+.sb-val{font-size:20px;font-weight:900;letter-spacing:-.5px;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-lbl{font-size:9px;color:var(--muted2);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-top:3px}
 .sb-sub{font-size:10px;color:var(--muted);margin-top:2px}
 .g{color:var(--green)}.r{color:var(--red)}.y{color:var(--yellow)}.b{color:var(--blue)}.c{color:var(--cyan)}.o{color:var(--orange)}.p{color:var(--purple)}
 
-/* ─── DDバー ─── */
+/* ━━━ DDバー ━━━ */
 .ddbar{
   background:var(--bg2);border-bottom:1px solid var(--border);
   padding:7px 18px;display:flex;align-items:center;gap:14px;flex-shrink:0;
@@ -76,76 +116,83 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
 .info-val{font-size:18px;font-weight:900;line-height:1.1}
 .info-sub{font-size:9px;color:var(--muted2)}
 
-/* ─── タブ ─── */
+/* ━━━ タブ ━━━ */
 .tabs{
   background:var(--bg2);border-bottom:2px solid var(--border);
   display:flex;padding:0 18px;gap:2px;flex-shrink:0;overflow-x:auto;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
 }
-.tb{padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;
+.tabs::-webkit-scrollbar{display:none}
+.tb{padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;
   border-bottom:3px solid transparent;color:var(--muted2);transition:.15s;margin-bottom:-2px;white-space:nowrap}
-.tb.on{color:#fff;border-bottom-color:var(--blue)}
+.tb.on{color:var(--white-pure);border-bottom-color:var(--blue)}
 .tb:hover:not(.on){color:var(--text)}
 
-/* ─── レイアウト ─── */
-.body-wrap{display:flex;flex-direction:column;height:100vh}
-.main{display:grid;grid-template-columns:1fr 350px;flex:1;overflow:hidden}
-.lpanel{overflow-y:auto;border-right:1px solid var(--border)}
-.rpanel{overflow-y:auto;background:var(--bg2)}
+/* ━━━ メイン ━━━ */
+.main{display:grid;grid-template-columns:1fr 350px;min-height:calc(100vh - 160px);overflow:hidden}
+.lpanel{overflow-y:auto}
+.rpanel{overflow-y:auto;background:var(--bg2);border-left:1px solid var(--border)}
 
-/* ─── チャート ─── */
+/* ━━━ チャート ━━━ */
 .chart-wrap{border-bottom:2px solid var(--border);background:var(--bg)}
 .chart-toolbar{
   display:flex;align-items:center;justify-content:space-between;
   padding:8px 14px;background:var(--bg2);border-bottom:1px solid var(--border);
 }
 .chart-title{font-size:12px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.05em}
-.chart-area{padding:16px;display:flex;align-items:center;justify-content:center;min-height:240px;
-  background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%)}
+.chart-area{padding:16px;display:flex;align-items:center;justify-content:center;min-height:240px;background:var(--bg)}
 .chart-canvas-wrap{width:100%;height:260px;position:relative}
 
-.big-display{text-align:center;width:100%}
-.big-display .bd-lbl{font-size:11px;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:12px}
-.big-display .bd-val{font-size:64px;font-weight:900;letter-spacing:-3px;line-height:1;margin-bottom:8px}
-.big-display .bd-sub{font-size:14px;color:var(--muted2)}
+/* メインのエクイティ表示 */
+.hero-display{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;padding:24px;align-items:center;min-height:260px;background:linear-gradient(135deg,var(--bg),var(--bg2))}
+.hero-left{text-align:left}
+.hero-lbl{font-size:11px;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:10px}
+.hero-val{font-size:56px;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:8px;transition:color .3s}
+.hero-sub{font-size:15px;color:var(--muted2)}
+.hero-sub .pnl{font-weight:700}
+.hero-right{position:relative;height:200px}
 
-/* ─── テーブル ─── */
+/* ━━━ テーブル ━━━ */
 .ttable{width:100%;border-collapse:collapse}
 .ttable th{
   padding:8px 14px;font-size:10px;font-weight:700;color:var(--muted2);
   text-transform:uppercase;letter-spacing:.05em;background:var(--bg3);
   border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5;text-align:left;
 }
-.ttable td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+.ttable td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--text)}
 .ttable tr:hover td{background:var(--bg3)}
 .ttable tr.lrow-b td:first-child{border-left:3px solid var(--blue)}
 .ttable tr.lrow-g td:first-child{border-left:3px solid var(--green)}
+.ttable tr.lrow-o td:first-child{border-left:3px solid var(--orange)}
 
 .pill{display:inline-block;padding:3px 9px;border-radius:11px;font-size:10px;font-weight:800;letter-spacing:.02em}
-.pl-g{background:var(--green-bg);color:var(--green);border:1px solid #00e67630}
-.pl-r{background:var(--red-bg);color:var(--red);border:1px solid #f4433630}
-.pl-y{background:var(--yellow-bg);color:var(--yellow);border:1px solid #ffca2830}
-.pl-b{background:var(--blue-bg);color:var(--blue);border:1px solid #4fc3f730}
+.pl-g{background:var(--green-bg);color:var(--green);border:1px solid var(--green)}
+.pl-r{background:var(--red-bg);color:var(--red);border:1px solid var(--red)}
+.pl-y{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow)}
+.pl-b{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue)}
+.pl-p{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple)}
 
-/* ─── ログ ─── */
+/* ━━━ ログ ━━━ */
 .log-hdr{
   padding:9px 14px;background:var(--bg3);border-bottom:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;
   font-size:10px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.06em;
   position:sticky;top:0;z-index:5;
 }
-.logrow{padding:6px 13px;border-bottom:1px solid #0a141f;font-size:11px;display:flex;gap:8px;line-height:1.45}
+.logrow{padding:6px 13px;border-bottom:1px solid var(--border);font-size:11px;display:flex;gap:8px;line-height:1.45;animation:slideIn .3s}
 .logrow:hover{background:var(--bg3)}
 .logts{color:var(--muted);white-space:nowrap;font-size:10px;font-family:monospace;flex-shrink:0;margin-top:1px}
 .logmsg{word-break:break-word}
 .lc-i{color:var(--text)}.lc-w{color:var(--yellow)}.lc-e{color:var(--red)}
 .lc-g{color:var(--green)}.lc-b{color:var(--blue)}.lc-c{color:var(--cyan)}
 
-/* ─── ポートフォリオカード ─── */
+/* ━━━ ポートフォリオ ━━━ */
 .pf-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
-.pfc{background:var(--bg3);padding:18px 20px}
+.pfc{background:var(--bg3);padding:18px 20px;transition:background .5s}
 .pfc .pfl{font-size:9px;color:var(--muted2);text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:7px}
-.pfc .pfv{font-size:28px;font-weight:900;letter-spacing:-.6px}
+.pfc .pfv{font-size:26px;font-weight:900;letter-spacing:-.6px}
 .pfc .pfs{font-size:11px;color:var(--muted);margin-top:5px}
+
 .sig-section{padding:16px 18px}
 .sig-ttl{font-size:10px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
 .tf3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
@@ -154,53 +201,98 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
 .tfbox .tfd{font-size:15px;font-weight:900;margin-bottom:4px}
 .tfbox .tfs{font-size:10px;color:var(--muted)}
 
-/* ─── 予測カード ─── */
+/* ━━━ 予測 ━━━ */
 .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
 .proj-card{background:var(--bg3);padding:20px;text-align:center}
-.proj-card.highlight{background:linear-gradient(135deg,#0a1f2c,#0f2a3d);border:1px solid #4fc3f730}
+.proj-card.highlight{background:linear-gradient(135deg,#0a1f2c,#0f2a3d);border:1px solid var(--blue)}
+html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,#dbeafe,#bfdbfe)}
 .proj-lbl{font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:10px}
-.proj-val{font-size:32px;font-weight:900;letter-spacing:-.8px;margin-bottom:4px}
+.proj-val{font-size:30px;font-weight:900;letter-spacing:-.8px;margin-bottom:4px}
 .proj-sub{font-size:11px;color:var(--muted)}
 
+/* ━━━ バッジシステム ━━━ */
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;padding:14px 18px}
+.badge{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:14px;text-align:center;transition:.2s}
+.badge.earned{border-color:var(--yellow);background:linear-gradient(135deg,var(--bg3),var(--yellow-bg));animation:badgeGlow 3s ease-in-out infinite}
+.badge-icon{font-size:32px;margin-bottom:6px;filter:grayscale(80%)}
+.badge.earned .badge-icon{filter:none}
+.badge-name{font-size:11px;font-weight:700;color:var(--text)}
+.badge.earned .badge-name{color:var(--yellow)}
+.badge-desc{font-size:10px;color:var(--muted2);margin-top:4px;line-height:1.4}
+.badge-date{font-size:9px;color:var(--muted);margin-top:4px}
+
+/* ━━━ タイムライン ━━━ */
+.timeline{padding:14px 18px}
+.tl-item{display:flex;gap:12px;margin-bottom:14px;animation:slideIn .4s}
+.tl-dot{flex-shrink:0;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid var(--border2);background:var(--bg3)}
+.tl-dot.good{border-color:var(--green);color:var(--green);background:var(--green-bg)}
+.tl-dot.bad{border-color:var(--red);color:var(--red);background:var(--red-bg)}
+.tl-dot.warn{border-color:var(--yellow);color:var(--yellow);background:var(--yellow-bg)}
+.tl-dot.info{border-color:var(--blue);color:var(--blue);background:var(--blue-bg)}
+.tl-content{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 14px}
+.tl-time{font-size:11px;color:var(--muted);margin-bottom:3px}
+.tl-msg{font-size:13px;color:var(--text);font-weight:600}
+.tl-detail{font-size:12px;color:var(--muted2);margin-top:4px;line-height:1.5}
+
+/* ━━━ ヒートマップ ━━━ */
+.heatmap{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:4px;padding:14px 18px}
+.hm-tile{padding:10px 6px;border-radius:6px;text-align:center;color:white;font-weight:700;transition:.2s;cursor:default;user-select:none}
+.hm-tile:hover{transform:scale(1.05);z-index:2;position:relative}
+.hm-sym{font-size:11px}
+.hm-ret{font-size:13px;font-weight:900;margin-top:2px}
+.hm-legend{display:flex;gap:0;padding:8px 18px;font-size:10px;color:var(--muted2);align-items:center;justify-content:center}
+.hm-leg-box{display:inline-block;width:16px;height:12px;border-radius:2px}
+
 .tpane{display:none}.tpane.on{display:block}
+.loading{text-align:center;padding:40px 20px;color:var(--muted2);font-size:13px}
 
-.error-box{padding:40px;text-align:center}
-.error-box h3{color:var(--red);font-size:18px;margin-bottom:10px}
+/* ━━━ ボトムナビ (モバイルのみ) ━━━ */
+.bottomnav{display:none;position:fixed;bottom:0;left:0;right:0;height:62px;background:var(--bg2);border-top:1px solid var(--border);z-index:50;padding-bottom:env(safe-area-inset-bottom)}
+.bottomnav-inner{display:grid;grid-template-columns:repeat(6,1fr);height:62px}
+.bn{display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;color:var(--muted2);transition:.15s;padding:4px 2px}
+.bn.on{color:var(--blue)}
+.bn-ic{font-size:20px;line-height:1}
+.bn-lbl{font-size:9px;font-weight:700;margin-top:2px;letter-spacing:.02em}
 
-.loading{padding:60px 20px;text-align:center;color:var(--muted2)}
-
-/* ─── モバイル ─── */
+/* ━━━ モバイル ━━━ */
 @media(max-width:768px){
-  html,body{overflow:auto;height:auto}
-  .body-wrap{height:auto;min-height:100vh}
-  .hdr{flex-wrap:wrap;height:auto;padding:10px 12px;gap:8px}
-  .hdr-right{display:none}
+  html,body{font-size:13px}
+  .hdr{flex-wrap:wrap;height:auto;padding:10px 12px;gap:6px}
+  .hdr-right{margin-left:0;width:100%;justify-content:space-between;order:10;padding-top:4px;border-top:1px solid var(--border);margin-top:4px}
   .statsbar{grid-template-columns:repeat(4,1fr)}
   .sb{padding:10px 8px}
-  .sb-val{font-size:17px}
+  .sb-val{font-size:15px}
   .ddbar{flex-wrap:wrap}
-  .main{grid-template-columns:1fr}
+  .main{grid-template-columns:1fr;min-height:auto}
   .lpanel{border-right:none}
-  .rpanel{border-top:2px solid var(--border);max-height:40vh}
+  .rpanel{border-top:2px solid var(--border);border-left:none;max-height:300px}
   .pf-cards{grid-template-columns:1fr 1fr}
   .proj-grid{grid-template-columns:1fr}
-  .big-display .bd-val{font-size:44px}
+  .hero-display{grid-template-columns:1fr;padding:18px 16px;text-align:center}
+  .hero-left{text-align:center}
+  .hero-val{font-size:40px}
+  .hero-right{height:180px}
   .info-box{display:none}
+  .bottomnav{display:block}
+  body{padding-bottom:66px}
+  .badge-grid{grid-template-columns:1fr 1fr 1fr}
 }
 </style>
 </head>
 <body>
-<div class="body-wrap">
 
 <!-- ヘッダー -->
 <div class="hdr">
   <div class="live-dot"></div>
   <div class="hdr-logo">H11<em>Bot</em></div>
   <div class="hbadge hb-sim">SIM</div>
-  <div class="hbadge hb-sym">BTC • ACH • USDT</div>
+  <div class="hbadge hb-sym" style="display:none">BTC·ACH·USDT</div>
   <div class="hbadge hb-lev">40/40/20</div>
   <div class="hbadge hb-strat">ハイブリッド</div>
-  <div class="hdr-right" id="updated">起動中...</div>
+  <div class="hdr-right">
+    <span class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">🌙</span>
+    <span class="updated-text" id="updated">起動中...</span>
+  </div>
 </div>
 
 <!-- 統計バー -->
@@ -245,8 +337,11 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
   <div class="tb on" id="t-live" onclick="sw('live')">⚡ ライブ</div>
   <div class="tb" id="t-pf" onclick="sw('pf')">📊 ポートフォリオ</div>
   <div class="tb" id="t-chart" onclick="sw('chart')">📈 チャート</div>
-  <div class="tb" id="t-trades" onclick="sw('trades')">📋 取引履歴</div>
-  <div class="tb" id="t-proj" onclick="sw('proj')">🔮 将来予測</div>
+  <div class="tb" id="t-heat" onclick="sw('heat')">🔥 ヒートマップ</div>
+  <div class="tb" id="t-timeline" onclick="sw('timeline')">📜 タイムライン</div>
+  <div class="tb" id="t-badge" onclick="sw('badge')">🏆 バッジ</div>
+  <div class="tb" id="t-trades" onclick="sw('trades')">📋 取引</div>
+  <div class="tb" id="t-proj" onclick="sw('proj')">🔮 予測</div>
   <div class="tb" id="t-strat" onclick="sw('strat')">⚙️ 戦略</div>
   <div class="tb" id="t-verify" onclick="sw('verify')">🔍 検証</div>
 </div>
@@ -257,12 +352,15 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
     <!-- ライブタブ -->
     <div class="tpane on" id="p-live">
       <div class="chart-wrap">
-        <div class="chart-toolbar"><span class="chart-title">📈 現在の運用状態</span></div>
-        <div class="chart-area">
-          <div class="big-display">
-            <div class="bd-lbl">総資産 (USD)</div>
-            <div class="bd-val" id="big-equity">$10,000.00</div>
-            <div class="bd-sub" id="big-pnl">損益: +$0.00 (+0.00%)</div>
+        <div class="chart-toolbar"><span class="chart-title">📈 現在の運用状態</span><span id="tick-age" style="font-size:11px;color:var(--muted)"></span></div>
+        <div class="hero-display">
+          <div class="hero-left">
+            <div class="hero-lbl">総資産 (USD)</div>
+            <div class="hero-val" id="big-equity">$10,000.00</div>
+            <div class="hero-sub" id="big-pnl">損益: <span class="pnl">+$0.00 (+0.00%)</span></div>
+          </div>
+          <div class="hero-right">
+            <canvas id="heroPieChart"></canvas>
           </div>
         </div>
       </div>
@@ -289,13 +387,12 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
       </div>
       <div class="pf-cards" style="margin-top:1px">
         <div class="pfc"><div class="pfl">BTC枠 (40%)</div><div class="pfv o" id="pf-btc">—</div><div class="pfs" id="pf-btcsub">—</div></div>
-        <div class="pfc"><div class="pfl">ACH枠 (40%)</div><div class="pfv g" id="pf-ach">—</div><div class="pfs" id="pf-achsub">期待+55%年率</div></div>
+        <div class="pfc"><div class="pfl">ACH枠 (40%)</div><div class="pfv g" id="pf-ach">—</div><div class="pfs" id="pf-achsub">momentum_top3</div></div>
         <div class="pfc"><div class="pfl">USDT枠 (20%)</div><div class="pfv b" id="pf-usdt">—</div><div class="pfs" id="pf-usdtsub">年3%金利</div></div>
       </div>
-
       <div class="sig-section">
         <div class="sig-ttl">📊 配分比率（リアルタイム）</div>
-        <div class="chart-canvas-wrap" style="height:220px;background:var(--bg3);border-radius:9px;padding:10px">
+        <div class="chart-canvas-wrap" style="height:260px;background:var(--bg3);border-radius:9px;padding:14px">
           <canvas id="pieChart"></canvas>
         </div>
       </div>
@@ -317,6 +414,62 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
       </div>
     </div>
 
+    <!-- ヒートマップタブ -->
+    <div class="tpane" id="p-heat">
+      <div class="chart-wrap">
+        <div class="chart-toolbar">
+          <span class="chart-title">🔥 50銘柄モメンタムヒートマップ</span>
+          <span id="heat-updated" style="font-size:11px;color:var(--muted)"></span>
+        </div>
+        <div style="padding:10px 18px;background:var(--bg3);font-size:12px;color:var(--muted2)">
+          過去90日のリターンを色で可視化。<b class="g">緑が深いほど急騰</b>、<b class="r">赤が深いほど急落</b>。上位3銘柄にACH枠が連動します。
+        </div>
+      </div>
+      <div class="hm-legend">
+        <span>-50%</span>
+        <span class="hm-leg-box" style="background:#b91c1c"></span>
+        <span class="hm-leg-box" style="background:#dc2626"></span>
+        <span class="hm-leg-box" style="background:#ef4444"></span>
+        <span class="hm-leg-box" style="background:#4b5563"></span>
+        <span class="hm-leg-box" style="background:#22c55e"></span>
+        <span class="hm-leg-box" style="background:#16a34a"></span>
+        <span class="hm-leg-box" style="background:#15803d"></span>
+        <span>+100%+</span>
+      </div>
+      <div class="heatmap" id="heatmap-content">
+        <div class="loading" style="grid-column:1/-1">ヒートマップデータ待機中... (次回リバランス時に生成されます)</div>
+      </div>
+    </div>
+
+    <!-- タイムラインタブ -->
+    <div class="tpane" id="p-timeline">
+      <div class="chart-wrap">
+        <div class="chart-toolbar"><span class="chart-title">📜 運用日記</span></div>
+        <div style="padding:10px 18px;background:var(--bg3);font-size:12px;color:var(--muted2)">
+          取引・DD警告・日次イベントを時系列で表示（最新順）
+        </div>
+      </div>
+      <div class="timeline" id="timeline-content">
+        <div class="loading">イベント読み込み中...</div>
+      </div>
+    </div>
+
+    <!-- バッジタブ -->
+    <div class="tpane" id="p-badge">
+      <div class="chart-wrap">
+        <div class="chart-toolbar">
+          <span class="chart-title">🏆 達成バッジ</span>
+          <span id="badge-count" style="font-size:11px;color:var(--yellow);font-weight:700"></span>
+        </div>
+        <div style="padding:10px 18px;background:var(--bg3);font-size:12px;color:var(--muted2)">
+          稼働日数・取引・DD耐性などに応じて自動獲得。金色に光るバッジ=獲得済み。
+        </div>
+      </div>
+      <div class="badge-grid" id="badge-grid">
+        <div class="loading" style="grid-column:1/-1">バッジ読み込み中...</div>
+      </div>
+    </div>
+
     <!-- 取引履歴タブ -->
     <div class="tpane" id="p-trades">
       <table class="ttable">
@@ -325,8 +478,8 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
             <th style="width:120px">時刻</th>
             <th style="width:60px">部分</th>
             <th style="width:80px">アクション</th>
+            <th style="width:80px">銘柄</th>
             <th style="width:110px;text-align:right">価格</th>
-            <th style="width:110px;text-align:right">数量</th>
             <th style="text-align:right">金額</th>
           </tr>
         </thead>
@@ -334,7 +487,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
       </table>
     </div>
 
-    <!-- 将来予測タブ -->
+    <!-- 予測タブ -->
     <div class="tpane" id="p-proj">
       <div class="proj-grid">
         <div class="proj-card">
@@ -353,22 +506,13 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
           <div class="proj-sub" id="pj-5ys">—</div>
         </div>
       </div>
-
       <div class="sig-section">
         <div class="sig-ttl">📈 年別成長シミュレーション (年率+54.8%想定)</div>
         <table class="ttable">
-          <thead>
-            <tr>
-              <th>経過年</th>
-              <th>予測残高</th>
-              <th>増加額</th>
-              <th style="text-align:right">倍率</th>
-            </tr>
-          </thead>
+          <thead><tr><th>経過年</th><th>予測残高</th><th>増加額</th><th style="text-align:right">倍率</th></tr></thead>
           <tbody id="growth-tbody"></tbody>
         </table>
       </div>
-
       <div class="sig-section">
         <div class="sig-ttl">🏆 H11 バックテスト実績 (過去5年)</div>
         <div class="tf3">
@@ -385,7 +529,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
         <div class="sig-ttl">⚙️ H11 戦略パラメータ</div>
         <div class="tf3">
           <div class="tfbox"><div class="tfn">BTC枠</div><div class="tfd o">40%</div><div class="tfs">EMA200</div></div>
-          <div class="tfbox"><div class="tfn">ACH枠</div><div class="tfd g">40%</div><div class="tfs">動的レバ</div></div>
+          <div class="tfbox"><div class="tfn">ACH枠</div><div class="tfd g">40%</div><div class="tfs">Top3モメンタム</div></div>
           <div class="tfbox"><div class="tfn">USDT枠</div><div class="tfd b">20%</div><div class="tfs">年3%金利</div></div>
         </div>
         <div class="tf3">
@@ -393,44 +537,32 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
           <div class="tfbox"><div class="tfn">取引モード</div><div class="tfd y">SIM</div><div class="tfs">実資金なし</div></div>
           <div class="tfbox"><div class="tfn">更新間隔</div><div class="tfd b">5分</div><div class="tfs">Binance API</div></div>
         </div>
-
-        <div class="sig-ttl" style="margin-top:20px">📖 パラメータ解説</div>
+        <div class="sig-ttl" style="margin-top:20px">📖 戦略解説</div>
         <div style="padding:10px 14px;background:var(--bg3);border-radius:8px;margin-bottom:10px">
           <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">🪙 BTC枠 40% — EMA200戦略</div>
-          <div style="font-size:12px;color:var(--muted2);line-height:1.6">BTC価格が200日移動平均の上で自動買い、下で自動売り。シンプルだけど効果的な「コツコツ型」。</div>
+          <div style="font-size:12px;color:var(--muted2);line-height:1.6">BTC価格が200日移動平均の上で自動買い、下で自動売り。「コツコツ型」。</div>
         </div>
         <div style="padding:10px 14px;background:var(--bg3);border-radius:8px;margin-bottom:10px">
-          <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">⚡ ACH枠 40% — 動的レバAC</div>
-          <div style="font-size:12px;color:var(--muted2);line-height:1.6">アルトコインのブレイクアウトを狙う能動戦略。BTC ATRで動的にレバレッジ調整、清算リスクを1/5に削減。</div>
+          <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">⚡ ACH枠 40% — Top3モメンタム (実市場連動)</div>
+          <div style="font-size:12px;color:var(--muted2);line-height:1.6">50銘柄の過去90日リターン上位3銘柄を等分保有。月次リバランス。BTC下落時は現金待機。</div>
         </div>
         <div style="padding:10px 14px;background:var(--bg3);border-radius:8px;margin-bottom:10px">
           <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">💵 USDT枠 20% — 現金クッション</div>
-          <div style="font-size:12px;color:var(--muted2);line-height:1.6">大暴落時の「買い増しチャンス資金」。年3%のステーキング金利を想定。精神的安定剤にも。</div>
-        </div>
-        <div style="padding:10px 14px;background:var(--bg3);border-radius:8px">
-          <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">🎯 ハイブリッドの狙い</div>
-          <div style="font-size:12px;color:var(--muted2);line-height:1.6">「BTCコツコツ」と「アルト爆益狙い」の2本立てで、どちらがコケても他方がカバー。2022年のBTC-64%でもほぼノーダメージ。</div>
+          <div style="font-size:12px;color:var(--muted2);line-height:1.6">大暴落時の「買い増しチャンス資金」。年3%ステーキング金利想定。</div>
         </div>
       </div>
     </div>
 
-    <!-- 🔍 検証タブ (ハルシネーションチェック) -->
+    <!-- 検証タブ -->
     <div class="tpane" id="p-verify">
       <div class="chart-wrap">
         <div class="chart-toolbar">
           <span class="chart-title">🔍 ライブ・ハルシネーションチェック</span>
-          <button onclick="runVerifyCheck()" style="background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue);padding:4px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer">再検証</button>
-        </div>
-        <div style="padding:14px 18px;font-size:12px;color:var(--muted2);background:var(--bg2);border-bottom:1px solid var(--border)">
-          Binance / MEXC / Bitget / yfinance / CoinGecko / CoinMarketCap で現在BTC価格を相互照合し、EMA200独立再計算も検証します。
+          <button onclick="runVerifyCheck()" style="background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue);padding:4px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer">再検証方法</button>
         </div>
       </div>
-
       <div style="padding:14px" id="verify-content">
-        <div class="loading" style="padding:40px;text-align:center;color:var(--muted2)">
-          検証データを読み込み中...<br>
-          <span style="font-size:11px">（まだ一度も実行されていない場合は「再検証」ボタンを押してください）</span>
-        </div>
+        <div class="loading">検証データ読み込み中...</div>
       </div>
     </div>
 
@@ -438,488 +570,626 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
 
   <!-- 右パネル: ログ -->
   <div class="rpanel">
-    <div class="log-hdr">
-      <span>📝 システムログ</span>
-      <span id="log-count" style="color:var(--muted)">0件</span>
-    </div>
+    <div class="log-hdr"><span>📝 システムログ</span><span id="log-count" style="color:var(--muted)">0件</span></div>
     <div id="logbox"><div class="loading">データ読み込み中...</div></div>
   </div>
 </div>
 
+<!-- ボトムナビ (モバイルのみ) -->
+<div class="bottomnav">
+  <div class="bottomnav-inner">
+    <div class="bn on" data-tab="live" onclick="sw('live')"><div class="bn-ic">⚡</div><div class="bn-lbl">ライブ</div></div>
+    <div class="bn" data-tab="chart" onclick="sw('chart')"><div class="bn-ic">📈</div><div class="bn-lbl">チャート</div></div>
+    <div class="bn" data-tab="heat" onclick="sw('heat')"><div class="bn-ic">🔥</div><div class="bn-lbl">ヒート</div></div>
+    <div class="bn" data-tab="timeline" onclick="sw('timeline')"><div class="bn-ic">📜</div><div class="bn-lbl">日記</div></div>
+    <div class="bn" data-tab="badge" onclick="sw('badge')"><div class="bn-ic">🏆</div><div class="bn-lbl">バッジ</div></div>
+    <div class="bn" data-tab="verify" onclick="sw('verify')"><div class="bn-ic">🔍</div><div class="bn-lbl">検証</div></div>
+  </div>
 </div>
 
 <script>
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// テーマ切替
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function initTheme(){
+  const saved = localStorage.getItem('h11bot-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  document.getElementById('theme-toggle').textContent = saved === 'dark' ? '🌙' : '☀️';
+  // メタタグ theme-color も変更
+  const mc = document.querySelector('meta[name="theme-color"]');
+  if(mc) mc.setAttribute('content', saved === 'dark' ? '#060d17' : '#f0f4f9');
+}
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  document.getElementById('theme-toggle').textContent = next === 'dark' ? '🌙' : '☀️';
+  localStorage.setItem('h11bot-theme', next);
+  const mc = document.querySelector('meta[name="theme-color"]');
+  if(mc) mc.setAttribute('content', next === 'dark' ? '#060d17' : '#f0f4f9');
+  // チャートを再描画してテーマ反映
+  if (_state) renderCharts(_state);
+}
+initTheme();
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// グローバル
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 let _state = null;
+let _verifyData = null;
+let _prevValues = {};  // アニメ用の前回値
 let currentTab = 'live';
-let equityChart = null, btcChart = null, pieChart = null;
+let equityChart = null, btcChart = null, pieChart = null, heroPieChart = null;
 
-function formatMoney(n) { return '$' + n.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
-function formatMoneyCompact(n) {
-  if (Math.abs(n) >= 1000) return '$' + Math.round(n).toLocaleString();
-  return '$' + n.toFixed(2);
-}
-function formatPct(n, sign = true) { return (sign && n >= 0 ? '+' : '') + n.toFixed(2) + '%'; }
-function pctClass(n) { return n > 0.001 ? 'g' : (n < -0.001 ? 'r' : 'y'); }
-function fmtTime(iso) {
-  const d = new Date(iso);
-  return d.toLocaleString("ja-JP", {month:"numeric", day:"numeric", hour:"2-digit", minute:"2-digit"});
-}
-function fmtTimeShort(iso) {
-  const d = new Date(iso);
-  return d.toLocaleTimeString("ja-JP", {hour:"2-digit", minute:"2-digit", second:"2-digit"});
+function formatMoney(n){return '$'+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
+function formatMoneyCompact(n){if(Math.abs(n)>=1000)return '$'+Math.round(n).toLocaleString();return '$'+n.toFixed(2)}
+function formatPct(n,sign=true){return (sign&&n>=0?'+':'')+n.toFixed(2)+'%'}
+function pctClass(n){return n>0.001?'g':(n<-0.001?'r':'y')}
+function fmtTime(iso){const d=new Date(iso);return d.toLocaleString("ja-JP",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})}
+function fmtTimeShort(iso){const d=new Date(iso);return d.toLocaleTimeString("ja-JP",{hour:"2-digit",minute:"2-digit",second:"2-digit"})}
+
+function themeColors(){
+  const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+  return {
+    grid: isDark ? '#162840' : '#cfd8e3',
+    text: isDark ? '#c8d8ea' : '#1a2332',
+    muted: isDark ? '#4e7291' : '#6b7d93',
+  };
 }
 
-function sw(tab) {
-  currentTab = tab;
-  document.querySelectorAll('.tb').forEach(e => e.classList.remove('on'));
-  document.getElementById('t-' + tab).classList.add('on');
-  document.querySelectorAll('.tpane').forEach(e => e.classList.remove('on'));
-  document.getElementById('p-' + tab).classList.add('on');
-  render();
-  if (tab === 'verify') {
-    if (_verifyData) renderVerify();
-    else fetchVerifyData();
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 数値カウントアップアニメ
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function animateValue(el, key, newVal, formatter, duration=800){
+  if(!el) return;
+  const prev = _prevValues[key];
+  _prevValues[key] = newVal;
+  if(prev === undefined || prev === newVal){
+    el.textContent = formatter(newVal);
+    return;
+  }
+  const start = performance.now();
+  const diff = newVal - prev;
+  function step(now){
+    const t = Math.min((now - start)/duration, 1);
+    const eased = 1 - Math.pow(1-t, 3);
+    const cur = prev + diff * eased;
+    el.textContent = formatter(cur);
+    if(t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+  // フラッシュエフェクト
+  const parent = el.closest('.sb') || el.closest('.pfc') || el.closest('.hero-left') || el;
+  if(parent){
+    parent.classList.remove('flash-g','flash-r');
+    void parent.offsetWidth;  // reflow
+    parent.classList.add(diff > 0 ? 'flash-g' : 'flash-r');
   }
 }
 
-async function fetchState() {
-  try {
-    const res = await fetch("demo_state.json?t=" + Date.now(), {cache: "no-store"});
-    if (!res.ok) throw new Error("HTTP " + res.status);
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// タブ切替
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function sw(tab){
+  currentTab = tab;
+  document.querySelectorAll('.tb').forEach(e=>e.classList.remove('on'));
+  const tbEl = document.getElementById('t-'+tab);
+  if(tbEl) tbEl.classList.add('on');
+  document.querySelectorAll('.tpane').forEach(e=>e.classList.remove('on'));
+  const paneEl = document.getElementById('p-'+tab);
+  if(paneEl) paneEl.classList.add('on');
+  document.querySelectorAll('.bn').forEach(e=>{
+    if(e.dataset.tab === tab) e.classList.add('on'); else e.classList.remove('on');
+  });
+  render();
+  if(tab === 'verify'){
+    if(_verifyData) renderVerify(); else fetchVerifyData();
+  }
+  if(tab === 'heat') renderHeatmap();
+  if(tab === 'timeline') renderTimeline();
+  if(tab === 'badge') renderBadges();
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// データ取得
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+async function fetchState(){
+  try{
+    const res = await fetch("demo_state.json?t="+Date.now(),{cache:"no-store"});
+    if(!res.ok) throw new Error("HTTP "+res.status);
     _state = await res.json();
     render();
-  } catch(e) {
-    console.error("fetch error:", e);
+  }catch(e){
+    console.error("fetch error:",e);
     document.getElementById('updated').textContent = '⚠️ 接続エラー';
     document.getElementById('updated').style.color = 'var(--red)';
   }
 }
 
-let _verifyData = null;
-async function fetchVerifyData() {
-  try {
-    const res = await fetch("h11_live_hallucination_check.json?t=" + Date.now(), {cache: "no-store"});
-    if (!res.ok) throw new Error("HTTP " + res.status);
+async function fetchVerifyData(){
+  try{
+    const res = await fetch("h11_live_hallucination_check.json?t="+Date.now(),{cache:"no-store"});
+    if(!res.ok) throw new Error("HTTP "+res.status);
     _verifyData = await res.json();
-    if (currentTab === 'verify') renderVerify();
-  } catch(e) {
-    console.error("verify fetch error:", e);
-    _verifyData = null;
-  }
+    if(currentTab === 'verify') renderVerify();
+  }catch(e){console.error("verify fetch error:",e);_verifyData=null}
 }
 
-function runVerifyCheck() {
-  const content = document.getElementById('verify-content');
-  content.innerHTML = '<div class="loading" style="padding:40px;text-align:center;color:var(--muted2)">検証スクリプト実行中... (約10秒)<br><span style="font-size:11px">検証レポートページを開きます</span></div>';
-  // 検証レポートページを新規タブで開く (スクリプトを手動実行する案内)
-  const helpDiv = document.createElement('div');
-  helpDiv.style.cssText = 'margin-top:20px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:14px;font-size:12px;color:var(--text)';
-  helpDiv.innerHTML = `
+function runVerifyCheck(){
+  const c = document.getElementById('verify-content');
+  c.innerHTML = `<div style="padding:16px;background:var(--bg3);border-radius:8px;font-size:13px">
     <b style="color:var(--yellow)">💡 再検証するには</b><br>
     MacBookのターミナルで以下を実行:<br>
     <code style="display:block;background:var(--bg);padding:8px 10px;border-radius:4px;margin-top:6px;color:var(--green);font-family:monospace;font-size:11px;overflow-x:auto">python3 /Users/sanosano/projects/kimochi-max/h11_live_hallucination_check.py</code>
-    <br>実行後、このページをリロードすると最新検証結果が表示されます。<br><br>
-    <a href="h11_live_hallucination_report.html" target="_blank" style="color:var(--blue)">📄 詳細検証レポートを開く →</a>
-  `;
-  setTimeout(() => {
-    content.innerHTML = '';
-    content.appendChild(helpDiv);
-    // 既存データがあれば表示
-    if (_verifyData) {
-      renderVerify();
-    }
-  }, 1500);
+    <br>または<a href="h11_live_hallucination_report.html" target="_blank" style="color:var(--blue)">📄 詳細レポートを開く</a>
+  </div>`;
 }
 
-function renderVerify() {
-  if (!_verifyData) {
-    document.getElementById('verify-content').innerHTML = `
-      <div style="padding:30px;text-align:center;color:var(--muted2)">
-        まだ検証データがありません。<br>
-        <button onclick="runVerifyCheck()" style="margin-top:12px;background:var(--blue);color:white;border:none;padding:8px 18px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer">再検証する方法を見る</button>
-      </div>`;
-    return;
-  }
-  const v = _verifyData;
-  const pc = v.btc_price_comparison || {};
-  const ev = v.ema200_verification || {};
-  const tv = v.trade_verification || {};
-  const tp = v.theoretical_parts || {};
-
-  const verdict = v.overall_verdict || 'UNKNOWN';
-  let verdictCls = 'pl-y', verdictIcon = '⚠️', verdictText = verdict;
-  if (verdict === 'PASS') { verdictCls = 'pl-g'; verdictIcon = '✅'; verdictText = 'ALL PASS'; }
-  else if (verdict === 'FAIL') { verdictCls = 'pl-r'; verdictIcon = '❌'; }
-  else if (verdict.startsWith('WARN')) { verdictCls = 'pl-y'; verdictIcon = '⚠️'; }
-
-  const checkTime = new Date(v.check_timestamp);
-  const ageMin = Math.round((Date.now() - checkTime.getTime()) / 60000);
-
-  // 取引所比較表
-  let exTable = '<table class="ttable"><thead><tr><th>取引所</th><th>価格</th><th style="text-align:right">Binance比</th><th style="text-align:right">取得時間</th></tr></thead><tbody>';
-  (pc.sources || []).forEach(s => {
-    if (s.ok) {
-      const dev = s.deviation_from_binance_pct;
-      const cls = dev === undefined ? '' : (Math.abs(dev) < 0.5 ? 'g' : Math.abs(dev) < 2 ? 'y' : 'r');
-      exTable += `<tr><td><b>${s.source}</b></td><td>$${Number(s.price).toLocaleString(undefined,{maximumFractionDigits:2})}</td>
-        <td class="${cls}" style="text-align:right">${dev !== undefined ? (dev >= 0 ? '+' : '') + dev.toFixed(4) + '%' : '—'}</td>
-        <td style="text-align:right;color:var(--muted)">${s.elapsed_ms}ms</td></tr>`;
-    } else {
-      exTable += `<tr><td><b>${s.source}</b></td><td colspan="3" style="color:var(--red);text-align:left">❌ ${(s.error||'').substring(0,60)}</td></tr>`;
-    }
-  });
-  exTable += '</tbody></table>';
-
-  let html = `
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
-      <span class="pill ${verdictCls}" style="font-size:12px;padding:4px 12px">${verdictIcon} ${verdictText}</span>
-      <span style="color:var(--muted2);font-size:11px">検証実行: ${checkTime.toLocaleString('ja-JP')} (${ageMin}分前)</span>
-    </div>
-
-    <div class="sig-section" style="padding:0">
-      <div class="sig-ttl">🔧 ① ボット稼働状態</div>
-      <div class="tf3">
-        <div class="tfbox"><div class="tfn">プロセス</div><div class="tfd ${v.bot_process?.running?'g':'r'}">${v.bot_process?.running?'✅動作中':'❌停止'}</div><div class="tfs">PID: ${(v.bot_process?.pids||[]).join(',')||'—'}</div></div>
-        <div class="tfbox"><div class="tfn">state更新</div><div class="tfd ${v.state_file?.fresh?'g':v.state_file?.fresh_2h?'y':'r'}">${v.state_file?.age_minutes!==undefined?v.state_file.age_minutes+'分前':'—'}</div><div class="tfs">demo_state.json</div></div>
-        <div class="tfbox"><div class="tfn">Tick数</div><div class="tfd b">${v.state_file?.state?.ticks_processed||0}</div><div class="tfs">累計実行</div></div>
-      </div>
-    </div>
-
-    <div class="sig-section" style="padding:0;margin-top:20px">
-      <div class="sig-ttl">💹 ② BTC価格 取引所照合</div>
-      <div class="tf3">
-        <div class="tfbox"><div class="tfn">Bot記録</div><div class="tfd b">$${Number(pc.bot_recorded_price||0).toLocaleString()}</div></div>
-        <div class="tfbox"><div class="tfn">成功/全</div><div class="tfd g">${pc.successful_count||0}/${(pc.sources||[]).length}</div></div>
-        <div class="tfbox"><div class="tfn">最大乖離</div><div class="tfd ${pc.max_deviation_pct<0.5?'g':pc.max_deviation_pct<2?'y':'r'}">${pc.max_deviation_pct!==null?pc.max_deviation_pct.toFixed(3)+'%':'—'}</div></div>
-      </div>
-      ${exTable}
-    </div>
-
-    <div class="sig-section" style="padding:0;margin-top:20px">
-      <div class="sig-ttl">📊 ③ EMA200 独立再計算</div>
-      <div class="tf3">
-        <div class="tfbox"><div class="tfn">Bot記録</div><div class="tfd b">$${Number(ev.bot_recorded_ema200||0).toLocaleString()}</div></div>
-        <div class="tfbox"><div class="tfn">独立計算</div><div class="tfd g">$${Number(ev.independent_ema200||0).toLocaleString()}</div></div>
-        <div class="tfbox"><div class="tfn">誤差</div><div class="tfd ${ev.diff_pct<0.1?'g':'y'}">${ev.diff_pct!==undefined?ev.diff_pct.toFixed(4)+'%':'—'}</div></div>
-      </div>
-    </div>
-
-    <div class="sig-section" style="padding:0;margin-top:20px">
-      <div class="sig-ttl">📝 ④ トレード履歴検証</div>
-      ${tv.total === 0 ?
-        `<div style="background:var(--bg3);border-radius:8px;padding:14px;color:var(--text);font-size:13px">
-          <b style="color:var(--blue)">ℹ️ 取引履歴なし (0件)</b><br>
-          <span style="color:var(--muted2)">${tv.note || ''}</span>
-        </div>` :
-        `<div class="tf3">
-          <div class="tfbox"><div class="tfn">取引数</div><div class="tfd">${tv.total}</div></div>
-          <div class="tfbox"><div class="tfn">OHLC範囲内</div><div class="tfd g">${tv.verified_ok}</div></div>
-          <div class="tfbox"><div class="tfn">範囲外</div><div class="tfd ${tv.verified_bad>0?'r':'g'}">${tv.verified_bad}</div></div>
-        </div>`
-      }
-    </div>
-
-    <div class="sig-section" style="padding:0;margin-top:20px">
-      <div class="sig-ttl">🧮 ⑤ ACH / USDT 理論値</div>
-      <div class="tf3">
-        <div class="tfbox"><div class="tfn">ACH 理論</div><div class="tfd ${tp.ach?.match?'g':'y'}">$${tp.ach?.theoretical_value?.toFixed(2)||'—'}</div><div class="tfs">vs 実$${tp.ach?.actual_value?.toFixed(2)||'—'}</div></div>
-        <div class="tfbox"><div class="tfn">USDT 理論</div><div class="tfd ${tp.usdt?.match?'g':'y'}">$${tp.usdt?.theoretical_value?.toFixed(2)||'—'}</div><div class="tfs">vs 実$${tp.usdt?.actual_value?.toFixed(2)||'—'}</div></div>
-        <div class="tfbox"><div class="tfn">経過</div><div class="tfd">${tp.hours_elapsed?.toFixed(1)||'—'}h</div><div class="tfs">複利基準</div></div>
-      </div>
-    </div>
-
-    <div style="margin-top:20px;padding:14px 18px;background:#1e293b;border-radius:8px;border:1px solid var(--border2)">
-      <a href="h11_live_hallucination_report.html" target="_blank" style="color:var(--blue);text-decoration:none;font-size:13px">
-        📄 詳細検証レポートを別タブで開く →
-      </a>
-    </div>
-  `;
-  document.getElementById('verify-content').innerHTML = html;
-}
-
-function render() {
-  if (!_state) return;
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// メインレンダー
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function render(){
+  if(!_state) return;
   const d = _state;
+  document.getElementById('updated').textContent = '更新: '+fmtTimeShort(d.last_update);
 
-  // ヘッダー
-  document.getElementById('updated').textContent = '更新: ' + fmtTimeShort(d.last_update);
-
-  // 各部価値計算
   const btcVal = d.btc_part.cash + d.btc_part.btc_qty * d.btc_part.last_btc_price;
-  const achVal = d.ach_part.cash;
+  const achVal = d.ach_part.virtual_equity || d.ach_part.cash || 0;
   const usdtVal = d.usdt_part.cash;
   const total = d.total_equity;
   const pnl = total - d.initial_capital;
   const pnlPct = (total / d.initial_capital - 1) * 100;
 
-  // 統計バー
-  const eqEl = document.getElementById('s-eq');
-  eqEl.textContent = formatMoneyCompact(total);
-  eqEl.className = 'sb-val ' + pctClass(pnl);
-  document.getElementById('s-eq2').textContent = '初期 ' + formatMoneyCompact(d.initial_capital);
+  // 統計バー (カウントアップ)
+  animateValue(document.getElementById('s-eq'),'total',total,formatMoneyCompact);
+  document.getElementById('s-eq').className = 'sb-val '+pctClass(pnl);
+  document.getElementById('s-eq2').textContent = '初期 '+formatMoneyCompact(d.initial_capital);
 
   const pnlEl = document.getElementById('s-pnl');
-  pnlEl.textContent = (pnl >= 0 ? '+' : '') + formatMoneyCompact(pnl);
-  pnlEl.className = 'sb-val ' + pctClass(pnl);
+  animateValue(pnlEl,'pnl',pnl,n=>(n>=0?'+':'')+formatMoneyCompact(n));
+  pnlEl.className = 'sb-val '+pctClass(pnl);
   document.getElementById('s-pnl2').textContent = formatPct(pnlPct);
 
-  document.getElementById('s-btc').textContent = formatMoneyCompact(btcVal);
-  document.getElementById('s-btc2').textContent = (btcVal / total * 100).toFixed(1) + '%';
-  document.getElementById('s-ach').textContent = formatMoneyCompact(achVal);
-  document.getElementById('s-ach2').textContent = (achVal / total * 100).toFixed(1) + '%';
-  document.getElementById('s-usdt').textContent = formatMoneyCompact(usdtVal);
-  document.getElementById('s-usdt2').textContent = (usdtVal / total * 100).toFixed(1) + '%';
-  document.getElementById('s-trades').textContent = (d.trades || []).length + '件';
-
-  // 1年予測
-  const proj1y = total * 1.548;
-  document.getElementById('s-proj').textContent = formatMoneyCompact(proj1y);
+  animateValue(document.getElementById('s-btc'),'btcv',btcVal,formatMoneyCompact);
+  document.getElementById('s-btc2').textContent = (btcVal/total*100).toFixed(1)+'%';
+  animateValue(document.getElementById('s-ach'),'achv',achVal,formatMoneyCompact);
+  document.getElementById('s-ach2').textContent = (achVal/total*100).toFixed(1)+'%';
+  animateValue(document.getElementById('s-usdt'),'usdtv',usdtVal,formatMoneyCompact);
+  document.getElementById('s-usdt2').textContent = (usdtVal/total*100).toFixed(1)+'%';
+  document.getElementById('s-trades').textContent = (d.trades||[]).length+'件';
+  document.getElementById('s-proj').textContent = formatMoneyCompact(total*1.548);
 
   // DDバー
   const dd = d.max_dd_observed || 0;
   const ddNum = document.getElementById('ddnum');
-  ddNum.textContent = '-' + dd.toFixed(2) + '%';
-  ddNum.className = 'dd-num ' + (dd < 10 ? 'g' : dd < 30 ? 'y' : 'r');
+  ddNum.textContent = '-'+dd.toFixed(2)+'%';
+  ddNum.className = 'dd-num '+(dd<10?'g':dd<30?'y':'r');
   const ddFill = document.getElementById('ddfill');
-  ddFill.style.width = Math.min(100, dd * 2) + '%';
-  if (dd < 10) ddFill.style.background = 'var(--green)';
-  else if (dd < 30) ddFill.style.background = 'var(--yellow)';
-  else ddFill.style.background = 'var(--red)';
+  ddFill.style.width = Math.min(100,dd*2)+'%';
+  if(dd<10) ddFill.style.background='var(--green)';
+  else if(dd<30) ddFill.style.background='var(--yellow)';
+  else ddFill.style.background='var(--red)';
   const ddPill = document.getElementById('ddpill');
-  if (dd < 10) { ddPill.className = 'dd-pill ddp-ok'; ddPill.textContent = '正常'; }
-  else if (dd < 30) { ddPill.className = 'dd-pill ddp-warn'; ddPill.textContent = '警戒'; }
-  else { ddPill.className = 'dd-pill ddp-danger'; ddPill.textContent = '危険'; }
+  if(dd<10){ddPill.className='dd-pill ddp-ok';ddPill.textContent='正常'}
+  else if(dd<30){ddPill.className='dd-pill ddp-warn';ddPill.textContent='警戒'}
+  else{ddPill.className='dd-pill ddp-danger';ddPill.textContent='危険'}
 
   // BTC情報
   const btcPrice = d.btc_part.last_btc_price;
   const ema = d.btc_part.last_ema200;
   const signal = d.btc_part.last_signal;
-  document.getElementById('btcprice').textContent = 'BTC: $' + Math.round(btcPrice).toLocaleString();
+  document.getElementById('btcprice').textContent = 'BTC: $'+Math.round(btcPrice).toLocaleString();
 
   const sigEl = document.getElementById('btc-signal');
-  const sigSubEl = document.getElementById('btc-signal-sub');
-  if (signal === 'BUY') { sigEl.textContent = 'BUY'; sigEl.className = 'info-val g'; sigSubEl.textContent = '買い転換'; }
-  else if (signal === 'SELL') { sigEl.textContent = 'SELL'; sigEl.className = 'info-val r'; sigSubEl.textContent = '売り転換'; }
-  else if (signal === 'HOLD-IN') { sigEl.textContent = 'HOLD'; sigEl.className = 'info-val b'; sigSubEl.textContent = '保有中'; }
-  else { sigEl.textContent = 'WAIT'; sigEl.className = 'info-val'; sigSubEl.textContent = '現金待機'; }
+  const sigSub = document.getElementById('btc-signal-sub');
+  if(signal==='BUY'){sigEl.textContent='BUY';sigEl.className='info-val g';sigSub.textContent='買い転換'}
+  else if(signal==='SELL'){sigEl.textContent='SELL';sigEl.className='info-val r';sigSub.textContent='売り転換'}
+  else if(signal==='HOLD-IN'){sigEl.textContent='HOLD';sigEl.className='info-val b';sigSub.textContent='保有中'}
+  else{sigEl.textContent='WAIT';sigEl.className='info-val';sigSub.textContent='現金待機'}
 
-  document.getElementById('btc-ema').textContent = '$' + Math.round(ema).toLocaleString();
-  const emaDiff = ema > 0 ? ((btcPrice - ema) / ema * 100) : 0;
-  document.getElementById('btc-ema-sub').textContent = (emaDiff >= 0 ? '+' : '') + emaDiff.toFixed(1) + '%差';
+  document.getElementById('btc-ema').textContent = '$'+Math.round(ema).toLocaleString();
+  const emaDiff = ema>0?((btcPrice-ema)/ema*100):0;
+  document.getElementById('btc-ema-sub').textContent = (emaDiff>=0?'+':'')+emaDiff.toFixed(1)+'%差';
 
   const change24h = d.btc_24h_change_pct ?? 0;
   const ch24El = document.getElementById('btc-24h');
-  ch24El.textContent = (change24h >= 0 ? '+' : '') + change24h.toFixed(2) + '%';
-  ch24El.className = 'info-val ' + pctClass(change24h);
+  ch24El.textContent = (change24h>=0?'+':'')+change24h.toFixed(2)+'%';
+  ch24El.className = 'info-val '+pctClass(change24h);
 
-  // 大きな総資産表示
-  document.getElementById('big-equity').textContent = formatMoney(total);
-  document.getElementById('big-equity').className = 'bd-val ' + pctClass(pnl);
+  // ヒーロー表示
+  const heroEq = document.getElementById('big-equity');
+  animateValue(heroEq,'heroEq',total,formatMoney);
+  heroEq.className = 'hero-val '+pctClass(pnl);
   const bigPnl = document.getElementById('big-pnl');
-  bigPnl.textContent = '損益: ' + (pnl >= 0 ? '+' : '') + formatMoney(pnl) + ' (' + formatPct(pnlPct) + ')';
-  bigPnl.className = 'bd-sub ' + pctClass(pnl);
+  bigPnl.innerHTML = '損益: <span class="pnl '+pctClass(pnl)+'">'+(pnl>=0?'+':'')+formatMoney(pnl)+' ('+formatPct(pnlPct)+')</span>';
+
+  // tick age
+  const lastUpdate = new Date(d.last_update);
+  const ageSec = Math.round((Date.now() - lastUpdate.getTime())/1000);
+  const tickAgeEl = document.getElementById('tick-age');
+  if(tickAgeEl) tickAgeEl.textContent = ageSec<60?ageSec+'秒前':Math.round(ageSec/60)+'分前+ticks'+d.ticks_processed;
 
   // ライブタブテーブル
-  const btcStatus = d.btc_part.position ?
-    '<span class="pill pl-g">🟢 保有中</span>' :
+  const btcStatus = d.btc_part.position ? '<span class="pill pl-g">🟢 保有中</span>' : '<span class="pill pl-b">⚪ 現金待機</span>';
+  const achPositions = d.ach_part.positions || {};
+  const achStatus = Object.keys(achPositions).length > 0 ?
+    `<span class="pill pl-g">🟢 ${Object.keys(achPositions).length}銘柄保有</span>` :
     '<span class="pill pl-b">⚪ 現金待機</span>';
-  const ltbody = `
-    <tr class="lrow-b">
-      <td><b style="color:var(--orange)">₿ BTC</b><div style="font-size:10px;color:var(--muted)">EMA200戦略</div></td>
+
+  document.getElementById('ltbody').innerHTML = `
+    <tr class="lrow-o"><td><b style="color:var(--orange)">₿ BTC</b><div style="font-size:10px;color:var(--muted)">EMA200</div></td>
       <td>${btcStatus}</td>
       <td style="text-align:right;color:var(--blue)">${formatMoneyCompact(d.btc_part.cash)}</td>
-      <td style="text-align:right">${d.btc_part.btc_qty > 0 ? d.btc_part.btc_qty.toFixed(6) + ' BTC' : '—'}</td>
-      <td style="text-align:right;font-weight:700">${formatMoneyCompact(btcVal)}</td>
-    </tr>
-    <tr class="lrow-g">
-      <td><b style="color:var(--green)">⚡ ACH</b><div style="font-size:10px;color:var(--muted)">動的レバ戦略</div></td>
-      <td><span class="pill pl-g">🟢 仮想成長中</span></td>
-      <td style="text-align:right;color:var(--blue)">—</td>
-      <td style="text-align:right;color:var(--muted2)">期待+55%/年</td>
-      <td style="text-align:right;font-weight:700">${formatMoneyCompact(achVal)}</td>
-    </tr>
-    <tr>
-      <td><b style="color:var(--blue)">💵 USDT</b><div style="font-size:10px;color:var(--muted)">ステーブル+金利</div></td>
+      <td style="text-align:right">${d.btc_part.btc_qty>0?d.btc_part.btc_qty.toFixed(6)+' BTC':'—'}</td>
+      <td style="text-align:right;font-weight:700">${formatMoneyCompact(btcVal)}</td></tr>
+    <tr class="lrow-g"><td><b style="color:var(--green)">⚡ ACH</b><div style="font-size:10px;color:var(--muted)">Top3モメンタム</div></td>
+      <td>${achStatus}</td>
+      <td style="text-align:right;color:var(--blue)">${formatMoneyCompact(d.ach_part.cash||0)}</td>
+      <td style="text-align:right;color:var(--muted2)">${Object.keys(achPositions).join(', ')||'—'}</td>
+      <td style="text-align:right;font-weight:700">${formatMoneyCompact(achVal)}</td></tr>
+    <tr class="lrow-b"><td><b style="color:var(--blue)">💵 USDT</b><div style="font-size:10px;color:var(--muted)">ステーブル</div></td>
       <td><span class="pill pl-b">🔵 保有中</span></td>
       <td style="text-align:right;color:var(--blue)">${formatMoneyCompact(usdtVal)}</td>
       <td style="text-align:right;color:var(--muted2)">年3%金利</td>
-      <td style="text-align:right;font-weight:700">${formatMoneyCompact(usdtVal)}</td>
-    </tr>
+      <td style="text-align:right;font-weight:700">${formatMoneyCompact(usdtVal)}</td></tr>
   `;
-  document.getElementById('ltbody').innerHTML = ltbody;
 
   // ポートフォリオタブ
   document.getElementById('pf-eq').textContent = formatMoneyCompact(total);
-  document.getElementById('pf-eq').className = 'pfv ' + pctClass(pnl);
-  document.getElementById('pf-eqs').textContent = '初期 ' + formatMoneyCompact(d.initial_capital);
-  document.getElementById('pf-pnl').textContent = (pnl >= 0 ? '+' : '') + formatMoneyCompact(pnl);
-  document.getElementById('pf-pnl').className = 'pfv ' + pctClass(pnl);
+  document.getElementById('pf-eq').className = 'pfv '+pctClass(pnl);
+  document.getElementById('pf-eqs').textContent = '初期 '+formatMoneyCompact(d.initial_capital);
+  document.getElementById('pf-pnl').textContent = (pnl>=0?'+':'')+formatMoneyCompact(pnl);
+  document.getElementById('pf-pnl').className = 'pfv '+pctClass(pnl);
   document.getElementById('pf-pnls').textContent = formatPct(pnlPct);
   document.getElementById('pf-peak').textContent = formatMoneyCompact(d.peak_equity);
   document.getElementById('pf-btc').textContent = formatMoneyCompact(btcVal);
-  document.getElementById('pf-btcsub').textContent = d.btc_part.position ? '保有中' : '現金待機';
+  document.getElementById('pf-btcsub').textContent = d.btc_part.position?'保有中':'現金待機';
   document.getElementById('pf-ach').textContent = formatMoneyCompact(achVal);
+  document.getElementById('pf-achsub').textContent = (d.ach_part.strategy||'momentum_top3')+' / '+Object.keys(achPositions).length+'銘柄';
   document.getElementById('pf-usdt').textContent = formatMoneyCompact(usdtVal);
 
   // 予測タブ
   document.getElementById('pj-now').textContent = formatMoneyCompact(total);
-  const proj1 = total * 1.548;
-  const proj5 = total * Math.pow(1.548, 5);
+  const proj1 = total*1.548;
+  const proj5 = total*Math.pow(1.548,5);
   document.getElementById('pj-1y').textContent = formatMoneyCompact(proj1);
-  document.getElementById('pj-1ys').textContent = (proj1/total).toFixed(2) + '倍';
+  document.getElementById('pj-1ys').textContent = (proj1/total).toFixed(2)+'倍';
   document.getElementById('pj-5y').textContent = formatMoneyCompact(proj5);
-  document.getElementById('pj-5ys').textContent = (proj5/total).toFixed(1) + '倍';
-
-  // 年別成長
-  let gHtml = '';
-  for (let y = 1; y <= 5; y++) {
-    const v = total * Math.pow(1.548, y);
-    const gain = v - total;
-    gHtml += `<tr><td>${y}年後</td><td style="text-align:right">${formatMoneyCompact(v)}</td>
-      <td style="text-align:right" class="g">+${formatMoneyCompact(gain)}</td>
+  document.getElementById('pj-5ys').textContent = (proj5/total).toFixed(1)+'倍';
+  let gh='';
+  for(let y=1;y<=5;y++){
+    const v=total*Math.pow(1.548,y);
+    const g=v-total;
+    gh+=`<tr><td>${y}年後</td><td style="text-align:right">${formatMoneyCompact(v)}</td>
+      <td style="text-align:right" class="g">+${formatMoneyCompact(g)}</td>
       <td style="text-align:right"><b>${(v/total).toFixed(2)}倍</b></td></tr>`;
   }
-  document.getElementById('growth-tbody').innerHTML = gHtml;
+  document.getElementById('growth-tbody').innerHTML = gh;
 
-  // トレード履歴
-  const trades = (d.trades || []).slice().reverse();
-  let trHtml = '';
-  if (trades.length === 0) {
-    trHtml = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted)">まだ取引がありません<br><span style="font-size:11px">BTC &lt; EMA200 のため現金待機中</span></td></tr>';
+  // 取引履歴
+  const trades = (d.trades||[]).slice().reverse();
+  let trh = '';
+  if(trades.length===0){
+    trh = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted)">まだ取引がありません<br><span style="font-size:11px">BTC < EMA200 のため現金待機中</span></td></tr>';
   } else {
-    trades.forEach(t => {
-      const pillCls = t.action === 'BUY' ? 'pl-g' : 'pl-r';
-      const icon = t.action === 'BUY' ? '🟢' : '🔴';
-      trHtml += `<tr>
-        <td style="color:var(--muted2);font-size:11px">${fmtTime(t.ts)}</td>
+    trades.forEach(t=>{
+      const cls = t.action==='BUY'?'pl-g':'pl-r';
+      const icon = t.action==='BUY'?'🟢':'🔴';
+      trh += `<tr><td style="color:var(--muted2);font-size:11px">${fmtTime(t.ts)}</td>
         <td><b>${t.part}</b></td>
-        <td><span class="pill ${pillCls}">${icon} ${t.action}</span></td>
-        <td style="text-align:right">${formatMoneyCompact(t.price)}</td>
-        <td style="text-align:right">${t.qty}</td>
-        <td style="text-align:right;font-weight:700">${formatMoneyCompact(t.value_usd || 0)}</td>
-      </tr>`;
+        <td><span class="pill ${cls}">${icon} ${t.action}</span></td>
+        <td>${t.symbol||'—'}</td>
+        <td style="text-align:right">$${Number(t.price).toLocaleString(undefined,{maximumFractionDigits:4})}</td>
+        <td style="text-align:right;font-weight:700">${formatMoneyCompact(t.value_usd||0)}</td></tr>`;
     });
   }
-  document.getElementById('trade-tbody').innerHTML = trHtml;
+  document.getElementById('trade-tbody').innerHTML = trh;
 
-  // ログ
+  // システムログ
   const logBox = document.getElementById('logbox');
   let logHtml = '';
-  const eh = d.equity_history || [];
-  const recent = eh.slice(-20).reverse();
-  recent.forEach(e => {
-    logHtml += `<div class="logrow">
-      <span class="logts">${fmtTimeShort(e.ts)}</span>
-      <span class="logmsg"><span class="lc-i">📊 総資産</span> <b>${formatMoneyCompact(e.total)}</b>
-      <span class="lc-c">BTC ${formatMoneyCompact(e.btc)}</span>
-      <span class="lc-g">ACH ${formatMoneyCompact(e.ach)}</span>
-      <span class="lc-b">USDT ${formatMoneyCompact(e.usdt)}</span></span>
-    </div>`;
+  const recent = (d.equity_history||[]).slice(-20).reverse();
+  recent.forEach(e=>{
+    logHtml += `<div class="logrow"><span class="logts">${fmtTimeShort(e.ts)}</span>
+      <span class="logmsg"><span class="lc-i">📊</span> <b>${formatMoneyCompact(e.total)}</b>
+      <span class="lc-c">B${formatMoneyCompact(e.btc)}</span>
+      <span class="lc-g">A${formatMoneyCompact(e.ach)}</span>
+      <span class="lc-b">U${formatMoneyCompact(e.usdt)}</span></span></div>`;
   });
-  if (trades.length > 0) {
-    trades.slice(0, 10).forEach(t => {
-      const cls = t.action === 'BUY' ? 'lc-g' : 'lc-e';
-      logHtml = `<div class="logrow">
-        <span class="logts">${fmtTimeShort(t.ts)}</span>
-        <span class="logmsg ${cls}">
-        ${t.action === 'BUY' ? '🟢 BUY' : '🔴 SELL'}
-        ${t.part} @ ${formatMoneyCompact(t.price)}
-        </span>
-      </div>` + logHtml;
-    });
-  }
-  if (logHtml === '') logHtml = '<div class="loading">ログ準備中...</div>';
+  trades.slice(0,10).forEach(t=>{
+    const cls = t.action==='BUY'?'lc-g':'lc-e';
+    logHtml = `<div class="logrow"><span class="logts">${fmtTimeShort(t.ts)}</span>
+      <span class="logmsg ${cls}">${t.action==='BUY'?'🟢 BUY':'🔴 SELL'} ${t.part}${t.symbol?':'+t.symbol:''} @ ${formatMoneyCompact(t.price)}</span>
+    </div>` + logHtml;
+  });
+  if(logHtml==='') logHtml='<div class="loading">ログ準備中...</div>';
   logBox.innerHTML = logHtml;
-  document.getElementById('log-count').textContent = recent.length + '件';
+  document.getElementById('log-count').textContent = recent.length+'件';
 
-  // チャート
   renderCharts(d);
 }
 
-function renderCharts(d) {
-  if (typeof Chart === 'undefined') return;
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// チャート
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderCharts(d){
+  if(typeof Chart==='undefined') return;
+  const tc = themeColors();
 
-  // 資産推移
-  const eh = d.equity_history || [];
-  if (eh.length > 0) {
+  const eh = d.equity_history||[];
+  if(eh.length>0 && document.getElementById('equityChart')){
     const ctx = document.getElementById('equityChart');
-    if (ctx) {
-      if (equityChart) equityChart.destroy();
-      equityChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: eh.map(e => fmtTime(e.ts)),
-          datasets: [
-            {label:'総資産', data:eh.map(e=>e.total), borderColor:'#ffca28', backgroundColor:'rgba(255,202,40,0.08)', borderWidth:2.5, fill:true, pointRadius:0, tension:0.2},
-            {label:'BTC', data:eh.map(e=>e.btc), borderColor:'#ffa726', borderWidth:1.3, pointRadius:0, tension:0.2, borderDash:[4,3]},
-            {label:'ACH', data:eh.map(e=>e.ach), borderColor:'#00e676', borderWidth:1.3, pointRadius:0, tension:0.2, borderDash:[4,3]},
-            {label:'USDT', data:eh.map(e=>e.usdt), borderColor:'#4fc3f7', borderWidth:1.3, pointRadius:0, tension:0.2, borderDash:[4,3]}
-          ]
-        },
-        options: {
-          responsive:true, maintainAspectRatio:false,
-          plugins:{legend:{labels:{color:'#c8d8ea',boxWidth:10,font:{size:10}}}},
-          scales:{
-            y:{ticks:{color:'#4e7291',callback:v=>'$'+v.toLocaleString()},grid:{color:'#162840'}},
-            x:{ticks:{color:'#4e7291',maxTicksLimit:6,font:{size:10}},grid:{color:'#162840'}}
-          }
-        }
-      });
-    }
-  }
-
-  // BTC vs EMA200
-  const bph = d.btc_price_history || [];
-  if (bph.length > 0) {
-    const ctx = document.getElementById('btcChart');
-    if (ctx) {
-      if (btcChart) btcChart.destroy();
-      btcChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: bph.map(e => fmtTime(e.ts)),
-          datasets: [
-            {label:'BTC価格', data:bph.map(e=>e.price), borderColor:'#ffa726', backgroundColor:'rgba(255,167,38,0.1)', borderWidth:2, fill:true, pointRadius:0, tension:0.2},
-            {label:'EMA200', data:bph.map(e=>e.ema200), borderColor:'#ec4899', borderWidth:2, pointRadius:0, tension:0.2, borderDash:[6,4]}
-          ]
-        },
-        options: {
-          responsive:true, maintainAspectRatio:false,
-          plugins:{legend:{labels:{color:'#c8d8ea',boxWidth:10,font:{size:10}}}},
-          scales:{
-            y:{ticks:{color:'#4e7291',callback:v=>'$'+v.toLocaleString()},grid:{color:'#162840'}},
-            x:{ticks:{color:'#4e7291',maxTicksLimit:6,font:{size:10}},grid:{color:'#162840'}}
-          }
-        }
-      });
-    }
-  }
-
-  // 円グラフ (配分)
-  const pieCtx = document.getElementById('pieChart');
-  if (pieCtx) {
-    const btcVal = d.btc_part.cash + d.btc_part.btc_qty * d.btc_part.last_btc_price;
-    const achVal = d.ach_part.cash;
-    const usdtVal = d.usdt_part.cash;
-    if (pieChart) pieChart.destroy();
-    pieChart = new Chart(pieCtx, {
-      type:'doughnut',
-      data:{
-        labels:['BTC枠','ACH枠','USDT枠'],
-        datasets:[{data:[btcVal,achVal,usdtVal], backgroundColor:['#ffa726','#00e676','#4fc3f7'], borderColor:'#0d1c2e', borderWidth:3}]
-      },
-      options:{
-        responsive:true, maintainAspectRatio:false,
-        plugins:{legend:{position:'right', labels:{color:'#c8d8ea',boxWidth:12,font:{size:12}}}}
-      }
+    if(equityChart) equityChart.destroy();
+    equityChart = new Chart(ctx, {
+      type:'line', data:{labels:eh.map(e=>fmtTime(e.ts)), datasets:[
+        {label:'総資産',data:eh.map(e=>e.total),borderColor:'#ffca28',backgroundColor:'rgba(255,202,40,0.08)',borderWidth:2.5,fill:true,pointRadius:0,tension:0.2},
+        {label:'BTC',data:eh.map(e=>e.btc),borderColor:'#ffa726',borderWidth:1.3,pointRadius:0,tension:0.2,borderDash:[4,3]},
+        {label:'ACH',data:eh.map(e=>e.ach),borderColor:'#00e676',borderWidth:1.3,pointRadius:0,tension:0.2,borderDash:[4,3]},
+        {label:'USDT',data:eh.map(e=>e.usdt),borderColor:'#4fc3f7',borderWidth:1.3,pointRadius:0,tension:0.2,borderDash:[4,3]}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{labels:{color:tc.text,boxWidth:10,font:{size:10}}}},
+        scales:{y:{ticks:{color:tc.muted,callback:v=>'$'+v.toLocaleString()},grid:{color:tc.grid}},x:{ticks:{color:tc.muted,maxTicksLimit:6,font:{size:10}},grid:{color:tc.grid}}}}
     });
+  }
+
+  const bph = d.btc_price_history||[];
+  if(bph.length>0 && document.getElementById('btcChart')){
+    const ctx = document.getElementById('btcChart');
+    if(btcChart) btcChart.destroy();
+    btcChart = new Chart(ctx, {
+      type:'line', data:{labels:bph.map(e=>fmtTime(e.ts)), datasets:[
+        {label:'BTC価格',data:bph.map(e=>e.price),borderColor:'#ffa726',backgroundColor:'rgba(255,167,38,0.1)',borderWidth:2,fill:true,pointRadius:0,tension:0.2},
+        {label:'EMA200',data:bph.map(e=>e.ema200),borderColor:'#ec4899',borderWidth:2,pointRadius:0,tension:0.2,borderDash:[6,4]}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{labels:{color:tc.text,boxWidth:10,font:{size:10}}}},
+        scales:{y:{ticks:{color:tc.muted,callback:v=>'$'+v.toLocaleString()},grid:{color:tc.grid}},x:{ticks:{color:tc.muted,maxTicksLimit:6,font:{size:10}},grid:{color:tc.grid}}}}
+    });
+  }
+
+  // 円グラフ (ライブ + ポートフォリオ)
+  const btcV = d.btc_part.cash + d.btc_part.btc_qty * d.btc_part.last_btc_price;
+  const achV = d.ach_part.virtual_equity || d.ach_part.cash || 0;
+  const usdtV = d.usdt_part.cash;
+  const pieData = {
+    labels:['BTC枠 (40%)','ACH枠 (40%)','USDT枠 (20%)'],
+    datasets:[{data:[btcV,achV,usdtV],backgroundColor:['#ffa726','#00e676','#4fc3f7'],
+      borderColor:getComputedStyle(document.documentElement).getPropertyValue('--bg2'),borderWidth:3,hoverOffset:8}]
+  };
+  const pieOpts = {responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'right',labels:{color:tc.text,boxWidth:12,font:{size:11},padding:10}},
+    tooltip:{callbacks:{label:ctx=>{const v=ctx.parsed;const sum=ctx.dataset.data.reduce((a,b)=>a+b,0);return ctx.label+': $'+Math.round(v).toLocaleString()+' ('+(v/sum*100).toFixed(1)+'%)'}}}}};
+
+  if(document.getElementById('heroPieChart')){
+    if(heroPieChart) heroPieChart.destroy();
+    heroPieChart = new Chart(document.getElementById('heroPieChart'),{type:'doughnut',data:pieData,options:pieOpts});
+  }
+  if(document.getElementById('pieChart')){
+    if(pieChart) pieChart.destroy();
+    pieChart = new Chart(document.getElementById('pieChart'),{type:'doughnut',data:pieData,options:pieOpts});
   }
 }
 
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ヒートマップ
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function returnToColor(ret){
+  const r = Math.max(-60, Math.min(200, ret));
+  if(r >= 0){
+    const t = Math.min(r/100, 1);
+    const g = Math.round(34 + t*(21-34));
+    const gc = Math.round(197 + t*(128-197));
+    return `rgb(${g}, ${gc}, 94)`;
+  } else {
+    const t = Math.abs(r)/60;
+    const red = Math.round(239 - t*(239-185));
+    return `rgb(${red}, 68, 68)`;
+  }
+}
+
+function renderHeatmap(){
+  if(!_state) return;
+  const ach = _state.ach_part || {};
+  const hm = _state.momentum_heatmap || ach.last_returns || null;
+  const content = document.getElementById('heatmap-content');
+  if(!hm || (Array.isArray(hm) && hm.length===0) || (typeof hm==='object' && Object.keys(hm).length===0)){
+    content.innerHTML = '<div class="loading" style="grid-column:1/-1">ヒートマップデータ待機中...<br><span style="font-size:11px">次回リバランス時(月初)に50銘柄のリターンデータが取得されます。ACH が現金待機中の間は生成されません。</span></div>';
+    return;
+  }
+  const items = Array.isArray(hm) ? hm : Object.entries(hm).map(([s,r])=>({symbol:s,return_pct:r.return_pct||r}));
+  items.sort((a,b)=>b.return_pct - a.return_pct);
+  let html = '';
+  items.forEach(it=>{
+    const color = returnToColor(it.return_pct);
+    const sign = it.return_pct >= 0 ? '+' : '';
+    html += `<div class="hm-tile" style="background:${color}" title="${it.symbol}: ${sign}${it.return_pct.toFixed(1)}%">
+      <div class="hm-sym">${it.symbol}</div>
+      <div class="hm-ret">${sign}${it.return_pct.toFixed(0)}%</div>
+    </div>`;
+  });
+  content.innerHTML = html;
+  const lastRb = ach.last_rebalance;
+  if(lastRb) document.getElementById('heat-updated').textContent = '最終更新: '+fmtTime(lastRb);
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// タイムライン
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderTimeline(){
+  if(!_state) return;
+  const d = _state;
+  const events = [];
+  // 取引イベント
+  (d.trades||[]).forEach(t=>{
+    events.push({
+      ts: t.ts,
+      type: t.action==='BUY'?'good':'bad',
+      icon: t.action==='BUY'?'🟢':'🔴',
+      msg: `${t.action} ${t.part}${t.symbol?' '+t.symbol:''} @ ${formatMoneyCompact(t.price)}`,
+      detail: t.reason ? `理由: ${t.reason}` : (t.pnl_usd !== undefined ? `損益: ${t.pnl_usd>=0?'+':''}${formatMoneyCompact(t.pnl_usd)}` : '')
+    });
+  });
+  // 起動イベント
+  if(d.started_at){
+    events.push({
+      ts: d.started_at, type:'info', icon:'🚀',
+      msg: 'H11Bot 起動',
+      detail: `初期資金 ${formatMoneyCompact(d.initial_capital)} でデモ運用開始`
+    });
+  }
+  // ピーク更新 (equity_history から検出、簡略版: 最新ピーク時刻)
+  if(d.peak_equity && d.peak_equity > d.initial_capital * 1.001){
+    // 最初にpeak到達した時刻を探す
+    const eh = d.equity_history||[];
+    const peakEntry = eh.find(e=>Math.abs(e.total - d.peak_equity) < 0.01);
+    if(peakEntry){
+      events.push({
+        ts: peakEntry.ts, type:'good', icon:'🎯',
+        msg: `ピーク資産更新: ${formatMoneyCompact(d.peak_equity)}`,
+        detail: `元本比 ${formatPct((d.peak_equity/d.initial_capital - 1)*100)}`
+      });
+    }
+  }
+  // DD警告 (簡略: 現DD が閾値超えていれば通知)
+  if(d.max_dd_observed >= 5){
+    events.push({
+      ts: d.last_update, type:'warn', icon:'⚠️',
+      msg: `最大DD ${d.max_dd_observed.toFixed(2)}% に到達`,
+      detail: 'ピークから下落継続中'
+    });
+  }
+  events.sort((a,b)=>new Date(b.ts).getTime() - new Date(a.ts).getTime());
+  let html = '';
+  if(events.length === 0){
+    html = '<div class="loading">まだ記録するイベントがありません。<br><span style="font-size:11px">取引・大きな資産変動があれば記録されます</span></div>';
+  } else {
+    events.forEach(e=>{
+      html += `<div class="tl-item">
+        <div class="tl-dot ${e.type}">${e.icon}</div>
+        <div class="tl-content">
+          <div class="tl-time">${fmtTime(e.ts)}</div>
+          <div class="tl-msg">${e.msg}</div>
+          ${e.detail?'<div class="tl-detail">'+e.detail+'</div>':''}
+        </div>
+      </div>`;
+    });
+  }
+  document.getElementById('timeline-content').innerHTML = html;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// バッジ
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderBadges(){
+  if(!_state) return;
+  const d = _state;
+  const now = Date.now();
+  const startedMs = d.started_at ? new Date(d.started_at).getTime() : now;
+  const uptimeH = (now - startedMs) / 3600000;
+  const uptimeDays = uptimeH / 24;
+  const ticks = d.ticks_processed || 0;
+  const trades = (d.trades||[]).length;
+  const dd = d.max_dd_observed || 0;
+  const pnl = d.total_equity - d.initial_capital;
+  const peakBeat = d.peak_equity > d.initial_capital;
+  const buys = (d.trades||[]).filter(t=>t.action==='BUY').length;
+  const sells = (d.trades||[]).filter(t=>t.action==='SELL').length;
+
+  const BADGES = [
+    {icon:'🚀', name:'初稼働', desc:'ボットを初めて起動', earned: ticks > 0},
+    {icon:'💯', name:'100 Tick', desc:'100回の価格チェック完了', earned: ticks >= 100},
+    {icon:'🔄', name:'1000 Tick', desc:'1000回チェック', earned: ticks >= 1000},
+    {icon:'⏰', name:'1日稼働', desc:'24時間連続稼働', earned: uptimeH >= 24},
+    {icon:'📅', name:'1週間稼働', desc:'7日連続稼働', earned: uptimeDays >= 7},
+    {icon:'🗓️', name:'1ヶ月稼働', desc:'30日連続稼働', earned: uptimeDays >= 30},
+    {icon:'🎯', name:'初ピーク', desc:'元本を超えた瞬間', earned: peakBeat},
+    {icon:'🟢', name:'初BUY', desc:'最初の買いシグナル', earned: buys >= 1},
+    {icon:'🔴', name:'初SELL', desc:'最初の売りシグナル', earned: sells >= 1},
+    {icon:'📈', name:'+1%達成', desc:'元本比 +1% 到達', earned: pnl > d.initial_capital * 0.01},
+    {icon:'💰', name:'+10%達成', desc:'元本比 +10% 到達', earned: pnl > d.initial_capital * 0.10},
+    {icon:'🤑', name:'+50%達成', desc:'元本比 +50% 到達', earned: pnl > d.initial_capital * 0.50},
+    {icon:'💎', name:'+100%達成', desc:'元本2倍に到達', earned: pnl > d.initial_capital * 1.00},
+    {icon:'🛡️', name:'守りの鉄人', desc:'DD 5%未満をキープ', earned: dd < 5 && uptimeDays >= 3},
+    {icon:'💪', name:'耐性10%', desc:'DD 10%を耐えた', earned: dd >= 10},
+    {icon:'🦾', name:'耐性20%', desc:'DD 20%を耐えた', earned: dd >= 20},
+    {icon:'👑', name:'不屈の精神', desc:'DD 30%を耐えてプラス復帰', earned: dd >= 30 && pnl > 0},
+    {icon:'📋', name:'取引10件', desc:'累計10取引', earned: trades >= 10},
+    {icon:'📊', name:'取引50件', desc:'累計50取引', earned: trades >= 50},
+    {icon:'🏅', name:'取引100件', desc:'累計100取引', earned: trades >= 100},
+  ];
+  const earned = BADGES.filter(b=>b.earned).length;
+  document.getElementById('badge-count').textContent = `${earned}/${BADGES.length} 獲得`;
+  let html = '';
+  BADGES.forEach(b=>{
+    html += `<div class="badge ${b.earned?'earned':''}">
+      <div class="badge-icon">${b.icon}</div>
+      <div class="badge-name">${b.name}</div>
+      <div class="badge-desc">${b.desc}</div>
+      ${b.earned?'<div class="badge-date">✨ 獲得済</div>':'<div class="badge-date">未獲得</div>'}
+    </div>`;
+  });
+  document.getElementById('badge-grid').innerHTML = html;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 検証
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderVerify(){
+  if(!_verifyData){
+    document.getElementById('verify-content').innerHTML = '<div class="loading">検証データがありません。<br><button onclick="runVerifyCheck()" style="margin-top:12px;background:var(--blue);color:white;border:none;padding:8px 18px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer">再検証方法</button></div>';
+    return;
+  }
+  const v = _verifyData;
+  const pc = v.btc_price_comparison||{};
+  const ev = v.ema200_verification||{};
+  const tv = v.trade_verification||{};
+  const verdict = v.overall_verdict||'UNKNOWN';
+  let vCls='pl-y', vIcon='⚠️', vTxt=verdict;
+  if(verdict==='PASS'){vCls='pl-g';vIcon='✅';vTxt='ALL PASS'}
+  else if(verdict==='FAIL'){vCls='pl-r';vIcon='❌'}
+  else if(verdict.startsWith('WARN')){vCls='pl-y';vIcon='⚠️'}
+  const ct = new Date(v.check_timestamp);
+  const ageMin = Math.round((Date.now()-ct.getTime())/60000);
+  let et = '<table class="ttable"><thead><tr><th>取引所</th><th>価格</th><th style="text-align:right">乖離</th></tr></thead><tbody>';
+  (pc.sources||[]).forEach(s=>{
+    if(s.ok){
+      const dev=s.deviation_from_binance_pct;
+      const cls = dev===undefined?'':(Math.abs(dev)<0.5?'g':Math.abs(dev)<2?'y':'r');
+      et += `<tr><td><b>${s.source}</b></td><td>$${Number(s.price).toLocaleString(undefined,{maximumFractionDigits:2})}</td><td class="${cls}" style="text-align:right">${dev!==undefined?(dev>=0?'+':'')+dev.toFixed(4)+'%':'—'}</td></tr>`;
+    } else {
+      et += `<tr><td><b>${s.source}</b></td><td colspan="2" style="color:var(--red);text-align:left">❌ ${(s.error||'').substring(0,40)}</td></tr>`;
+    }
+  });
+  et += '</tbody></table>';
+  document.getElementById('verify-content').innerHTML = `
+    <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center">
+      <span class="pill ${vCls}" style="font-size:12px;padding:4px 12px">${vIcon} ${vTxt}</span>
+      <span style="color:var(--muted2);font-size:11px">${ct.toLocaleString('ja-JP')} (${ageMin}分前)</span>
+    </div>
+    <div class="sig-ttl">💹 BTC価格 取引所照合</div>
+    <div class="tf3">
+      <div class="tfbox"><div class="tfn">Bot記録</div><div class="tfd b">$${Number(pc.bot_recorded_price||0).toLocaleString()}</div></div>
+      <div class="tfbox"><div class="tfn">成功</div><div class="tfd g">${pc.successful_count}/${(pc.sources||[]).length}</div></div>
+      <div class="tfbox"><div class="tfn">最大乖離</div><div class="tfd ${pc.max_deviation_pct<0.5?'g':'y'}">${pc.max_deviation_pct!==null?pc.max_deviation_pct.toFixed(3)+'%':'—'}</div></div>
+    </div>
+    ${et}
+    <div class="sig-ttl" style="margin-top:20px">📊 EMA200 独立検証</div>
+    <div class="tf3">
+      <div class="tfbox"><div class="tfn">Bot記録</div><div class="tfd b">$${Number(ev.bot_recorded_ema200||0).toLocaleString()}</div></div>
+      <div class="tfbox"><div class="tfn">独立計算</div><div class="tfd g">$${Number(ev.independent_ema200||0).toLocaleString()}</div></div>
+      <div class="tfbox"><div class="tfn">誤差</div><div class="tfd ${ev.diff_pct<0.1?'g':'y'}">${ev.diff_pct!==undefined?ev.diff_pct.toFixed(4)+'%':'—'}</div></div>
+    </div>
+    <div style="margin-top:20px;padding:12px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px">
+      <a href="h11_live_hallucination_report.html" target="_blank" style="color:var(--blue);font-size:13px">📄 詳細検証レポートを開く →</a>
+    </div>`;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 初期化
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 fetchState();
 fetchVerifyData();
-setInterval(fetchState, 10000);
-setInterval(fetchVerifyData, 60000); // 検証データは1分ごと
+setInterval(fetchState,10000);
+setInterval(fetchVerifyData,60000);
 </script>
 </body>
 </html>

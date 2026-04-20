@@ -191,6 +191,36 @@ def ach_update(state, btc_price_now, btc_ema200):
         if days_since >= ACH_REBALANCE_DAYS:
             needs_rebalance = True
 
+    # ヒートマップが未生成 or 古い (24時間以上) なら再取得だけする
+    hm_refresh = False
+    if not state.get("momentum_heatmap"):
+        hm_refresh = True
+    else:
+        hm_updated = state.get("momentum_heatmap_updated")
+        if hm_updated:
+            last_hm = datetime.fromisoformat(hm_updated.replace("Z", "+00:00"))
+            if last_hm.tzinfo is None:
+                last_hm = last_hm.replace(tzinfo=timezone.utc)
+            if (now - last_hm).total_seconds() >= 86400:  # 24時間経過
+                hm_refresh = True
+
+    # リバランスせずとも、ヒートマップ独立更新
+    if hm_refresh and not needs_rebalance:
+        log(f"🔍 [ヒートマップ独立更新] {len(ACH_UNIVERSE)}銘柄モメンタム取得中...")
+        try:
+            returns = fetch_momentum_returns(ACH_UNIVERSE, ACH_LOOKBACK_DAYS)
+            hm_data = [
+                {"symbol": s, "return_pct": r["return_pct"]}
+                for s, r in returns.items() if "return_pct" in r
+            ]
+            hm_data.sort(key=lambda x: x["return_pct"], reverse=True)
+            state["momentum_heatmap"] = hm_data
+            state["momentum_heatmap_updated"] = now_iso
+            log(f"   ✅ ヒートマップ更新完了 ({len(hm_data)}銘柄)")
+            hm_refresh = False  # 既に取得したので以降スキップ
+        except Exception as e:
+            log(f"   ⚠️ ヒートマップ取得失敗: {e}")
+
     # まず保有中ポジションを時価評価 (Tickごとに更新)
     current_prices = {}
     if ach.get("positions"):
@@ -242,6 +272,18 @@ def ach_update(state, btc_price_now, btc_ema200):
         # BTCレジーム判定: bear regime (BTC < EMA200) は新規購入スキップ = 現金待機
         if btc_price_now < btc_ema200:
             log(f"   ⚠️ BTC < EMA200 (Bear regime) → ACH 新規購入スキップ、現金待機")
+            # Bear時でもヒートマップは生成 (観察用)
+            if hm_refresh:
+                log(f"   🔍 ヒートマップ用に{len(ACH_UNIVERSE)}銘柄モメンタム取得中...")
+                returns = fetch_momentum_returns(ACH_UNIVERSE, ACH_LOOKBACK_DAYS)
+                hm_data = [
+                    {"symbol": s, "return_pct": r["return_pct"]}
+                    for s, r in returns.items() if "return_pct" in r
+                ]
+                hm_data.sort(key=lambda x: x["return_pct"], reverse=True)
+                state["momentum_heatmap"] = hm_data
+                state["momentum_heatmap_updated"] = now_iso
+                log(f"   ✅ ヒートマップ生成完了 ({len(hm_data)}銘柄)")
             ach["last_rebalance"] = now_iso
             ach["last_regime"] = "bear_skip"
             ach["virtual_equity"] = ach["cash"]
@@ -250,6 +292,14 @@ def ach_update(state, btc_price_now, btc_ema200):
         # モメンタム上位3銘柄を選定
         log(f"   🔍 {len(ACH_UNIVERSE)}銘柄のモメンタム取得中...")
         returns = fetch_momentum_returns(ACH_UNIVERSE, ACH_LOOKBACK_DAYS)
+        # ヒートマップ用に全銘柄のリターンをstateに保存
+        hm_data = [
+            {"symbol": s, "return_pct": r["return_pct"]}
+            for s, r in returns.items() if "return_pct" in r
+        ]
+        hm_data.sort(key=lambda x: x["return_pct"], reverse=True)
+        state["momentum_heatmap"] = hm_data
+        state["momentum_heatmap_updated"] = now_iso
         top = select_top_n_momentum(returns, ACH_TOP_N)
         if not top:
             log(f"   ⚠️ 候補銘柄なし、現金待機")
