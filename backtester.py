@@ -336,10 +336,12 @@ class Backtester:
                 tp = price - atr * self.config.tp_atr_mult
                 sl = price + atr * self.config.sl_atr_mult
 
-            # リスク1%でポジションサイズ計算
+            # リスク1%でポジションサイズ計算（修正版: SL到達時に正確にbalance×max_riskだけ損失）
+            # 損失 = size_usd × sl_pct × leverage（PnL計算で×levされるため）
+            # balance × max_risk = size_usd × sl_pct × leverage を size_usd について解く
             sl_dist = abs(price - sl)
             sl_pct  = safe_div(sl_dist, price)
-            size_usd = safe_div(balance * self.config.max_risk_per_trade, sl_pct / leverage)
+            size_usd = safe_div(balance * self.config.max_risk_per_trade, sl_pct * leverage)
             qty     = safe_div(size_usd, price)
 
             # 手数料考慮のエントリー価格
