@@ -1,0 +1,116 @@
+{
+  "new_strategies": [
+    {
+      "name": "Ichimoku Cloud 1x",
+      "r23": {
+        "total_return_pct": 37.77,
+        "monthly_avg": 3.48,
+        "win_rate_pct": 33.3,
+        "max_dd_pct": 17.45
+      },
+      "r24": {
+        "total_return_pct": -10.99,
+        "monthly_avg": 0.13,
+        "win_rate_pct": 50.0,
+        "max_dd_pct": 39.02
+      },
+      "avg": 1.805
+    },
+    {
+      "name": "Ichimoku Cloud 2x",
+      "r23": {
+        "total_return_pct": 70.39,
+        "monthly_avg": 6.18,
+        "win_rate_pct": 33.3,
+        "max_dd_pct": 31.69
+      },
+      "r24": {
+        "total_return_pct": -30.18,
+        "monthly_avg": 0.46,
+        "win_rate_pct": 50.0,
+        "max_dd_pct": 64.86
+      },
+      "avg": 3.32
+    },
+    {
+      "name": "SuperTrend(10,3) 1x",
+      "r23": {
+        "total_return_pct": 51.79,
+        "monthly_avg": 4.4,
+        "win_rate_pct": 58.3,
+        "max_dd_pct": 25.12
+      },
+      "r24": {
+        "total_return_pct": 33.28,
+        "monthly_avg": 4.35,
+        "win_rate_pct": 41.7,
+        "max_dd_pct": 39.08
+      },
+      "avg": 4.375
+    },
+    {
+      "name": "SuperTrend(10,3) 2x",
+      "r23": {
+        "total_return_pct": 99.89,
+        "monthly_avg": 7.98,
+        "win_rate_pct": 58.3,
+        "max_dd_pct": 41.79
+      },
+      "r24": {
+        "total_return_pct": 46.71,
+        "monthly_avg": 8.53,
+        "win_rate_pct": 41.7,
+        "max_dd_pct": 59.17
+      },
+      "avg": 8.254999999999999
+    },
+    {
+      "name": "SuperTrend(20,2) 1x",
+      "r23": {
+        "total_return_pct": 42.39,
+        "monthly_avg": 3.8,
+        "win_rate_pct": 50.0,
+        "max_dd_pct": 32.95
+      },
+      "r24": {
+        "total_return_pct": 28.88,
+        "monthly_avg": 3.36,
+        "win_rate_pct": 33.3,
+        "max_dd_pct": 40.27
+      },
+      "avg": 3.58
+    },
+    {
+      "name": "Hull MA(20) 1x",
+      "r23": {
+        "total_return_pct": 10.85,
+        "monthly_avg": 1.55,
+        "win_rate_pct": 41.7,
+        "max_dd_pct": 21.52
+      },
+      "r24": {
+        "total_return_pct": 7.11,
+        "monthly_avg": 1.57,
+        "win_rate_pct": 50.0,
+        "max_dd_pct": 46.06
+      },
+      "avg": 1.56
+    },
+    {
+      "name": "Hull MA(20) 2x",
+      "r23": {
+        "total_return_pct": 11.76,
+        "monthly_avg": 3.2,
+        "win_rate_pct": 41.7,
+        "max_dd_pct": 40.0
+      },
+      "r24": {
+        "total_return_pct": -1.37,
+        "monthly_avg": 3.69,
+        "win_rate_pct": 50.0,
+        "max_dd_pct": 71.38
+      },
+      "avg": 3.4450000000000003
+    }
+  ]
+}
