@@ -248,6 +248,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
   <div class="tb" id="t-trades" onclick="sw('trades')">📋 取引履歴</div>
   <div class="tb" id="t-proj" onclick="sw('proj')">🔮 将来予測</div>
   <div class="tb" id="t-strat" onclick="sw('strat')">⚙️ 戦略</div>
+  <div class="tb" id="t-verify" onclick="sw('verify')">🔍 検証</div>
 </div>
 
 <div class="main">
@@ -413,6 +414,26 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helv
       </div>
     </div>
 
+    <!-- 🔍 検証タブ (ハルシネーションチェック) -->
+    <div class="tpane" id="p-verify">
+      <div class="chart-wrap">
+        <div class="chart-toolbar">
+          <span class="chart-title">🔍 ライブ・ハルシネーションチェック</span>
+          <button onclick="runVerifyCheck()" style="background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue);padding:4px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer">再検証</button>
+        </div>
+        <div style="padding:14px 18px;font-size:12px;color:var(--muted2);background:var(--bg2);border-bottom:1px solid var(--border)">
+          Binance / MEXC / Bitget / yfinance / CoinGecko / CoinMarketCap で現在BTC価格を相互照合し、EMA200独立再計算も検証します。
+        </div>
+      </div>
+
+      <div style="padding:14px" id="verify-content">
+        <div class="loading" style="padding:40px;text-align:center;color:var(--muted2)">
+          検証データを読み込み中...<br>
+          <span style="font-size:11px">（まだ一度も実行されていない場合は「再検証」ボタンを押してください）</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- 右パネル: ログ -->
@@ -455,6 +476,10 @@ function sw(tab) {
   document.querySelectorAll('.tpane').forEach(e => e.classList.remove('on'));
   document.getElementById('p-' + tab).classList.add('on');
   render();
+  if (tab === 'verify') {
+    if (_verifyData) renderVerify();
+    else fetchVerifyData();
+  }
 }
 
 async function fetchState() {
@@ -468,6 +493,148 @@ async function fetchState() {
     document.getElementById('updated').textContent = '⚠️ 接続エラー';
     document.getElementById('updated').style.color = 'var(--red)';
   }
+}
+
+let _verifyData = null;
+async function fetchVerifyData() {
+  try {
+    const res = await fetch("h11_live_hallucination_check.json?t=" + Date.now(), {cache: "no-store"});
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    _verifyData = await res.json();
+    if (currentTab === 'verify') renderVerify();
+  } catch(e) {
+    console.error("verify fetch error:", e);
+    _verifyData = null;
+  }
+}
+
+function runVerifyCheck() {
+  const content = document.getElementById('verify-content');
+  content.innerHTML = '<div class="loading" style="padding:40px;text-align:center;color:var(--muted2)">検証スクリプト実行中... (約10秒)<br><span style="font-size:11px">検証レポートページを開きます</span></div>';
+  // 検証レポートページを新規タブで開く (スクリプトを手動実行する案内)
+  const helpDiv = document.createElement('div');
+  helpDiv.style.cssText = 'margin-top:20px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:14px;font-size:12px;color:var(--text)';
+  helpDiv.innerHTML = `
+    <b style="color:var(--yellow)">💡 再検証するには</b><br>
+    MacBookのターミナルで以下を実行:<br>
+    <code style="display:block;background:var(--bg);padding:8px 10px;border-radius:4px;margin-top:6px;color:var(--green);font-family:monospace;font-size:11px;overflow-x:auto">python3 /Users/sanosano/projects/kimochi-max/h11_live_hallucination_check.py</code>
+    <br>実行後、このページをリロードすると最新検証結果が表示されます。<br><br>
+    <a href="h11_live_hallucination_report.html" target="_blank" style="color:var(--blue)">📄 詳細検証レポートを開く →</a>
+  `;
+  setTimeout(() => {
+    content.innerHTML = '';
+    content.appendChild(helpDiv);
+    // 既存データがあれば表示
+    if (_verifyData) {
+      renderVerify();
+    }
+  }, 1500);
+}
+
+function renderVerify() {
+  if (!_verifyData) {
+    document.getElementById('verify-content').innerHTML = `
+      <div style="padding:30px;text-align:center;color:var(--muted2)">
+        まだ検証データがありません。<br>
+        <button onclick="runVerifyCheck()" style="margin-top:12px;background:var(--blue);color:white;border:none;padding:8px 18px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer">再検証する方法を見る</button>
+      </div>`;
+    return;
+  }
+  const v = _verifyData;
+  const pc = v.btc_price_comparison || {};
+  const ev = v.ema200_verification || {};
+  const tv = v.trade_verification || {};
+  const tp = v.theoretical_parts || {};
+
+  const verdict = v.overall_verdict || 'UNKNOWN';
+  let verdictCls = 'pl-y', verdictIcon = '⚠️', verdictText = verdict;
+  if (verdict === 'PASS') { verdictCls = 'pl-g'; verdictIcon = '✅'; verdictText = 'ALL PASS'; }
+  else if (verdict === 'FAIL') { verdictCls = 'pl-r'; verdictIcon = '❌'; }
+  else if (verdict.startsWith('WARN')) { verdictCls = 'pl-y'; verdictIcon = '⚠️'; }
+
+  const checkTime = new Date(v.check_timestamp);
+  const ageMin = Math.round((Date.now() - checkTime.getTime()) / 60000);
+
+  // 取引所比較表
+  let exTable = '<table class="ttable"><thead><tr><th>取引所</th><th>価格</th><th style="text-align:right">Binance比</th><th style="text-align:right">取得時間</th></tr></thead><tbody>';
+  (pc.sources || []).forEach(s => {
+    if (s.ok) {
+      const dev = s.deviation_from_binance_pct;
+      const cls = dev === undefined ? '' : (Math.abs(dev) < 0.5 ? 'g' : Math.abs(dev) < 2 ? 'y' : 'r');
+      exTable += `<tr><td><b>${s.source}</b></td><td>$${Number(s.price).toLocaleString(undefined,{maximumFractionDigits:2})}</td>
+        <td class="${cls}" style="text-align:right">${dev !== undefined ? (dev >= 0 ? '+' : '') + dev.toFixed(4) + '%' : '—'}</td>
+        <td style="text-align:right;color:var(--muted)">${s.elapsed_ms}ms</td></tr>`;
+    } else {
+      exTable += `<tr><td><b>${s.source}</b></td><td colspan="3" style="color:var(--red);text-align:left">❌ ${(s.error||'').substring(0,60)}</td></tr>`;
+    }
+  });
+  exTable += '</tbody></table>';
+
+  let html = `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+      <span class="pill ${verdictCls}" style="font-size:12px;padding:4px 12px">${verdictIcon} ${verdictText}</span>
+      <span style="color:var(--muted2);font-size:11px">検証実行: ${checkTime.toLocaleString('ja-JP')} (${ageMin}分前)</span>
+    </div>
+
+    <div class="sig-section" style="padding:0">
+      <div class="sig-ttl">🔧 ① ボット稼働状態</div>
+      <div class="tf3">
+        <div class="tfbox"><div class="tfn">プロセス</div><div class="tfd ${v.bot_process?.running?'g':'r'}">${v.bot_process?.running?'✅動作中':'❌停止'}</div><div class="tfs">PID: ${(v.bot_process?.pids||[]).join(',')||'—'}</div></div>
+        <div class="tfbox"><div class="tfn">state更新</div><div class="tfd ${v.state_file?.fresh?'g':v.state_file?.fresh_2h?'y':'r'}">${v.state_file?.age_minutes!==undefined?v.state_file.age_minutes+'分前':'—'}</div><div class="tfs">demo_state.json</div></div>
+        <div class="tfbox"><div class="tfn">Tick数</div><div class="tfd b">${v.state_file?.state?.ticks_processed||0}</div><div class="tfs">累計実行</div></div>
+      </div>
+    </div>
+
+    <div class="sig-section" style="padding:0;margin-top:20px">
+      <div class="sig-ttl">💹 ② BTC価格 取引所照合</div>
+      <div class="tf3">
+        <div class="tfbox"><div class="tfn">Bot記録</div><div class="tfd b">$${Number(pc.bot_recorded_price||0).toLocaleString()}</div></div>
+        <div class="tfbox"><div class="tfn">成功/全</div><div class="tfd g">${pc.successful_count||0}/${(pc.sources||[]).length}</div></div>
+        <div class="tfbox"><div class="tfn">最大乖離</div><div class="tfd ${pc.max_deviation_pct<0.5?'g':pc.max_deviation_pct<2?'y':'r'}">${pc.max_deviation_pct!==null?pc.max_deviation_pct.toFixed(3)+'%':'—'}</div></div>
+      </div>
+      ${exTable}
+    </div>
+
+    <div class="sig-section" style="padding:0;margin-top:20px">
+      <div class="sig-ttl">📊 ③ EMA200 独立再計算</div>
+      <div class="tf3">
+        <div class="tfbox"><div class="tfn">Bot記録</div><div class="tfd b">$${Number(ev.bot_recorded_ema200||0).toLocaleString()}</div></div>
+        <div class="tfbox"><div class="tfn">独立計算</div><div class="tfd g">$${Number(ev.independent_ema200||0).toLocaleString()}</div></div>
+        <div class="tfbox"><div class="tfn">誤差</div><div class="tfd ${ev.diff_pct<0.1?'g':'y'}">${ev.diff_pct!==undefined?ev.diff_pct.toFixed(4)+'%':'—'}</div></div>
+      </div>
+    </div>
+
+    <div class="sig-section" style="padding:0;margin-top:20px">
+      <div class="sig-ttl">📝 ④ トレード履歴検証</div>
+      ${tv.total === 0 ?
+        `<div style="background:var(--bg3);border-radius:8px;padding:14px;color:var(--text);font-size:13px">
+          <b style="color:var(--blue)">ℹ️ 取引履歴なし (0件)</b><br>
+          <span style="color:var(--muted2)">${tv.note || ''}</span>
+        </div>` :
+        `<div class="tf3">
+          <div class="tfbox"><div class="tfn">取引数</div><div class="tfd">${tv.total}</div></div>
+          <div class="tfbox"><div class="tfn">OHLC範囲内</div><div class="tfd g">${tv.verified_ok}</div></div>
+          <div class="tfbox"><div class="tfn">範囲外</div><div class="tfd ${tv.verified_bad>0?'r':'g'}">${tv.verified_bad}</div></div>
+        </div>`
+      }
+    </div>
+
+    <div class="sig-section" style="padding:0;margin-top:20px">
+      <div class="sig-ttl">🧮 ⑤ ACH / USDT 理論値</div>
+      <div class="tf3">
+        <div class="tfbox"><div class="tfn">ACH 理論</div><div class="tfd ${tp.ach?.match?'g':'y'}">$${tp.ach?.theoretical_value?.toFixed(2)||'—'}</div><div class="tfs">vs 実$${tp.ach?.actual_value?.toFixed(2)||'—'}</div></div>
+        <div class="tfbox"><div class="tfn">USDT 理論</div><div class="tfd ${tp.usdt?.match?'g':'y'}">$${tp.usdt?.theoretical_value?.toFixed(2)||'—'}</div><div class="tfs">vs 実$${tp.usdt?.actual_value?.toFixed(2)||'—'}</div></div>
+        <div class="tfbox"><div class="tfn">経過</div><div class="tfd">${tp.hours_elapsed?.toFixed(1)||'—'}h</div><div class="tfs">複利基準</div></div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;padding:14px 18px;background:#1e293b;border-radius:8px;border:1px solid var(--border2)">
+      <a href="h11_live_hallucination_report.html" target="_blank" style="color:var(--blue);text-decoration:none;font-size:13px">
+        📄 詳細検証レポートを別タブで開く →
+      </a>
+    </div>
+  `;
+  document.getElementById('verify-content').innerHTML = html;
 }
 
 function render() {
@@ -750,7 +917,9 @@ function renderCharts(d) {
 }
 
 fetchState();
+fetchVerifyData();
 setInterval(fetchState, 10000);
+setInterval(fetchVerifyData, 60000); // 検証データは1分ごと
 </script>
 </body>
 </html>

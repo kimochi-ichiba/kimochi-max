@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🚀 H11Bot 自動起動セットアップ</title>
+<style>
+:root{
+  --bg:#060d17;--bg2:#091523;--bg3:#0d1c2e;--bg4:#112338;
+  --border:#162840;--border2:#1d3350;
+  --text:#c8d8ea;--muted:#304d66;--muted2:#4e7291;
+  --green:#00e676;--green-bg:#00e67612;
+  --red:#f44336;--red-bg:#f4433612;
+  --yellow:#ffca28;--yellow-bg:#ffca2812;
+  --blue:#4fc3f7;--blue-bg:#4fc3f712;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helvetica Neue","Hiragino Kaku Gothic ProN",sans-serif;font-size:14px;line-height:1.7;padding:20px}
+.container{max-width:900px;margin:0 auto}
+h1{font-size:26px;color:#fff;margin-bottom:6px}
+h1 em{color:var(--blue);font-style:normal}
+.subtitle{color:var(--muted2);font-size:13px;margin-bottom:24px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:16px}
+h2{font-size:18px;color:var(--yellow);margin:0 0 14px 0;border-left:4px solid var(--blue);padding-left:12px}
+.step{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:16px 20px;margin:12px 0}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--blue);color:#000;font-weight:900;font-size:14px;margin-right:10px}
+.step-title{font-size:16px;font-weight:700;color:#fff;display:flex;align-items:center;margin-bottom:10px}
+.step-body{color:var(--text);font-size:13px;padding-left:38px}
+.cmd-box{background:#0a141f;border:1px solid var(--border2);border-left:3px solid var(--green);padding:12px 16px;border-radius:6px;font-family:ui-monospace,Monaco,monospace;font-size:12px;color:var(--green);margin:10px 0;overflow-x:auto;white-space:nowrap}
+.cmd-box::before{content:"$ ";color:var(--muted)}
+.note-box{background:var(--blue-bg);border:1px solid var(--blue);border-radius:8px;padding:12px 16px;margin:12px 0;color:var(--text);font-size:13px}
+.note-box strong{color:var(--blue)}
+.success-box{background:var(--green-bg);border:1px solid var(--green);border-radius:8px;padding:12px 16px;margin:12px 0;color:var(--text);font-size:13px}
+.warn-box{background:var(--yellow-bg);border:1px solid var(--yellow);border-radius:8px;padding:12px 16px;margin:12px 0;color:var(--text);font-size:13px}
+.back{display:inline-block;margin-bottom:16px;color:var(--muted2);font-size:13px}
+a{color:var(--blue)}
+strong,b{color:#fff}
+ul{padding-left:22px;margin:8px 0}
+li{margin-bottom:4px}
+@media(max-width:640px){body{padding:12px}h1{font-size:20px}.step-body{padding-left:0;margin-top:10px}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back">← レポート一覧に戻る</a>
+
+<h1>🚀 H11Bot <em>自動起動</em> セットアップ</h1>
+<p class="subtitle">Mac を再起動しても H11Bot が自動的に動き続けるように設定します（macOS launchd を使用）</p>
+
+<div class="card">
+  <h2>💡 これで何が解決される？</h2>
+  <p>現在、Mac を再起動すると以下が停止します:</p>
+  <ul>
+    <li>📊 Web サーバー (<code>http://localhost:8080/</code>)</li>
+    <li>🤖 デモランナー (BTC価格の5分毎チェック)</li>
+  </ul>
+  <div class="note-box">
+    <strong>macOS launchd</strong> は、システム起動時に自動でプログラムを動かす仕組みです（Linuxの systemd 相当）。
+    設定すれば、<b>MacBookを起動するだけで自動的に H11Bot が動き始めます</b>。
+    スリープから復帰した時も自動で再起動します。
+  </div>
+</div>
+
+<div class="card">
+  <h2>🛠 セットアップ手順（所要時間 30秒）</h2>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">1</span>ターミナルを開く</div>
+    <div class="step-body">
+      MacBook の <b>ターミナル</b>（Terminal.app）を開きます。<br>
+      Cmd+Space で「ターミナル」と検索すれば開けます。
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">2</span>インストールコマンドを実行</div>
+    <div class="step-body">
+      以下のコマンドをコピーしてターミナルに貼り付け、Enter:
+      <div class="cmd-box">bash /Users/sanosano/projects/kimochi-max/launchd/install.sh</div>
+      実行結果:
+      <ul>
+        <li>✅ <code>~/Library/LaunchAgents/</code> に plist を配置</li>
+        <li>✅ launchctl にサービス登録</li>
+        <li>✅ Web サーバー + デモランナーを起動</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">3</span>動作確認</div>
+    <div class="step-body">
+      ブラウザで以下を開いて、ダッシュボードが見えれば成功:<br>
+      <a href="http://localhost:8080/demo.html" target="_blank">http://localhost:8080/demo.html</a>
+      <div class="success-box">
+        ✅ 今後はMacを再起動しても、自動的に H11Bot が動き続けます🎉
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🔧 管理コマンド</h2>
+
+  <div style="margin:10px 0">
+    <div style="color:var(--yellow);font-size:12px;font-weight:700;margin-bottom:4px">📊 サービス状態確認</div>
+    <div class="cmd-box">launchctl list | grep h11bot</div>
+  </div>
+
+  <div style="margin:10px 0">
+    <div style="color:var(--yellow);font-size:12px;font-weight:700;margin-bottom:4px">🔄 デモランナー再起動</div>
+    <div class="cmd-box">launchctl kickstart -k gui/$(id -u)/com.sanosano.h11bot.demo</div>
+  </div>
+
+  <div style="margin:10px 0">
+    <div style="color:var(--yellow);font-size:12px;font-weight:700;margin-bottom:4px">📄 ログ確認</div>
+    <div class="cmd-box">tail -f /tmp/kimochi_demo.log</div>
+    <div class="cmd-box">tail -f /tmp/kimochi_server.log</div>
+  </div>
+
+  <div style="margin:10px 0">
+    <div style="color:var(--yellow);font-size:12px;font-weight:700;margin-bottom:4px">🛑 自動起動を無効化（アンインストール）</div>
+    <div class="cmd-box">bash /Users/sanosano/projects/kimochi-max/launchd/uninstall.sh</div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>❓ よくある質問</h2>
+
+  <div class="step">
+    <div class="step-title">Q. MacBookをシャットダウンしたらどうなる？</div>
+    <div class="step-body">
+      シャットダウン中は停止します（PCが動いていないので当然）。<br>
+      次回 MacBook を<b>起動（ログイン完了）した時に、自動で復帰</b>します。
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title">Q. スリープ中も動きますか？</div>
+    <div class="step-body">
+      スリープ中は<b>停止します</b>（MacBookの電源設定に従います）。<br>
+      スリープさせたくない場合は:<br>
+      システム設定 → ディスプレイ → 詳細設定 →<br>
+      「ディスプレイがオフのときコンピュータを自動でスリープさせない」を ON にしてください。
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title">Q. エラーが出たらどうする？</div>
+    <div class="step-body">
+      ログを見ると原因が分かります:
+      <div class="cmd-box">tail -50 /tmp/kimochi_demo.log</div>
+      よくある原因:
+      <ul>
+        <li><code>Python not found</code>: Python3がインストールされていない</li>
+        <li><code>port already in use</code>: 別のプロセスがポート8080使用中（<code>lsof -ti:8080 | xargs kill -9</code>で解放）</li>
+        <li><code>permission denied</code>: <code>chmod +x</code> で実行権限付与</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title">Q. MacBookを売却する時は？</div>
+    <div class="step-body">
+      売却前に <code>uninstall.sh</code> を実行すれば、自動起動設定を削除できます。<br>
+      プロジェクトディレクトリも一緒に削除すれば完全に跡は残りません。
+    </div>
+  </div>
+</div>
+
+<div class="card" style="background:#0a2c17;border-color:var(--green)">
+  <h2 style="color:var(--green);border-color:var(--green)">✅ セットアップ後のおすすめ</h2>
+  <ul>
+    <li>📱 iPhone のホーム画面に <code>http://192.168.100.42:8080/demo.html</code> を追加（Safariの共有→ホーム画面に追加）</li>
+    <li>🔔 <a href="/discord_setup.html">Discord</a> または <a href="/slack_setup.html">Slack</a> 通知を設定（取引発生時に即通知）</li>
+    <li>🔍 定期的に <a href="/h11_live_hallucination_report.html">ハルシネーションチェック</a> で健全性確認</li>
+  </ul>
+</div>
+
+</div>
+</body>
+</html>
