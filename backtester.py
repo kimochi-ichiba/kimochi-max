@@ -241,32 +241,55 @@ class Backtester:
                 else:
                     trail_peak = min(trail_peak, price)
 
-                # 決済判定
+                # 決済判定（修正: 高値・安値でintrabar判定、両方ヒット時はSL優先=保守的）
+                bar_high = float(row["high"])
+                bar_low  = float(row["low"])
                 exit_reason = None
+                exit_price  = price  # デフォルトは終値
                 if side == "long":
-                    if price >= tp:              exit_reason = "tp"
-                    elif price <= sl:            exit_reason = "sl"
+                    hit_sl = bar_low  <= sl
+                    hit_tp = bar_high >= tp
+                    if hit_sl:
+                        exit_reason = "sl"
+                        exit_price  = sl
+                    elif hit_tp:
+                        exit_reason = "tp"
+                        exit_price  = tp
                     elif trail_peak > 0:
                         peak_pct = trail_peak / entry - 1
                         if peak_pct >= self.config.trailing_stop_activate:
                             if (price / trail_peak - 1) <= -self.config.trailing_stop_pct:
                                 exit_reason = "trailing"
+                                exit_price  = price
                 else:  # short
-                    if price <= tp:              exit_reason = "tp"
-                    elif price >= sl:            exit_reason = "sl"
+                    hit_sl = bar_high >= sl
+                    hit_tp = bar_low  <= tp
+                    if hit_sl:
+                        exit_reason = "sl"
+                        exit_price  = sl
+                    elif hit_tp:
+                        exit_reason = "tp"
+                        exit_price  = tp
 
                 if exit_reason:
-                    # 決済処理
+                    # 決済処理（修正: スリッページ反映）
                     if side == "long":
-                        pnl = (price - entry) * qty
-                        raw_pct = (price / entry - 1)
+                        exit_filled = exit_price * (1 - self.config.slippage_rate)
+                        pnl = (exit_filled - entry) * qty
+                        raw_pct = (exit_filled / entry - 1)
                     else:
-                        pnl = (entry - price) * qty
-                        raw_pct = (entry / price - 1)
+                        exit_filled = exit_price * (1 + self.config.slippage_rate)
+                        pnl = (entry - exit_filled) * qty
+                        raw_pct = (entry / exit_filled - 1)
 
                     pnl_pct = raw_pct * lev * 100
                     pnl    *= lev
-                    pnl    -= abs(pnl) * self.config.commission_rate * 2  # 往復手数料
+                    # 修正: 手数料は想定価値（notional=size×lev）基準の往復
+                    notional = position.get("size", 0) * lev
+                    pnl     -= notional * self.config.commission_rate * 2
+                    # 修正: Funding手数料（保有時間ベース）
+                    hold_hours = max(0.0, (float(ts.timestamp()) - e_t) / 3600.0) if e_t > 0 else 0.0
+                    pnl     -= notional * self.config.funding_rate_per_hour * hold_hours
 
                     balance += pnl
                     if balance > peak_balance:
@@ -344,9 +367,9 @@ class Backtester:
             size_usd = safe_div(balance * self.config.max_risk_per_trade, sl_pct * leverage)
             qty     = safe_div(size_usd, price)
 
-            # 手数料考慮のエントリー価格
-            entry_price = price * (1 + self.config.commission_rate) if direction == "long" else \
-                          price * (1 - self.config.commission_rate)
+            # 修正: エントリー価格にスリッページのみ反映（手数料は決済時にnotional基準で一括控除）
+            entry_price = price * (1 + self.config.slippage_rate) if direction == "long" else \
+                          price * (1 - self.config.slippage_rate)
 
             position = {
                 "side":       direction,

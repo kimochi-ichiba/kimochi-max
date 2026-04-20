@@ -419,6 +419,7 @@ class Config:
     min_position_usd: float = 5.0           # Binance先物の最小ポジション額 $5
     slippage_rate: float = 0.0003           # 想定スリッページ 0.03%（市場注文の平均ズレ）
     order_reject_rate: float = 0.02         # 約定拒否率 2%（残高不足・流動性不足等）
+    funding_rate_per_hour: float = 0.0000125 # Funding手数料 0.01%/8h = 0.00125%/h（Binance先物平均）
     tax_rate_jp: float = 0.20315            # 日本の税率 20.315%（所得300万円以下想定・住民税込）
 
     # ── ログ設定 ─────────────────────────────────
