@@ -155,8 +155,8 @@ class Config:
     quote_currency: str    = "USDT"        # 決済通貨
 
     # ── レバレッジ（v4.0: 最大5倍 / シグナル強度で動的調整）────────
-    min_leverage: float = 3.0              # 弱シグナル時の最低レバレッジ（v14.0: 2→3倍）
-    max_leverage: float = 5.0             # 強シグナル時の最大レバレッジ（5倍）
+    min_leverage: float = 1.0              # DL MAX 2x: 5年検証で+638%・最強設定
+    max_leverage: float = 2.0             # DL MAX 2x: 過レバで負けないよう2倍上限
     # v14.0: min_leverage=3.0に引き上げ。
     # 理由: 利益額が小さすぎるという課題に対応。最低3倍にすることで
     # 同じポジションサイズでも利益幅が1.5倍になる。SL幅は変えないので

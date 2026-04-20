@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>🔔 Slack通知 設定ガイド</title>
+<style>
+:root{
+  --bg:#060d17;--bg2:#091523;--bg3:#0d1c2e;--bg4:#112338;
+  --border:#162840;--border2:#1d3350;
+  --text:#c8d8ea;--muted:#304d66;--muted2:#4e7291;
+  --green:#00e676;--green-bg:#00e67612;
+  --red:#f44336;--red-bg:#f4433612;
+  --yellow:#ffca28;--yellow-bg:#ffca2812;
+  --blue:#4fc3f7;--blue-bg:#4fc3f712;
+  --purple:#ab47bc;--slack:#4a154b;--slack2:#611f69;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helvetica Neue","Hiragino Kaku Gothic ProN",sans-serif;font-size:14px;line-height:1.7;padding:20px}
+.container{max-width:900px;margin:0 auto}
+h1{font-size:26px;color:#fff;margin-bottom:6px;letter-spacing:-.5px}
+h1 em{color:#ecb22e;font-style:normal}
+.subtitle{color:var(--muted2);font-size:13px;margin-bottom:24px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:16px}
+h2{font-size:18px;color:var(--yellow);margin:0 0 14px 0;border-left:4px solid #ecb22e;padding-left:12px}
+.step{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:16px 20px;margin:12px 0}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#ecb22e;color:var(--slack);font-weight:900;font-size:14px;margin-right:10px}
+.step-title{font-size:16px;font-weight:700;color:#fff;display:flex;align-items:center;margin-bottom:10px}
+.step-body{color:var(--text);font-size:13px;padding-left:38px}
+.step-body ul{padding-left:20px;margin-top:6px}
+.step-body li{margin-bottom:4px}
+code{background:#0a141f;border:1px solid var(--border2);padding:3px 8px;border-radius:4px;font-family:ui-monospace,Monaco,monospace;font-size:12px;color:var(--yellow)}
+.cmd-box{background:#0a141f;border:1px solid var(--border2);border-left:3px solid var(--green);padding:12px 16px;border-radius:6px;font-family:ui-monospace,Monaco,monospace;font-size:12px;color:var(--green);margin:10px 0;overflow-x:auto;white-space:nowrap}
+.cmd-box::before{content:"$ ";color:var(--muted)}
+.warn-box{background:var(--yellow-bg);border:1px solid var(--yellow);border-radius:8px;padding:12px 16px;margin:12px 0;color:var(--text);font-size:13px}
+.warn-box strong{color:var(--yellow)}
+.note-box{background:var(--blue-bg);border:1px solid var(--blue);border-radius:8px;padding:12px 16px;margin:12px 0;color:var(--text);font-size:13px}
+.note-box strong{color:var(--blue)}
+.success-box{background:var(--green-bg);border:1px solid var(--green);border-radius:8px;padding:12px 16px;margin:12px 0;color:var(--text);font-size:13px}
+.success-box strong{color:var(--green)}
+.notify-preview{background:#fff;color:#1d1c1d;border-radius:8px;padding:14px 16px;border-left:4px solid #36a64f;margin:12px 0;font-size:13px}
+.notify-preview.buy{border-left-color:#2eb67d}
+.notify-preview.sell{border-left-color:#e01e5a}
+.notify-preview.alert{border-left-color:#ecb22e}
+.notify-preview.summary{border-left-color:#36c5f0}
+.notify-preview .np-app{font-size:11px;color:#616061;margin-bottom:4px;font-weight:600}
+.notify-preview .np-title{color:#1d1c1d;font-weight:700;margin-bottom:4px}
+.notify-preview .np-desc{color:#616061;font-size:13px;margin-bottom:6px}
+.notify-preview .np-fields{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:4px}
+.notify-preview .np-field{color:#616061;font-size:12px}
+.notify-preview .np-field b{color:#1d1c1d;display:block;font-size:13px;margin-top:2px}
+.compare-table{width:100%;border-collapse:collapse;font-size:13px}
+.compare-table th{text-align:left;padding:10px;background:var(--bg3);color:var(--muted2);font-size:11px;text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px;border-bottom:1px solid var(--border)}
+.compare-table td:first-child{color:var(--yellow);font-weight:700}
+.pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:var(--bg4);color:var(--blue)}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+.back{display:inline-block;margin-bottom:16px;color:var(--muted2);font-size:13px}
+.back:hover{color:var(--text)}
+@media(max-width:640px){
+  body{padding:12px;font-size:13px}
+  h1{font-size:20px}
+  .step-body{padding-left:0;margin-top:10px}
+  .notify-preview .np-fields{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back">← レポート一覧に戻る</a>
+
+<h1>💼 <em>Slack</em> 通知設定</h1>
+<p class="subtitle">H11ボットが取引した時、損失が出た時に、Slackで通知を受け取れるようにします</p>
+
+<div class="card">
+  <h2>💬 Discord と Slack どちらがいい？</h2>
+  <table class="compare-table">
+    <tr><th>観点</th><th>Discord</th><th>Slack</th></tr>
+    <tr><td>手軽さ</td><td>⭐⭐⭐⭐⭐ 超簡単</td><td>⭐⭐⭐ ちょっとだけ手間</td></tr>
+    <tr><td>仕事での利用</td><td>△ カジュアル寄り</td><td>⭐⭐⭐⭐⭐ ビジネス標準</td></tr>
+    <tr><td>既存ワークスペース</td><td>無い場合は作成必要</td><td>既にあれば即利用可</td></tr>
+    <tr><td>iPhone/Android通知</td><td>⭐⭐⭐⭐⭐ 快適</td><td>⭐⭐⭐⭐⭐ 快適</td></tr>
+    <tr><td>通知の見た目</td><td>彩度高い、カラフル</td><td>シンプル、整理され見やすい</td></tr>
+    <tr><td>無料プラン</td><td>無料で基本機能OK</td><td>無料プランで十分</td></tr>
+  </table>
+  <div class="note-box">
+    <strong>📝 おすすめ:</strong> 既に<b>会社や友達とSlackを使っている</b>なら、専用のチャンネルを作ってSlack通知。
+    <b>個人の趣味で完結</b>するならDiscordのほうが簡単です。
+  </div>
+</div>
+
+<div class="card">
+  <h2>📋 この機能でできること</h2>
+  <div class="notify-preview buy">
+    <div class="np-app">H11Bot APP</div>
+    <div class="np-title" style="color:#2eb67d">🟢 買いシグナル発動</div>
+    <div class="np-desc"><b>BTC</b> を買いました</div>
+    <div class="np-fields">
+      <div class="np-field">価格<b>$85,432</b></div>
+      <div class="np-field">数量<b>0.0468</b></div>
+      <div class="np-field">金額<b>$4,000</b></div>
+    </div>
+  </div>
+  <div class="notify-preview sell">
+    <div class="np-app">H11Bot APP</div>
+    <div class="np-title" style="color:#e01e5a">🔴 売りシグナル発動</div>
+    <div class="np-desc"><b>BTC</b> を売りました</div>
+    <div class="np-fields">
+      <div class="np-field">価格<b>$82,100</b></div>
+      <div class="np-field">今回の損益<b style="color:#e01e5a">-$156</b></div>
+      <div class="np-field">EMA200<b>$83,000</b></div>
+    </div>
+  </div>
+  <div class="notify-preview alert">
+    <div class="np-app">H11Bot APP</div>
+    <div class="np-title" style="color:#ecb22e">⚠️ ドローダウン 10% 突破 (警戒)</div>
+    <div class="np-desc">資産がピークから <b>10.23%</b> 下落しました</div>
+    <div class="np-fields">
+      <div class="np-field">現在資産<b>$10,500</b></div>
+      <div class="np-field">ピーク<b>$11,700</b></div>
+      <div class="np-field">下落額<b>-$1,200</b></div>
+    </div>
+  </div>
+  <div class="notify-preview summary">
+    <div class="np-app">H11Bot APP</div>
+    <div class="np-title" style="color:#36c5f0">📊 本日のH11ボット サマリー</div>
+    <div class="np-desc">2026-04-21</div>
+    <div class="np-fields">
+      <div class="np-field">💰 総資産<b>$10,234</b></div>
+      <div class="np-field">📈 損益<b>+$234 (+2.34%)</b></div>
+      <div class="np-field">📉 最大DD<b>-3.21%</b></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🛠 Slack 設定手順（所要時間 3分）</h2>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">1</span>ブラウザで Slack API を開く</div>
+    <div class="step-body">
+      まずブラウザ（iPhone/MacどちらでもOK）で以下のURLにアクセス:<br>
+      <a href="https://api.slack.com/apps" target="_blank">https://api.slack.com/apps</a><br>
+      Slackにログインしていない場合はログインしてください。
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">2</span>新しいアプリを作成</div>
+    <div class="step-body">
+      緑色の「<b>Create New App</b>」ボタンをクリック。<br>
+      表示されたダイアログで「<b>From scratch</b>」（ゼロから作成）を選択。<br>
+      <ul>
+        <li><b>App Name</b>: H11Bot などお好きな名前</li>
+        <li><b>Pick a workspace</b>: 通知を受けたいワークスペースを選択</li>
+      </ul>
+      「<b>Create App</b>」をクリック。
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">3</span>Incoming Webhooks を有効化</div>
+    <div class="step-body">
+      左側メニューの「<b>Incoming Webhooks</b>」をクリック。<br>
+      画面右上のトグルスイッチを「<b>On</b>」に切り替え。
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">4</span>通知チャンネルを選んで Webhook URL を発行</div>
+    <div class="step-body">
+      ページ下部の「<b>Add New Webhook to Workspace</b>」ボタンをクリック。<br>
+      通知を送りたい<b>チャンネル</b>を選択（例: <code>#投資通知</code> など好きなチャンネル）。<br>
+      「<b>許可する</b>」をクリック → <b>Webhook URLが発行されます</b>。<br>
+      <div class="warn-box">
+        <strong>⚠️ 重要:</strong> このURLは秘密です。外部に公開しないでください。
+        このURLを知っている人は、あなたのSlackチャンネルにメッセージを送れます。
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">5</span>Webhook URL をコピー</div>
+    <div class="step-body">
+      発行されたURLの右にある「<b>Copy</b>」ボタンをクリック。<br>
+      以下のような形式です:<br>
+      <code>https://hooks.slack.com/services/T0XXXX/B0XXXX/XXXXX...</code>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">6</span>ターミナルで設定コマンドを実行</div>
+    <div class="step-body">
+      MacBookの<b>ターミナル</b>（Terminal.app）を開き、下記コマンドをコピペして実行:
+      <div class="cmd-box">python3 /Users/sanosano/projects/kimochi-max/discord_notify.py setup</div>
+      URL貼り付けを求められたら、Step 5でコピーしたSlack Webhook URLを貼り付けて Enter。<br>
+      <div class="success-box">
+        ✅ 設定成功すると、すぐにテスト通知がSlackの指定チャンネルに届きます。
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">7</span>ボットを再起動（通知を有効化）</div>
+    <div class="step-body">
+      以下のコマンドで、通知が有効なボットに再起動:
+      <div class="cmd-box">pkill -f demo_runner.py &amp;&amp; cd /Users/sanosano/projects/kimochi-max &amp;&amp; nohup python3 demo_runner.py > /tmp/kimochi_demo.log 2>&amp;1 &amp;</div>
+      これで次のトレード時・DD警告時・日次サマリー時にSlackに通知が届きます🎉
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>💡 ポイント</h2>
+  <div class="note-box">
+    <strong>📱 iPhone/Androidで通知を受け取る:</strong><br>
+    Slack公式アプリをスマホにインストールして、通知設定で「<b>すべての新規メッセージ</b>」にしておけば、トレード発生時に即PUSH通知が届きます。
+  </div>
+  <div class="note-box">
+    <strong>🔕 特定時間帯は通知OFF:</strong><br>
+    Slackには「<b>おやすみモード</b>」があるので、深夜は通知を止める等の設定が本体側でできます。
+  </div>
+  <div class="note-box">
+    <strong>👥 複数人でシェア:</strong><br>
+    チームのチャンネルに通知を流せば、<b>複数人で監視できる</b>のもSlackの強み。
+  </div>
+</div>
+
+<div class="card">
+  <h2>🔧 管理コマンド（DiscordとSlack共通）</h2>
+  <div style="margin:10px 0">
+    <div style="color:var(--yellow);font-size:12px;font-weight:700;margin-bottom:4px">📨 テスト通知</div>
+    <div class="cmd-box">python3 /Users/sanosano/projects/kimochi-max/discord_notify.py test</div>
+  </div>
+  <div style="margin:10px 0">
+    <div style="color:var(--yellow);font-size:12px;font-weight:700;margin-bottom:4px">📋 現在の設定確認</div>
+    <div class="cmd-box">python3 /Users/sanosano/projects/kimochi-max/discord_notify.py status</div>
+  </div>
+  <div style="margin:10px 0">
+    <div style="color:var(--yellow);font-size:12px;font-weight:700;margin-bottom:4px">🔕 通知を一時停止</div>
+    <div class="cmd-box">python3 /Users/sanosano/projects/kimochi-max/discord_notify.py disable</div>
+  </div>
+  <div style="margin:10px 0">
+    <div style="color:var(--yellow);font-size:12px;font-weight:700;margin-bottom:4px">🔔 通知を再開</div>
+    <div class="cmd-box">python3 /Users/sanosano/projects/kimochi-max/discord_notify.py enable</div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>❓ よくある質問</h2>
+
+  <div class="step">
+    <div class="step-title">Q. Slackワークスペースを持っていません</div>
+    <div class="step-body">
+      <a href="https://slack.com/get-started#/createnew" target="_blank">Slackの公式サイト</a>から無料でワークスペースを作成できます（メールアドレスのみで作成可能）。
+      個人利用でも問題ありません。
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title">Q. 通知が届きません</div>
+    <div class="step-body">
+      まず以下のコマンドでテスト送信:
+      <div class="cmd-box">python3 /Users/sanosano/projects/kimochi-max/discord_notify.py test</div>
+      テスト通知が届かない場合:
+      <ul>
+        <li><b>Webhook URLが正しいか</b>: status コマンドで確認</li>
+        <li><b>Slackアプリの権限</b>: Incoming Webhooks が無効化されていないか</li>
+        <li><b>選択したチャンネル</b>: 実は別チャンネルに投稿されていないか</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title">Q. Discord・Slack両方に通知したい</div>
+    <div class="step-body">
+      現在は1つのWebhook URLのみ対応していますが、両方に通知したい場合は設定ファイルを複数URL対応に拡張できます。
+      必要であれば実装しますのでお知らせください。
+    </div>
+  </div>
+</div>
+
+<div class="card" style="background:#0a2c17;border-color:var(--green)">
+  <h2 style="color:var(--green);border-color:var(--green)">✅ 設定完了したら</h2>
+  <p style="color:var(--text)">
+    以下のページでH11ボットの動作状況を常時確認できます:
+  </p>
+  <div style="margin-top:12px">
+    <a href="/demo.html" class="pill" style="background:var(--green-bg);color:var(--green);padding:8px 16px;font-size:13px">🤖 H11 デモトレードダッシュボードへ →</a>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

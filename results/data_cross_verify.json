@@ -1,0 +1,98 @@
+[
+  {
+    "date": "2020-03-13",
+    "event": "COVID暴落の底",
+    "binance": 5570.26,
+    "mexc": 5580.97,
+    "coingecko": null,
+    "deviation_pct": 0.1922710968608294
+  },
+  {
+    "date": "2020-12-17",
+    "event": "2020年末高値",
+    "binance": 22816.99,
+    "mexc": 22807.64,
+    "coingecko": null,
+    "deviation_pct": 0.04099503499705442
+  },
+  {
+    "date": "2021-04-14",
+    "event": "2021年春の高値",
+    "binance": 63019.1,
+    "mexc": 62968.06,
+    "coingecko": null,
+    "deviation_pct": 0.08105696761183506
+  },
+  {
+    "date": "2021-07-20",
+    "event": "2021年中盤の底",
+    "binance": 29775.9,
+    "mexc": 29785.94,
+    "coingecko": null,
+    "deviation_pct": 0.03371854419176997
+  },
+  {
+    "date": "2021-11-10",
+    "event": "2021年ATH (史上最高値)",
+    "binance": 64920.13,
+    "mexc": 64906.53,
+    "coingecko": null,
+    "deviation_pct": 0.020953207635654756
+  },
+  {
+    "date": "2022-06-18",
+    "event": "2022年ルナショック後の底",
+    "binance": 18959.7,
+    "mexc": 18970.77,
+    "coingecko": null,
+    "deviation_pct": 0.058386999794299003
+  },
+  {
+    "date": "2022-11-09",
+    "event": "FTX破綻時",
+    "binance": 15905.0,
+    "mexc": 15914.31,
+    "coingecko": null,
+    "deviation_pct": 0.05853505187047778
+  },
+  {
+    "date": "2023-03-10",
+    "event": "SVB破綻 2023春",
+    "binance": 20140.3,
+    "mexc": 20151.4,
+    "coingecko": null,
+    "deviation_pct": 0.05511337964182353
+  },
+  {
+    "date": "2023-10-23",
+    "event": "2023秋の反発",
+    "binance": 33074.0,
+    "mexc": 33068.08,
+    "coingecko": null,
+    "deviation_pct": 0.01790246062062948
+  },
+  {
+    "date": "2024-03-14",
+    "event": "2024新ATH形成",
+    "binance": 71455.5,
+    "mexc": 71388.93,
+    "coingecko": null,
+    "deviation_pct": 0.09324975174723447
+  },
+  {
+    "date": "2024-08-05",
+    "event": "日本円キャリートレード解消",
+    "binance": 54003.1,
+    "mexc": 53989.98,
+    "coingecko": null,
+    "deviation_pct": 0.0243008054457426
+  },
+  {
+    "date": "2024-12-30",
+    "event": "2024年末",
+    "binance": 92759.3,
+    "mexc": 92792.04,
+    "coingecko": null,
+    "deviation_pct": 0.035295652295770544
+  }
+]

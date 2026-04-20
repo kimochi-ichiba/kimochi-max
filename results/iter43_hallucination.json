@@ -1,0 +1,954 @@
+{
+  "step1_cache": {
+    "n_symbols": 50,
+    "universe50_matched": 50,
+    "btc_data_period": [
+      "2019-09-08",
+      "2024-12-30"
+    ],
+    "btc_data_points": 1941
+  },
+  "step2_coingecko_comparison": {
+    "BTC/USDT": {
+      "error": "CoinGecko取得失敗"
+    },
+    "ETH/USDT": {
+      "error": "CoinGecko取得失敗"
+    },
+    "SOL/USDT": {
+      "error": "CoinGecko取得失敗"
+    }
+  },
+  "step3_yearly_verification": {
+    "independent_btc": {
+      "2020": 302.24,
+      "2021": 59.61,
+      "2022": -64.21,
+      "2023": 155.87,
+      "2024": 119.22
+    },
+    "independent_eth": {
+      "2020": 464.38,
+      "2021": 398.65,
+      "2022": -67.46,
+      "2023": 90.94,
+      "2024": 47.12
+    },
+    "iter43_r01_btc": {
+      "2020": 301.88,
+      "2021": 59.52,
+      "2022": -64.23,
+      "2023": 155.71,
+      "2024": 119.09
+    },
+    "iter43_r02_eth": {
+      "2020": 463.87,
+      "2021": 398.35,
+      "2022": -67.48,
+      "2023": 90.83,
+      "2024": 47.04
+    },
+    "btc_diff_r01_vs_indep": {
+      "2020": -0.36,
+      "2021": -0.09,
+      "2022": -0.02,
+      "2023": -0.16,
+      "2024": -0.13
+    }
+  },
+  "step4_momentum_log": [
+    {
+      "date": "2020-01-01",
+      "regime": "現金",
+      "btc_price": 7197.57,
+      "top3": []
+    },
+    {
+      "date": "2020-02-01",
+      "regime": "投資",
+      "btc_price": 9392.74,
+      "top3": [
+        {
+          "sym": "BCH/USDT",
+          "ret_90d": 104.5
+        },
+        {
+          "sym": "ETH/USDT",
+          "ret_90d": 20.5
+        },
+        {
+          "sym": "XRP/USDT",
+          "ret_90d": 8.5
+        }
+      ]
+    },
+    {
+      "date": "2020-03-01",
+      "regime": "現金",
+      "btc_price": 8537.84,
+      "top3": []
+    },
+    {
+      "date": "2020-04-01",
+      "regime": "現金",
+      "btc_price": 6641.51,
+      "top3": []
+    },
+    {
+      "date": "2020-05-01",
+      "regime": "投資",
+      "btc_price": 8830.52,
+      "top3": [
+        {
+          "sym": "LINK/USDT",
+          "ret_90d": 32.5
+        },
+        {
+          "sym": "XLM/USDT",
+          "ret_90d": 16.9
+        },
+        {
+          "sym": "ETH/USDT",
+          "ret_90d": 15.4
+        }
+      ]
+    },
+    {
+      "date": "2020-06-01",
+      "regime": "投資",
+      "btc_price": 10232.48,
+      "top3": [
+        {
+          "sym": "ADA/USDT",
+          "ret_90d": 66.6
+        },
+        {
+          "sym": "XLM/USDT",
+          "ret_90d": 30.4
+        },
+        {
+          "sym": "VET/USDT",
+          "ret_90d": 15.7
+        }
+      ]
+    },
+    {
+      "date": "2020-07-01",
+      "regime": "投資",
+      "btc_price": 9233.29,
+      "top3": [
+        {
+          "sym": "ADA/USDT",
+          "ret_90d": 202.7
+        },
+        {
+          "sym": "VET/USDT",
+          "ret_90d": 192.3
+        },
+        {
+          "sym": "LINK/USDT",
+          "ret_90d": 105.1
+        }
+      ]
+    },
+    {
+      "date": "2020-08-01",
+      "regime": "投資",
+      "btc_price": 11811.42,
+      "top3": [
+        {
+          "sym": "VET/USDT",
+          "ret_90d": 301.1
+        },
+        {
+          "sym": "ADA/USDT",
+          "ret_90d": 194.9
+        },
+        {
+          "sym": "LINK/USDT",
+          "ret_90d": 123.9
+        }
+      ]
+    },
+    {
+      "date": "2020-09-01",
+      "regime": "投資",
+      "btc_price": 11930.18,
+      "top3": [
+        {
+          "sym": "LINK/USDT",
+          "ret_90d": 257.3
+        },
+        {
+          "sym": "ATOM/USDT",
+          "ret_90d": 148.6
+        },
+        {
+          "sym": "VET/USDT",
+          "ret_90d": 139.5
+        }
+      ]
+    },
+    {
+      "date": "2020-10-01",
+      "regime": "投資",
+      "btc_price": 10612.63,
+      "top3": [
+        {
+          "sym": "LINK/USDT",
+          "ret_90d": 103.6
+        },
+        {
+          "sym": "ATOM/USDT",
+          "ret_90d": 90.9
+        },
+        {
+          "sym": "ALGO/USDT",
+          "ret_90d": 64.3
+        }
+      ]
+    },
+    {
+      "date": "2020-11-01",
+      "regime": "投資",
+      "btc_price": 13752.86,
+      "top3": [
+        {
+          "sym": "BNB/USDT",
+          "ret_90d": 29.5
+        },
+        {
+          "sym": "TRX/USDT",
+          "ret_90d": 29.2
+        },
+        {
+          "sym": "LINK/USDT",
+          "ret_90d": 25.3
+        }
+      ]
+    },
+    {
+      "date": "2020-12-01",
+      "regime": "投資",
+      "btc_price": 18772.7,
+      "top3": [
+        {
+          "sym": "XRP/USDT",
+          "ret_90d": 121.5
+        },
+        {
+          "sym": "XLM/USDT",
+          "ret_90d": 99.0
+        },
+        {
+          "sym": "AAVE/USDT",
+          "ret_90d": 88.4
+        }
+      ]
+    },
+    {
+      "date": "2021-01-01",
+      "regime": "投資",
+      "btc_price": 29337.16,
+      "top3": [
+        {
+          "sym": "ZIL/USDT",
+          "ret_90d": 325.0
+        },
+        {
+          "sym": "SUSHI/USDT",
+          "ret_90d": 215.2
+        },
+        {
+          "sym": "EGLD/USDT",
+          "ret_90d": 187.5
+        }
+      ]
+    },
+    {
+      "date": "2021-02-01",
+      "regime": "投資",
+      "btc_price": 33546.09,
+      "top3": [
+        {
+          "sym": "SUSHI/USDT",
+          "ret_90d": 2378.7
+        },
+        {
+          "sym": "DOGE/USDT",
+          "ret_90d": 1282.9
+        },
+        {
+          "sym": "AAVE/USDT",
+          "ret_90d": 952.3
+        }
+      ]
+    },
+    {
+      "date": "2021-03-01",
+      "regime": "投資",
+      "btc_price": 49592.7,
+      "top3": [
+        {
+          "sym": "FTM/USDT",
+          "ret_90d": 2757.5
+        },
+        {
+          "sym": "DOGE/USDT",
+          "ret_90d": 1422.2
+        },
+        {
+          "sym": "EGLD/USDT",
+          "ret_90d": 1389.4
+        }
+      ]
+    },
+    {
+      "date": "2021-04-01",
+      "regime": "投資",
+      "btc_price": 58794.01,
+      "top3": [
+        {
+          "sym": "CHZ/USDT",
+          "ret_90d": 2484.6
+        },
+        {
+          "sym": "ENJ/USDT",
+          "ret_90d": 1734.6
+        },
+        {
+          "sym": "DOGE/USDT",
+          "ret_90d": 994.2
+        }
+      ]
+    },
+    {
+      "date": "2021-05-01",
+      "regime": "投資",
+      "btc_price": 57836.34,
+      "top3": [
+        {
+          "sym": "SOL/USDT",
+          "ret_90d": 1066.0
+        },
+        {
+          "sym": "DOGE/USDT",
+          "ret_90d": 960.6
+        },
+        {
+          "sym": "VET/USDT",
+          "ret_90d": 704.1
+        }
+      ]
+    },
+    {
+      "date": "2021-06-01",
+      "regime": "現金",
+      "btc_price": 36693.41,
+      "top3": []
+    },
+    {
+      "date": "2021-07-01",
+      "regime": "現金",
+      "btc_price": 33489.96,
+      "top3": []
+    },
+    {
+      "date": "2021-08-01",
+      "regime": "投資",
+      "btc_price": 39846.78,
+      "top3": [
+        {
+          "sym": "AXS/USDT",
+          "ret_90d": 307.0
+        },
+        {
+          "sym": "ETC/USDT",
+          "ret_90d": -3.6
+        },
+        {
+          "sym": "ADA/USDT",
+          "ret_90d": -3.6
+        }
+      ]
+    },
+    {
+      "date": "2021-09-01",
+      "regime": "投資",
+      "btc_price": 48842.94,
+      "top3": [
+        {
+          "sym": "AXS/USDT",
+          "ret_90d": 1444.7
+        },
+        {
+          "sym": "SOL/USDT",
+          "ret_90d": 179.8
+        },
+        {
+          "sym": "SAND/USDT",
+          "ret_90d": 177.5
+        }
+      ]
+    },
+    {
+      "date": "2021-10-01",
+      "regime": "投資",
+      "btc_price": 48123.94,
+      "top3": [
+        {
+          "sym": "AXS/USDT",
+          "ret_90d": 1329.7
+        },
+        {
+          "sym": "FTM/USDT",
+          "ret_90d": 504.9
+        },
+        {
+          "sym": "AVAX/USDT",
+          "ret_90d": 489.0
+        }
+      ]
+    },
+    {
+      "date": "2021-11-01",
+      "regime": "投資",
+      "btc_price": 60942.87,
+      "top3": [
+        {
+          "sym": "FTM/USDT",
+          "ret_90d": 1034.9
+        },
+        {
+          "sym": "SOL/USDT",
+          "ret_90d": 498.0
+        },
+        {
+          "sym": "AVAX/USDT",
+          "ret_90d": 416.6
+        }
+      ]
+    },
+    {
+      "date": "2021-12-01",
+      "regime": "投資",
+      "btc_price": 57209.29,
+      "top3": [
+        {
+          "sym": "SAND/USDT",
+          "ret_90d": 553.6
+        },
+        {
+          "sym": "MANA/USDT",
+          "ret_90d": 370.9
+        },
+        {
+          "sym": "FTM/USDT",
+          "ret_90d": 151.8
+        }
+      ]
+    },
+    {
+      "date": "2022-01-01",
+      "regime": "現金",
+      "btc_price": 47704.35,
+      "top3": []
+    },
+    {
+      "date": "2022-02-01",
+      "regime": "現金",
+      "btc_price": 38680.51,
+      "top3": []
+    },
+    {
+      "date": "2022-03-01",
+      "regime": "現金",
+      "btc_price": 44394.1,
+      "top3": []
+    },
+    {
+      "date": "2022-04-01",
+      "regime": "投資",
+      "btc_price": 46266.2,
+      "top3": [
+        {
+          "sym": "ZIL/USDT",
+          "ret_90d": 140.9
+        },
+        {
+          "sym": "ETC/USDT",
+          "ret_90d": 35.3
+        },
+        {
+          "sym": "SNX/USDT",
+          "ret_90d": 29.0
+        }
+      ]
+    },
+    {
+      "date": "2022-05-01",
+      "regime": "現金",
+      "btc_price": 38440.5,
+      "top3": []
+    },
+    {
+      "date": "2022-06-01",
+      "regime": "現金",
+      "btc_price": 29796.9,
+      "top3": []
+    },
+    {
+      "date": "2022-07-01",
+      "regime": "現金",
+      "btc_price": 19272.0,
+      "top3": []
+    },
+    {
+      "date": "2022-08-01",
+      "regime": "現金",
+      "btc_price": 23257.6,
+      "top3": []
+    },
+    {
+      "date": "2022-09-01",
+      "regime": "現金",
+      "btc_price": 20122.5,
+      "top3": []
+    },
+    {
+      "date": "2022-10-01",
+      "regime": "現金",
+      "btc_price": 19304.0,
+      "top3": []
+    },
+    {
+      "date": "2022-11-01",
+      "regime": "現金",
+      "btc_price": 20472.1,
+      "top3": []
+    },
+    {
+      "date": "2022-12-01",
+      "regime": "現金",
+      "btc_price": 16970.5,
+      "top3": []
+    },
+    {
+      "date": "2023-01-01",
+      "regime": "現金",
+      "btc_price": 16610.3,
+      "top3": []
+    },
+    {
+      "date": "2023-02-01",
+      "regime": "投資",
+      "btc_price": 23730.0,
+      "top3": [
+        {
+          "sym": "APT/USDT",
+          "ret_90d": 152.5
+        },
+        {
+          "sym": "OP/USDT",
+          "ret_90d": 144.6
+        },
+        {
+          "sym": "FTM/USDT",
+          "ret_90d": 124.2
+        }
+      ]
+    },
+    {
+      "date": "2023-03-01",
+      "regime": "投資",
+      "btc_price": 23619.8,
+      "top3": [
+        {
+          "sym": "OP/USDT",
+          "ret_90d": 161.8
+        },
+        {
+          "sym": "GRT/USDT",
+          "ret_90d": 148.4
+        },
+        {
+          "sym": "INJ/USDT",
+          "ret_90d": 124.6
+        }
+      ]
+    },
+    {
+      "date": "2023-04-01",
+      "regime": "投資",
+      "btc_price": 28443.8,
+      "top3": [
+        {
+          "sym": "INJ/USDT",
+          "ret_90d": 307.2
+        },
+        {
+          "sym": "APT/USDT",
+          "ret_90d": 220.2
+        },
+        {
+          "sym": "IMX/USDT",
+          "ret_90d": 188.5
+        }
+      ]
+    },
+    {
+      "date": "2023-05-01",
+      "regime": "投資",
+      "btc_price": 28054.4,
+      "top3": [
+        {
+          "sym": "INJ/USDT",
+          "ret_90d": 149.5
+        },
+        {
+          "sym": "GRT/USDT",
+          "ret_90d": 47.4
+        },
+        {
+          "sym": "IMX/USDT",
+          "ret_90d": 24.4
+        }
+      ]
+    },
+    {
+      "date": "2023-06-01",
+      "regime": "投資",
+      "btc_price": 26805.3,
+      "top3": [
+        {
+          "sym": "INJ/USDT",
+          "ret_90d": 101.6
+        },
+        {
+          "sym": "XRP/USDT",
+          "ret_90d": 34.2
+        },
+        {
+          "sym": "KAVA/USDT",
+          "ret_90d": 25.4
+        }
+      ]
+    },
+    {
+      "date": "2023-07-01",
+      "regime": "投資",
+      "btc_price": 30573.6,
+      "top3": [
+        {
+          "sym": "BCH/USDT",
+          "ret_90d": 137.0
+        },
+        {
+          "sym": "INJ/USDT",
+          "ret_90d": 71.9
+        },
+        {
+          "sym": "MKR/USDT",
+          "ret_90d": 25.2
+        }
+      ]
+    },
+    {
+      "date": "2023-08-01",
+      "regime": "投資",
+      "btc_price": 29701.2,
+      "top3": [
+        {
+          "sym": "BCH/USDT",
+          "ret_90d": 104.0
+        },
+        {
+          "sym": "MKR/USDT",
+          "ret_90d": 91.6
+        },
+        {
+          "sym": "XLM/USDT",
+          "ret_90d": 64.3
+        }
+      ]
+    },
+    {
+      "date": "2023-09-01",
+      "regime": "現金",
+      "btc_price": 25795.6,
+      "top3": []
+    },
+    {
+      "date": "2023-10-01",
+      "regime": "投資",
+      "btc_price": 27981.4,
+      "top3": [
+        {
+          "sym": "MKR/USDT",
+          "ret_90d": 51.5
+        },
+        {
+          "sym": "SOL/USDT",
+          "ret_90d": 24.0
+        },
+        {
+          "sym": "LINK/USDT",
+          "ret_90d": 21.5
+        }
+      ]
+    },
+    {
+      "date": "2023-11-01",
+      "regime": "投資",
+      "btc_price": 35437.4,
+      "top3": [
+        {
+          "sym": "INJ/USDT",
+          "ret_90d": 82.9
+        },
+        {
+          "sym": "SOL/USDT",
+          "ret_90d": 82.0
+        },
+        {
+          "sym": "LINK/USDT",
+          "ret_90d": 63.6
+        }
+      ]
+    },
+    {
+      "date": "2023-12-01",
+      "regime": "投資",
+      "btc_price": 38660.0,
+      "top3": [
+        {
+          "sym": "SOL/USDT",
+          "ret_90d": 206.7
+        },
+        {
+          "sym": "IMX/USDT",
+          "ret_90d": 161.4
+        },
+        {
+          "sym": "AVAX/USDT",
+          "ret_90d": 120.8
+        }
+      ]
+    },
+    {
+      "date": "2024-01-01",
+      "regime": "投資",
+      "btc_price": 44230.2,
+      "top3": [
+        {
+          "sym": "INJ/USDT",
+          "ret_90d": 439.5
+        },
+        {
+          "sym": "SOL/USDT",
+          "ret_90d": 366.4
+        },
+        {
+          "sym": "AVAX/USDT",
+          "ret_90d": 346.2
+        }
+      ]
+    },
+    {
+      "date": "2024-02-01",
+      "regime": "投資",
+      "btc_price": 43072.6,
+      "top3": [
+        {
+          "sym": "ICP/USDT",
+          "ret_90d": 195.5
+        },
+        {
+          "sym": "IMX/USDT",
+          "ret_90d": 193.5
+        },
+        {
+          "sym": "AVAX/USDT",
+          "ret_90d": 179.2
+        }
+      ]
+    },
+    {
+      "date": "2024-03-01",
+      "regime": "投資",
+      "btc_price": 62430.6,
+      "top3": [
+        {
+          "sym": "ICP/USDT",
+          "ret_90d": 168.1
+        },
+        {
+          "sym": "INJ/USDT",
+          "ret_90d": 154.1
+        },
+        {
+          "sym": "IMX/USDT",
+          "ret_90d": 127.2
+        }
+      ]
+    },
+    {
+      "date": "2024-04-01",
+      "regime": "投資",
+      "btc_price": 69700.0,
+      "top3": [
+        {
+          "sym": "BCH/USDT",
+          "ret_90d": 152.1
+        },
+        {
+          "sym": "DOGE/USDT",
+          "ret_90d": 125.0
+        },
+        {
+          "sym": "MKR/USDT",
+          "ret_90d": 104.6
+        }
+      ]
+    },
+    {
+      "date": "2024-05-01",
+      "regime": "投資",
+      "btc_price": 58307.6,
+      "top3": [
+        {
+          "sym": "NEAR/USDT",
+          "ret_90d": 115.0
+        },
+        {
+          "sym": "FTM/USDT",
+          "ret_90d": 89.4
+        },
+        {
+          "sym": "BCH/USDT",
+          "ret_90d": 79.3
+        }
+      ]
+    },
+    {
+      "date": "2024-06-01",
+      "regime": "投資",
+      "btc_price": 67799.2,
+      "top3": [
+        {
+          "sym": "NEAR/USDT",
+          "ret_90d": 66.3
+        },
+        {
+          "sym": "SOL/USDT",
+          "ret_90d": 27.6
+        },
+        {
+          "sym": "FTM/USDT",
+          "ret_90d": 12.2
+        }
+      ]
+    },
+    {
+      "date": "2024-07-01",
+      "regime": "投資",
+      "btc_price": 62883.6,
+      "top3": [
+        {
+          "sym": "TRX/USDT",
+          "ret_90d": 9.5
+        },
+        {
+          "sym": "ETH/USDT",
+          "ret_90d": 4.9
+        },
+        {
+          "sym": "BNB/USDT",
+          "ret_90d": 4.6
+        }
+      ]
+    },
+    {
+      "date": "2024-08-01",
+      "regime": "投資",
+      "btc_price": 65328.9,
+      "top3": [
+        {
+          "sym": "ZEC/USDT",
+          "ret_90d": 40.9
+        },
+        {
+          "sym": "AAVE/USDT",
+          "ret_90d": 31.5
+        },
+        {
+          "sym": "SOL/USDT",
+          "ret_90d": 16.5
+        }
+      ]
+    },
+    {
+      "date": "2024-09-01",
+      "regime": "現金",
+      "btc_price": 57268.1,
+      "top3": []
+    },
+    {
+      "date": "2024-10-01",
+      "regime": "投資",
+      "btc_price": 60776.8,
+      "top3": [
+        {
+          "sym": "AAVE/USDT",
+          "ret_90d": 71.8
+        },
+        {
+          "sym": "FTM/USDT",
+          "ret_90d": 33.6
+        },
+        {
+          "sym": "ZEC/USDT",
+          "ret_90d": 28.0
+        }
+      ]
+    },
+    {
+      "date": "2024-11-01",
+      "regime": "投資",
+      "btc_price": 69495.5,
+      "top3": [
+        {
+          "sym": "FTM/USDT",
+          "ret_90d": 78.6
+        },
+        {
+          "sym": "APT/USDT",
+          "ret_90d": 60.3
+        },
+        {
+          "sym": "DOGE/USDT",
+          "ret_90d": 47.2
+        }
+      ]
+    },
+    {
+      "date": "2024-12-01",
+      "regime": "投資",
+      "btc_price": 97265.1,
+      "top3": [
+        {
+          "sym": "XLM/USDT",
+          "ret_90d": 508.4
+        },
+        {
+          "sym": "DOGE/USDT",
+          "ret_90d": 345.1
+        },
+        {
+          "sym": "HBAR/USDT",
+          "ret_90d": 311.5
+        }
+      ]
+    }
+  ]
+}

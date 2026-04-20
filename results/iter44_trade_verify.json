@@ -1,0 +1,49 @@
+{
+  "total_trades": 456,
+  "verified_ok": 456,
+  "mismatched": 0,
+  "details": [],
+  "violations": [],
+  "per_reason": {
+    "tp1": {
+      "total": 142,
+      "ok": 142,
+      "bad": 0
+    },
+    "stop_loss_intraday": {
+      "total": 121,
+      "ok": 121,
+      "bad": 0
+    },
+    "liquidation": {
+      "total": 30,
+      "ok": 30,
+      "bad": 0
+    },
+    "tp2": {
+      "total": 91,
+      "ok": 91,
+      "bad": 0
+    },
+    "trail": {
+      "total": 63,
+      "ok": 63,
+      "bad": 0
+    },
+    "regime": {
+      "total": 2,
+      "ok": 2,
+      "bad": 0
+    },
+    "final": {
+      "total": 7,
+      "ok": 7,
+      "bad": 0
+    }
+  },
+  "exit_price_position_stats": {
+    "count": 456,
+    "mean": 0.558,
+    "pct_in_range_0_to_1": 100.0
+  }
+}

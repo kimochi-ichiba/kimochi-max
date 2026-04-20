@@ -1,0 +1,619 @@
+{
+  "milestones": [
+    "2019-12-31",
+    "2020-06-30",
+    "2020-12-31",
+    "2021-06-30",
+    "2021-12-31",
+    "2022-06-30",
+    "2022-12-31",
+    "2023-06-30",
+    "2023-12-31",
+    "2024-06-28",
+    "2024-12-30"
+  ],
+  "comparisons": {
+    "BTC/USDT": [
+      {
+        "date": "2019-12-31",
+        "binance": 7189.0,
+        "mexc": 7244.13,
+        "bitget": null,
+        "yfinance": 7193.599121,
+        "mexc_vs_binance_pct": 0.767,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": 0.064
+      },
+      {
+        "date": "2020-06-30",
+        "binance": 9138.87,
+        "mexc": 9135.55,
+        "bitget": null,
+        "yfinance": 9137.993164,
+        "mexc_vs_binance_pct": -0.036,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": -0.01
+      },
+      {
+        "date": "2020-12-31",
+        "binance": 28951.68,
+        "mexc": 28873.29,
+        "bitget": null,
+        "yfinance": 29001.720703,
+        "mexc_vs_binance_pct": -0.271,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": 0.173
+      },
+      {
+        "date": "2021-06-30",
+        "binance": 35031.39,
+        "mexc": 35022.53,
+        "bitget": null,
+        "yfinance": 35040.835938,
+        "mexc_vs_binance_pct": -0.025,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": 0.027
+      },
+      {
+        "date": "2021-12-31",
+        "binance": 46210.56,
+        "mexc": 47117.53,
+        "bitget": null,
+        "yfinance": 46306.445312,
+        "mexc_vs_binance_pct": 1.963,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": 0.207
+      },
+      {
+        "date": "2022-06-30",
+        "binance": 19923.5,
+        "mexc": 19947.18,
+        "bitget": null,
+        "yfinance": 19784.726562,
+        "mexc_vs_binance_pct": 0.119,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": -0.697
+      },
+      {
+        "date": "2022-12-31",
+        "binance": 16537.6,
+        "mexc": 16608.02,
+        "bitget": null,
+        "yfinance": 16547.496094,
+        "mexc_vs_binance_pct": 0.426,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": 0.06
+      },
+      {
+        "date": "2023-06-30",
+        "binance": 30460.2,
+        "mexc": 30472.0,
+        "bitget": 30068.02,
+        "yfinance": 30477.251953,
+        "mexc_vs_binance_pct": 0.039,
+        "bitget_vs_binance_pct": -1.288,
+        "yf_vs_binance_pct": 0.056
+      },
+      {
+        "date": "2023-12-31",
+        "binance": 42314.0,
+        "mexc": 42140.28,
+        "bitget": 42457.43,
+        "yfinance": 42265.1875,
+        "mexc_vs_binance_pct": -0.411,
+        "bitget_vs_binance_pct": 0.339,
+        "yf_vs_binance_pct": -0.115
+      },
+      {
+        "date": "2024-06-28",
+        "binance": 60429.8,
+        "mexc": 60427.83,
+        "bitget": 61057.81,
+        "yfinance": 60320.136719,
+        "mexc_vs_binance_pct": -0.003,
+        "bitget_vs_binance_pct": 1.039,
+        "yf_vs_binance_pct": -0.181
+      },
+      {
+        "date": "2024-12-30",
+        "binance": 92759.3,
+        "mexc": 92792.04,
+        "bitget": 92131.98,
+        "yfinance": 92643.210938,
+        "mexc_vs_binance_pct": 0.035,
+        "bitget_vs_binance_pct": -0.676,
+        "yf_vs_binance_pct": -0.125
+      }
+    ],
+    "ETH/USDT": [
+      {
+        "date": "2019-12-31",
+        "binance": 129.12,
+        "mexc": 131.57,
+        "bitget": null,
+        "yfinance": 129.610855,
+        "mexc_vs_binance_pct": 1.897,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": 0.38
+      },
+      {
+        "date": "2020-06-30",
+        "binance": 225.56,
+        "mexc": 225.51,
+        "bitget": null,
+        "yfinance": 226.315002,
+        "mexc_vs_binance_pct": -0.022,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": 0.335
+      },
+      {
+        "date": "2020-12-31",
+        "binance": 737.19,
+        "mexc": 752.14,
+        "bitget": null,
+        "yfinance": 737.803406,
+        "mexc_vs_binance_pct": 2.028,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": 0.083
+      },
+      {
+        "date": "2021-06-30",
+        "binance": 2275.0,
+        "mexc": 2274.56,
+        "bitget": null,
+        "yfinance": 2274.547607,
+        "mexc_vs_binance_pct": -0.019,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": -0.02
+      },
+      {
+        "date": "2021-12-31",
+        "binance": 3676.02,
+        "mexc": 3709.28,
+        "bitget": null,
+        "yfinance": 3682.632812,
+        "mexc_vs_binance_pct": 0.905,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": 0.18
+      },
+      {
+        "date": "2022-06-30",
+        "binance": 1070.85,
+        "mexc": 1071.11,
+        "bitget": null,
+        "yfinance": 1067.298828,
+        "mexc_vs_binance_pct": 0.024,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": -0.332
+      },
+      {
+        "date": "2022-12-31",
+        "binance": 1196.1,
+        "mexc": 1200.06,
+        "bitget": null,
+        "yfinance": 1196.77124,
+        "mexc_vs_binance_pct": 0.331,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": 0.056
+      },
+      {
+        "date": "2023-06-30",
+        "binance": 1933.41,
+        "mexc": 1933.8,
+        "bitget": 1852.21,
+        "yfinance": 1933.188965,
+        "mexc_vs_binance_pct": 0.02,
+        "bitget_vs_binance_pct": -4.2,
+        "yf_vs_binance_pct": -0.011
+      },
+      {
+        "date": "2023-12-31",
+        "binance": 2283.85,
+        "mexc": 2291.67,
+        "bitget": 2298.99,
+        "yfinance": 2281.471191,
+        "mexc_vs_binance_pct": 0.342,
+        "bitget_vs_binance_pct": 0.663,
+        "yf_vs_binance_pct": -0.104
+      },
+      {
+        "date": "2024-06-28",
+        "binance": 3379.51,
+        "mexc": 3380.15,
+        "bitget": 3413.47,
+        "yfinance": 3373.635986,
+        "mexc_vs_binance_pct": 0.019,
+        "bitget_vs_binance_pct": 1.005,
+        "yf_vs_binance_pct": -0.174
+      },
+      {
+        "date": "2024-12-30",
+        "binance": 3360.11,
+        "mexc": 3361.84,
+        "bitget": 3326.01,
+        "yfinance": 3356.392578,
+        "mexc_vs_binance_pct": 0.051,
+        "bitget_vs_binance_pct": -1.015,
+        "yf_vs_binance_pct": -0.111
+      }
+    ],
+    "SOL/USDT": [
+      {
+        "date": "2019-12-31",
+        "binance": 3.2661,
+        "mexc": null,
+        "bitget": null,
+        "yfinance": null,
+        "mexc_vs_binance_pct": null,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": null
+      },
+      {
+        "date": "2020-06-30",
+        "binance": 3.2661,
+        "mexc": null,
+        "bitget": null,
+        "yfinance": 0.860094,
+        "mexc_vs_binance_pct": null,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": -73.666
+      },
+      {
+        "date": "2020-12-31",
+        "binance": 1.504,
+        "mexc": 1.532,
+        "bitget": null,
+        "yfinance": 1.510898,
+        "mexc_vs_binance_pct": 1.862,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": 0.459
+      },
+      {
+        "date": "2021-06-30",
+        "binance": 35.493,
+        "mexc": 35.5063,
+        "bitget": null,
+        "yfinance": 35.556404,
+        "mexc_vs_binance_pct": 0.037,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": 0.179
+      },
+      {
+        "date": "2021-12-31",
+        "binance": 169.98,
+        "mexc": 172.6454,
+        "bitget": null,
+        "yfinance": 170.299072,
+        "mexc_vs_binance_pct": 1.568,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": 0.188
+      },
+      {
+        "date": "2022-06-30",
+        "binance": 33.73,
+        "mexc": 33.7046,
+        "bitget": null,
+        "yfinance": 33.588417,
+        "mexc_vs_binance_pct": -0.075,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": -0.42
+      },
+      {
+        "date": "2022-12-31",
+        "binance": 9.968,
+        "mexc": 9.9023,
+        "bitget": null,
+        "yfinance": 9.961039,
+        "mexc_vs_binance_pct": -0.659,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": -0.07
+      },
+      {
+        "date": "2023-06-30",
+        "binance": 18.858,
+        "mexc": 18.85,
+        "bitget": 18.287,
+        "yfinance": 18.897322,
+        "mexc_vs_binance_pct": -0.042,
+        "bitget_vs_binance_pct": -3.028,
+        "yf_vs_binance_pct": 0.209
+      },
+      {
+        "date": "2023-12-31",
+        "binance": 101.778,
+        "mexc": 101.89,
+        "bitget": 102.491,
+        "yfinance": 101.505821,
+        "mexc_vs_binance_pct": 0.11,
+        "bitget_vs_binance_pct": 0.701,
+        "yf_vs_binance_pct": -0.267
+      },
+      {
+        "date": "2024-06-28",
+        "binance": 139.98,
+        "mexc": 140.03,
+        "bitget": 143.213,
+        "yfinance": 139.7034,
+        "mexc_vs_binance_pct": 0.036,
+        "bitget_vs_binance_pct": 2.31,
+        "yf_vs_binance_pct": -0.198
+      },
+      {
+        "date": "2024-12-30",
+        "binance": 191.26,
+        "mexc": 191.37,
+        "bitget": 187.32,
+        "yfinance": 191.028046,
+        "mexc_vs_binance_pct": 0.058,
+        "bitget_vs_binance_pct": -2.06,
+        "yf_vs_binance_pct": -0.121
+      }
+    ],
+    "DOGE/USDT": [
+      {
+        "date": "2019-12-31",
+        "binance": 0.003535,
+        "mexc": 0.002021,
+        "bitget": null,
+        "yfinance": 0.002028,
+        "mexc_vs_binance_pct": -42.823,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": -42.631
+      },
+      {
+        "date": "2020-06-30",
+        "binance": 0.003535,
+        "mexc": 0.002315,
+        "bitget": null,
+        "yfinance": 0.00232,
+        "mexc_vs_binance_pct": -34.509,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": -34.371
+      },
+      {
+        "date": "2020-12-31",
+        "binance": 0.004678,
+        "mexc": 0.00463,
+        "bitget": null,
+        "yfinance": 0.004682,
+        "mexc_vs_binance_pct": -1.028,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": 0.086
+      },
+      {
+        "date": "2021-06-30",
+        "binance": 0.25379,
+        "mexc": 0.253619,
+        "bitget": null,
+        "yfinance": 0.254215,
+        "mexc_vs_binance_pct": -0.068,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": 0.167
+      },
+      {
+        "date": "2021-12-31",
+        "binance": 0.17028,
+        "mexc": 0.171084,
+        "bitget": null,
+        "yfinance": 0.170496,
+        "mexc_vs_binance_pct": 0.472,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": 0.127
+      },
+      {
+        "date": "2022-06-30",
+        "binance": 0.06636,
+        "mexc": 0.066388,
+        "bitget": null,
+        "yfinance": 0.066086,
+        "mexc_vs_binance_pct": 0.043,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": -0.413
+      },
+      {
+        "date": "2022-12-31",
+        "binance": 0.07021,
+        "mexc": 0.068397,
+        "bitget": null,
+        "yfinance": 0.070294,
+        "mexc_vs_binance_pct": -2.583,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": 0.12
+      },
+      {
+        "date": "2023-06-30",
+        "binance": 0.06642,
+        "mexc": 0.06647,
+        "bitget": 0.06403,
+        "yfinance": 0.066479,
+        "mexc_vs_binance_pct": 0.075,
+        "bitget_vs_binance_pct": -3.598,
+        "yf_vs_binance_pct": 0.089
+      },
+      {
+        "date": "2023-12-31",
+        "binance": 0.08957,
+        "mexc": 0.08999,
+        "bitget": 0.090139,
+        "yfinance": 0.089472,
+        "mexc_vs_binance_pct": 0.469,
+        "bitget_vs_binance_pct": 0.635,
+        "yf_vs_binance_pct": -0.109
+      },
+      {
+        "date": "2024-06-28",
+        "binance": 0.12301,
+        "mexc": 0.12305,
+        "bitget": 0.125648,
+        "yfinance": 0.122789,
+        "mexc_vs_binance_pct": 0.033,
+        "bitget_vs_binance_pct": 2.145,
+        "yf_vs_binance_pct": -0.18
+      },
+      {
+        "date": "2024-12-30",
+        "binance": 0.31382,
+        "mexc": 0.31393,
+        "bitget": 0.31105,
+        "yfinance": 0.313514,
+        "mexc_vs_binance_pct": 0.035,
+        "bitget_vs_binance_pct": -0.883,
+        "yf_vs_binance_pct": -0.098
+      }
+    ],
+    "AVAX/USDT": [
+      {
+        "date": "2019-12-31",
+        "binance": 3.5136,
+        "mexc": null,
+        "bitget": null,
+        "yfinance": null,
+        "mexc_vs_binance_pct": null,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": null
+      },
+      {
+        "date": "2020-06-30",
+        "binance": 3.5136,
+        "mexc": null,
+        "bitget": null,
+        "yfinance": null,
+        "mexc_vs_binance_pct": null,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": null
+      },
+      {
+        "date": "2020-12-31",
+        "binance": 3.1926,
+        "mexc": null,
+        "bitget": null,
+        "yfinance": 3.135609,
+        "mexc_vs_binance_pct": null,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": -1.785
+      },
+      {
+        "date": "2021-06-30",
+        "binance": 11.942,
+        "mexc": null,
+        "bitget": null,
+        "yfinance": 11.955547,
+        "mexc_vs_binance_pct": null,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": 0.113
+      },
+      {
+        "date": "2021-12-31",
+        "binance": 109.46,
+        "mexc": 101.741,
+        "bitget": null,
+        "yfinance": 109.270485,
+        "mexc_vs_binance_pct": -7.052,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": -0.173
+      },
+      {
+        "date": "2022-06-30",
+        "binance": 16.97,
+        "mexc": 16.931,
+        "bitget": null,
+        "yfinance": 16.929367,
+        "mexc_vs_binance_pct": -0.23,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": -0.239
+      },
+      {
+        "date": "2022-12-31",
+        "binance": 10.903,
+        "mexc": 10.871,
+        "bitget": null,
+        "yfinance": 10.902633,
+        "mexc_vs_binance_pct": -0.293,
+        "bitget_vs_binance_pct": null,
+        "yf_vs_binance_pct": -0.003
+      },
+      {
+        "date": "2023-06-30",
+        "binance": 13.024,
+        "mexc": 13.03,
+        "bitget": 12.5992,
+        "yfinance": 13.01305,
+        "mexc_vs_binance_pct": 0.046,
+        "bitget_vs_binance_pct": -3.262,
+        "yf_vs_binance_pct": -0.084
+      },
+      {
+        "date": "2023-12-31",
+        "binance": 38.589,
+        "mexc": 39.34,
+        "bitget": 39.2154,
+        "yfinance": 38.54491,
+        "mexc_vs_binance_pct": 1.946,
+        "bitget_vs_binance_pct": 1.623,
+        "yf_vs_binance_pct": -0.114
+      },
+      {
+        "date": "2024-06-28",
+        "binance": 27.957,
+        "mexc": 27.96,
+        "bitget": 28.3377,
+        "yfinance": 27.895786,
+        "mexc_vs_binance_pct": 0.011,
+        "bitget_vs_binance_pct": 1.362,
+        "yf_vs_binance_pct": -0.219
+      },
+      {
+        "date": "2024-12-30",
+        "binance": 35.966,
+        "mexc": 35.97,
+        "bitget": 35.14,
+        "yfinance": 35.906055,
+        "mexc_vs_binance_pct": 0.011,
+        "bitget_vs_binance_pct": -2.297,
+        "yf_vs_binance_pct": -0.167
+      }
+    ]
+  },
+  "summary": {
+    "BTC/USDT": {
+      "mexc_max_diff": 1.963,
+      "mexc_avg_diff": 0.372,
+      "bitget_max_diff": 1.288,
+      "bitget_avg_diff": 0.836,
+      "yf_max_diff": 0.697,
+      "yf_avg_diff": 0.156
+    },
+    "ETH/USDT": {
+      "mexc_max_diff": 2.028,
+      "mexc_avg_diff": 0.514,
+      "bitget_max_diff": 4.2,
+      "bitget_avg_diff": 1.721,
+      "yf_max_diff": 0.38,
+      "yf_avg_diff": 0.162
+    },
+    "SOL/USDT": {
+      "mexc_max_diff": 1.862,
+      "mexc_avg_diff": 0.494,
+      "bitget_max_diff": 3.028,
+      "bitget_avg_diff": 2.025,
+      "yf_max_diff": 73.666,
+      "yf_avg_diff": 7.578
+    },
+    "DOGE/USDT": {
+      "mexc_max_diff": 42.823,
+      "mexc_avg_diff": 7.467,
+      "bitget_max_diff": 3.598,
+      "bitget_avg_diff": 1.815,
+      "yf_max_diff": 42.631,
+      "yf_avg_diff": 7.126
+    },
+    "AVAX/USDT": {
+      "mexc_max_diff": 7.052,
+      "mexc_avg_diff": 1.37,
+      "bitget_max_diff": 3.262,
+      "bitget_avg_diff": 2.136,
+      "yf_max_diff": 1.785,
+      "yf_avg_diff": 0.322
+    }
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "B01 基準（修正版R55）": {
+    "final": 96675.45148602007,
+    "total_ret": 866.7545148602007,
+    "avg_annual_ret": 57.421208392035105,
+    "yearly": {
+      "2020": 105.65,
+      "2021": 339.57,
+      "2022": -0.55,
+      "2023": 7.98,
+      "2024": -11.28
+    },
+    "max_dd": 49.13303400726959,
+    "n_trades": 783,
+    "n_long": 781,
+    "n_short": 2,
+    "win_rate": 54.278416347381864,
+    "all_positive": false,
+    "negative_years": 2,
+    "compound_check": 761.2443828348274,
+    "integrity_ok": "False"
+  },
+  "B02 部分利確+3%": {
+    "final": 101040.60485480817,
+    "total_ret": 910.4060485480817,
+    "avg_annual_ret": 58.817804294565555,
+    "yearly": {
+      "2020": 111.36,
+      "2021": 298.19,
+      "2022": -0.55,
+      "2023": 11.05,
+      "2024": -1.24
+    },
+    "max_dd": 46.81241127634891,
+    "n_trades": 822,
+    "n_long": 820,
+    "n_short": 2,
+    "win_rate": 56.447688564476884,
+    "all_positive": false,
+    "negative_years": 2,
+    "compound_check": 817.9469453787153,
+    "integrity_ok": "False"
+  },
+  "B03 部分利確+8%": {
+    "final": 85883.56766593811,
+    "total_ret": 758.8356766593812,
+    "avg_annual_ret": 53.73827910381692,
+    "yearly": {
+      "2020": 117.36,
+      "2021": 291.33,
+      "2022": -1.97,
+      "2023": 7.86,
+      "2024": -14.22
+    },
+    "max_dd": 52.74149769071473,
+    "n_trades": 745,
+    "n_long": 744,
+    "n_short": 1,
+    "win_rate": 51.946308724832214,
+    "all_positive": false,
+    "negative_years": 2,
+    "compound_check": 671.486318672095,
+    "integrity_ok": "False"
+  },
+  "B04 ADX50厳選": {
+    "final": 98130.71410528387,
+    "total_ret": 881.3071410528387,
+    "avg_annual_ret": 57.89231481398409,
+    "yearly": {
+      "2020": 124.93,
+      "2021": 323.95,
+      "2022": -0.68,
+      "2023": 14.84,
+      "2024": -18.14
+    },
+    "max_dd": 49.37165493939205,
+    "n_trades": 692,
+    "n_long": 690,
+    "n_short": 2,
+    "win_rate": 54.6242774566474,
+    "all_positive": false,
+    "negative_years": 2,
+    "compound_check": 790.3559347328364,
+    "integrity_ok": "False"
+  },
+  "B05 ADX55超厳選": {
+    "final": 161604.5461232613,
+    "total_ret": 1516.045461232613,
+    "avg_annual_ret": 74.45792985468225,
+    "yearly": {
+      "2020": 132.98,
+      "2021": 293.02,
+      "2022": -0.81,
+      "2023": 47.6,
+      "2024": 15.63
+    },
+    "max_dd": 38.82336925291438,
+    "n_trades": 590,
+    "n_long": 588,
+    "n_short": 2,
+    "win_rate": 56.61016949152542,
+    "all_positive": false,
+    "negative_years": 1,
+    "compound_check": 1450.0941085194372,
+    "integrity_ok": "False"
+  },
+  "B06 RSI55-65 厳選": {
+    "final": 118619.0772913227,
+    "total_ret": 1086.190772913227,
+    "avg_annual_ret": 63.995113709580245,
+    "yearly": {
+      "2020": 71.76,
+      "2021": 458.4,
+      "2022": -0.54,
+      "2023": 4.83,
+      "2024": 5.75
+    },
+    "max_dd": 40.630716717237895,
+    "n_trades": 597,
+    "n_long": 595,
+    "n_short": 2,
+    "win_rate": 55.9463986599665,
+    "all_positive": false,
+    "negative_years": 1,
+    "compound_check": 957.5036080093485,
+    "integrity_ok": "False"
+  },
+  "B07 ブレイク10%": {
+    "final": 112497.73588066714,
+    "total_ret": 1024.9773588066714,
+    "avg_annual_ret": 62.26645801318518,
+    "yearly": {
+      "2020": 95.53,
+      "2021": 328.34,
+      "2022": -0.55,
+      "2023": 41.49,
+      "2024": -15.12
+    },
+    "max_dd": 47.179991723379956,
+    "n_trades": 765,
+    "n_long": 763,
+    "n_short": 2,
+    "win_rate": 55.294117647058826,
+    "all_positive": false,
+    "negative_years": 2,
+    "compound_check": 900.3176634040118,
+    "integrity_ok": "False"
+  },
+  "B08 ADX50+RSI55-70+ブレイク8%": {
+    "final": 83481.62628708762,
+    "total_ret": 734.8162628708762,
+    "avg_annual_ret": 52.86856196048244,
+    "yearly": {
+      "2020": 55.27,
+      "2021": 383.38,
+      "2022": -0.69,
+      "2023": 1.7,
+      "2024": -0.23
+    },
+    "max_dd": 44.243067895342186,
+    "n_trades": 594,
+    "n_long": 592,
+    "n_short": 2,
+    "win_rate": 55.05050505050505,
+    "all_positive": false,
+    "negative_years": 2,
+    "compound_check": 656.293098706073,
+    "integrity_ok": "False"
+  }
+}

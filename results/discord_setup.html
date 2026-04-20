@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>🔔 Discord通知 設定ガイド</title>
+<style>
+:root{
+  --bg:#060d17;--bg2:#091523;--bg3:#0d1c2e;--bg4:#112338;
+  --border:#162840;--border2:#1d3350;
+  --text:#c8d8ea;--muted:#304d66;--muted2:#4e7291;
+  --green:#00e676;--green-bg:#00e67612;
+  --red:#f44336;--red-bg:#f4433612;
+  --yellow:#ffca28;--yellow-bg:#ffca2812;
+  --blue:#4fc3f7;--blue-bg:#4fc3f712;
+  --purple:#ab47bc;--discord:#5865f2;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,"Helvetica Neue","Hiragino Kaku Gothic ProN",sans-serif;font-size:14px;line-height:1.7;padding:20px}
+.container{max-width:900px;margin:0 auto}
+h1{font-size:26px;color:#fff;margin-bottom:6px;letter-spacing:-.5px}
+h1 em{color:var(--discord);font-style:normal}
+.subtitle{color:var(--muted2);font-size:13px;margin-bottom:24px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:16px}
+h2{font-size:18px;color:var(--yellow);margin:0 0 14px 0;border-left:4px solid var(--discord);padding-left:12px}
+.step{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:16px 20px;margin:12px 0}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--discord);color:#fff;font-weight:900;font-size:14px;margin-right:10px}
+.step-title{font-size:16px;font-weight:700;color:#fff;display:flex;align-items:center;margin-bottom:10px}
+.step-body{color:var(--text);font-size:13px;padding-left:38px}
+.step-body ul{padding-left:20px;margin-top:6px}
+.step-body li{margin-bottom:4px}
+code{background:#0a141f;border:1px solid var(--border2);padding:3px 8px;border-radius:4px;font-family:ui-monospace,Monaco,monospace;font-size:12px;color:var(--yellow)}
+.cmd-box{background:#0a141f;border:1px solid var(--border2);border-left:3px solid var(--green);padding:12px 16px;border-radius:6px;font-family:ui-monospace,Monaco,monospace;font-size:12px;color:var(--green);margin:10px 0;overflow-x:auto;white-space:nowrap}
+.cmd-box::before{content:"$ ";color:var(--muted)}
+.warn-box{background:var(--yellow-bg);border:1px solid var(--yellow);border-radius:8px;padding:12px 16px;margin:12px 0;color:var(--text);font-size:13px}
+.warn-box strong{color:var(--yellow)}
+.note-box{background:var(--blue-bg);border:1px solid var(--blue);border-radius:8px;padding:12px 16px;margin:12px 0;color:var(--text);font-size:13px}
+.note-box strong{color:var(--blue)}
+.success-box{background:var(--green-bg);border:1px solid var(--green);border-radius:8px;padding:12px 16px;margin:12px 0;color:var(--text);font-size:13px}
+.success-box strong{color:var(--green)}
+.notify-preview{background:#2b2d31;border-radius:8px;padding:16px 18px;border-left:4px solid var(--discord);margin:12px 0}
+.notify-preview .np-title{color:#fff;font-weight:700;margin-bottom:4px}
+.notify-preview .np-title.buy{color:var(--green)}
+.notify-preview .np-title.sell{color:var(--red)}
+.notify-preview .np-title.alert{color:var(--yellow)}
+.notify-preview .np-title.summary{color:var(--blue)}
+.notify-preview .np-desc{color:#b5bac1;font-size:13px}
+.notify-preview .np-fields{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.notify-preview .np-field{color:#b5bac1;font-size:12px}
+.notify-preview .np-field b{color:#fff;display:block;font-size:13px;margin-top:2px}
+.pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:var(--bg4);color:var(--blue)}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+.back{display:inline-block;margin-bottom:16px;color:var(--muted2);font-size:13px}
+.back:hover{color:var(--text)}
+@media(max-width:640px){
+  body{padding:12px;font-size:13px}
+  h1{font-size:20px}
+  .step-body{padding-left:0;margin-top:10px}
+  .notify-preview .np-fields{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back">← レポート一覧に戻る</a>
+
+<h1>🔔 <em>Discord</em> 通知設定</h1>
+<p class="subtitle">H11ボットが取引した時、損失が出た時に、Discordで通知を受け取れるようにします</p>
+
+<div class="card">
+  <h2>📋 この機能でできること</h2>
+  <div class="notify-preview">
+    <div class="np-title buy">🟢 買いシグナル発動</div>
+    <div class="np-desc"><b>BTC</b> を買いました</div>
+    <div class="np-fields">
+      <div class="np-field">価格<b>$85,432</b></div>
+      <div class="np-field">数量<b>0.0468</b></div>
+      <div class="np-field">金額<b>$4,000</b></div>
+    </div>
+  </div>
+  <div class="notify-preview">
+    <div class="np-title sell">🔴 売りシグナル発動</div>
+    <div class="np-desc"><b>BTC</b> を売りました</div>
+    <div class="np-fields">
+      <div class="np-field">価格<b>$82,100</b></div>
+      <div class="np-field">今回の損益<b style="color:#f44336">-$156</b></div>
+      <div class="np-field">EMA200<b>$83,000</b></div>
+    </div>
+  </div>
+  <div class="notify-preview">
+    <div class="np-title alert">⚠️ ドローダウン 10% 突破 (警戒)</div>
+    <div class="np-desc">資産がピークから <b>10.23%</b> 下落しました</div>
+    <div class="np-fields">
+      <div class="np-field">現在資産<b>$10,500</b></div>
+      <div class="np-field">ピーク<b>$11,700</b></div>
+      <div class="np-field">下落額<b>-$1,200</b></div>
+    </div>
+  </div>
+  <div class="notify-preview">
+    <div class="np-title summary">📊 本日のH11ボット サマリー</div>
+    <div class="np-desc">2026-04-21</div>
+    <div class="np-fields">
+      <div class="np-field">💰 総資産<b>$10,234</b></div>
+      <div class="np-field">📈 損益<b>+$234 (+2.34%)</b></div>
+      <div class="np-field">📉 最大DD<b>-3.21%</b></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🛠 設定手順（所要時間 1分）</h2>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">1</span>Discordアプリを開く</div>
+    <div class="step-body">
+      通知を受け取りたい<b>サーバー</b>（またはDMチャンネル）を開きます。<br>
+      <span class="pill">💡 自分だけのサーバー推奨</span> 自分専用のDiscordサーバーを作っておくと整理しやすいです。
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">2</span>チャンネル設定を開く</div>
+    <div class="step-body">
+      通知を流したい<b>チャンネル名を右クリック</b>（iPhoneは長押し）→「<b>チャンネルの編集</b>」を選択。
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">3</span>ウェブフックを作成</div>
+    <div class="step-body">
+      左側メニューから「<b>連携サービス</b>」→「<b>ウェブフック</b>」→「<b>新しいウェブフック</b>」をクリック。<br>
+      名前を「H11Bot」など好きな名前に設定。
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">4</span>ウェブフックURLをコピー</div>
+    <div class="step-body">
+      作成したウェブフックの「<b>ウェブフックURLをコピー</b>」ボタンをクリック。<br>
+      <div class="warn-box">
+        <strong>⚠️ 重要：</strong>このURLは秘密です。外部に公開しないでください。
+        このURLを知っている人は、あなたのDiscordチャンネルにメッセージを送れます。
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">5</span>ターミナルで設定コマンドを実行</div>
+    <div class="step-body">
+      MacBookの<b>ターミナル</b>（Terminal.app）を開き、下記のコマンドをコピペして実行:
+      <div class="cmd-box">python3 /Users/sanosano/projects/kimochi-max/discord_notify.py setup</div>
+      URLを貼り付けするよう求められるので、Step 4でコピーしたURLを貼り付けて Enter。<br>
+      <div class="success-box">
+        ✅ 設定成功すると、すぐにテスト通知がDiscordに届きます。
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">6</span>ボットを再起動（通知を有効化）</div>
+    <div class="step-body">
+      以下のコマンドで、通知が有効なボットに再起動:
+      <div class="cmd-box">pkill -f demo_runner.py &amp;&amp; cd /Users/sanosano/projects/kimochi-max &amp;&amp; nohup python3 demo_runner.py > /tmp/kimochi_demo.log 2>&amp;1 &amp;</div>
+      これで次のトレード時・DD警告時・日次サマリー時にDiscordに通知が届きます🎉
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>💬 通知タイミング</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:13px">
+    <tr><th style="text-align:left;padding:8px;border-bottom:1px solid var(--border);color:var(--muted2);font-size:11px;text-transform:uppercase">イベント</th>
+        <th style="text-align:left;padding:8px;border-bottom:1px solid var(--border);color:var(--muted2);font-size:11px;text-transform:uppercase">タイミング</th></tr>
+    <tr><td style="padding:10px;border-bottom:1px solid var(--border)"><b style="color:var(--green)">🟢 買いシグナル</b></td>
+        <td style="padding:10px;border-bottom:1px solid var(--border);color:var(--muted2)">BTCがEMA200を上抜けて、自動買いした瞬間</td></tr>
+    <tr><td style="padding:10px;border-bottom:1px solid var(--border)"><b style="color:var(--red)">🔴 売りシグナル</b></td>
+        <td style="padding:10px;border-bottom:1px solid var(--border);color:var(--muted2)">BTCがEMA200を下抜けて、自動売りした瞬間（損益付き）</td></tr>
+    <tr><td style="padding:10px;border-bottom:1px solid var(--border)"><b style="color:var(--yellow)">📉 DD 5%突破</b></td>
+        <td style="padding:10px;border-bottom:1px solid var(--border);color:var(--muted2)">資産がピークから5%以上下落した時（注意レベル）</td></tr>
+    <tr><td style="padding:10px;border-bottom:1px solid var(--border)"><b style="color:var(--yellow)">⚠️ DD 10%突破</b></td>
+        <td style="padding:10px;border-bottom:1px solid var(--border);color:var(--muted2)">DD 10%以上で警戒レベル</td></tr>
+    <tr><td style="padding:10px;border-bottom:1px solid var(--border)"><b style="color:var(--red)">🚨 DD 20%突破</b></td>
+        <td style="padding:10px;border-bottom:1px solid var(--border);color:var(--muted2)">DD 20%以上で危険レベル</td></tr>
+    <tr><td style="padding:10px;border-bottom:1px solid var(--border)"><b style="color:var(--green)">✅ DD回復</b></td>
+        <td style="padding:10px;border-bottom:1px solid var(--border);color:var(--muted2)">資産がピーク近くまで回復した時</td></tr>
+    <tr><td style="padding:10px"><b style="color:var(--blue)">📊 日次サマリー</b></td>
+        <td style="padding:10px;color:var(--muted2)">毎日21時（日本時間）に1回、1日の成績をまとめて通知</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h2>🔧 管理コマンド</h2>
+  <div style="margin:10px 0">
+    <div style="color:var(--yellow);font-size:12px;font-weight:700;margin-bottom:4px">📨 テスト通知を送る</div>
+    <div class="cmd-box">python3 /Users/sanosano/projects/kimochi-max/discord_notify.py test</div>
+  </div>
+  <div style="margin:10px 0">
+    <div style="color:var(--yellow);font-size:12px;font-weight:700;margin-bottom:4px">📋 現在の設定を確認</div>
+    <div class="cmd-box">python3 /Users/sanosano/projects/kimochi-max/discord_notify.py status</div>
+  </div>
+  <div style="margin:10px 0">
+    <div style="color:var(--yellow);font-size:12px;font-weight:700;margin-bottom:4px">🔕 通知を一時的に止める</div>
+    <div class="cmd-box">python3 /Users/sanosano/projects/kimochi-max/discord_notify.py disable</div>
+  </div>
+  <div style="margin:10px 0">
+    <div style="color:var(--yellow);font-size:12px;font-weight:700;margin-bottom:4px">🔔 通知を再開する</div>
+    <div class="cmd-box">python3 /Users/sanosano/projects/kimochi-max/discord_notify.py enable</div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>❓ よくある質問</h2>
+
+  <div class="step">
+    <div class="step-title">Q. Discordサーバーを持っていません。どうすれば？</div>
+    <div class="step-body">
+      Discordでは<b>自分だけのサーバー</b>が無料で作れます。<br>
+      左メニューの「＋」から「自分用」→「自分用のサーバーを作成」で作れます。サーバー名は「投資記録」など何でもOK。
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title">Q. iPhoneだけでも通知を受け取れますか？</div>
+    <div class="step-body">
+      はい。Discord公式アプリをiPhoneにインストールして同じアカウントでログインすれば、
+      アプリからPUSH通知が届きます。深夜にトレードが発生した時も気づけます。
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title">Q. 通知が届きません</div>
+    <div class="step-body">
+      まず以下のコマンドで設定を確認:
+      <div class="cmd-box">python3 /Users/sanosano/projects/kimochi-max/discord_notify.py test</div>
+      テスト通知が届かない場合:
+      <ul>
+        <li><b>Webhook URLが正しいか</b>: status コマンドで確認</li>
+        <li><b>Discordチャンネルの権限</b>: ウェブフックが無効化されていないか</li>
+        <li><b>demo_runnerが起動しているか</b>: <code>ps aux | grep demo_runner</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title">Q. 通知が多すぎる／少なすぎる</div>
+    <div class="step-body">
+      <code>/Users/sanosano/projects/kimochi-max/discord_config.json</code> を編集すれば、
+      通知種別やDD閾値を自由に変更できます。<br>
+      <b>notify_trades</b>: 取引通知のON/OFF<br>
+      <b>notify_dd_alerts</b>: DD警告のON/OFF<br>
+      <b>notify_daily_summary</b>: 日次サマリーのON/OFF<br>
+      <b>dd_alert_thresholds</b>: <code>[5, 10, 20]</code> の数字を変える
+    </div>
+  </div>
+</div>
+
+<div class="card" style="background:#0a2c17;border-color:var(--green)">
+  <h2 style="color:var(--green);border-color:var(--green)">✅ 設定完了したら</h2>
+  <p style="color:var(--text)">
+    以下のページでH11ボットの動作状況を常時確認できます:
+  </p>
+  <div style="margin-top:12px">
+    <a href="/demo.html" class="pill" style="background:var(--green-bg);color:var(--green);padding:8px 16px;font-size:13px">🤖 H11 デモトレードダッシュボードへ →</a>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

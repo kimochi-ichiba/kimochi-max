@@ -1,0 +1,44 @@
+{
+  "🥇 全部盛り MAX 3x (清算付)": {
+    "final": 165371.14686426724,
+    "total_ret": 1553.7114686426723,
+    "max_dd": 100.0,
+    "n_trades": 19,
+    "n_liquidations": 0
+  },
+  "🥈 究極盛り MAX 3x (清算付)": {
+    "final": 165371.14686426724,
+    "total_ret": 1553.7114686426723,
+    "max_dd": 100.0,
+    "n_trades": 19,
+    "n_liquidations": 0
+  },
+  "🥉 高速レジーム Max 2x (清算付)": {
+    "final": 134073.1389601744,
+    "total_ret": 1240.731389601744,
+    "max_dd": 100.0,
+    "n_trades": 75,
+    "n_liquidations": 0
+  },
+  "4. ピラミ Max 2x (清算付)": {
+    "final": 99592.36396300046,
+    "total_ret": 895.9236396300046,
+    "max_dd": 100.0,
+    "n_trades": 0,
+    "n_liquidations": 0
+  },
+  "5. 基準 LONG Max 2x (清算付)": {
+    "final": 94755.00990742212,
+    "total_ret": 847.5500990742212,
+    "max_dd": 100.0,
+    "n_trades": 0,
+    "n_liquidations": 0
+  },
+  "6. 高速+ピラミ Max 2x (清算付)": {
+    "final": 136271.9686370567,
+    "total_ret": 1262.719686370567,
+    "max_dd": 100.0,
+    "n_trades": 74,
+    "n_liquidations": 0
+  }
+}

@@ -1,0 +1,254 @@
+{
+  "F01 B05原型(参考)": {
+    "final": 144229.16265890843,
+    "total_ret": 1342.2916265890842,
+    "avg_annual_ret": 70.5338576813773,
+    "yearly": {
+      "2020": 122.48,
+      "2021": 225.96,
+      "2022": -0.54,
+      "2023": 55.56,
+      "2024": 24.23
+    },
+    "max_dd": 38.02280090416566,
+    "n_trades": 590,
+    "n_long": 588,
+    "n_short": 2,
+    "win_rate": 56.61016949152542,
+    "all_positive": false,
+    "negative_years": 1,
+    "compound_check": 1293.8888997065603,
+    "integrity_ok": "False"
+  },
+  "F02 SHORT完全無効（LONG onlyベア休止）": {
+    "final": 145125.3681803416,
+    "total_ret": 1351.253681803416,
+    "avg_annual_ret": 70.74526420154146,
+    "yearly": {
+      "2020": 122.48,
+      "2021": 225.96,
+      "2022": 0.0,
+      "2023": 55.64,
+      "2024": 24.26
+    },
+    "max_dd": 38.02280090416566,
+    "n_trades": 588,
+    "n_long": 588,
+    "n_short": 0,
+    "win_rate": 56.63265306122449,
+    "all_positive": false,
+    "negative_years": 0,
+    "compound_check": 1302.5161032727733,
+    "integrity_ok": "False"
+  },
+  "F03 SHORT BTC ADX≥40超厳格": {
+    "final": 145125.3681803416,
+    "total_ret": 1351.253681803416,
+    "avg_annual_ret": 70.74526420154146,
+    "yearly": {
+      "2020": 122.48,
+      "2021": 225.96,
+      "2022": 0.0,
+      "2023": 55.64,
+      "2024": 24.26
+    },
+    "max_dd": 38.02280090416566,
+    "n_trades": 588,
+    "n_long": 588,
+    "n_short": 0,
+    "win_rate": 56.63265306122449,
+    "all_positive": false,
+    "negative_years": 0,
+    "compound_check": 1302.5161032727733,
+    "integrity_ok": "False"
+  },
+  "F04 SHORT BTC ADX≥45超々厳格": {
+    "final": 145125.3681803416,
+    "total_ret": 1351.253681803416,
+    "avg_annual_ret": 70.74526420154146,
+    "yearly": {
+      "2020": 122.48,
+      "2021": 225.96,
+      "2022": 0.0,
+      "2023": 55.64,
+      "2024": 24.26
+    },
+    "max_dd": 38.02280090416566,
+    "n_trades": 588,
+    "n_long": 588,
+    "n_short": 0,
+    "win_rate": 56.63265306122449,
+    "all_positive": false,
+    "negative_years": 0,
+    "compound_check": 1302.5161032727733,
+    "integrity_ok": "False"
+  },
+  "F05 SL3% タイト化": {
+    "final": 116252.92400871398,
+    "total_ret": 1062.52924008714,
+    "avg_annual_ret": 63.33557172348152,
+    "yearly": {
+      "2020": 107.62,
+      "2021": 226.5,
+      "2022": -0.54,
+      "2023": 34.3,
+      "2024": 24.41
+    },
+    "max_dd": 35.616295462939895,
+    "n_trades": 664,
+    "n_long": 662,
+    "n_short": 2,
+    "win_rate": 51.50602409638554,
+    "all_positive": false,
+    "negative_years": 1,
+    "compound_check": 1026.5024224271958,
+    "integrity_ok": "False"
+  },
+  "F06 SHORT RSI≥80 厳格": {
+    "final": 145125.3681803416,
+    "total_ret": 1351.253681803416,
+    "avg_annual_ret": 70.74526420154146,
+    "yearly": {
+      "2020": 122.48,
+      "2021": 225.96,
+      "2022": 0.0,
+      "2023": 55.64,
+      "2024": 24.26
+    },
+    "max_dd": 38.02280090416566,
+    "n_trades": 588,
+    "n_long": 588,
+    "n_short": 0,
+    "win_rate": 56.63265306122449,
+    "all_positive": false,
+    "negative_years": 0,
+    "compound_check": 1302.5161032727733,
+    "integrity_ok": "False"
+  },
+  "F07 SHORT RSI≥85 超厳格": {
+    "final": 145125.3681803416,
+    "total_ret": 1351.253681803416,
+    "avg_annual_ret": 70.74526420154146,
+    "yearly": {
+      "2020": 122.48,
+      "2021": 225.96,
+      "2022": 0.0,
+      "2023": 55.64,
+      "2024": 24.26
+    },
+    "max_dd": 38.02280090416566,
+    "n_trades": 588,
+    "n_long": 588,
+    "n_short": 0,
+    "win_rate": 56.63265306122449,
+    "all_positive": false,
+    "negative_years": 0,
+    "compound_check": 1302.5161032727733,
+    "integrity_ok": "False"
+  },
+  "F08 複合: SHORT無効+SL3%": {
+    "final": 116962.38660452953,
+    "total_ret": 1069.6238660452952,
+    "avg_annual_ret": 63.53444609195997,
+    "yearly": {
+      "2020": 107.62,
+      "2021": 226.5,
+      "2022": 0.0,
+      "2023": 34.35,
+      "2024": 24.44
+    },
+    "max_dd": 35.616295462939895,
+    "n_trades": 662,
+    "n_long": 662,
+    "n_short": 0,
+    "win_rate": 51.51057401812689,
+    "all_positive": false,
+    "negative_years": 0,
+    "compound_check": 1033.31345673602,
+    "integrity_ok": "False"
+  },
+  "F09 F02+3pos集中": {
+    "final": 94199.30299481444,
+    "total_ret": 841.9930299481443,
+    "avg_annual_ret": 56.60641138259845,
+    "yearly": {
+      "2020": 102.61,
+      "2021": 215.41,
+      "2022": 0.0,
+      "2023": 40.54,
+      "2024": 1.75
+    },
+    "max_dd": 30.314334130453275,
+    "n_trades": 408,
+    "n_long": 408,
+    "n_short": 0,
+    "win_rate": 54.90196078431373,
+    "all_positive": false,
+    "negative_years": 0,
+    "compound_check": 813.8411326428945,
+    "integrity_ok": "False"
+  },
+  "F10 F02+Lev3-5": {
+    "final": 206464.64761009446,
+    "total_ret": 1964.6464761009447,
+    "avg_annual_ret": 83.21842261971419,
+    "yearly": {
+      "2020": 139.28,
+      "2021": 306.99,
+      "2022": 0.0,
+      "2023": 65.88,
+      "2024": 21.92
+    },
+    "max_dd": 45.35041069935512,
+    "n_trades": 588,
+    "n_long": 588,
+    "n_short": 0,
+    "win_rate": 56.63265306122449,
+    "all_positive": false,
+    "negative_years": 0,
+    "compound_check": 1869.5142127100216,
+    "integrity_ok": "False"
+  },
+  "F11 F02+ADX50緩和": {
+    "final": 107293.78914690494,
+    "total_ret": 972.9378914690493,
+    "avg_annual_ret": 60.73665143226277,
+    "yearly": {
+      "2020": 120.88,
+      "2021": 275.07,
+      "2022": 0.0,
+      "2023": 27.04,
+      "2024": -5.13
+    },
+    "max_dd": 38.794785523810134,
+    "n_trades": 690,
+    "n_long": 690,
+    "n_short": 0,
+    "win_rate": 54.637681159420296,
+    "all_positive": false,
+    "negative_years": 1,
+    "compound_check": 898.4770975906638,
+    "integrity_ok": "False"
+  },
+  "F12 F02+ADX60超厳選": {
+    "final": 153622.62880709002,
+    "total_ret": 1436.2262880709002,
+    "avg_annual_ret": 72.69948342083248,
+    "yearly": {
+      "2020": 115.72,
+      "2021": 188.42,
+      "2022": 0.0,
+      "2023": 59.06,
+      "2024": 52.0
+    },
+    "max_dd": 42.6157111006241,
+    "n_trades": 477,
+    "n_long": 477,
+    "n_short": 0,
+    "win_rate": 58.700209643605874,
+    "all_positive": false,
+    "negative_years": 0,
+    "compound_check": 1404.251143100288,
+    "integrity_ok": "False"
+  }
+}

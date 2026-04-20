@@ -10,9 +10,48 @@ __pycache__/
 # キャッシュ・一時データ
 data_cache/
 *.bak_before_reset
+*.pkl
+results/_cache_*.pkl
 
 # バックテスト結果画像
 backtest_result.png
 
 # macOS
 .DS_Store
+
+# ━━━ 機密情報 (絶対にコミットしない) ━━━
+discord_config.json
+discord_config.json.bak
+slack_config.json
+*.webhook
+*.token
+*_secret.*
+
+# ━━━ ランタイム状態ファイル (毎回変動するので除外) ━━━
+demo_state.json
+demo_state.json.tmp
+demo_state.json.bak
+h11_bot_state.json
+h11_bot_state.json.bak
+h11_bot_state.json.tmp
+v2_sim_state.json
+v2_sim_state.json.bak
+bot_state.json
+bot_state.json.bak
+bot_state.json.tmp
+dl_max2x_state.json
+state_backups/
+snapshots/
+trade_ledger.jsonl
+.monitor_state_hash
+hallucination_monitor.pid
+*.pid
+
+# ━━━ プロセス管理用 ━━━
+v2_sim.pid
+v2_sim_log.txt
+
+# ━━━ results/ 配下の状態ファイル ━━━
+results/demo_state.json
+results/demo_state.json.tmp
+results/demo_state.json.bak

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📊 kimochi-max レポート一覧</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    margin: 0; padding: 20px;
+    background: linear-gradient(135deg, #eef2f7 0%, #dde7f3 100%);
+    color: #1a1a1a; min-height: 100vh;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { margin-bottom: 4px; font-size: 26px; color: #0f172a; }
+  .sub { color: #475569; font-size: 14px; margin-bottom: 24px; }
+  .report-card {
+    display: block; background: white;
+    padding: 16px 20px; margin-bottom: 12px;
+    border-radius: 12px; border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    text-decoration: none; color: #1a1a1a;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .report-card:hover, .report-card:active {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  .report-card h2 { margin: 0 0 4px 0; font-size: 18px; color: #0f172a; }
+  .report-card .meta { font-size: 12px; color: #64748b; }
+  .report-card.featured {
+    background: linear-gradient(135deg, #10b981 0%, #0ea5e9 100%);
+    color: white; border: none;
+  }
+  .report-card.featured h2 { color: white; }
+  .report-card.featured .meta { color: rgba(255,255,255,0.85); }
+  .category {
+    margin-top: 24px; margin-bottom: 10px;
+    font-size: 14px; font-weight: 700; color: #475569;
+    letter-spacing: 0.5px; text-transform: uppercase;
+  }
+  .bot-section {
+    background: #0f172a; color: white;
+    padding: 20px; border-radius: 12px;
+    margin-top: 24px;
+  }
+  .bot-section h2 { color: #10b981; margin: 0 0 10px 0; }
+  .bot-section code {
+    display: block; background: #1e293b;
+    padding: 10px 14px; border-radius: 6px;
+    font-family: monospace; font-size: 13px;
+    margin: 8px 0; color: #e2e8f0;
+    overflow-x: auto;
+  }
+  .warning {
+    background: #fef3c7; border: 1px solid #f59e0b;
+    padding: 12px 16px; border-radius: 8px;
+    color: #78350f; font-size: 13px; margin: 14px 0;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>📊 kimochi-max バックテストレポート</h1>
+<p class="sub">iPhone/MacBook両対応 | 最終更新: 2026-04-21</p>
+
+<a href="demo.html" class="report-card featured" style="background:linear-gradient(135deg,#fbbf24 0%,#f97316 100%);">
+  <h2>🤖 H11 デモトレード ライブダッシュボード ★NEW</h2>
+  <div class="meta">リアルタイムBinance価格でSIM取引、10秒ごと自動更新</div>
+</a>
+
+<a href="discord_setup.html" class="report-card featured" style="background:linear-gradient(135deg,#5865f2 0%,#4048c8 100%);">
+  <h2>🔔 Discord通知 設定ガイド</h2>
+  <div class="meta">取引・損失・日次サマリーをスマホに通知（設定1分）</div>
+</a>
+
+<a href="slack_setup.html" class="report-card featured" style="background:linear-gradient(135deg,#4a154b 0%,#611f69 100%);">
+  <h2>💼 Slack通知 設定ガイド ★NEW</h2>
+  <div class="meta">Slackワークスペースに通知を流す（ビジネス利用におすすめ）</div>
+</a>
+
+<a href="iter46_report_v2.html" class="report-card featured">
+  <h2>🥇 H11 推奨戦略レポート（最新）</h2>
+  <div class="meta">DD解説 + ハイブリッド12パターン比較 + 推奨戦略</div>
+</a>
+
+<div class="category">📈 最近のレポート</div>
+
+<a href="iter45_report.html" class="report-card">
+  <h2>🛡️ Iter45 — 低DD特化 (DD 20%達成)</h2>
+  <div class="meta">17戦略比較、精神的にラクな運用法</div>
+</a>
+
+<a href="iter44_final_report.html" class="report-card">
+  <h2>🔬 Iter44 — 三重検証完了レポート</h2>
+  <div class="meta">取引所間・トレード・ロバスト性の3段階検証</div>
+</a>
+
+<a href="iter43_report_v2.html" class="report-card">
+  <h2>📊 Iter43 v2 — 12戦略根本見直し</h2>
+  <div class="meta">ハルシネーション検証付き、モメンタムTop3発見</div>
+</a>
+
+<div class="category">🔍 過去のレポート</div>
+
+<a href="iter42_report.html" class="report-card">
+  <h2>🎯 Iter42 — BTC相関分析＆改良版比較</h2>
+  <div class="meta">SHORT検証・BTC年別リターン相関</div>
+</a>
+
+<a href="iter41_report.html" class="report-card">
+  <h2>🔧 Iter41 — I34改良版 7パターン</h2>
+  <div class="meta">2024年マイナス解決</div>
+</a>
+
+<a href="i34_deep_dive_report.html" class="report-card">
+  <h2>🔬 I34 深掘りレポート</h2>
+  <div class="meta">2024年マイナスの原因分析</div>
+</a>
+
+<div class="bot-section">
+  <h2>🤖 H11 自動売買ボット</h2>
+  <p>推奨戦略 H11（BTC40%+ACH40%+USDT20%）の自動売買ボットが実装済みです。</p>
+
+  <div class="warning">
+    ⚠️ <b>現在SIMモード（シミュレーション）のみで動作</b>。<br>
+    実取引（ライブモード）は未実装のため、実資金は動きません。安全にテストできます。
+  </div>
+
+  <h3 style="color:#10b981;margin-top:14px;">🖥️ MacBookで起動する方法</h3>
+  <p style="font-size:13px;opacity:0.9;">ターミナル（Terminal.app）を開いて、下のコマンドをコピー＆ペースト：</p>
+  <code>cd /Users/sanosano/projects/kimochi-max && python3 h11_bot.py</code>
+
+  <h3 style="color:#10b981;">📄 ログの確認</h3>
+  <code>tail -f /Users/sanosano/projects/kimochi-max/h11_bot.log</code>
+
+  <h3 style="color:#10b981;">📊 状態ファイル</h3>
+  <code>cat /Users/sanosano/projects/kimochi-max/h11_bot_state.json</code>
+</div>
+
+<div class="warning" style="margin-top:20px;">
+  <b>📡 iPhoneから見るには：</b><br>
+  MacとiPhoneを同じWi-Fiにつなぎ、iPhoneのSafariで下記のURLを開いてください：<br>
+  <b>http://192.168.100.42:8080/</b> （MacBookが起動している間だけ有効）
+</div>
+
+</div>
+</body>
+</html>

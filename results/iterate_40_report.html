@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>伝説トレーダー手法 × 40反復 バックテスト結果</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif; margin: 0; padding: 20px; background: #f5f7fa; color: #1a202c; }
+  h1 { font-size: 26px; margin: 0 0 10px 0; color: #1a365d; }
+  h2 { font-size: 20px; margin: 30px 0 15px 0; color: #2c5282; border-left: 4px solid #3182ce; padding-left: 12px; }
+  .container { max-width: 1500px; margin: 0 auto; }
+  .card { background: white; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .hero { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
+  .hero h1 { color: white; }
+  .metric { display: inline-block; margin-right: 24px; margin-bottom: 8px; }
+  .metric-label { font-size: 12px; opacity: 0.85; }
+  .metric-value { font-size: 22px; font-weight: bold; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th, td { padding: 7px 8px; border-bottom: 1px solid #e2e8f0; text-align: left; }
+  th { background: #f7fafc; font-weight: 600; color: #4a5568; position: sticky; top: 0; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.bold { font-weight: bold; }
+  tr.best { background: #fff5f5; }
+  tr.best td { font-weight: 600; }
+  .neg { color: #c53030; }
+  .tag { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 10px; margin-right: 3px; font-weight: 600; }
+  .green { background: #c6f6d5; color: #22543d; }
+  .lightgreen { background: #f0fff4; color: #22543d; }
+  .blue { background: #bee3f8; color: #2a4365; }
+  .purple { background: #e9d8fd; color: #44337a; }
+  .orange { background: #feebc8; color: #7b341e; }
+  .yellow { background: #fefcbf; color: #744210; }
+  .red { background: #fed7d7; color: #742a2a; }
+  .chart-box { height: 400px; position: relative; }
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 20px 0; }
+  .summary-item { background: #f7fafc; padding: 16px; border-radius: 8px; border-left: 4px solid #3182ce; }
+  .summary-value { font-size: 22px; font-weight: bold; color: #2c5282; }
+  .summary-label { font-size: 11px; color: #718096; margin-top: 4px; }
+  .legend { font-size: 12px; color: #4a5568; line-height: 1.8; }
+  .legend li { margin-bottom: 4px; }
+  .footer { text-align: center; color: #718096; font-size: 11px; margin-top: 40px; padding: 20px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="card hero">
+  <h1>🎯 伝説トレーダー手法 × 40反復 バックテスト</h1>
+  <p>⚠️ 目標未達 / 40反復完了（ベスト年率 +26.8%）</p>
+  <p style="font-size:13px;opacity:0.9">タートル流・リバモア・ミネルビニ・O'Neil・Seykota・シモンズを組み合わせ / 5年間（2020-2024）Binance実データ / 初期$10,000</p>
+  <div style="margin-top:20px">
+    <div class="metric"><div class="metric-label">ベスト戦略</div><div class="metric-value">I35 Turtle純 Donch55/20 Lev2</div></div>
+    <div class="metric"><div class="metric-label">年率</div><div class="metric-value">+26.8%</div></div>
+    <div class="metric"><div class="metric-label">5年トータル</div><div class="metric-value">+227%</div></div>
+    <div class="metric"><div class="metric-label">最大DD</div><div class="metric-value">71.4%</div></div>
+    <div class="metric"><div class="metric-label">勝率</div><div class="metric-value">64.2%</div></div>
+    <div class="metric"><div class="metric-label">清算</div><div class="metric-value">8回</div></div>
+    <div class="metric"><div class="metric-label">$10K → 5年後</div><div class="metric-value">$32,735</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>📊 ベスト戦略 資産推移</h2>
+  <div class="chart-box"><canvas id="eqChart"></canvas></div>
+</div>
+
+<div class="card">
+  <h2>📈 年次リターン（ベスト）</h2>
+  <div class="chart-box" style="height:280px"><canvas id="yrChart"></canvas></div>
+  <div class="summary-grid">
+    <div class="summary-item"><div class="summary-value">+0.0%</div><div class="summary-label">2020年</div></div>
+    <div class="summary-item"><div class="summary-value">+0.0%</div><div class="summary-label">2021年 (強気)</div></div>
+    <div class="summary-item" style="border-color:#3182ce"><div class="summary-value" style="color:#2c5282">+0.0%</div><div class="summary-label">2022年 (熊相場)</div></div>
+    <div class="summary-item"><div class="summary-value">+0.0%</div><div class="summary-label">2023年</div></div>
+    <div class="summary-item"><div class="summary-value">+0.0%</div><div class="summary-label">2024年</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🧪 40戦略比較（伝説トレーダー手法別）</h2>
+  <p style="color:#4a5568;font-size:13px">Phase1: レバ強化 / Phase2: リバモア流ピラミディング / Phase3: タートル流Donchian / Phase4: ミネルビニVCP+O'Neilボリューム / Phase5: 最終融合</p>
+  <div style="max-height:700px;overflow-y:auto">
+  <table>
+    <thead>
+      <tr>
+        <th>戦略</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th>
+        <th>年率</th><th>DD</th><th>勝率</th><th>取引</th><th>清算</th><th>整合</th><th>判定</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr class="">
+          <td>I01 M07基準 Lev1 max20</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+19.4%</td>
+          <td class="num">31.6%</td>
+          <td class="num">64.5%</td>
+          <td class="num">1043</td>
+          <td class="num">0</td>
+          <td>✅</td>
+          <td><span class="tag blue">清算0</span> <span class="tag purple">DD32</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I02 Lev1.5 max20 リスク2.5%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+21.0%</td>
+          <td class="num">52.8%</td>
+          <td class="num">64.5%</td>
+          <td class="num">1043</td>
+          <td class="num">3</td>
+          <td>✅</td>
+          <td></td>
+        </tr>
+
+        <tr class="">
+          <td>I03 Lev2 固定 max20</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+26.3%</td>
+          <td class="num">52.0%</td>
+          <td class="num">64.9%</td>
+          <td class="num">1057</td>
+          <td class="num">6</td>
+          <td>✅</td>
+          <td></td>
+        </tr>
+
+        <tr class="">
+          <td>I04 Lev2 max20 リスク3% SL20%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+24.5%</td>
+          <td class="num">64.3%</td>
+          <td class="num">71.6%</td>
+          <td class="num">959</td>
+          <td class="num">9</td>
+          <td>✅</td>
+          <td></td>
+        </tr>
+
+        <tr class="">
+          <td>I05 Lev2.5 max15 SL20%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+14.8%</td>
+          <td class="num">59.1%</td>
+          <td class="num">70.9%</td>
+          <td class="num">814</td>
+          <td class="num">31</td>
+          <td>✅</td>
+          <td></td>
+        </tr>
+
+        <tr class="">
+          <td>I06 Lev3 max15 SL20% リスク2.5%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+4.1%</td>
+          <td class="num">74.9%</td>
+          <td class="num">70.9%</td>
+          <td class="num">814</td>
+          <td class="num">68</td>
+          <td>✅</td>
+          <td></td>
+        </tr>
+
+        <tr class="">
+          <td>I07 Lev1-2動的 max20</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+17.6%</td>
+          <td class="num">43.3%</td>
+          <td class="num">64.7%</td>
+          <td class="num">1051</td>
+          <td class="num">2</td>
+          <td>✅</td>
+          <td></td>
+        </tr>
+
+        <tr class="">
+          <td>I08 Lev2-3動的 max15 SL18%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+12.6%</td>
+          <td class="num">60.7%</td>
+          <td class="num">68.1%</td>
+          <td class="num">859</td>
+          <td class="num">28</td>
+          <td>✅</td>
+          <td></td>
+        </tr>
+
+        <tr class="">
+          <td>I09 Lev1.5 ピラミ2回 max20</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+35.8%</td>
+          <td class="num">62.7%</td>
+          <td class="num">58.5%</td>
+          <td class="num">949</td>
+          <td class="num">3</td>
+          <td>✅</td>
+          <td><span class="tag yellow">+30%</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I10 Lev2 ピラミ2回 SL20%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+47.6%</td>
+          <td class="num">63.9%</td>
+          <td class="num">66.2%</td>
+          <td class="num">864</td>
+          <td class="num">10</td>
+          <td>✅</td>
+          <td><span class="tag yellow">+30%</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I11 Lev1.5 ピラミ3回 max15</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+34.3%</td>
+          <td class="num">62.6%</td>
+          <td class="num">57.5%</td>
+          <td class="num">815</td>
+          <td class="num">3</td>
+          <td>✅</td>
+          <td><span class="tag yellow">+30%</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I12 Lev2 ピラミ2 トレ長め</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+43.9%</td>
+          <td class="num">67.6%</td>
+          <td class="num">62.8%</td>
+          <td class="num">828</td>
+          <td class="num">9</td>
+          <td>✅</td>
+          <td><span class="tag yellow">+30%</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I13 Lev2 ピラミ 大きめ(60%)</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+49.8%</td>
+          <td class="num">66.2%</td>
+          <td class="num">65.7%</td>
+          <td class="num">846</td>
+          <td class="num">10</td>
+          <td>✅</td>
+          <td><span class="tag yellow">+30%</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I14 Lev1-2動 ピラミ max20</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+29.2%</td>
+          <td class="num">48.4%</td>
+          <td class="num">58.5%</td>
+          <td class="num">948</td>
+          <td class="num">2</td>
+          <td>✅</td>
+          <td></td>
+        </tr>
+
+        <tr class="">
+          <td>I15 Lev2.5 ピラミ max10 SL22</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+33.4%</td>
+          <td class="num">58.9%</td>
+          <td class="num">67.4%</td>
+          <td class="num">521</td>
+          <td class="num">34</td>
+          <td>✅</td>
+          <td><span class="tag yellow">+30%</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I16 Lev2 ピラミ SHORT有</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+46.4%</td>
+          <td class="num">68.7%</td>
+          <td class="num">64.1%</td>
+          <td class="num">902</td>
+          <td class="num">9</td>
+          <td>✅</td>
+          <td><span class="tag yellow">+30%</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I17 Donch20/10 Lev1.5</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+19.8%</td>
+          <td class="num">30.7%</td>
+          <td class="num">68.4%</td>
+          <td class="num">424</td>
+          <td class="num">0</td>
+          <td>✅</td>
+          <td><span class="tag lightgreen">ﾏｲﾅｽ無</span> <span class="tag blue">清算0</span> <span class="tag purple">DD31</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I18 Donch20/10 Lev2</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+18.8%</td>
+          <td class="num">35.6%</td>
+          <td class="num">70.7%</td>
+          <td class="num">417</td>
+          <td class="num">2</td>
+          <td>✅</td>
+          <td><span class="tag purple">DD36</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I19 Donch55/20 Lev2 ADX40緩</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+19.5%</td>
+          <td class="num">59.0%</td>
+          <td class="num">72.2%</td>
+          <td class="num">590</td>
+          <td class="num">9</td>
+          <td>✅</td>
+          <td><span class="tag lightgreen">ﾏｲﾅｽ無</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I20 Donch20 Lev2 ピラミ</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+15.8%</td>
+          <td class="num">49.5%</td>
+          <td class="num">60.2%</td>
+          <td class="num">382</td>
+          <td class="num">2</td>
+          <td>✅</td>
+          <td></td>
+        </tr>
+
+        <tr class="">
+          <td>I21 Donch20 Lev2.5 max15</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+13.1%</td>
+          <td class="num">34.8%</td>
+          <td class="num">69.7%</td>
+          <td class="num">386</td>
+          <td class="num">6</td>
+          <td>✅</td>
+          <td><span class="tag purple">DD35</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I22 Donch20 Lev2 SHORT</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+18.8%</td>
+          <td class="num">35.6%</td>
+          <td class="num">70.7%</td>
+          <td class="num">417</td>
+          <td class="num">2</td>
+          <td>✅</td>
+          <td><span class="tag purple">DD36</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I23 Donch20 Lev1.5 ピラミ3</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+19.8%</td>
+          <td class="num">44.9%</td>
+          <td class="num">58.2%</td>
+          <td class="num">385</td>
+          <td class="num">0</td>
+          <td>✅</td>
+          <td><span class="tag lightgreen">ﾏｲﾅｽ無</span> <span class="tag blue">清算0</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I24 Donch20 Lev2 ピラミ SHORT</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+15.8%</td>
+          <td class="num">49.5%</td>
+          <td class="num">60.2%</td>
+          <td class="num">382</td>
+          <td class="num">2</td>
+          <td>✅</td>
+          <td></td>
+        </tr>
+
+        <tr class="">
+          <td>I25 VCP Lev2 max15</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+11.3%</td>
+          <td class="num">23.0%</td>
+          <td class="num">78.3%</td>
+          <td class="num">138</td>
+          <td class="num">0</td>
+          <td>✅</td>
+          <td><span class="tag blue">清算0</span> <span class="tag purple">DD23</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I26 VCP+Vol Lev2 max15</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+10.7%</td>
+          <td class="num">15.8%</td>
+          <td class="num">82.9%</td>
+          <td class="num">76</td>
+          <td class="num">0</td>
+          <td>✅</td>
+          <td><span class="tag blue">清算0</span> <span class="tag purple">DD16</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I27 VCP+Vol Lev2 ピラミ</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+19.2%</td>
+          <td class="num">15.9%</td>
+          <td class="num">85.7%</td>
+          <td class="num">77</td>
+          <td class="num">0</td>
+          <td>✅</td>
+          <td><span class="tag blue">清算0</span> <span class="tag purple">DD16</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I28 VCP+Donch Lev2</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+9.7%</td>
+          <td class="num">9.1%</td>
+          <td class="num">78.1%</td>
+          <td class="num">96</td>
+          <td class="num">0</td>
+          <td>✅</td>
+          <td><span class="tag blue">清算0</span> <span class="tag purple">DD9</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I29 VCP+Donch+ピラミ Lev2</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+10.7%</td>
+          <td class="num">13.1%</td>
+          <td class="num">66.7%</td>
+          <td class="num">93</td>
+          <td class="num">0</td>
+          <td>✅</td>
+          <td><span class="tag blue">清算0</span> <span class="tag purple">DD13</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I30 Vol+Donch Lev2.5 max10</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+8.8%</td>
+          <td class="num">25.7%</td>
+          <td class="num">72.2%</td>
+          <td class="num">216</td>
+          <td class="num">4</td>
+          <td>✅</td>
+          <td><span class="tag purple">DD26</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I31 VCP+Vol Lev3 max10 厳格</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+3.4%</td>
+          <td class="num">14.5%</td>
+          <td class="num">82.9%</td>
+          <td class="num">41</td>
+          <td class="num">1</td>
+          <td>✅</td>
+          <td><span class="tag purple">DD15</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I32 VCP+Vol+Donch+ピラミ 全部</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+8.7%</td>
+          <td class="num">10.9%</td>
+          <td class="num">69.6%</td>
+          <td class="num">56</td>
+          <td class="num">0</td>
+          <td>✅</td>
+          <td><span class="tag blue">清算0</span> <span class="tag purple">DD11</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I33 Seykota Lev2 ピラミ3 TP遠</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+73.4%</td>
+          <td class="num">59.4%</td>
+          <td class="num">63.6%</td>
+          <td class="num">664</td>
+          <td class="num">10</td>
+          <td>✅</td>
+          <td><span class="tag red">🚀+70%</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I34 Livermore完全 Lev2.5 ピラミ4</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+84.0%</td>
+          <td class="num">68.0%</td>
+          <td class="num">65.6%</td>
+          <td class="num">456</td>
+          <td class="num">30</td>
+          <td>✅</td>
+          <td><span class="tag red">🚀+70%</span></td>
+        </tr>
+
+        <tr class="best">
+          <td>I35 Turtle純 Donch55/20 Lev2</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+26.8%</td>
+          <td class="num">71.4%</td>
+          <td class="num">64.2%</td>
+          <td class="num">533</td>
+          <td class="num">8</td>
+          <td>✅</td>
+          <td><span class="tag lightgreen">ﾏｲﾅｽ無</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I36 融合 Lev2 VCP+Donch+ピラミ3+SHORT</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+7.8%</td>
+          <td class="num">13.5%</td>
+          <td class="num">69.1%</td>
+          <td class="num">97</td>
+          <td class="num">0</td>
+          <td>✅</td>
+          <td><span class="tag blue">清算0</span> <span class="tag purple">DD14</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I37 完全攻め Lev2.5 ピラミ3 max20</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+59.5%</td>
+          <td class="num">67.4%</td>
+          <td class="num">67.1%</td>
+          <td class="num">705</td>
+          <td class="num">40</td>
+          <td>✅</td>
+          <td><span class="tag orange">⭐+50%</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I38 VCP+ピラミ Lev2 リスク3%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+23.4%</td>
+          <td class="num">31.1%</td>
+          <td class="num">81.7%</td>
+          <td class="num">131</td>
+          <td class="num">0</td>
+          <td>✅</td>
+          <td><span class="tag blue">清算0</span> <span class="tag purple">DD31</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I39 マルチ手法 Lev2.5 ADX45緩</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+16.9%</td>
+          <td class="num">16.0%</td>
+          <td class="num">70.2%</td>
+          <td class="num">131</td>
+          <td class="num">0</td>
+          <td>✅</td>
+          <td><span class="tag blue">清算0</span> <span class="tag purple">DD16</span></td>
+        </tr>
+
+        <tr class="">
+          <td>I40 最終 Lev3 ピラミ3 全フィルタ</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num ">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num">+0.0%</td>
+          <td class="num bold">+9.4%</td>
+          <td class="num">12.0%</td>
+          <td class="num">69.6%</td>
+          <td class="num">56</td>
+          <td class="num">0</td>
+          <td>✅</td>
+          <td><span class="tag blue">清算0</span> <span class="tag purple">DD12</span></td>
+        </tr></tbody>
+  </table>
+  </div>
+</div>
+
+<div class="card">
+  <h2>📚 組み込んだ伝説トレーダー手法</h2>
+  <ul class="legend">
+    <li><strong>リチャード・デニス（タートル）</strong>: Donchian 20/55日高値ブレイクアウト + 10/20日安値エグジット</li>
+    <li><strong>ジェシー・リバモア</strong>: 勝ち銘柄にピラミディング（+10%毎に買い増し最大3-4回）</li>
+    <li><strong>マーク・ミネルビニ</strong>: VCP = ボラティリティ収縮後のブレイクアウト（ATR/価格 &lt; 6%）</li>
+    <li><strong>ウィリアム・オニール（CAN SLIM）</strong>: 平均ボリュームの1.5倍以上で確認</li>
+    <li><strong>エド・セイコタ</strong>: トレンドフォロー「利益を走らせ、損切りを切る」（トレール幅大きめ）</li>
+    <li><strong>ジム・シモンズ</strong>: ハーフケリーサイジング、ボラティリティターゲティング</li>
+    <li><strong>ポール・チューダー・ジョーンズ</strong>: 非対称リスク/リワード（SL:TP = 1:2以上）</li>
+    <li><strong>スタン・ワインスタイン</strong>: EMA200ステージ分析（価格&gt;EMA200かつEMA50&gt;EMA200 = Stage 2）</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>🛡 データ完全性 & バグ対策</h2>
+  <ul class="legend">
+    <li>✅ Binance実データ強制ガード（合成データ混入なし）</li>
+    <li>✅ 50銘柄中48銘柄がBinance+MEXC+CoinGeckoで実在確認済</li>
+    <li>✅ 翌日始値エントリー（先読みバイアスなし）</li>
+    <li>✅ 日中SL判定（row["low"]/row["high"] で正確）</li>
+    <li>✅ 清算モデル（1/lev × 0.85 のマージンで強制ロスカット）</li>
+    <li>✅ 整合性チェック（total_ret と 年次複利の差 &lt; 1.5pp）</li>
+    <li>✅ 手数料0.06% + スリッページ0.03% + ファンディング実装</li>
+  </ul>
+</div>
+
+<div class="footer">
+  kimochi-max Legends Backtest / 40 iterations / Generated at 2026-04-21 02:56:15
+</div>
+
+</div>
+
+<script>
+  const eqLabels = ["2019-12-31", "2020-01-07", "2020-01-14", "2020-01-21", "2020-01-28", "2020-02-04", "2020-02-11", "2020-02-18", "2020-02-25", "2020-03-03", "2020-03-10", "2020-03-17", "2020-03-24", "2020-03-31", "2020-04-07", "2020-04-14", "2020-04-21", "2020-04-28", "2020-05-05", "2020-05-12", "2020-05-19", "2020-05-26", "2020-06-02", "2020-06-09", "2020-06-16", "2020-06-23", "2020-06-30", "2020-07-07", "2020-07-14", "2020-07-21", "2020-07-28", "2020-08-04", "2020-08-11", "2020-08-18", "2020-08-25", "2020-09-01", "2020-09-08", "2020-09-15", "2020-09-22", "2020-09-29", "2020-10-06", "2020-10-13", "2020-10-20", "2020-10-27", "2020-11-03", "2020-11-10", "2020-11-17", "2020-11-24", "2020-12-01", "2020-12-08", "2020-12-15", "2020-12-22", "2020-12-29", "2021-01-05", "2021-01-12", "2021-01-19", "2021-01-26", "2021-02-02", "2021-02-09", "2021-02-16", "2021-02-23", "2021-03-02", "2021-03-09", "2021-03-16", "2021-03-23", "2021-03-30", "2021-04-06", "2021-04-13", "2021-04-20", "2021-04-27", "2021-05-04", "2021-05-11", "2021-05-18", "2021-05-25", "2021-06-01", "2021-06-08", "2021-06-15", "2021-06-22", "2021-06-29", "2021-07-06", "2021-07-13", "2021-07-20", "2021-07-27", "2021-08-03", "2021-08-10", "2021-08-17", "2021-08-24", "2021-08-31", "2021-09-07", "2021-09-14", "2021-09-21", "2021-09-28", "2021-10-05", "2021-10-12", "2021-10-19", "2021-10-26", "2021-11-02", "2021-11-09", "2021-11-16", "2021-11-23", "2021-11-30", "2021-12-07", "2021-12-14", "2021-12-21", "2021-12-28", "2022-01-04", "2022-01-11", "2022-01-18", "2022-01-25", "2022-02-01", "2022-02-08", "2022-02-15", "2022-02-22", "2022-03-01", "2022-03-08", "2022-03-15", "2022-03-22", "2022-03-29", "2022-04-05", "2022-04-12", "2022-04-19", "2022-04-26", "2022-05-03", "2022-05-10", "2022-05-17", "2022-05-24", "2022-05-31", "2022-06-07", "2022-06-14", "2022-06-21", "2022-06-28", "2022-07-05", "2022-07-12", "2022-07-19", "2022-07-26", "2022-08-02", "2022-08-09", "2022-08-16", "2022-08-23", "2022-08-30", "2022-09-06", "2022-09-13", "2022-09-20", "2022-09-27", "2022-10-04", "2022-10-11", "2022-10-18", "2022-10-25", "2022-11-01", "2022-11-08", "2022-11-15", "2022-11-22", "2022-11-29", "2022-12-06", "2022-12-13", "2022-12-20", "2022-12-27", "2023-01-03", "2023-01-10", "2023-01-17", "2023-01-24", "2023-01-31", "2023-02-07", "2023-02-14", "2023-02-21", "2023-02-28", "2023-03-07", "2023-03-14", "2023-03-21", "2023-03-28", "2023-04-04", "2023-04-11", "2023-04-18", "2023-04-25", "2023-05-02", "2023-05-09", "2023-05-16", "2023-05-23", "2023-05-30", "2023-06-06", "2023-06-13", "2023-06-20", "2023-06-27", "2023-07-04", "2023-07-11", "2023-07-18", "2023-07-25", "2023-08-01", "2023-08-08", "2023-08-15", "2023-08-22", "2023-08-29", "2023-09-05", "2023-09-12", "2023-09-19", "2023-09-26", "2023-10-03", "2023-10-10", "2023-10-17", "2023-10-24", "2023-10-31", "2023-11-07", "2023-11-14", "2023-11-21", "2023-11-28", "2023-12-05", "2023-12-12", "2023-12-19", "2023-12-26", "2024-01-02", "2024-01-09", "2024-01-16", "2024-01-23", "2024-01-30", "2024-02-06", "2024-02-13", "2024-02-20", "2024-02-27", "2024-03-05", "2024-03-12", "2024-03-19", "2024-03-26", "2024-04-02", "2024-04-09", "2024-04-16", "2024-04-23", "2024-04-30", "2024-05-07", "2024-05-14", "2024-05-21", "2024-05-28", "2024-06-04", "2024-06-11", "2024-06-18", "2024-06-25", "2024-07-02", "2024-07-09", "2024-07-16", "2024-07-23", "2024-07-30", "2024-08-06", "2024-08-13", "2024-08-20", "2024-08-27", "2024-09-03", "2024-09-10", "2024-09-17", "2024-09-24", "2024-10-01", "2024-10-08", "2024-10-15", "2024-10-22", "2024-10-29", "2024-11-05", "2024-11-12", "2024-11-19", "2024-11-26", "2024-12-03", "2024-12-10", "2024-12-17", "2024-12-24"];
+  const eqValues = [10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10049.05, 9832.13, 9686.06, 9686.06, 9686.06, 9686.06, 9686.06, 9686.06, 9686.06, 9686.06, 9686.06, 9686.06, 9686.06, 9686.06, 9686.06, 9686.06, 9686.06, 9686.06, 9686.06, 9686.06, 9686.06, 9686.06, 9686.06, 10054.12, 10666.22, 10461.27, 11010.09, 10265.59, 10418.29, 9671.3, 9671.3, 9671.3, 9671.3, 9671.3, 9671.3, 9671.3, 9671.3, 9725.92, 9839.11, 10218.73, 12274.35, 9971.5, 9441.87, 10366.76, 11371.22, 11331.79, 13948.66, 11806.59, 13545.1, 12977.32, 14446.22, 19445.76, 22437.62, 25976.91, 26539.1, 26800.89, 26400.66, 26853.1, 27239.45, 28297.29, 31751.46, 30907.96, 31872.74, 33519.47, 34379.8, 29013.43, 20065.55, 20065.55, 20065.55, 20065.55, 20065.55, 20065.55, 20065.55, 20065.55, 20065.55, 20065.55, 20065.55, 20065.55, 18862.77, 22292.22, 22868.13, 17400.65, 17297.96, 16866.41, 16974.16, 17146.64, 17002.73, 17338.5, 18851.06, 18482.68, 18861.7, 15945.94, 16231.58, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15899.65, 15616.06, 15173.54, 14678.83, 14485.91, 14485.91, 14485.45, 14418.27, 14635.62, 15137.65, 14169.57, 14085.6, 13699.89, 13628.76, 13628.76, 13628.76, 13555.41, 13352.1, 13352.1, 14136.34, 14425.3, 14036.46, 14571.29, 13859.51, 14046.65, 13454.68, 13191.75, 12755.57, 12755.57, 12755.57, 12755.57, 12755.57, 12755.57, 12755.57, 12755.57, 12748.12, 13310.1, 13804.53, 14318.27, 15236.49, 14590.08, 16070.73, 17778.04, 19408.18, 20028.65, 23397.7, 24004.63, 20650.67, 20921.17, 20245.52, 20258.69, 20198.23, 20334.96, 21194.51, 22110.05, 25720.04, 31837.19, 27506.83, 29373.63, 27168.26, 27276.67, 24967.54, 24967.54, 24461.89, 24461.89, 24421.12, 24386.19, 24200.95, 24074.68, 23089.54, 23089.54, 23089.54, 23089.54, 23089.54, 23089.54, 23117.28, 23193.32, 21739.8, 21739.8, 21739.8, 21751.28, 21601.63, 21654.68, 21596.98, 21632.69, 21251.53, 21867.54, 22631.49, 22453.1, 22108.54, 20877.57, 24108.3, 24769.37, 30892.17, 43843.64, 35216.81, 35707.41, 33454.12];
+  new Chart(document.getElementById('eqChart'), {
+    type: 'line',
+    data: {
+      labels: eqLabels,
+      datasets: [{
+        label: '資産 ($)',
+        data: eqValues,
+        borderColor: '#f5576c',
+        backgroundColor: 'rgba(245, 87, 108, 0.1)',
+        fill: true, tension: 0.2, pointRadius: 0,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: true } },
+      scales: {
+        y: { ticks: { callback: v => '$' + v.toLocaleString() } },
+        x: { ticks: { maxTicksLimit: 12 } }
+      }
+    }
+  });
+  new Chart(document.getElementById('yrChart'), {
+    type: 'bar',
+    data: {
+      labels: ['2020','2021','2022','2023','2024'],
+      datasets: [{
+        label: '年次リターン (%)',
+        data: [0,0,0,0,0],
+        backgroundColor: [
+          0 >= 0 ? '#38a169' : '#e53e3e',
+          0 >= 0 ? '#38a169' : '#e53e3e',
+          0 >= 0 ? '#38a169' : '#e53e3e',
+          0 >= 0 ? '#38a169' : '#e53e3e',
+          0 >= 0 ? '#38a169' : '#e53e3e'
+        ],
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { y: { ticks: { callback: v => v + '%' } } }
+    }
+  });
+</script>
+</body>
+</html>
