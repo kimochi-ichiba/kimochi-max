@@ -1,0 +1,82 @@
+[
+  {
+    "name": "DL on ETH (MAX 3x)",
+    "r23": {
+      "total_return_pct": -15.18,
+      "monthly_avg": -0.21,
+      "win_rate_pct": 33.3,
+      "max_dd_pct": 46.52
+    },
+    "r24": {
+      "total_return_pct": 81.39,
+      "monthly_avg": 11.68,
+      "win_rate_pct": 33.3,
+      "max_dd_pct": 55.62
+    },
+    "avg_month": 5.734999999999999
+  },
+  {
+    "name": "DL on SOL (MAX 3x)",
+    "r23": {
+      "total_return_pct": 780.03,
+      "monthly_avg": 33.3,
+      "win_rate_pct": 25.0,
+      "max_dd_pct": 31.53
+    },
+    "r24": {
+      "total_return_pct": -86.3,
+      "monthly_avg": -7.23,
+      "win_rate_pct": 50.0,
+      "max_dd_pct": 90.88
+    },
+    "avg_month": 13.034999999999998
+  },
+  {
+    "name": "DL on BTC MAX 4x Ultra",
+    "r23": {
+      "total_return_pct": 107.63,
+      "monthly_avg": 8.6,
+      "win_rate_pct": 50.0,
+      "max_dd_pct": 47.26
+    },
+    "r24": {
+      "total_return_pct": 56.2,
+      "monthly_avg": 13.04,
+      "win_rate_pct": 66.7,
+      "max_dd_pct": 76.9
+    },
+    "avg_month": 10.82
+  },
+  {
+    "name": "Dual DL (BTC 50 + ETH 50)",
+    "r23": {
+      "total_return_pct": 57.4,
+      "monthly_avg": 5.22,
+      "win_rate_pct": 50.0,
+      "max_dd_pct": 37.4
+    },
+    "r24": {
+      "total_return_pct": 71.44,
+      "monthly_avg": 10.65,
+      "win_rate_pct": 50.0,
+      "max_dd_pct": 60.93
+    },
+    "avg_month": 7.9350000000000005
+  },
+  {
+    "name": "Strongest DL (BTC/ETH/SOL)",
+    "r23": {
+      "total_return_pct": 1781.4,
+      "monthly_avg": 43.7,
+      "win_rate_pct": 58.3,
+      "max_dd_pct": 44.94
+    },
+    "r24": {
+      "total_return_pct": -57.44,
+      "monthly_avg": -4.35,
+      "win_rate_pct": 50.0,
+      "max_dd_pct": 87.09
+    },
+    "avg_month": 19.675
+  }
+]
