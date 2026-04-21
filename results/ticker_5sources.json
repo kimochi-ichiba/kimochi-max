@@ -1,0 +1,1322 @@
+{
+  "script": "_verify_ticker_5sources.py",
+  "ran_at": "2026-04-21T14:44:44.602338+00:00",
+  "sources_used": {
+    "binance_trading": 440,
+    "mexc_trading": 2021,
+    "bybit_trading": 461,
+    "coingecko_top": 17547,
+    "coinmarketcap_used": false
+  },
+  "overall_verdict": "PASS",
+  "counts": {
+    "PASS": 62,
+    "WARN": 0,
+    "WEAK": 0,
+    "DATA_ONLY": 0,
+    "FAIL": 0,
+    "BROKEN": 0
+  },
+  "safe_universe": [
+    "BTC",
+    "ETH",
+    "BNB",
+    "SOL",
+    "XRP",
+    "ADA",
+    "AVAX",
+    "DOGE",
+    "TRX",
+    "DOT",
+    "LINK",
+    "UNI",
+    "LTC",
+    "ATOM",
+    "NEAR",
+    "ICP",
+    "ETC",
+    "XLM",
+    "FIL",
+    "APT",
+    "ARB",
+    "OP",
+    "INJ",
+    "SUI",
+    "SEI",
+    "TIA",
+    "RUNE",
+    "ALGO",
+    "SAND",
+    "MANA",
+    "AXS",
+    "CHZ",
+    "ENJ",
+    "GRT",
+    "AAVE",
+    "SNX",
+    "CRV",
+    "HBAR",
+    "VET",
+    "THETA",
+    "EGLD",
+    "XTZ",
+    "FLOW",
+    "IOTA",
+    "DASH",
+    "ZEC",
+    "POL",
+    "TON",
+    "ONDO",
+    "JUP",
+    "WLD",
+    "LDO",
+    "IMX",
+    "WIF",
+    "ENA",
+    "GALA",
+    "JASMY",
+    "PENDLE",
+    "MINA",
+    "RENDER",
+    "STRK",
+    "SUSHI"
+  ],
+  "proposed_results": [
+    {
+      "symbol": "BTC",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "bitcoin",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "ETH",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "ethereum",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "BNB",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "binancecoin",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "SOL",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "solana",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "XRP",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "ripple",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "ADA",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "cardano",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "AVAX",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "avalanche-2",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "DOGE",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "dogecoin",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "TRX",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "tron",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "DOT",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "polkadot",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "LINK",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "chainlink",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "UNI",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "uniswap",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "LTC",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "litecoin",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "ATOM",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "cosmos",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "NEAR",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "near",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "ICP",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "internet-computer",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "ETC",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "ethereum-classic",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "XLM",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "stellar",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "FIL",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "filecoin",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "APT",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "aptos",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "ARB",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "arbitrum",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "OP",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "optimism",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "INJ",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "injective-protocol",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "SUI",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "sui",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "SEI",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "sei-network",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "TIA",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "celestia",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "RUNE",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "thorchain",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "ALGO",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "algorand",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "SAND",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "the-sandbox",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "MANA",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "decentraland",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "AXS",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "axie-infinity",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "CHZ",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "chiliz",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "ENJ",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "enjincoin",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "GRT",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "the-graph",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "AAVE",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "aave",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "SNX",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "havven",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "CRV",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "curve-dao-token",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "HBAR",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "hedera-hashgraph",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "VET",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "vechain",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "THETA",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": false,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "theta-token",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "Bybit"
+      ],
+      "n_exchanges": 2,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "EGLD",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "elrond-erd-2",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "XTZ",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "tezos",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "FLOW",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "flow",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "IOTA",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": false,
+      "coingecko": true,
+      "coingecko_id": "iota",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC"
+      ],
+      "n_exchanges": 2,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "DASH",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": false,
+      "coingecko": true,
+      "coingecko_id": "dash",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC"
+      ],
+      "n_exchanges": 2,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "ZEC",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": false,
+      "coingecko": true,
+      "coingecko_id": "zcash",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC"
+      ],
+      "n_exchanges": 2,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "POL",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "polygon-ecosystem-token",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "TON",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "the-open-network",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "ONDO",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "ondo-finance",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "JUP",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "jupiter-exchange-solana",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "WLD",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "worldcoin-wld",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "LDO",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "lido-dao",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "IMX",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "immutable-x",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "WIF",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "dogwifcoin",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "ENA",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "ethena",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "GALA",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "gala",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "JASMY",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "jasmycoin",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "PENDLE",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "pendle",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "MINA",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "mina-protocol",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "RENDER",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "render-token",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "STRK",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "starknet",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    },
+    {
+      "symbol": "SUSHI",
+      "binance": true,
+      "binance_broken": false,
+      "mexc": true,
+      "bybit": true,
+      "coingecko": true,
+      "coingecko_id": "sushi",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [
+        "Binance",
+        "MEXC",
+        "Bybit"
+      ],
+      "n_exchanges": 3,
+      "data_confirmed": true,
+      "verdict": "PASS"
+    }
+  ],
+  "removed_results": [
+    {
+      "symbol": "MATIC",
+      "binance": false,
+      "binance_broken": true,
+      "mexc": false,
+      "bybit": false,
+      "coingecko": true,
+      "coingecko_id": "matic-network",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [],
+      "n_exchanges": 0,
+      "data_confirmed": true,
+      "verdict": "DATA_ONLY"
+    },
+    {
+      "symbol": "FTM",
+      "binance": false,
+      "binance_broken": true,
+      "mexc": false,
+      "bybit": false,
+      "coingecko": true,
+      "coingecko_id": "fantom",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [],
+      "n_exchanges": 0,
+      "data_confirmed": true,
+      "verdict": "DATA_ONLY"
+    },
+    {
+      "symbol": "MKR",
+      "binance": false,
+      "binance_broken": true,
+      "mexc": false,
+      "bybit": false,
+      "coingecko": true,
+      "coingecko_id": "maker",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [],
+      "n_exchanges": 0,
+      "data_confirmed": true,
+      "verdict": "DATA_ONLY"
+    },
+    {
+      "symbol": "EOS",
+      "binance": false,
+      "binance_broken": true,
+      "mexc": false,
+      "bybit": false,
+      "coingecko": true,
+      "coingecko_id": "eos",
+      "coinmarketcap": false,
+      "cmc_price_usd": null,
+      "tradeable_on": [],
+      "n_exchanges": 0,
+      "data_confirmed": true,
+      "verdict": "DATA_ONLY"
+    }
+  ]
+}

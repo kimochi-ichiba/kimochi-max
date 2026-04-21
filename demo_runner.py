@@ -67,12 +67,19 @@ MAX_TRADE_HISTORY = 1000
 MAX_EQUITY_HISTORY = 100_000
 
 # ACH: モメンタムTop3戦略パラメータ
+# 2026-04-21 更新: iter49 厳重バックテスト + 5ソース検証の結果を反映
+#   除外: MATIC, FTM, MKR, EOS (Binance取引停止、他取引所でも取引不可)
+#   追加: POL, TON, ONDO, JUP, WLD, LDO, IMX, WIF, ENA, GALA, JASMY, PENDLE,
+#         MINA, RENDER, STRK, SUSHI (16銘柄、Binance+MEXC+Bybit+CoinGecko 全PASS)
 ACH_UNIVERSE = [
     "BTC", "ETH", "BNB", "SOL", "XRP", "ADA", "AVAX", "DOGE", "TRX", "DOT",
-    "MATIC", "LINK", "UNI", "LTC", "ATOM", "NEAR", "ICP", "ETC", "XLM", "FIL",
-    "APT", "ARB", "OP", "INJ", "SUI", "SEI", "TIA", "RUNE", "FTM", "ALGO",
-    "SAND", "MANA", "AXS", "CHZ", "ENJ", "GRT", "AAVE", "MKR", "SNX", "CRV",
-    "HBAR", "EOS", "VET", "THETA", "EGLD", "XTZ", "FLOW", "IOTA", "DASH", "ZEC",
+    "LINK", "UNI", "LTC", "ATOM", "NEAR", "ICP", "ETC", "XLM", "FIL",
+    "APT", "ARB", "OP", "INJ", "SUI", "SEI", "TIA", "RUNE", "ALGO",
+    "SAND", "MANA", "AXS", "CHZ", "ENJ", "GRT", "AAVE", "SNX", "CRV",
+    "HBAR", "VET", "THETA", "EGLD", "XTZ", "FLOW", "IOTA", "DASH", "ZEC",
+    # iter49 追加分 (16銘柄、5ソース検証PASS)
+    "POL", "TON", "ONDO", "JUP", "WLD", "LDO", "IMX", "WIF",
+    "ENA", "GALA", "JASMY", "PENDLE", "MINA", "RENDER", "STRK", "SUSHI",
 ]
 ACH_TOP_N = 3
 ACH_LOOKBACK_DAYS = 90
