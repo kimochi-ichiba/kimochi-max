@@ -82,11 +82,11 @@ ACH_UNIVERSE = [
     "ENA", "GALA", "JASMY", "PENDLE", "MINA", "RENDER", "STRK", "SUSHI",
 ]
 ACH_TOP_N = 3
-# 2026-04-21 更新: iter50ファインチューニングで LB45 が最強と判明
-#   90日 → 45日で Std return +711% → +1302% (+591%pt 改善)
-#   短いlookbackでより最近のモメンタムに反応、リバランス追従性向上
-ACH_LOOKBACK_DAYS = 45
-ACH_REBALANCE_DAYS = 30  # 月次リバランス
+# 2026-04-22 更新: iter51 256パターン+Maker feeシナリオ検証で
+#   T3/LB25/週次 が最適と判明 (市場注文のまま +646% → +2053%, 3.2倍)
+#   さらにPhase 3 (Maker fee) 実装時は+2690%まで伸びる余地あり
+ACH_LOOKBACK_DAYS = 25      # 45 → 25 (より直近モメンタム捕捉)
+ACH_REBALANCE_DAYS = 7      # 30 → 7 (月次→週次リバランス)
 
 
 def log(msg, also_print=True):
