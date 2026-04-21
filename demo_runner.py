@@ -1,5 +1,5 @@
 """
-気持ちマックス デモトレード・ライブランナー (毎秒WebSocket版)
+気持ちマックス v2 デモトレード・ライブランナー (毎秒WebSocket版)
 ======================================================================
 Binance WebSocket で BTC 価格を毎秒受信、3層タイマーで処理:
 
@@ -394,7 +394,8 @@ def ach_update(state, btc_price_now, btc_ema200):
 def fresh_state():
     now = datetime.now(timezone.utc).isoformat(timespec='seconds')
     return {
-        "version": "1.0",
+        "version": "2.0",
+        "version_name": "気持ちマックス v2",
         "mode": "SIM",
         "started_at": now,
         "initial_capital": INITIAL,
@@ -654,9 +655,10 @@ def run_once():
 def run_loop():
     """3層タイマー永続ループ (毎秒tick / 60秒snapshot / 5分EMA再計算)"""
     log("=" * 60)
-    log("🚀 気持ちマックス デモトレードランナー 起動 (WebSocket版)")
+    log("🚀 気持ちマックス v2 デモトレードランナー 起動 (WebSocket版)")
     log(f"   初期資金: ${INITIAL:,.0f}")
     log(f"   構成: BTC {BTC_WEIGHT*100:.0f}% + ACH {ACH_WEIGHT*100:.0f}% + USDT {USDT_WEIGHT*100:.0f}%")
+    log(f"   ACH設定: Top{ACH_TOP_N} / LB{ACH_LOOKBACK_DAYS}日 / リバランス{ACH_REBALANCE_DAYS}日 / {len(ACH_UNIVERSE)}銘柄")
     log(f"   Tick {TICK_INTERVAL}秒 / Snapshot {SNAPSHOT_INTERVAL}秒 / EMA更新 {EMA_REFRESH_INTERVAL}秒")
     live_mode_startup = get_live_mode() if LIVE_TRADER_AVAILABLE else "sim"
     if live_mode_startup == "live":
