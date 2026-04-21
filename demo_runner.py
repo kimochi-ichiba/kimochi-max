@@ -37,6 +37,13 @@ except ImportError:
     WEBSOCKET_AVAILABLE = False
     BTCTickerStream = None
 
+try:
+    from live_trader import LiveTrader, get_mode as get_live_mode
+    LIVE_TRADER_AVAILABLE = True
+except ImportError:
+    LIVE_TRADER_AVAILABLE = False
+    get_live_mode = lambda: "sim"
+
 PROJECT = Path("/Users/sanosano/projects/kimochi-max")
 RESULTS_DIR = PROJECT / "results"
 STATE_PATH = RESULTS_DIR / "demo_state.json"
@@ -637,6 +644,13 @@ def run_loop():
     log(f"   初期資金: ${INITIAL:,.0f}")
     log(f"   構成: BTC {BTC_WEIGHT*100:.0f}% + ACH {ACH_WEIGHT*100:.0f}% + USDT {USDT_WEIGHT*100:.0f}%")
     log(f"   Tick {TICK_INTERVAL}秒 / Snapshot {SNAPSHOT_INTERVAL}秒 / EMA更新 {EMA_REFRESH_INTERVAL}秒")
+    live_mode_startup = get_live_mode() if LIVE_TRADER_AVAILABLE else "sim"
+    if live_mode_startup == "live":
+        log(f"   🔴 取引モード: LIVE (本番発注が有効です！ 実資金が動きます)")
+    elif live_mode_startup == "dry_run":
+        log(f"   🟡 取引モード: DRY_RUN (APIキーあり・LIVE_ENABLED未設定)")
+    else:
+        log(f"   🟢 取引モード: SIM (仮想資金のみ・安全)")
     if DISCORD_AVAILABLE:
         try:
             cfg = discord_notify.load_config()
@@ -724,6 +738,7 @@ def run_loop():
                 state["last_update"] = datetime.now(timezone.utc).isoformat(timespec='seconds')
                 state["ws_connected"] = ws_data.get("connected", False)
                 state["ws_age_sec"] = round(now - ws_data["ts"], 1) if ws_data["ts"] else None
+                state["trading_mode"] = get_live_mode() if LIVE_TRADER_AVAILABLE else "sim"
 
                 tick_count += 1
                 # 詳細ログは60秒ごとのみ
@@ -756,8 +771,26 @@ def run_loop():
                 if sig == "READY-BUY":
                     fee = 0.0006; slip = 0.0003
                     btc = state["btc_part"]
+                    live_mode = get_live_mode() if LIVE_TRADER_AVAILABLE else "sim"
                     buy_price = btc["last_btc_price"] * (1 + slip)
+                    # SIM計算 (どのモードでも同じ)
                     btc_qty = btc["cash"] / buy_price * (1 - fee)
+                    # LIVE実発注
+                    live_result = None
+                    if live_mode == "live":
+                        try:
+                            trader = LiveTrader()
+                            log(f"🔴 [LIVE] 実発注開始 BTC BUY ${btc['cash']:.2f}")
+                            live_result = trader.market_buy("BTCUSDT", quote_usd=round(btc["cash"], 2))
+                            # 実発注された数量を state に反映
+                            if live_result and "executedQty" in live_result:
+                                btc_qty = float(live_result["executedQty"])
+                            log(f"✅ [LIVE] 実発注成功: qty={btc_qty:.6f}")
+                        except Exception as e:
+                            log(f"❌ [LIVE] 発注失敗、SIMフォールバック: {e}")
+                            live_mode = "sim"
+                    elif live_mode == "dry_run":
+                        log(f"🟡 [DRY_RUN] 発注スキップ (LIVE_ENABLED=1で有効化可)")
                     btc["btc_qty"] = btc_qty
                     btc["cash"] = 0
                     btc["position"] = True
@@ -768,9 +801,11 @@ def run_loop():
                         "ts": now_iso, "part": "BTC", "action": "BUY",
                         "price": btc["last_btc_price"], "qty": round(btc_qty, 6),
                         "value_usd": round(btc_qty * btc["last_btc_price"], 2),
-                        "ema200": cached_ema200, "mode": "SIM",
+                        "ema200": cached_ema200,
+                        "mode": live_mode.upper(),
+                        "live_order_id": live_result.get("orderId") if live_result else None,
                     })
-                    log(f"🟢 BTC BUY @ ${btc['last_btc_price']:,.2f} qty={btc_qty:.6f}")
+                    log(f"🟢 BTC BUY @ ${btc['last_btc_price']:,.2f} qty={btc_qty:.6f} [{live_mode.upper()}]")
                     if DISCORD_AVAILABLE:
                         try:
                             discord_notify.notify_trade("BUY", "BTC", btc["last_btc_price"],
@@ -780,10 +815,27 @@ def run_loop():
                 elif sig == "READY-SELL":
                     fee = 0.0006; slip = 0.0003
                     btc = state["btc_part"]
+                    live_mode = get_live_mode() if LIVE_TRADER_AVAILABLE else "sim"
                     sell_price = btc["last_btc_price"] * (1 - slip)
                     proceeds = btc["btc_qty"] * sell_price * (1 - fee)
                     pnl = proceeds - (btc.get("entry_price", 0) * btc["btc_qty"])
                     qty_was = btc["btc_qty"]
+                    # LIVE実発注
+                    live_result = None
+                    if live_mode == "live":
+                        try:
+                            trader = LiveTrader()
+                            log(f"🔴 [LIVE] 実発注開始 BTC SELL {qty_was:.6f}")
+                            live_result = trader.market_sell_all("BTCUSDT", "BTC")
+                            if live_result and "cummulativeQuoteQty" in live_result:
+                                proceeds = float(live_result["cummulativeQuoteQty"])
+                                pnl = proceeds - (btc.get("entry_price", 0) * qty_was)
+                            log(f"✅ [LIVE] SELL成功: proceeds=${proceeds:.2f}")
+                        except Exception as e:
+                            log(f"❌ [LIVE] 発注失敗、SIMフォールバック: {e}")
+                            live_mode = "sim"
+                    elif live_mode == "dry_run":
+                        log(f"🟡 [DRY_RUN] SELL発注スキップ")
                     btc["cash"] = proceeds
                     btc["btc_qty"] = 0
                     btc["position"] = False
@@ -793,9 +845,11 @@ def run_loop():
                         "price": btc["last_btc_price"], "qty": round(qty_was, 6),
                         "value_usd": round(proceeds, 2),
                         "pnl_usd": round(pnl, 2),
-                        "ema200": cached_ema200, "mode": "SIM",
+                        "ema200": cached_ema200,
+                        "mode": live_mode.upper(),
+                        "live_order_id": live_result.get("orderId") if live_result else None,
                     })
-                    log(f"🔴 BTC SELL @ ${btc['last_btc_price']:,.2f} P&L=${pnl:+,.2f}")
+                    log(f"🔴 BTC SELL @ ${btc['last_btc_price']:,.2f} P&L=${pnl:+,.2f} [{live_mode.upper()}]")
                     if DISCORD_AVAILABLE:
                         try:
                             discord_notify.notify_trade("SELL", "BTC", btc["last_btc_price"],

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#060d17">
+<title>🔐 気持ちマックス 実取引 (LIVE) セットアップ</title>
+<style>
+:root{
+  --bg:#060d17;--bg2:#091523;--bg3:#0d1c2e;--bg4:#112338;
+  --border:#162840;--border2:#1d3350;
+  --text:#c8d8ea;--muted:#304d66;--muted2:#4e7291;
+  --green:#00e676;--green-bg:#00e67612;
+  --red:#f44336;--red-bg:#f4433612;
+  --yellow:#ffca28;--yellow-bg:#ffca2812;
+  --blue:#4fc3f7;--blue-bg:#4fc3f712;
+  --gold:#ffd700;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;font-size:14px;line-height:1.7;padding:20px;min-height:100vh}
+.container{max-width:900px;margin:0 auto}
+h1{font-size:26px;color:#fff;margin-bottom:6px;letter-spacing:-.5px}
+h1 em{color:var(--gold);font-style:normal}
+.subtitle{color:var(--muted2);font-size:13px;margin-bottom:24px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:16px}
+h2{font-size:18px;color:var(--yellow);margin:0 0 14px 0;border-left:4px solid var(--yellow);padding-left:12px}
+h3{font-size:15px;color:#fff;margin:14px 0 8px 0}
+.danger{background:linear-gradient(135deg,#2c0a0a,#1a2332);border:2px solid var(--red);border-radius:12px;padding:18px 22px;margin:14px 0}
+.danger h3{color:var(--red);margin-top:0;font-size:17px}
+.warning{background:var(--yellow-bg);border:1px solid var(--yellow);border-radius:8px;padding:12px 16px;margin:10px 0}
+.info{background:var(--blue-bg);border:1px solid var(--blue);border-radius:8px;padding:12px 16px;margin:10px 0}
+.success{background:var(--green-bg);border:1px solid var(--green);border-radius:8px;padding:12px 16px;margin:10px 0}
+.step{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:16px 20px;margin:12px 0}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--gold);color:#000;font-weight:900;font-size:14px;margin-right:10px}
+.step-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:10px}
+code{background:#0a141f;border:1px solid var(--border2);padding:3px 8px;border-radius:4px;font-family:ui-monospace,Monaco,monospace;font-size:12px;color:var(--yellow)}
+.cmd{background:#0a141f;border:1px solid var(--border2);border-left:3px solid var(--green);padding:12px 16px;border-radius:6px;font-family:ui-monospace,Monaco,monospace;font-size:12px;color:var(--green);margin:10px 0;overflow-x:auto;white-space:pre-wrap;word-break:break-all}
+.mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.mode-card{background:var(--bg3);border:2px solid var(--border2);border-radius:12px;padding:16px 18px;text-align:center}
+.mode-card.sim{border-color:var(--green)}
+.mode-card.dry{border-color:var(--yellow)}
+.mode-card.live{border-color:var(--red);background:linear-gradient(135deg,var(--bg3),#2c0a0a)}
+.mode-card .mt{font-size:14px;font-weight:800;color:#fff;margin-bottom:6px}
+.mode-card .ms{font-size:24px;font-weight:900;margin:8px 0}
+.mode-card.sim .ms{color:var(--green)}
+.mode-card.dry .ms{color:var(--yellow)}
+.mode-card.live .ms{color:var(--red)}
+.mode-card .md{font-size:11px;color:var(--muted2);line-height:1.6}
+.check{display:block;padding:8px 14px;border-radius:6px;margin:4px 0;font-size:13px;background:var(--bg3);border-left:3px solid var(--green)}
+.check.warn{border-color:var(--yellow)}
+.check.danger{border-color:var(--red)}
+ul{padding-left:22px;margin:8px 0}
+li{margin-bottom:5px}
+a{color:var(--blue)}
+strong,b{color:#fff}
+.back{display:inline-block;margin-bottom:16px;color:var(--muted2);font-size:13px;text-decoration:none}
+@media(max-width:640px){body{padding:12px}.mode-grid{grid-template-columns:1fr}h1{font-size:20px}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back">← レポート一覧に戻る</a>
+
+<h1>🔐 気持ちマックス <em>実取引 (LIVE)</em> セットアップ</h1>
+<p class="subtitle">
+  SIMモード（仮想）から LIVEモード（実資金）への切替ガイド。
+  <b style="color:var(--red)">実資金が動くため、手順を厳密に守ってください。</b>
+</p>
+
+<!-- 警告 -->
+<div class="danger">
+  <h3>⚠️ 最重要：実資金は失う可能性があります</h3>
+  <ul>
+    <li><b>過去のバックテストは将来を保証しません</b>。未来の相場は予測不能</li>
+    <li>DD 40-50% は確実に発生する可能性があります（資産半減の覚悟必要）</li>
+    <li>取引所倒産・ハッキング・APIキー流出 のリスクあり</li>
+    <li>最初は <b>$50〜$100 程度の最小額</b> で1週間以上テストすることを強く推奨</li>
+    <li>設定・コードに不具合があれば、想定と違う発注をする可能性あり</li>
+    <li>この機能によって生じた損失は、全てご自身の責任となります</li>
+  </ul>
+</div>
+
+<!-- 3モード解説 -->
+<div class="card">
+  <h2>📊 3つの動作モード</h2>
+  <div class="mode-grid">
+    <div class="mode-card sim">
+      <div class="mt">🟢 SIM</div>
+      <div class="ms">仮想のみ</div>
+      <div class="md">現在のデフォルト。<br>仮想$10,000でシミュレーション。<br><b>実資金は一切動きません。</b></div>
+    </div>
+    <div class="mode-card dry">
+      <div class="mt">🟡 DRY_RUN</div>
+      <div class="ms">シグナル確認</div>
+      <div class="md">APIキー設定済みだが<br>LIVE_ENABLED未設定。<br><b>シグナルは出るが発注しない。</b></div>
+    </div>
+    <div class="mode-card live">
+      <div class="mt">🔴 LIVE</div>
+      <div class="ms">本番発注</div>
+      <div class="md">全設定揃ったとき。<br><b class="r">実資金が動きます。</b><br>1注文$100・1日5回上限。</div>
+    </div>
+  </div>
+</div>
+
+<!-- セットアップ手順 -->
+<div class="card">
+  <h2>🛠 セットアップ手順 (段階的・所要時間30分)</h2>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">1</span>Binance にログインしてAPIキーを作成</div>
+    <ul>
+      <li>Binance (<a href="https://www.binance.com/ja" target="_blank">binance.com</a>) にログイン</li>
+      <li>右上のアカウントアイコン → <b>API Management</b></li>
+      <li>「Create API」→ 名前「KimochiMax」で作成</li>
+      <li>2FA認証 (メール + Google Authenticator等) を完了</li>
+    </ul>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">2</span>APIキーの権限を【必須】制限する</div>
+    <div class="danger" style="padding:12px 16px;margin:8px 0">
+      <b>APIキーに「出金 (Withdraw)」権限を絶対に付けないでください</b>
+    </div>
+    <ul>
+      <li>✅ <b>Enable Reading</b> (残高確認用、ON)</li>
+      <li>✅ <b>Enable Spot & Margin Trading</b> (取引用、ON)</li>
+      <li>❌ <b>Enable Withdrawals</b> (<b class="r">OFF 絶対必要</b>)</li>
+      <li>❌ <b>Enable Futures</b> (必要に応じて。初期はOFF推奨)</li>
+    </ul>
+    <div class="warning">
+      🔐 <b>IP制限の推奨</b>: 「Restrict access to trusted IPs only」をONにして、
+      あなたのMacBookの現在IPを登録。仮にキーが流出しても別IPから使えない。
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">3</span>APIキーをターミナルに登録 (環境変数)</div>
+    <p>MacBookのターミナルで以下を実行（<code>YOUR_API_KEY</code>等を置き換え）:</p>
+    <div class="cmd">cat &gt;&gt; ~/.zshrc &lt;&lt; 'EOF'
+
+# 気持ちマックス Live取引設定
+export BINANCE_API_KEY='YOUR_API_KEY'
+export BINANCE_SECRET='YOUR_SECRET'
+export KM_MODE='live'
+# 安全装置: 以下を 1 にすると本番発注が有効
+# export LIVE_ENABLED='1'
+# 取引上限 (任意で変更)
+export KM_MAX_ORDER_USD='100'
+export KM_MAX_DAILY_TRADES='5'
+EOF
+source ~/.zshrc</div>
+    <div class="info">
+      ⚠️ <b>LIVE_ENABLED はまだコメントアウトしておいてください</b>。
+      <b>DRY_RUN モード</b>で1週間テストしてから有効化します。
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">4</span>API接続テスト (残高確認のみ)</div>
+    <div class="cmd">python3 /Users/sanosano/projects/kimochi-max/live_trader.py check</div>
+    <p>以下が表示されれば成功:</p>
+    <div class="success">
+      ✅ 接続成功<br>
+      APIキー権限: TRADE<br>
+      💰 残高: USDT free=100.00<br>
+      📊 本日の実取引回数: 0/5
+    </div>
+    <p>❌「WITHDRAW権限あり」と出たら、Binanceコンソールで権限を無効化してください。</p>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">5</span>DRY_RUNモードで1週間テスト</div>
+    <div class="cmd">launchctl kickstart -k gui/$(id -u)/com.sanosano.kimochimax.demo
+tail -f /tmp/kimochi_demo.log | grep "DRY_RUN"</div>
+    <ul>
+      <li>実発注せず、シグナルだけ出る「DRY_RUN」モードで動作</li>
+      <li>1週間観察して、発注指示が<b>想定通りのタイミング</b>で出るか確認</li>
+      <li>Discord通知でBUY/SELL予告が届く</li>
+    </ul>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">6</span>少額($50〜$100)で LIVE を有効化</div>
+    <div class="warning">
+      ⚠️ 最初は<b>必ず少額</b>でテストしてください。いきなり大額を入れると損失時に取り返しがつきません。
+    </div>
+    <ol>
+      <li>Binance Spot に<b>USDT $50〜$100 程度</b>を入金</li>
+      <li><code>~/.zshrc</code> の <code>export LIVE_ENABLED='1'</code> のコメントを外す</li>
+      <li>ターミナル再起動 or <code>source ~/.zshrc</code></li>
+      <li>ボット再起動: <code>launchctl kickstart -k gui/$(id -u)/com.sanosano.kimochimax.demo</code></li>
+      <li>起動ログで「🔴 取引モード: LIVE」が出ていることを確認</li>
+      <li>次のBUYシグナル発動時に実発注される（Binanceの取引履歴で確認）</li>
+    </ol>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">7</span>モードの無効化 (取引停止)</div>
+    <div class="cmd">unset LIVE_ENABLED
+# または ~/.zshrc からLIVE_ENABLEDの行をコメントアウト
+launchctl kickstart -k gui/$(id -u)/com.sanosano.kimochimax.demo</div>
+    <p>これで即座に DRY_RUN に戻り、発注がストップします（既存ポジションは維持）。</p>
+  </div>
+</div>
+
+<!-- 組み込まれている安全装置 -->
+<div class="card">
+  <h2>🛡️ 組み込み安全装置</h2>
+  <div class="check">✅ <b>APIキー2つ揃わないと LIVE は動かない</b> (BINANCE_API_KEY + BINANCE_SECRET)</div>
+  <div class="check">✅ <b>LIVE_ENABLED=1 明示的設定が必須</b> (デフォルトは DRY_RUN 止まり)</div>
+  <div class="check">✅ <b>1注文 $100 上限</b> (KM_MAX_ORDER_USD)</div>
+  <div class="check">✅ <b>1日 5回 取引上限</b> (KM_MAX_DAILY_TRADES)</div>
+  <div class="check">✅ <b>サーバー時刻ズレ1秒超で拒否</b> (Mac時刻異常を検出)</div>
+  <div class="check">✅ <b>発注失敗時 SIMフォールバック</b> (エラー時も継続稼働)</div>
+  <div class="check warn">⚠️ <b>APIキー出金権限は絶対OFF</b> (あなたが設定すること)</div>
+  <div class="check warn">⚠️ <b>IP制限推奨</b> (Binance側でトラステッドIP限定)</div>
+</div>
+
+<!-- ヘルスモニター -->
+<div class="card">
+  <h2>🏥 ヘルスモニター (常時監視)</h2>
+  <p>launchdで <code>com.sanosano.kimochimax.health</code> が60秒ごとに以下を監視:</p>
+  <ul>
+    <li>デモランナーのプロセス生存</li>
+    <li>Webサーバーのプロセス生存</li>
+    <li>state.json が5分以内に更新されているか</li>
+    <li>WebSocket接続が30秒以内に生きているか</li>
+  </ul>
+  <p><b>異常検出時の動作:</b></p>
+  <ul>
+    <li><b>初回異常</b>: Discord/Slack警告通知</li>
+    <li><b>3分継続</b>: launchctl kickstart で自動再起動</li>
+    <li><b>10分継続</b>: 重大アラート通知 (手動対応を促す)</li>
+  </ul>
+  <div class="cmd"># ヘルスモニター状態確認
+python3 /Users/sanosano/projects/kimochi-max/health_monitor.py --status
+
+# ログ確認
+tail -f /tmp/kimochi_health.log</div>
+</div>
+
+<!-- よくある質問 -->
+<div class="card">
+  <h2>❓ よくある質問</h2>
+
+  <h3>Q. APIキー流出したらどうなる？</h3>
+  <p>
+    <b>出金権限OFF + IP制限ON</b>なら、流出しても資金は動かせません（取引のみ可）。
+    発見次第、Binanceコンソールで該当APIキーを即削除してください。
+  </p>
+
+  <h3>Q. 夜中に大きな下落で清算される？</h3>
+  <p>
+    Spot取引のため「清算」は発生しません（レバレッジ無し）。
+    最悪でもBTC価格下落分の含み損で、強制決済にはなりません。
+    Futures/Marginは本バージョンでは対象外です。
+  </p>
+
+  <h3>Q. Mac再起動後は？</h3>
+  <p>
+    launchdが自動起動。ただし環境変数 <code>LIVE_ENABLED</code> は <code>~/.zshrc</code> 経由で
+    読み込まれるため、<b>launchd起動時には設定されていない可能性</b>あり。
+    plistに環境変数を直接書くか、健全なDRY_RUN運用を推奨。
+  </p>
+
+  <h3>Q. 設定を確認したい</h3>
+  <div class="cmd">python3 /Users/sanosano/projects/kimochi-max/live_trader.py check</div>
+</div>
+
+<div class="card" style="background:#0a2c17;border-color:var(--green)">
+  <h2 style="color:var(--green);border-color:var(--green)">✅ 推奨スケジュール</h2>
+  <ol>
+    <li><b>Day 1</b>: Step 1-4 完了、API接続確認のみ</li>
+    <li><b>Day 2-7</b>: DRY_RUN で1週間観察</li>
+    <li><b>Day 8</b>: Binanceに$100入金、LIVE_ENABLED=1</li>
+    <li><b>Day 9-30</b>: 少額でLIVE運用、挙動確認</li>
+    <li><b>Day 30+</b>: 問題なければ段階的に入金増額</li>
+  </ol>
+</div>
+
+</div>
+</body>
+</html>
