@@ -1,22 +1,22 @@
 #!/bin/bash
-# H11Bot launchd アンインストーラ
+# 気持ちマックス launchd アンインストーラ
 
 set -e
 
 TARGET_DIR="$HOME/Library/LaunchAgents"
 
-echo "🛑 H11Bot launchd 停止・削除"
+echo "🛑 気持ちマックス launchd 停止・削除"
 
 # unload
-if [ -f "$TARGET_DIR/com.sanosano.h11bot.server.plist" ]; then
-    launchctl unload "$TARGET_DIR/com.sanosano.h11bot.server.plist" 2>/dev/null || true
-    rm "$TARGET_DIR/com.sanosano.h11bot.server.plist"
+if [ -f "$TARGET_DIR/com.sanosano.kimochimax.server.plist" ]; then
+    launchctl unload "$TARGET_DIR/com.sanosano.kimochimax.server.plist" 2>/dev/null || true
+    rm "$TARGET_DIR/com.sanosano.kimochimax.server.plist"
     echo "   ✅ Webサーバー plist を削除"
 fi
 
-if [ -f "$TARGET_DIR/com.sanosano.h11bot.demo.plist" ]; then
-    launchctl unload "$TARGET_DIR/com.sanosano.h11bot.demo.plist" 2>/dev/null || true
-    rm "$TARGET_DIR/com.sanosano.h11bot.demo.plist"
+if [ -f "$TARGET_DIR/com.sanosano.kimochimax.demo.plist" ]; then
+    launchctl unload "$TARGET_DIR/com.sanosano.kimochimax.demo.plist" 2>/dev/null || true
+    rm "$TARGET_DIR/com.sanosano.kimochimax.demo.plist"
     echo "   ✅ デモランナー plist を削除"
 fi
 

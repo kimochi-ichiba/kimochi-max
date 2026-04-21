@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-21T09:13:47.391062",
+  "generated_at": "2026-04-21T10:02:11.988473",
   "inputs": {
     "initial": 4000000,
     "monthly": 200000,
@@ -19,7 +19,7 @@
   },
   "method_scenarios": {
     "buy_hold": "現物ガチホ (BTC/ETH を持ち続けるだけ)",
-    "h11_pro": "H11 Proボット (戦略エンジンで運用)",
+    "h11_pro": "気持ちマックス Proボット (戦略エンジンで運用)",
     "hybrid": "ハイブリッド (現物50% + ボット50%)"
   },
   "market_returns": {

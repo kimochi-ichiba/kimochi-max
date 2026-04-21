@@ -1,5 +1,5 @@
 """
-H11 自動売買ボット
+気持ちマックス 自動売買ボット
 =======================
 構成 (元金 $10,000 想定):
   - BTC 40% : EMA200上で保有、下で現金化 (BTCマイルド戦略)
@@ -13,8 +13,8 @@ H11 自動売買ボット
   - 1時間ごとにstate.jsonに状態保存
 
 使い方:
-  python3 h11_bot.py           # SIMモード（安全）
-  python3 h11_bot.py --live    # 実取引モード（API キー必要、現状は抑止）
+  python3 kimochimax_bot.py           # SIMモード（安全）
+  python3 kimochimax_bot.py --live    # 実取引モード（API キー必要、現状は抑止）
 """
 from __future__ import annotations
 import sys, json, time, pickle
@@ -32,13 +32,13 @@ from _multipos_backtest import UNIVERSE_50
 from _rsi_short_backtest import fetch_with_rsi
 
 PROJECT = Path("/Users/sanosano/projects/kimochi-max")
-STATE_PATH = PROJECT / "h11_bot_state.json"
-LOG_PATH = PROJECT / "h11_bot.log"
+STATE_PATH = PROJECT / "kimochimax_bot_state.json"
+LOG_PATH = PROJECT / "kimochimax_bot.log"
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# H11 戦略の設定
+# 気持ちマックス 戦略の設定
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-H11_CONFIG = {
+KIMOCHIMAX_CONFIG = {
     "initial_capital": 10_000.0,
     "btc_weight": 0.40,   # BTCマイルド枠
     "ach_weight": 0.40,   # ACH枠
@@ -90,19 +90,19 @@ def load_state():
         return {
             "started_at": datetime.now(timezone.utc).isoformat(),
             "mode": "sim",
-            "total_equity": H11_CONFIG["initial_capital"],
+            "total_equity": KIMOCHIMAX_CONFIG["initial_capital"],
             "btc_part": {
-                "cash": H11_CONFIG["initial_capital"] * H11_CONFIG["btc_weight"],
+                "cash": KIMOCHIMAX_CONFIG["initial_capital"] * KIMOCHIMAX_CONFIG["btc_weight"],
                 "btc_qty": 0.0,
                 "position": False,
                 "last_price": 0.0,
             },
             "ach_part": {
-                "cash": H11_CONFIG["initial_capital"] * H11_CONFIG["ach_weight"],
+                "cash": KIMOCHIMAX_CONFIG["initial_capital"] * KIMOCHIMAX_CONFIG["ach_weight"],
                 "positions": {},  # sym -> {qty, entry_price, entry_ts, leverage, pyramids, peak_price, margin_usd, partial_taken}
             },
             "usdt_part": {
-                "cash": H11_CONFIG["initial_capital"] * H11_CONFIG["usdt_weight"],
+                "cash": KIMOCHIMAX_CONFIG["initial_capital"] * KIMOCHIMAX_CONFIG["usdt_weight"],
                 "last_interest_ts": datetime.now(timezone.utc).isoformat(),
             },
             "trades": [],
@@ -129,7 +129,7 @@ def tick_btc_mild(state, btc_df, current_date, mode):
         return
     row = btc_df.loc[current_date]
     price = float(row["close"])
-    ema = row.get(f"ema{H11_CONFIG['btc_ema_period']}")
+    ema = row.get(f"ema{KIMOCHIMAX_CONFIG['btc_ema_period']}")
     part["last_price"] = price
 
     if pd.isna(ema):
@@ -169,7 +169,7 @@ def tick_usdt_interest(state, current_date):
           datetime.combine(current_date.to_pydatetime().date(), datetime.min.time(), tzinfo=timezone.utc)
     days = (now - last_ts.replace(tzinfo=timezone.utc)).days
     if days > 0:
-        rate = H11_CONFIG["usdt_annual_rate"]
+        rate = KIMOCHIMAX_CONFIG["usdt_annual_rate"]
         part["cash"] *= (1 + rate) ** (days / 365)
         part["last_interest_ts"] = now.isoformat()
 
@@ -225,11 +225,11 @@ def compute_total_equity(state, all_data, current_date):
 def run_sim(duration_minutes=None):
     """SIMモード: 履歴データでシミュレーション実行"""
     log("=" * 70)
-    log("🚀 H11 自動売買ボット SIMモード 起動")
+    log("🚀 気持ちマックス 自動売買ボット SIMモード 起動")
     log("=" * 70)
-    log(f"構成: BTC {H11_CONFIG['btc_weight']*100:.0f}% + ACH {H11_CONFIG['ach_weight']*100:.0f}% + USDT {H11_CONFIG['usdt_weight']*100:.0f}%")
-    log(f"初期資金: ${H11_CONFIG['initial_capital']:,.0f}")
-    log(f"USDT金利: 年{H11_CONFIG['usdt_annual_rate']*100:.1f}%")
+    log(f"構成: BTC {KIMOCHIMAX_CONFIG['btc_weight']*100:.0f}% + ACH {KIMOCHIMAX_CONFIG['ach_weight']*100:.0f}% + USDT {KIMOCHIMAX_CONFIG['usdt_weight']*100:.0f}%")
+    log(f"初期資金: ${KIMOCHIMAX_CONFIG['initial_capital']:,.0f}")
+    log(f"USDT金利: 年{KIMOCHIMAX_CONFIG['usdt_annual_rate']*100:.1f}%")
 
     # データロード
     fetcher = DataFetcher(Config())
@@ -263,7 +263,7 @@ def run_sim(duration_minutes=None):
         # USDT金利 (日次複利)
         # tick_usdt_interest は datetime オブジェクトを期待するので、ここでは簡易的に
         part = state["usdt_part"]
-        daily_rate = (1 + H11_CONFIG["usdt_annual_rate"]) ** (1/365)
+        daily_rate = (1 + KIMOCHIMAX_CONFIG["usdt_annual_rate"]) ** (1/365)
         part["cash"] *= daily_rate
         # ACH (本来はライブシグナル、ここでは概算で省略)
         # tick_ach(state, all_data, current_date, "sim")
@@ -288,7 +288,7 @@ def run_sim(duration_minutes=None):
     log("📊 シミュレーション完了")
     log(f"  最終総資産: ${total:,.2f}")
     log(f"  内訳: BTC ${btc_v:,.0f} / ACH ${ach_v:,.0f} / USDT ${usdt_v:,.0f}")
-    log(f"  リターン: {(total / H11_CONFIG['initial_capital'] - 1) * 100:+.1f}%")
+    log(f"  リターン: {(total / KIMOCHIMAX_CONFIG['initial_capital'] - 1) * 100:+.1f}%")
     log(f"  取引数: {len(state['trades'])}")
     log("=" * 70)
 

@@ -150,7 +150,7 @@ a{color:var(--blue)}
 <div class="tabs">
   <div class="tb on" onclick="sw('tax')">💰 税制3シナリオ</div>
   <div class="tb" onclick="sw('market')">📊 市場予測3パターン</div>
-  <div class="tb" onclick="sw('reliability')">🔍 H11信頼性評価</div>
+  <div class="tb" onclick="sw('reliability')">🔍 気持ちマックス信頼性評価</div>
   <div class="tb" onclick="sw('method')">⚔️ 運用法比較</div>
   <div class="tb" onclick="sw('full')">📋 全27パターン</div>
   <div class="tb" onclick="sw('chart')">📈 成長チャート</div>
@@ -202,14 +202,14 @@ a{color:var(--blue)}
 
   <div class="info">
     <h3>💡 税制の影響はどれくらい？（中立市場シナリオで比較）</h3>
-    <p>H11 Pro運用の場合:</p>
+    <p>気持ちマックス Pro運用の場合:</p>
     <ul>
       <li>税制A (2028分離): 税引き後 <b class="g">¥2億6,144万</b> → 月 <b class="g">¥69万</b></li>
       <li>税制B (2030分離): 税引き後 ¥2億6,144万 → 月 ¥69万 (35歳利確時はどちらも分離)</li>
       <li>税制C (総合55%): 税引き後 <b class="y">¥1億5,669万</b> → 月 <b class="y">¥41万</b></li>
     </ul>
     <p style="margin-top:8px;color:var(--yellow)">
-      ⚠️ 改正なしだと、<b>手取りが約40%減少</b>します。それでもH11 Proなら月40万ギリギリ達成可能。
+      ⚠️ 改正なしだと、<b>手取りが約40%減少</b>します。それでも気持ちマックス Proなら月40万ギリギリ達成可能。
     </p>
   </div>
 </div>
@@ -293,7 +293,7 @@ a{color:var(--blue)}
 <!-- 信頼性タブ -->
 <div class="tpane" id="p-reliability">
 <div class="card">
-  <h2>🔍 H11 Pro ボットの信頼性総合評価</h2>
+  <h2>🔍 気持ちマックス Pro ボットの信頼性総合評価</h2>
   <p style="color:var(--muted2);font-size:13px">
     「現物を持たずにボットだけ」で運用する前に、このボットがどれだけ信頼できるか、多面的に評価します。
   </p>
@@ -328,7 +328,7 @@ a{color:var(--blue)}
     <div class="rel-item">
       <div class="rel-score">⚠️ 70%</div>
       <div class="rel-title">ACH実装完成度</div>
-      <div class="rel-desc">モメンタムTop3が実装済。H11 Proの段階レバレッジは設計済だが未実装。</div>
+      <div class="rel-desc">モメンタムTop3が実装済。気持ちマックス Proの段階レバレッジは設計済だが未実装。</div>
     </div>
   </div>
 
@@ -417,7 +417,7 @@ a{color:var(--blue)}
     </div>
 
     <div class="method-card winner">
-      <div class="m-ttl">🚀 H11 Pro ボットのみ ⭐</div>
+      <div class="m-ttl">🚀 気持ちマックス Pro ボットのみ ⭐</div>
       <div style="font-size:11px;color:var(--muted2);margin-bottom:8px">自動売買ボットに全資金託す</div>
       <div class="m-result">
         <div class="label">中立市場・2028分離課税</div>
@@ -466,7 +466,7 @@ a{color:var(--blue)}
       <div class="m-cons">
         <b>❌ デメリット</b>
         <ul>
-          <li>H11 Proより利益少ない</li>
+          <li>気持ちマックス Proより利益少ない</li>
           <li>管理が複雑になる</li>
           <li>現物側はガチホ規律必要</li>
           <li>総合課税時はギリギリ</li>
@@ -496,7 +496,7 @@ a{color:var(--blue)}
   <p style="color:var(--muted2);font-size:13px">市場シナリオ別の資産推移（対数スケール）</p>
   <h3>中立シナリオでの3運用法比較</h3>
   <div class="chart-box"><canvas id="neutralChart"></canvas></div>
-  <h3>H11 Proでの3市場シナリオ比較</h3>
+  <h3>気持ちマックス Proでの3市場シナリオ比較</h3>
   <div class="chart-box"><canvas id="h11proChart"></canvas></div>
   <h3>BTC価格推移 (月次累積) 想定</h3>
   <div class="chart-box"><canvas id="btcChart"></canvas></div>
@@ -509,13 +509,13 @@ a{color:var(--blue)}
   <h2>🎯 私の総合推奨</h2>
 
   <div class="recommend">
-    <h3>🏆 最優先推奨: ハイブリッド (現物50% + H11 Pro 50%)</h3>
+    <h3>🏆 最優先推奨: ハイブリッド (現物50% + 気持ちマックス Pro 50%)</h3>
     <p style="font-size:15px;line-height:1.8">
       <b class="g">全シナリオで月40万達成+精神的安定性+リスク分散</b>の三拍子が揃う唯一の選択肢です。
     </p>
     <ul style="margin-top:10px">
       <li><b>現物側</b>: BTC 30% + ETH 20% を自己ウォレット(Ledger等)で保管 → 取引所倒産対策</li>
-      <li><b>ボット側</b>: H11 Proに50%を託す (BTCマイルド+ACH+USDT) → 積極運用</li>
+      <li><b>ボット側</b>: 気持ちマックス Proに50%を託す (BTCマイルド+ACH+USDT) → 積極運用</li>
       <li><b>月20万積立</b>: 10万を現物買い、10万をボットに自動投入</li>
       <li><b>33歳(2031年)</b>: 仮想通貨全体の50%を利確 → USDT/JPYに</li>
       <li><b>35歳(2033年)</b>: 残り全てを利確 → VYMに全額移行</li>
@@ -535,7 +535,7 @@ a{color:var(--blue)}
   <div class="card" style="margin-top:14px;background:var(--bg3);border-color:var(--gold)">
     <h3 style="color:var(--gold)">✅ 行動チェックリスト</h3>
     <ol class="chk-list">
-      <li class="ok"><b>Step 1 (いまやる)</b>: 今のH11デモダッシュボードで1-3ヶ月動作確認</li>
+      <li class="ok"><b>Step 1 (いまやる)</b>: 今の気持ちマックスデモダッシュボードで1-3ヶ月動作確認</li>
       <li class="ok"><b>Step 2 (1ヶ月後)</b>: Binance/Coincheck で現物購入開始 (初期400万を50/50で)</li>
       <li class="ok"><b>Step 3 (2-3ヶ月後)</b>: ボット側に30万円実投入、小額で挙動確認</li>
       <li class="warn"><b>Step 4 (3-6ヶ月後)</b>: ハードウェアウォレット(Ledger等)を購入、現物を移動</li>
@@ -598,7 +598,7 @@ function sw(tab){
 function drawFullTable(){
   const t = document.getElementById('pattern-table');
   const MJP = {bull:'🚀強気',neutral:'📊中立',bear:'🌨弱気'};
-  const MT = {buy_hold:'💎現物',h11_pro:'🚀H11 Pro',hybrid:'🔀ハイブリッド'};
+  const MT = {buy_hold:'💎現物',h11_pro:'🚀気持ちマックス Pro',hybrid:'🔀ハイブリッド'};
   const TJ = {A_2028_split:'A.2028分離',B_2030_split:'B.2030分離',C_no_change:'C.総合55%'};
   let h = `<thead><tr><th>市場</th><th>運用法</th><th>税制</th>
     <th style="text-align:right">最終資産</th><th style="text-align:right">税引後</th>
@@ -630,7 +630,7 @@ function drawCharts(){
   // Chart 1: 中立シナリオ 3運用法
   const neutral = DATA.results.filter(r=>r.market==='neutral' && r.tax==='A_2028_split');
   const COLORS = {buy_hold:'#808080',h11_pro:'#00e676',hybrid:'#4fc3f7'};
-  const MT = {buy_hold:'💎現物のみ',h11_pro:'🚀H11 Pro',hybrid:'🔀ハイブリッド'};
+  const MT = {buy_hold:'💎現物のみ',h11_pro:'🚀気持ちマックス Pro',hybrid:'🔀ハイブリッド'};
   const ctx1 = document.getElementById('neutralChart');
   if(charts.c1) charts.c1.destroy();
   charts.c1 = new Chart(ctx1,{type:'line',data:{labels,datasets:neutral.map(r=>({
@@ -641,7 +641,7 @@ function drawCharts(){
     scales:{y:{type:'logarithmic',ticks:{color:'#4e7291',callback:v=>fmtK(v)},grid:{color:'#162840'}},
     x:{ticks:{color:'#4e7291',autoSkip:false,font:{size:10}},grid:{color:'#162840'}}}}});
 
-  // Chart 2: H11 Pro 3市場
+  // Chart 2: 気持ちマックス Pro 3市場
   const h11pro = DATA.results.filter(r=>r.method==='h11_pro' && r.tax==='A_2028_split');
   const MC = {bull:'#00e676',neutral:'#ffca28',bear:'#f44336'};
   const MJ = {bull:'🚀強気',neutral:'📊中立',bear:'🌨弱気'};

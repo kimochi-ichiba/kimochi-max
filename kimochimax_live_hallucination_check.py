@@ -1,7 +1,7 @@
 """
-H11 Bot ライブ・ハルシネーションチェック
+気持ちマックス Bot ライブ・ハルシネーションチェック
 ==========================================
-稼働中のH11ボットに対して、非破壊的に以下を検証する:
+稼働中の気持ちマックスに対して、非破壊的に以下を検証する:
   1. ボット稼働状態 (プロセス / state.json 鮮度)
   2. BTC現在価格を 5+ 取引所で相互照合 (Binance / MEXC / Bitget / yfinance / CoinGecko / CoinMarketCap)
   3. EMA200 の独立再計算 (Binanceから220日klineを再取得)
@@ -10,7 +10,7 @@ H11 Bot ライブ・ハルシネーションチェック
   6. USDT 枠の金利整合性検証
 
 実行:
-  python3 h11_live_hallucination_check.py
+  python3 kimochimax_live_hallucination_check.py
   # CMC_API_KEY を設定すればCoinMarketCapも含まれる
 """
 from __future__ import annotations
@@ -21,8 +21,8 @@ from datetime import datetime, timezone, timedelta
 PROJECT = Path("/Users/sanosano/projects/kimochi-max")
 RESULTS_DIR = PROJECT / "results"
 STATE_PATH = RESULTS_DIR / "demo_state.json"
-OUT_JSON = RESULTS_DIR / "h11_live_hallucination_check.json"
-OUT_HTML = RESULTS_DIR / "h11_live_hallucination_report.html"
+OUT_JSON = RESULTS_DIR / "kimochimax_live_hallucination_check.json"
+OUT_HTML = RESULTS_DIR / "kimochimax_live_hallucination_report.html"
 
 # 閾値
 WARN_DEVIATION_PCT = 0.5
@@ -30,7 +30,7 @@ FAIL_DEVIATION_PCT = 2.0
 
 
 def http_get_json(url, timeout=10, headers=None):
-    default_headers = {"User-Agent": "Mozilla/5.0 (H11BotVerifier)"}
+    default_headers = {"User-Agent": "Mozilla/5.0 (気持ちマックスVerifier)"}
     if headers:
         default_headers.update(headers)
     req = urllib.request.Request(url, headers=default_headers)
@@ -302,7 +302,7 @@ def verify_theoretical_parts(state):
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 def run_all_checks():
     print("=" * 70)
-    print("🔍 H11 Bot ライブ・ハルシネーションチェック")
+    print("🔍 気持ちマックス Bot ライブ・ハルシネーションチェック")
     print("=" * 70)
 
     result = {
@@ -466,7 +466,7 @@ def generate_html_report(data):
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>🔍 H11 Bot ハルシネーションチェック</title>
+<title>🔍 気持ちマックス Bot ハルシネーションチェック</title>
 <style>
 :root{
   --bg:#060d17;--bg2:#091523;--bg3:#0d1c2e;--bg4:#112338;
@@ -523,7 +523,7 @@ a:hover{text-decoration:underline}
 
 <div class="hdr">
   <div class="live-dot"></div>
-  <div class="hdr-logo">H11<em>Bot</em> 検証</div>
+  <div class="hdr-logo">気持ち<em>マックス</em> 検証</div>
   <div id="verdict"></div>
   <div class="hdr-right" id="ts"></div>
 </div>
@@ -562,7 +562,7 @@ a:hover{text-decoration:underline}
   <div class="ach-warning">
     <h3>⚠️ ACH 枠は「実市場データ非連動」です — 要注意</h3>
     <p>
-      現在の H11 Bot の <b>ACH 枠（$4,000 = 初期資金の40%）</b> は、<br>
+      現在の 気持ちマックス Bot の <b>ACH 枠（$4,000 = 初期資金の40%）</b> は、<br>
       <b>実際の市場トレード処理はされておらず</b>、バックテストで判明した期待年率 <b>+55%</b> を時間経過に応じて数学的に増加させているだけの<b>理論値複利</b>です。
     </p>
     <p style="margin-top:8px">
@@ -751,5 +751,5 @@ if __name__ == "__main__":
     print(f"\n💾 JSON: {OUT_JSON}")
     print(f"💾 HTML: {OUT_HTML}")
     print(f"\n🌐 ブラウザで確認:")
-    print(f"   MacBook: http://localhost:8080/h11_live_hallucination_report.html")
-    print(f"   iPhone : http://192.168.100.42:8080/h11_live_hallucination_report.html")
+    print(f"   MacBook: http://localhost:8080/kimochimax_live_hallucination_report.html")
+    print(f"   iPhone : http://192.168.100.42:8080/kimochimax_live_hallucination_report.html")

@@ -1,23 +1,28 @@
 """
-H11 デモトレード・ライブランナー (実市場連動版)
-===================================================
-Binance public API から最新価格を取得し、H11戦略でSIM取引を実行。
-結果を demo_state.json に書き出し、ダッシュボードから閲覧可能。
+気持ちマックス デモトレード・ライブランナー (毎秒WebSocket版)
+======================================================================
+Binance WebSocket で BTC 価格を毎秒受信、3層タイマーで処理:
+
+ [毎秒] tick: WSから最新価格取得 → 総資産再計算 → インメモリ更新
+ [60秒] snapshot: equity_history に1分粒度追加 → state.json atomic write
+ [5分]  EMA200再計算 (REST klines) + BTCマイルドシグナル判定
+ [24h]  50銘柄モメンタム更新 (ヒートマップ)
 
 構成:
   - BTC 40% : EMA200上で保有、下で現金化 (BTCマイルド)
-  - ACH 40% : Top3モメンタム実市場連動 (過去90日リターン上位3銘柄保有、月次リバランス)
+  - ACH 40% : Top3モメンタム実市場連動 (過去90日リターン、月次リバランス)
   - USDT 20%: 年3%金利 (日割)
 
 起動:
-  python3 demo_runner.py           # 通常ループ (5分ごと)
-  python3 demo_runner.py --once    # 1回だけ実行してstate更新
+  python3 demo_runner.py           # 通常ループ (毎秒tick)
+  python3 demo_runner.py --once    # 1回だけREST処理 (既存互換)
   python3 demo_runner.py --reset   # 状態リセットして最初から
 """
 from __future__ import annotations
 import sys, json, time, urllib.request, urllib.error, urllib.parse
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
+from collections import deque
 
 sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
 try:
@@ -25,6 +30,12 @@ try:
     DISCORD_AVAILABLE = True
 except ImportError:
     DISCORD_AVAILABLE = False
+
+try:
+    from ws_ticker import BTCTickerStream, WEBSOCKET_AVAILABLE
+except ImportError:
+    WEBSOCKET_AVAILABLE = False
+    BTCTickerStream = None
 
 PROJECT = Path("/Users/sanosano/projects/kimochi-max")
 RESULTS_DIR = PROJECT / "results"
@@ -37,7 +48,10 @@ BTC_WEIGHT = 0.40
 ACH_WEIGHT = 0.40
 USDT_WEIGHT = 0.20
 USDT_ANNUAL_RATE = 0.03
-LOOP_INTERVAL = 300  # 5分
+LOOP_INTERVAL = 300  # 旧互換: REST のみモードの時に使う
+TICK_INTERVAL = 1    # 毎秒tick
+SNAPSHOT_INTERVAL = 60   # 60秒ごとにstate.json永続化
+EMA_REFRESH_INTERVAL = 300  # 5分ごとにEMA200再計算
 MAX_TRADE_HISTORY = 100
 MAX_EQUITY_HISTORY = 2000
 
@@ -617,13 +631,12 @@ def run_once():
 
 
 def run_loop():
-    """永続ループ"""
+    """3層タイマー永続ループ (毎秒tick / 60秒snapshot / 5分EMA再計算)"""
     log("=" * 60)
-    log("🚀 H11 デモトレードランナー 起動")
+    log("🚀 気持ちマックス デモトレードランナー 起動 (WebSocket版)")
     log(f"   初期資金: ${INITIAL:,.0f}")
     log(f"   構成: BTC {BTC_WEIGHT*100:.0f}% + ACH {ACH_WEIGHT*100:.0f}% + USDT {USDT_WEIGHT*100:.0f}%")
-    log(f"   更新間隔: {LOOP_INTERVAL}秒 ({LOOP_INTERVAL//60}分)")
-    # Discord起動通知
+    log(f"   Tick {TICK_INTERVAL}秒 / Snapshot {SNAPSHOT_INTERVAL}秒 / EMA更新 {EMA_REFRESH_INTERVAL}秒")
     if DISCORD_AVAILABLE:
         try:
             cfg = discord_notify.load_config()
@@ -636,13 +649,205 @@ def run_loop():
             log(f"   Discord通知: エラー {e}")
     log("=" * 60)
 
+    # WebSocket モード使えない時はREST fallback
+    if not WEBSOCKET_AVAILABLE or BTCTickerStream is None:
+        log("⚠️ websocket-client未インストール → REST 5分間隔モードで稼働")
+        while True:
+            run_once()
+            try:
+                time.sleep(LOOP_INTERVAL)
+            except KeyboardInterrupt:
+                log("⚠️ 中断されました")
+                break
+        return
+
+    # WebSocket モード
+    stream = BTCTickerStream(log_fn=lambda m: log(m, also_print=False))
+    stream.start()
+    log("🔌 Binance WebSocket 接続開始")
+
+    # 初回REST: EMA200/momentum 取得して state 初期化
+    try:
+        btc_data = fetch_btc_price_and_ema200()
+        log(f"   初回 BTC: ${btc_data['current_price']:,.2f} | EMA200: ${btc_data['ema200']:,.2f}")
+        state = load_state()
+        process_tick(state, btc_data)
+        save_state(state)
+    except Exception as e:
+        log(f"⚠️ 初期化エラー: {e}")
+        state = load_state()
+
+    # キャッシュしたEMA200 と 24h統計 (WSから上書き)
+    cached_ema200 = state.get("btc_part", {}).get("last_ema200", 0)
+    last_snapshot = time.time()
+    last_ema_refresh = time.time()
+    tick_count = 0
+
     while True:
-        run_once()
         try:
-            time.sleep(LOOP_INTERVAL)
+            now = time.time()
+
+            # 【毎秒】tick: WS からBTC価格取得 → 総資産再計算
+            ws_data = stream.get()
+            if ws_data["price"] and stream.is_fresh(max_age_seconds=30):
+                btc_price = ws_data["price"]
+                # state の BTC 情報を更新 (EMA200はキャッシュ値)
+                btc = state["btc_part"]
+                prev_price = btc.get("last_btc_price", 0)
+                btc["last_btc_price"] = btc_price
+                if cached_ema200:
+                    btc["last_ema200"] = cached_ema200
+                state["btc_24h_change_pct"] = ws_data.get("change_24h_pct", 0)
+                state["btc_24h_volume_usdt"] = ws_data.get("volume_24h_usdt", 0)
+
+                # BTCシグナル判定 (HOLD系のみ、BUY/SELL発動はsnapshot時で安全に)
+                if btc_price > cached_ema200 and btc.get("position"):
+                    btc["last_signal"] = "HOLD-IN"
+                elif btc_price < cached_ema200 and not btc.get("position"):
+                    btc["last_signal"] = "HOLD-OUT"
+                elif btc_price > cached_ema200 and not btc.get("position"):
+                    btc["last_signal"] = "READY-BUY"   # 次snapshotでBUY
+                elif btc_price < cached_ema200 and btc.get("position"):
+                    btc["last_signal"] = "READY-SELL"  # 次snapshotでSELL
+
+                # 総資産リアルタイム再計算
+                btc_value = btc["cash"] + btc.get("btc_qty", 0) * btc_price
+                ach_value = state["ach_part"].get("virtual_equity",
+                                                   state["ach_part"].get("cash", 0))
+                usdt_value = state["usdt_part"]["cash"]
+                total = btc_value + ach_value + usdt_value
+                state["total_equity"] = round(total, 2)
+                state["peak_equity"] = round(max(state.get("peak_equity", INITIAL), total), 2)
+                if state["peak_equity"] > 0:
+                    dd_now = (state["peak_equity"] - total) / state["peak_equity"] * 100
+                    state["max_dd_observed"] = round(max(state.get("max_dd_observed", 0), dd_now), 2)
+                state["last_update"] = datetime.now(timezone.utc).isoformat(timespec='seconds')
+                state["ws_connected"] = ws_data.get("connected", False)
+                state["ws_age_sec"] = round(now - ws_data["ts"], 1) if ws_data["ts"] else None
+
+                tick_count += 1
+                # 詳細ログは60秒ごとのみ
+                if tick_count % 60 == 1:
+                    log(f"📊 [tick {tick_count}] ${total:,.2f} | BTC=${btc_price:,.2f} "
+                        f"(WS fresh {state['ws_age_sec']}s) 24h: {state['btc_24h_change_pct']:+.2f}%")
+
+            # 【60秒】snapshot: equity_history追加 + state.json永続化
+            if now - last_snapshot >= SNAPSHOT_INTERVAL:
+                last_snapshot = now
+                btc_value = state["btc_part"]["cash"] + state["btc_part"].get("btc_qty", 0) * state["btc_part"]["last_btc_price"]
+                ach_value = state["ach_part"].get("virtual_equity", state["ach_part"].get("cash", 0))
+                usdt_value = state["usdt_part"]["cash"]
+                now_iso = datetime.now(timezone.utc).isoformat(timespec='seconds')
+                state.setdefault("equity_history", []).append({
+                    "ts": now_iso,
+                    "total": round(state["total_equity"], 2),
+                    "btc": round(btc_value, 2),
+                    "ach": round(ach_value, 2),
+                    "usdt": round(usdt_value, 2),
+                })
+                state.setdefault("btc_price_history", []).append({
+                    "ts": now_iso,
+                    "price": state["btc_part"]["last_btc_price"],
+                    "ema200": cached_ema200,
+                })
+
+                # 【BUY/SELL シグナル発動】 snapshot時にまとめて発動 (安全)
+                sig = state["btc_part"].get("last_signal", "")
+                if sig == "READY-BUY":
+                    fee = 0.0006; slip = 0.0003
+                    btc = state["btc_part"]
+                    buy_price = btc["last_btc_price"] * (1 + slip)
+                    btc_qty = btc["cash"] / buy_price * (1 - fee)
+                    btc["btc_qty"] = btc_qty
+                    btc["cash"] = 0
+                    btc["position"] = True
+                    btc["last_signal"] = "BUY"
+                    btc["entry_price"] = btc["last_btc_price"]
+                    btc["entry_ts"] = now_iso
+                    state["trades"].append({
+                        "ts": now_iso, "part": "BTC", "action": "BUY",
+                        "price": btc["last_btc_price"], "qty": round(btc_qty, 6),
+                        "value_usd": round(btc_qty * btc["last_btc_price"], 2),
+                        "ema200": cached_ema200, "mode": "SIM",
+                    })
+                    log(f"🟢 BTC BUY @ ${btc['last_btc_price']:,.2f} qty={btc_qty:.6f}")
+                    if DISCORD_AVAILABLE:
+                        try:
+                            discord_notify.notify_trade("BUY", "BTC", btc["last_btc_price"],
+                                                         btc_qty, btc_qty * btc["last_btc_price"],
+                                                         ema200=cached_ema200)
+                        except Exception: pass
+                elif sig == "READY-SELL":
+                    fee = 0.0006; slip = 0.0003
+                    btc = state["btc_part"]
+                    sell_price = btc["last_btc_price"] * (1 - slip)
+                    proceeds = btc["btc_qty"] * sell_price * (1 - fee)
+                    pnl = proceeds - (btc.get("entry_price", 0) * btc["btc_qty"])
+                    qty_was = btc["btc_qty"]
+                    btc["cash"] = proceeds
+                    btc["btc_qty"] = 0
+                    btc["position"] = False
+                    btc["last_signal"] = "SELL"
+                    state["trades"].append({
+                        "ts": now_iso, "part": "BTC", "action": "SELL",
+                        "price": btc["last_btc_price"], "qty": round(qty_was, 6),
+                        "value_usd": round(proceeds, 2),
+                        "pnl_usd": round(pnl, 2),
+                        "ema200": cached_ema200, "mode": "SIM",
+                    })
+                    log(f"🔴 BTC SELL @ ${btc['last_btc_price']:,.2f} P&L=${pnl:+,.2f}")
+                    if DISCORD_AVAILABLE:
+                        try:
+                            discord_notify.notify_trade("SELL", "BTC", btc["last_btc_price"],
+                                                         qty_was, proceeds, pnl_usd=pnl,
+                                                         ema200=cached_ema200)
+                        except Exception: pass
+
+                # USDT金利加算 (1分経過分の複利)
+                usdt = state["usdt_part"]
+                daily_rate = (1 + USDT_ANNUAL_RATE) ** (1/365) - 1
+                minute_rate = daily_rate / 1440
+                usdt["cash"] *= (1 + minute_rate * (SNAPSHOT_INTERVAL / 60))
+                usdt["last_tick"] = now_iso
+
+                save_state(state)
+                log(f"💾 snapshot #{tick_count//60} 保存 ({len(state['equity_history'])}ポイント)")
+
+            # 【5分】EMA200 再計算 + ACH更新
+            if now - last_ema_refresh >= EMA_REFRESH_INTERVAL:
+                last_ema_refresh = now
+                try:
+                    btc_data = fetch_btc_price_and_ema200()
+                    cached_ema200 = btc_data["ema200"]
+                    log(f"📐 EMA200再計算: ${cached_ema200:,.2f} (BTC: ${btc_data['current_price']:,.2f})")
+                    # ACH更新も同じタイミングで
+                    try:
+                        ach_update(state, btc_data["current_price"], cached_ema200)
+                        state["ach_part"]["last_tick"] = datetime.now(timezone.utc).isoformat(timespec='seconds')
+                    except Exception as e:
+                        log(f"⚠️ ACH更新失敗: {e}")
+                    # DD警告通知
+                    if DISCORD_AVAILABLE:
+                        try:
+                            discord_notify.notify_dd_alert(
+                                state["max_dd_observed"], state["total_equity"],
+                                state["peak_equity"], INITIAL)
+                        except Exception: pass
+                    save_state(state)
+                except Exception as e:
+                    log(f"⚠️ EMA200再計算失敗: {e}")
+
+            # 毎秒スリープ
+            time.sleep(TICK_INTERVAL)
+
         except KeyboardInterrupt:
             log("⚠️ 中断されました")
+            save_state(state)
+            stream.stop()
             break
+        except Exception as e:
+            log(f"⚠️ tickエラー: {e}")
+            time.sleep(TICK_INTERVAL)
 
 
 if __name__ == "__main__":

@@ -92,7 +92,7 @@ def _embed_to_slack_attachment(embed):
         })
     if fields:
         att["fields"] = fields
-    att["footer"] = "H11Bot"
+    att["footer"] = "気持ちマックス"
     att["ts"] = int(datetime.now(timezone.utc).timestamp())
     att["mrkdwn_in"] = ["text", "fields"]
     return att
@@ -116,7 +116,7 @@ def _post_webhook(webhook_url, payload):
         return False
 
 
-def send_raw(content="", embeds=None, username="H11Bot"):
+def send_raw(content="", embeds=None, username="気持ちマックス"):
     """生メッセージ送信 (enabled でも送る。設定チェックなし)
        Discord/Slack 両対応 - URLから自動判定"""
     cfg = load_config()
@@ -143,7 +143,7 @@ def send_raw(content="", embeds=None, username="H11Bot"):
             payload["attachments"] = attachments
             # Slackは text が空だと警告出るので、最初のembedのtitleをtextに
             if not content and embeds:
-                payload["text"] = embeds[0].get("title", "H11Bot通知")
+                payload["text"] = embeds[0].get("title", "気持ちマックス通知")
         payload["username"] = username
         return _post_webhook(url, payload)
 
@@ -152,7 +152,7 @@ def send_raw(content="", embeds=None, username="H11Bot"):
         return False
 
 
-def send(content="", embeds=None, username="H11Bot"):
+def send(content="", embeds=None, username="気持ちマックス"):
     """設定チェック付き送信"""
     cfg = load_config()
     if not cfg.get("enabled") or not cfg.get("webhook_url"):
@@ -165,7 +165,7 @@ def send(content="", embeds=None, username="H11Bot"):
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 def notify_startup(initial_capital):
     embed = {
-        "title": "🚀 H11ボット起動",
+        "title": "🚀 気持ちマックス起動",
         "description": f"デモトレード開始しました (SIMモード)",
         "fields": [
             {"name": "初期資金", "value": f"${initial_capital:,.0f}", "inline": True},
@@ -294,7 +294,7 @@ def notify_daily_summary(total, initial, pnl, pnl_pct, dd_max, btc_price, ema200
     color = 0x00e676 if pnl >= 0 else 0xf44336 if pnl < -initial * 0.1 else 0xffca28
 
     embed = {
-        "title": "📊 本日のH11ボット サマリー",
+        "title": "📊 本日の気持ちマックス サマリー",
         "description": f"**{today}**",
         "fields": [
             {"name": "💰 総資産", "value": f"${total:,.2f}", "inline": True},
@@ -365,7 +365,7 @@ def cmd_setup():
     print(f"✅ テスト通知を送ります...")
     ok = send_raw(embeds=[{
         "title": f"✅ {platform_name}通知 セットアップ完了",
-        "description": "H11ボットからの通知が届くようになりました🎉",
+        "description": "気持ちマックスからの通知が届くようになりました🎉",
         "fields": [
             {"name": "通知対象", "value": "🟢 BUY / 🔴 SELL / 📉 DD警告 / 📊 日次サマリー", "inline": False},
         ],
@@ -385,7 +385,7 @@ def cmd_test():
     print("📨 テスト通知を送信中...")
     ok = send_raw(embeds=[{
         "title": "🧪 テスト通知",
-        "description": f"H11ボットからのテストメッセージです\n時刻: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+        "description": f"気持ちマックスからのテストメッセージです\n時刻: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
         "color": 0x4fc3f7,
     }])
     print("✅ 送信成功" if ok else "❌ 送信失敗")

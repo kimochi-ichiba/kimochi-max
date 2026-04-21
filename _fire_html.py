@@ -183,7 +183,7 @@ a{color:var(--blue)}
 
 <!-- 年齢タイムライン -->
 <div class="card">
-  <h2>📅 あなたの人生タイムライン（H11 Proコース）</h2>
+  <h2>📅 あなたの人生タイムライン（気持ちマックス Proコース）</h2>
   <div class="age-timeline">
     <div class="age-cell current">
       <div class="age-num">28</div>
@@ -222,17 +222,17 @@ a{color:var(--blue)}
 
 <!-- 最推奨プラン -->
 <div class="card" style="border-color:var(--gold)">
-  <h2>🏆 私たちの最推奨プラン: H11 Pro</h2>
+  <h2>🏆 私たちの最推奨プラン: 気持ちマックス Pro</h2>
   <div class="big-kpi" style="border-color:var(--green)">
-    <div class="lbl">35歳時の月間不労所得 (H11 Pro / DD考慮・税引き後)</div>
+    <div class="lbl">35歳時の月間不労所得 (気持ちマックス Pro / DD考慮・税引き後)</div>
     <div class="val" id="h11pro-monthly" style="color:var(--green)">—</div>
     <div class="sub">税引き後資産 <span id="h11pro-capital">—</span> → VYM年利4% → 手取り</div>
   </div>
 
   <div class="action-box">
-    <h3>✅ H11 Pro で目標達成できる理由</h3>
+    <h3>✅ 気持ちマックス Pro で目標達成できる理由</h3>
     <ul>
-      <li><b>バックテストで証明済み</b>のH11ハイブリッド（年率+54.8%）をベース</li>
+      <li><b>バックテストで証明済み</b>の気持ちマックス ハイブリッド（年率+54.8%）をベース</li>
       <li><b>段階的レバレッジ強化</b>で年率目標を+70%に引き上げ</li>
       <li><b>月次積立の自動複利投入</b>でACH戦略に資金が流入し続ける</li>
       <li><b>DD 50%耐性</b>：2022年のようなBTCクラッシュも耐え抜く設計</li>
@@ -244,7 +244,7 @@ a{color:var(--blue)}
     <h3>🚀 あなたの元計画との違い</h3>
     <ul>
       <li>元計画: 仮想通貨ポートフォリオの放置 (年率+30%想定) → <b>月11万円しか届きません</b></li>
-      <li>H11 Pro: 自動売買ボット運用 (年率+70%) → <b>月42万円 ✅ 達成</b></li>
+      <li>気持ちマックス Pro: 自動売買ボット運用 (年率+70%) → <b>月42万円 ✅ 達成</b></li>
       <li>差額: <b>月31万円 × 30年 = 生涯1億1千万円の差</b></li>
     </ul>
   </div>
@@ -266,7 +266,7 @@ a{color:var(--blue)}
   <h2>🌅 35歳以降のFIRE後設計</h2>
   <table>
     <tr><th>項目</th><th style="text-align:right">金額</th><th>詳細</th></tr>
-    <tr><td>目標資産（税引き後）</td><td style="text-align:right"><b>¥1.5億円</b></td><td>H11 Proで到達</td></tr>
+    <tr><td>目標資産（税引き後）</td><td style="text-align:right"><b>¥1.5億円</b></td><td>気持ちマックス Proで到達</td></tr>
     <tr><td>移行先</td><td style="text-align:right">VYM / 全世界株</td><td>年利4%想定の高配当ETF</td></tr>
     <tr><td>年間配当（税引き前）</td><td style="text-align:right"><b>¥6,000,000</b></td><td>1.5億 × 4%</td></tr>
     <tr><td>税金（20.315%）</td><td style="text-align:right" class="neg">-¥1,218,900</td><td>源泉徴収</td></tr>
@@ -279,16 +279,16 @@ a{color:var(--blue)}
 <div class="card" style="background:linear-gradient(135deg,var(--bg2),#0a1f2c)">
   <h2>🎯 次の行動</h2>
   <ol style="padding-left:22px;font-size:14px;line-height:2">
-    <li><b>まずはSIMモードで体感</b>: 現在のH11デモダッシュボードで1〜3ヶ月、動きを観察</li>
+    <li><b>まずはSIMモードで体感</b>: 現在の気持ちマックスデモダッシュボードで1〜3ヶ月、動きを観察</li>
     <li><b>小額 (30万円程度) で実運用開始</b>: Binance / MEXCアカウント作成、APIキー取得</li>
-    <li><b>H11 Pro仕様に更新</b>: 段階的レバレッジ+積立自動投入機能を実装</li>
+    <li><b>気持ちマックス Pro仕様に更新</b>: 段階的レバレッジ+積立自動投入機能を実装</li>
     <li><b>月20万の積立を「入金自動化」</b>: 給料日翌日に自動でUSDT購入→ボット投入</li>
     <li><b>年1回の健全性チェック</b>: バックテスト再実行、戦略パラメータ見直し</li>
     <li><b>32-33歳のBTCサイクル頂点で部分利確</b>: 資産50%を日本円に逃す</li>
     <li><b>35歳でVYM等に全移行</b>: ボットを止めて配当生活へ</li>
   </ol>
   <div style="margin-top:14px;padding:14px;background:var(--bg3);border-radius:8px;font-size:13px;color:var(--muted2)">
-    💡 このページは H11 デモダッシュボードと連動します。
+    💡 このページは 気持ちマックス デモダッシュボードと連動します。
     進捗は <a href="/demo.html" target="_blank">ライブダッシュボード</a> で毎日確認できます。
   </div>
 </div>
@@ -307,7 +307,7 @@ const fmtK = n => {
 // 必要資産
 document.getElementById('required-capital').textContent = fmtK(DATA.required_capital_for_40man);
 
-// H11 Pro ハイライト
+// 気持ちマックス Pro ハイライト
 const h11pro = DATA.strategies.find(s => s.key === 'h11_pro');
 if(h11pro){
   document.getElementById('h11pro-monthly').textContent = fmt(h11pro.fire_monthly_with_dd);

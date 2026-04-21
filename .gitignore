@@ -31,9 +31,9 @@ slack_config.json
 demo_state.json
 demo_state.json.tmp
 demo_state.json.bak
-h11_bot_state.json
-h11_bot_state.json.bak
-h11_bot_state.json.tmp
+kimochimax_bot_state.json
+kimochimax_bot_state.json.bak
+kimochimax_bot_state.json.tmp
 v2_sim_state.json
 v2_sim_state.json.bak
 bot_state.json

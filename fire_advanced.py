@@ -15,7 +15,7 @@ FIRE計画 高度版シミュレーター
 
 運用方法:
   - 現物のみ (BTC/ETH ガチホ)
-  - H11 Pro ボット (年率+70%目標)
+  - 気持ちマックス Pro ボット (年率+70%目標)
   - ハイブリッド (現物50% + ボット50%)
 """
 from __future__ import annotations
@@ -111,7 +111,7 @@ def simulate_buy_hold(market_returns, initial=INITIAL, monthly=MONTHLY):
 
 def simulate_h11_pro(market_returns, initial=INITIAL, monthly=MONTHLY):
     """
-    H11 Pro: 戦略エンジンが市場リターンの一部を取り、リスクを抑える
+    気持ちマックス Pro: 戦略エンジンが市場リターンの一部を取り、リスクを抑える
     - 上昇相場: 市場リターン × 0.85 (一部利確で取り逃すが安全)
     - 下落相場: 市場リターン × 0.4 (defensive、現金化で被害減少)
     - レバ効果: 上昇時 ×1.3 を加算
@@ -223,7 +223,7 @@ def main():
     print("-" * 90)
     for r in final_results:
         m_jp = {"bull":"強気","neutral":"中立","bear":"弱気"}[r["market"]]
-        meth_jp = {"buy_hold":"現物ガチホ","h11_pro":"H11 Pro","hybrid":"ハイブリッド"}[r["method"]]
+        meth_jp = {"buy_hold":"現物ガチホ","h11_pro":"気持ちマックス Pro","hybrid":"ハイブリッド"}[r["method"]]
         tax_jp = TAX_BRACKETS[r["tax"]]["name"]
         ach = "✅" if r["achieves_400k"] else "❌"
         print(f"{m_jp:4s} | {meth_jp:10s} | {tax_jp:23s} | "
@@ -238,7 +238,7 @@ def main():
     print("\n📌 中立(中庸)シナリオでの比較:")
     neut = [r for r in final_results if r["market"] == "neutral"]
     for r in neut:
-        meth_jp = {"buy_hold":"現物","h11_pro":"H11 Pro","hybrid":"ハイブリッド"}[r["method"]]
+        meth_jp = {"buy_hold":"現物","h11_pro":"気持ちマックス Pro","hybrid":"ハイブリッド"}[r["method"]]
         tax_jp = {"A_2028_split":"2028分離","B_2030_split":"2030分離","C_no_change":"総合課税55%"}[r["tax"]]
         ach = "✅" if r["achieves_400k"] else "❌"
         print(f"   {meth_jp:10s} × {tax_jp:12s} → 月¥{r['fire_monthly']:>6,} {ach}")
@@ -261,7 +261,7 @@ def main():
         },
         "method_scenarios": {
             "buy_hold": "現物ガチホ (BTC/ETH を持ち続けるだけ)",
-            "h11_pro": "H11 Proボット (戦略エンジンで運用)",
+            "h11_pro": "気持ちマックス Proボット (戦略エンジンで運用)",
             "hybrid": "ハイブリッド (現物50% + ボット50%)",
         },
         "market_returns": {k: v for k, v in markets.items()},

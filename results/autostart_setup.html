@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>🚀 H11Bot 自動起動セットアップ</title>
+<title>🚀 気持ちマックス 自動起動セットアップ</title>
 <style>
 :root{
   --bg:#060d17;--bg2:#091523;--bg3:#0d1c2e;--bg4:#112338;
@@ -45,8 +45,8 @@ li{margin-bottom:4px}
 
 <a href="/" class="back">← レポート一覧に戻る</a>
 
-<h1>🚀 H11Bot <em>自動起動</em> セットアップ</h1>
-<p class="subtitle">Mac を再起動しても H11Bot が自動的に動き続けるように設定します（macOS launchd を使用）</p>
+<h1>🚀 気持ちマックス <em>自動起動</em> セットアップ</h1>
+<p class="subtitle">Mac を再起動しても 気持ちマックス が自動的に動き続けるように設定します（macOS launchd を使用）</p>
 
 <div class="card">
   <h2>💡 これで何が解決される？</h2>
@@ -57,7 +57,7 @@ li{margin-bottom:4px}
   </ul>
   <div class="note-box">
     <strong>macOS launchd</strong> は、システム起動時に自動でプログラムを動かす仕組みです（Linuxの systemd 相当）。
-    設定すれば、<b>MacBookを起動するだけで自動的に H11Bot が動き始めます</b>。
+    設定すれば、<b>MacBookを起動するだけで自動的に 気持ちマックス が動き始めます</b>。
     スリープから復帰した時も自動で再起動します。
   </div>
 </div>
@@ -93,7 +93,7 @@ li{margin-bottom:4px}
       ブラウザで以下を開いて、ダッシュボードが見えれば成功:<br>
       <a href="http://localhost:8080/demo.html" target="_blank">http://localhost:8080/demo.html</a>
       <div class="success-box">
-        ✅ 今後はMacを再起動しても、自動的に H11Bot が動き続けます🎉
+        ✅ 今後はMacを再起動しても、自動的に 気持ちマックス が動き続けます🎉
       </div>
     </div>
   </div>
@@ -104,12 +104,12 @@ li{margin-bottom:4px}
 
   <div style="margin:10px 0">
     <div style="color:var(--yellow);font-size:12px;font-weight:700;margin-bottom:4px">📊 サービス状態確認</div>
-    <div class="cmd-box">launchctl list | grep h11bot</div>
+    <div class="cmd-box">launchctl list | grep kimochimax</div>
   </div>
 
   <div style="margin:10px 0">
     <div style="color:var(--yellow);font-size:12px;font-weight:700;margin-bottom:4px">🔄 デモランナー再起動</div>
-    <div class="cmd-box">launchctl kickstart -k gui/$(id -u)/com.sanosano.h11bot.demo</div>
+    <div class="cmd-box">launchctl kickstart -k gui/$(id -u)/com.sanosano.kimochimax.demo</div>
   </div>
 
   <div style="margin:10px 0">
@@ -173,7 +173,7 @@ li{margin-bottom:4px}
   <ul>
     <li>📱 iPhone のホーム画面に <code>http://192.168.100.42:8080/demo.html</code> を追加（Safariの共有→ホーム画面に追加）</li>
     <li>🔔 <a href="/discord_setup.html">Discord</a> または <a href="/slack_setup.html">Slack</a> 通知を設定（取引発生時に即通知）</li>
-    <li>🔍 定期的に <a href="/h11_live_hallucination_report.html">ハルシネーションチェック</a> で健全性確認</li>
+    <li>🔍 定期的に <a href="/kimochimax_live_hallucination_report.html">ハルシネーションチェック</a> で健全性確認</li>
   </ul>
 </div>
 

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>com.sanosano.h11bot.server</string>
+  <string>com.sanosano.kimochimax.server</string>
 
   <key>ProgramArguments</key>
   <array>

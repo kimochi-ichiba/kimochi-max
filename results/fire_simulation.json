@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-21T08:36:52.533065",
+  "generated_at": "2026-04-21T10:02:11.934522",
   "inputs": {
     "initial_capital": 4000000,
     "monthly_deposit": 200000,
@@ -218,7 +218,7 @@
     },
     {
       "key": "h11_hybrid",
-      "name": "💎 H11 ハイブリッド (バックテスト検証済み)",
+      "name": "💎 気持ちマックス ハイブリッド (バックテスト検証済み)",
       "annual_rate": 0.548,
       "description": "BTC40%+ACH40%+USDT20%、DD 39.7%検証済み",
       "dd_schedule": [
@@ -419,9 +419,9 @@
     },
     {
       "key": "h11_pro",
-      "name": "🚀 H11 Pro 強化版 (提案)",
+      "name": "🚀 気持ちマックス Pro 強化版 (提案)",
       "annual_rate": 0.7,
-      "description": "H11 + 動的レバレッジ + 月次リバランス + 目標到達時の段階利確",
+      "description": "気持ちマックス + 動的レバレッジ + 月次リバランス + 目標到達時の段階利確",
       "dd_schedule": [
         [
           30,

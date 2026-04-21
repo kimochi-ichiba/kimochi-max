@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#060d17">
-<title>H11 Bot — BTC/ACH/USDT</title>
+<title>気持ちマックス Bot — BTC/ACH/USDT</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon.png">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -284,11 +284,12 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
 <!-- ヘッダー -->
 <div class="hdr">
   <div class="live-dot"></div>
-  <div class="hdr-logo">H11<em>Bot</em></div>
+  <div class="hdr-logo">気持ち<em>マックス</em></div>
   <div class="hbadge hb-sim">SIM</div>
   <div class="hbadge hb-sym" style="display:none">BTC·ACH·USDT</div>
   <div class="hbadge hb-lev">40/40/20</div>
   <div class="hbadge hb-strat">ハイブリッド</div>
+  <div class="hbadge" id="ws-badge" style="background:#3a3a3a;color:#999;border:1px solid #555">WS…</div>
   <div class="hdr-right">
     <span class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">🌙</span>
     <span class="updated-text" id="updated">起動中...</span>
@@ -514,7 +515,7 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
         </table>
       </div>
       <div class="sig-section">
-        <div class="sig-ttl">🏆 H11 バックテスト実績 (過去5年)</div>
+        <div class="sig-ttl">🏆 気持ちマックス バックテスト実績 (過去5年)</div>
         <div class="tf3">
           <div class="tfbox"><div class="tfn">年率</div><div class="tfd g">+54.8%</div><div class="tfs">2020-2024</div></div>
           <div class="tfbox"><div class="tfn">最大DD</div><div class="tfd y">39.7%</div><div class="tfs">2022年</div></div>
@@ -526,7 +527,7 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
     <!-- 戦略タブ -->
     <div class="tpane" id="p-strat">
       <div class="sig-section">
-        <div class="sig-ttl">⚙️ H11 戦略パラメータ</div>
+        <div class="sig-ttl">⚙️ 気持ちマックス 戦略パラメータ</div>
         <div class="tf3">
           <div class="tfbox"><div class="tfn">BTC枠</div><div class="tfd o">40%</div><div class="tfs">EMA200</div></div>
           <div class="tfbox"><div class="tfn">ACH枠</div><div class="tfd g">40%</div><div class="tfs">Top3モメンタム</div></div>
@@ -592,7 +593,7 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
 // テーマ切替
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function initTheme(){
-  const saved = localStorage.getItem('h11bot-theme') || 'dark';
+  const saved = localStorage.getItem('kimochimax-theme') || 'dark';
   document.documentElement.setAttribute('data-theme', saved);
   document.getElementById('theme-toggle').textContent = saved === 'dark' ? '🌙' : '☀️';
   // メタタグ theme-color も変更
@@ -604,7 +605,7 @@ function toggleTheme(){
   const next = cur === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', next);
   document.getElementById('theme-toggle').textContent = next === 'dark' ? '🌙' : '☀️';
-  localStorage.setItem('h11bot-theme', next);
+  localStorage.setItem('kimochimax-theme', next);
   const mc = document.querySelector('meta[name="theme-color"]');
   if(mc) mc.setAttribute('content', next === 'dark' ? '#060d17' : '#f0f4f9');
   // チャートを再描画してテーマ反映
@@ -708,7 +709,7 @@ async function fetchState(){
 
 async function fetchVerifyData(){
   try{
-    const res = await fetch("h11_live_hallucination_check.json?t="+Date.now(),{cache:"no-store"});
+    const res = await fetch("kimochimax_live_hallucination_check.json?t="+Date.now(),{cache:"no-store"});
     if(!res.ok) throw new Error("HTTP "+res.status);
     _verifyData = await res.json();
     if(currentTab === 'verify') renderVerify();
@@ -720,8 +721,8 @@ function runVerifyCheck(){
   c.innerHTML = `<div style="padding:16px;background:var(--bg3);border-radius:8px;font-size:13px">
     <b style="color:var(--yellow)">💡 再検証するには</b><br>
     MacBookのターミナルで以下を実行:<br>
-    <code style="display:block;background:var(--bg);padding:8px 10px;border-radius:4px;margin-top:6px;color:var(--green);font-family:monospace;font-size:11px;overflow-x:auto">python3 /Users/sanosano/projects/kimochi-max/h11_live_hallucination_check.py</code>
-    <br>または<a href="h11_live_hallucination_report.html" target="_blank" style="color:var(--blue)">📄 詳細レポートを開く</a>
+    <code style="display:block;background:var(--bg);padding:8px 10px;border-radius:4px;margin-top:6px;color:var(--green);font-family:monospace;font-size:11px;overflow-x:auto">python3 /Users/sanosano/projects/kimochi-max/kimochimax_live_hallucination_check.py</code>
+    <br>または<a href="kimochimax_live_hallucination_report.html" target="_blank" style="color:var(--blue)">📄 詳細レポートを開く</a>
   </div>`;
 }
 
@@ -732,6 +733,24 @@ function render(){
   if(!_state) return;
   const d = _state;
   document.getElementById('updated').textContent = '更新: '+fmtTimeShort(d.last_update);
+
+  // WS接続状態バッジ
+  const wsBadge = document.getElementById('ws-badge');
+  if(wsBadge){
+    const wsAge = d.ws_age_sec;
+    const wsOk = d.ws_connected && wsAge !== null && wsAge <= 5;
+    const wsStale = d.ws_connected && wsAge !== null && wsAge > 5 && wsAge <= 30;
+    if(wsOk){
+      wsBadge.textContent = '🟢 LIVE (WS)';
+      wsBadge.style.cssText = 'padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;background:var(--green-bg);color:var(--green);border:1px solid var(--green)';
+    } else if(wsStale){
+      wsBadge.textContent = '⚠️ STALE';
+      wsBadge.style.cssText = 'padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow)';
+    } else {
+      wsBadge.textContent = '❌ RESTmode';
+      wsBadge.style.cssText = 'padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;background:var(--red-bg);color:var(--red);border:1px solid var(--red)';
+    }
+  }
 
   const btcVal = d.btc_part.cash + d.btc_part.btc_qty * d.btc_part.last_btc_price;
   const achVal = d.ach_part.virtual_equity || d.ach_part.cash || 0;
@@ -1032,7 +1051,7 @@ function renderTimeline(){
   if(d.started_at){
     events.push({
       ts: d.started_at, type:'info', icon:'🚀',
-      msg: 'H11Bot 起動',
+      msg: '気持ちマックス 起動',
       detail: `初期資金 ${formatMoneyCompact(d.initial_capital)} でデモ運用開始`
     });
   }
@@ -1179,7 +1198,7 @@ function renderVerify(){
       <div class="tfbox"><div class="tfn">誤差</div><div class="tfd ${ev.diff_pct<0.1?'g':'y'}">${ev.diff_pct!==undefined?ev.diff_pct.toFixed(4)+'%':'—'}</div></div>
     </div>
     <div style="margin-top:20px;padding:12px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px">
-      <a href="h11_live_hallucination_report.html" target="_blank" style="color:var(--blue);font-size:13px">📄 詳細検証レポートを開く →</a>
+      <a href="kimochimax_live_hallucination_report.html" target="_blank" style="color:var(--blue);font-size:13px">📄 詳細検証レポートを開く →</a>
     </div>`;
 }
 
@@ -1188,7 +1207,7 @@ function renderVerify(){
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 fetchState();
 fetchVerifyData();
-setInterval(fetchState,10000);
+setInterval(fetchState,1000);       // 毎秒ポーリング (WebSocket経由で state.json が毎秒更新される)
 setInterval(fetchVerifyData,60000);
 </script>
 </body>

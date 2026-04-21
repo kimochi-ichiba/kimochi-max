@@ -1,18 +1,18 @@
 #!/bin/bash
-# H11Bot 観察用クイックステータス表示
-# 使い方: bash /Users/sanosano/projects/kimochi-max/h11_status.sh
+# 気持ちマックス 観察用クイックステータス表示
+# 使い方: bash /Users/sanosano/projects/kimochi-max/kimochimax_status.sh
 
 STATE_FILE="/Users/sanosano/projects/kimochi-max/results/demo_state.json"
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "🤖 H11 Bot クイックステータス"
+echo "🤖 気持ちマックス Bot クイックステータス"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
 # ① launchd
 echo "① 自動起動 (launchd) 状態:"
-LAUNCHD_OUT=$(launchctl list | grep h11bot || true)
+LAUNCHD_OUT=$(launchctl list | grep kimochimax || true)
 if [ -z "$LAUNCHD_OUT" ]; then
     echo "   ❌ launchd未登録 (bash launchd/install.sh で登録)"
 else
