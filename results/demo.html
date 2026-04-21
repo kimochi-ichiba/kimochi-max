@@ -619,6 +619,7 @@ initTheme();
 let _state = null;
 let _verifyData = null;
 let _prevValues = {};  // アニメ用の前回値
+let _lastTradeCount = -1;  // ログ再描画判定用 (取引数変化時のみ更新)
 let currentTab = 'live';
 let equityChart = null, btcChart = null, pieChart = null, heroPieChart = null;
 
@@ -904,26 +905,40 @@ function render(){
   }
   document.getElementById('trade-tbody').innerHTML = trh;
 
-  // システムログ
+  // システムログ: トレードイベント発生時のみ再描画 (ちらつき回避)
   const logBox = document.getElementById('logbox');
-  let logHtml = '';
-  const recent = (d.equity_history||[]).slice(-20).reverse();
-  recent.forEach(e=>{
-    logHtml += `<div class="logrow"><span class="logts">${fmtTimeShort(e.ts)}</span>
-      <span class="logmsg"><span class="lc-i">📊</span> <b>${formatMoneyCompact(e.total)}</b>
-      <span class="lc-c">B${formatMoneyCompact(e.btc)}</span>
-      <span class="lc-g">A${formatMoneyCompact(e.ach)}</span>
-      <span class="lc-b">U${formatMoneyCompact(e.usdt)}</span></span></div>`;
-  });
-  trades.slice(0,10).forEach(t=>{
-    const cls = t.action==='BUY'?'lc-g':'lc-e';
-    logHtml = `<div class="logrow"><span class="logts">${fmtTimeShort(t.ts)}</span>
-      <span class="logmsg ${cls}">${t.action==='BUY'?'🟢 BUY':'🔴 SELL'} ${t.part}${t.symbol?':'+t.symbol:''} @ ${formatMoneyCompact(t.price)}</span>
-    </div>` + logHtml;
-  });
-  if(logHtml==='') logHtml='<div class="loading">ログ準備中...</div>';
-  logBox.innerHTML = logHtml;
-  document.getElementById('log-count').textContent = recent.length+'件';
+  const currentTradeCount = (d.trades||[]).length;
+  if(_lastTradeCount === undefined) _lastTradeCount = -1;
+  // 取引数が変化した時だけ再描画
+  if(currentTradeCount !== _lastTradeCount){
+    let logHtml = '';
+    if(currentTradeCount === 0){
+      logHtml = `<div class="loading" style="padding:30px 14px">まだ取引イベントがありません<br>
+        <span style="font-size:10px;color:var(--muted)">シグナル発動(BUY/SELL)時にここに表示されます<br>
+        現在: BTC &lt; EMA200 のため待機中</span></div>`;
+    } else {
+      // 新しい順に表示 (最新30件まで)
+      trades.slice(0, 30).forEach(t=>{
+        const cls = t.action==='BUY'?'lc-g':'lc-e';
+        const icon = t.action==='BUY'?'🟢 BUY':'🔴 SELL';
+        const sym = t.symbol ? ':'+t.symbol : '';
+        const pnl = (t.pnl_usd !== undefined) ? ` | P&L: ${formatMoneyCompact(t.pnl_usd)}` : '';
+        const reason = t.reason ? ` (${t.reason})` : '';
+        logHtml += `<div class="logrow"><span class="logts">${fmtTime(t.ts)}</span>
+          <span class="logmsg ${cls}">${icon} ${t.part}${sym} @ ${formatMoneyCompact(t.price)}${pnl}${reason}</span>
+        </div>`;
+      });
+    }
+    logBox.innerHTML = logHtml;
+    document.getElementById('log-count').textContent = currentTradeCount + '件';
+    // 新規トレード発生時のみフラッシュ
+    if(currentTradeCount > _lastTradeCount && _lastTradeCount >= 0){
+      logBox.classList.remove('flash-g');
+      void logBox.offsetWidth;
+      logBox.classList.add('flash-g');
+    }
+    _lastTradeCount = currentTradeCount;
+  }
 
   renderCharts(d);
 }
