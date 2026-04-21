@@ -1,0 +1,1149 @@
+{
+  "script": "_verify_iter49_slippage.py",
+  "ran_at": "2026-04-21T14:08:58.508700+00:00",
+  "input_file": "/Users/sanosano/projects/kimochi-max/results/iter49_rigorous.json",
+  "verdict": "FAIL",
+  "net_winner_standard": {
+    "id": "A-T3-MON",
+    "top_n": 3,
+    "rebalance": "monthly",
+    "lookback": 90,
+    "theoretical_ret": 1115.31,
+    "standard_ret": 710.92,
+    "n_trades": 300
+  },
+  "net_ranking_top10": [
+    {
+      "rank": 1,
+      "id": "A-T3-MON",
+      "top_n": 3,
+      "rebalance": "monthly",
+      "lookback": 90,
+      "n_trades": 300,
+      "theoretical_ret": 1115.31,
+      "optimistic_ret": 1115.31,
+      "standard_ret": 710.92,
+      "conservative_ret": 452.84,
+      "pessimistic_ret": 247.93
+    },
+    {
+      "rank": 2,
+      "id": "A-T7-MON",
+      "top_n": 7,
+      "rebalance": "monthly",
+      "lookback": 90,
+      "n_trades": 618,
+      "theoretical_ret": 1529.42,
+      "optimistic_ret": 1529.42,
+      "standard_ret": 604.83,
+      "conservative_ret": 238.85,
+      "pessimistic_ret": 69.05
+    },
+    {
+      "rank": 3,
+      "id": "A-T5-MON",
+      "top_n": 5,
+      "rebalance": "monthly",
+      "lookback": 90,
+      "n_trades": 460,
+      "theoretical_ret": 1049.27,
+      "optimistic_ret": 1049.27,
+      "standard_ret": 526.01,
+      "conservative_ret": 263.43,
+      "pessimistic_ret": 104.59
+    },
+    {
+      "rank": 4,
+      "id": "A-T3-WEE",
+      "top_n": 3,
+      "rebalance": "weekly",
+      "lookback": 90,
+      "n_trades": 1086,
+      "theoretical_ret": 1811.65,
+      "optimistic_ret": 1811.65,
+      "standard_ret": 354.88,
+      "conservative_ret": 69.35,
+      "pessimistic_ret": 7.83
+    },
+    {
+      "rank": 5,
+      "id": "A-T10-MON",
+      "top_n": 10,
+      "rebalance": "monthly",
+      "lookback": 90,
+      "n_trades": 851,
+      "theoretical_ret": 1230.06,
+      "optimistic_ret": 1230.06,
+      "standard_ret": 342.87,
+      "conservative_ret": 95.39,
+      "pessimistic_ret": 17.27
+    },
+    {
+      "rank": 6,
+      "id": "A-T5-WEE",
+      "top_n": 5,
+      "rebalance": "weekly",
+      "lookback": 90,
+      "n_trades": 1766,
+      "theoretical_ret": 2455.62,
+      "optimistic_ret": 2455.62,
+      "standard_ret": 173.32,
+      "conservative_ret": 12.18,
+      "pessimistic_ret": 0.35
+    },
+    {
+      "rank": 7,
+      "id": "A-LB90",
+      "top_n": 5,
+      "rebalance": "weekly",
+      "lookback": 90,
+      "n_trades": 1766,
+      "theoretical_ret": 2455.62,
+      "optimistic_ret": 2455.62,
+      "standard_ret": 173.32,
+      "conservative_ret": 12.18,
+      "pessimistic_ret": 0.35
+    },
+    {
+      "rank": 8,
+      "id": "A-LB60",
+      "top_n": 5,
+      "rebalance": "weekly",
+      "lookback": 60,
+      "n_trades": 1766,
+      "theoretical_ret": 1337.96,
+      "optimistic_ret": 1337.96,
+      "standard_ret": 94.43,
+      "conservative_ret": 6.64,
+      "pessimistic_ret": 0.19
+    },
+    {
+      "rank": 9,
+      "id": "A-LB30",
+      "top_n": 5,
+      "rebalance": "weekly",
+      "lookback": 30,
+      "n_trades": 1766,
+      "theoretical_ret": 1024.62,
+      "optimistic_ret": 1024.62,
+      "standard_ret": 72.32,
+      "conservative_ret": 5.08,
+      "pessimistic_ret": 0.15
+    },
+    {
+      "rank": 10,
+      "id": "A-LB180",
+      "top_n": 5,
+      "rebalance": "weekly",
+      "lookback": 180,
+      "n_trades": 1766,
+      "theoretical_ret": 660.89,
+      "optimistic_ret": 660.89,
+      "standard_ret": 46.65,
+      "conservative_ret": 3.28,
+      "pessimistic_ret": 0.09
+    }
+  ],
+  "patterns": [
+    {
+      "id": "A-T3-DAI",
+      "block": "A. パラメータ感度",
+      "top_n": 3,
+      "rebalance": "daily",
+      "lookback": 90,
+      "n_trades": 7230,
+      "theoretical_final": 72990.39,
+      "theoretical_total_ret_pct": 629.9,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 72990.39,
+          "adjusted_total_ret_pct": 629.9,
+          "return_loss_pct": -0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 10001.22,
+          "adjusted_total_ret_pct": 0.01,
+          "return_loss_pct": 629.89
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 10000.0,
+          "adjusted_total_ret_pct": 0.0,
+          "return_loss_pct": 629.9
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 10000.0,
+          "adjusted_total_ret_pct": 0.0,
+          "return_loss_pct": 629.9
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 100.0,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-T3-3DA",
+      "block": "A. パラメータ感度",
+      "top_n": 3,
+      "rebalance": "3day",
+      "lookback": 90,
+      "n_trades": 2448,
+      "theoretical_final": 106732.01,
+      "theoretical_total_ret_pct": 967.32,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 106732.01,
+          "adjusted_total_ret_pct": 967.32,
+          "return_loss_pct": -0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 12452.7,
+          "adjusted_total_ret_pct": 24.53,
+          "return_loss_pct": 942.79
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 10061.85,
+          "adjusted_total_ret_pct": 0.62,
+          "return_loss_pct": 966.7
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 10000.45,
+          "adjusted_total_ret_pct": 0.0,
+          "return_loss_pct": 967.32
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 100.0,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-T3-WEE",
+      "block": "A. パラメータ感度",
+      "top_n": 3,
+      "rebalance": "weekly",
+      "lookback": 90,
+      "n_trades": 1086,
+      "theoretical_final": 191165.48,
+      "theoretical_total_ret_pct": 1811.65,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 191165.48,
+          "adjusted_total_ret_pct": 1811.65,
+          "return_loss_pct": -0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 45487.76,
+          "adjusted_total_ret_pct": 354.88,
+          "return_loss_pct": 1456.77
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 16934.54,
+          "adjusted_total_ret_pct": 69.35,
+          "return_loss_pct": 1742.3
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 10783.32,
+          "adjusted_total_ret_pct": 7.83,
+          "return_loss_pct": 1803.82
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 99.57,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-T3-MON",
+      "block": "A. パラメータ感度",
+      "top_n": 3,
+      "rebalance": "monthly",
+      "lookback": 90,
+      "n_trades": 300,
+      "theoretical_final": 121531.47,
+      "theoretical_total_ret_pct": 1115.31,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 121531.47,
+          "adjusted_total_ret_pct": 1115.31,
+          "return_loss_pct": -0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 81091.58,
+          "adjusted_total_ret_pct": 710.92,
+          "return_loss_pct": 404.39
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 55284.01,
+          "adjusted_total_ret_pct": 452.84,
+          "return_loss_pct": 662.47
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 34792.58,
+          "adjusted_total_ret_pct": 247.93,
+          "return_loss_pct": 867.38
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 77.77,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-T5-DAI",
+      "block": "A. パラメータ感度",
+      "top_n": 5,
+      "rebalance": "daily",
+      "lookback": 90,
+      "n_trades": 11954,
+      "theoretical_final": 75863.98,
+      "theoretical_total_ret_pct": 658.64,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 75863.98,
+          "adjusted_total_ret_pct": 658.64,
+          "return_loss_pct": 0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 10000.0,
+          "adjusted_total_ret_pct": 0.0,
+          "return_loss_pct": 658.64
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 10000.0,
+          "adjusted_total_ret_pct": 0.0,
+          "return_loss_pct": 658.64
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 10000.0,
+          "adjusted_total_ret_pct": 0.0,
+          "return_loss_pct": 658.64
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 100.0,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-T5-3DA",
+      "block": "A. パラメータ感度",
+      "top_n": 5,
+      "rebalance": "3day",
+      "lookback": 90,
+      "n_trades": 4020,
+      "theoretical_final": 136968.43,
+      "theoretical_total_ret_pct": 1269.68,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 136968.43,
+          "adjusted_total_ret_pct": 1269.68,
+          "return_loss_pct": -0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 10304.04,
+          "adjusted_total_ret_pct": 3.04,
+          "return_loss_pct": 1266.64
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 10000.72,
+          "adjusted_total_ret_pct": 0.01,
+          "return_loss_pct": 1269.67
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 10000.0,
+          "adjusted_total_ret_pct": 0.0,
+          "return_loss_pct": 1269.68
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 100.0,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-T5-WEE",
+      "block": "A. パラメータ感度",
+      "top_n": 5,
+      "rebalance": "weekly",
+      "lookback": 90,
+      "n_trades": 1766,
+      "theoretical_final": 255561.86,
+      "theoretical_total_ret_pct": 2455.62,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 255561.86,
+          "adjusted_total_ret_pct": 2455.62,
+          "return_loss_pct": 0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 27332.1,
+          "adjusted_total_ret_pct": 173.32,
+          "return_loss_pct": 2282.3
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 11218.46,
+          "adjusted_total_ret_pct": 12.18,
+          "return_loss_pct": 2443.44
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 10035.13,
+          "adjusted_total_ret_pct": 0.35,
+          "return_loss_pct": 2455.27
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 99.99,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-T5-MON",
+      "block": "A. パラメータ感度",
+      "top_n": 5,
+      "rebalance": "monthly",
+      "lookback": 90,
+      "n_trades": 460,
+      "theoretical_final": 114926.53,
+      "theoretical_total_ret_pct": 1049.27,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 114926.53,
+          "adjusted_total_ret_pct": 1049.27,
+          "return_loss_pct": 0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 62601.38,
+          "adjusted_total_ret_pct": 526.01,
+          "return_loss_pct": 523.26
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 36342.57,
+          "adjusted_total_ret_pct": 263.43,
+          "return_loss_pct": 785.84
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 20459.3,
+          "adjusted_total_ret_pct": 104.59,
+          "return_loss_pct": 944.68
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 90.03,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-T7-DAI",
+      "block": "A. パラメータ感度",
+      "top_n": 7,
+      "rebalance": "daily",
+      "lookback": 90,
+      "n_trades": 16646,
+      "theoretical_final": 71351.6,
+      "theoretical_total_ret_pct": 613.52,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 71351.6,
+          "adjusted_total_ret_pct": 613.52,
+          "return_loss_pct": 0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 10000.0,
+          "adjusted_total_ret_pct": 0.0,
+          "return_loss_pct": 613.52
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 10000.0,
+          "adjusted_total_ret_pct": 0.0,
+          "return_loss_pct": 613.52
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 10000.0,
+          "adjusted_total_ret_pct": 0.0,
+          "return_loss_pct": 613.52
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 100.0,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-T7-3DA",
+      "block": "A. パラメータ感度",
+      "top_n": 7,
+      "rebalance": "3day",
+      "lookback": 90,
+      "n_trades": 5582,
+      "theoretical_final": 109666.97,
+      "theoretical_total_ret_pct": 996.67,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 109666.97,
+          "adjusted_total_ret_pct": 996.67,
+          "return_loss_pct": 0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 10022.88,
+          "adjusted_total_ret_pct": 0.23,
+          "return_loss_pct": 996.44
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 10000.01,
+          "adjusted_total_ret_pct": 0.0,
+          "return_loss_pct": 996.67
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 10000.0,
+          "adjusted_total_ret_pct": 0.0,
+          "return_loss_pct": 996.67
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 100.0,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-T7-WEE",
+      "block": "A. パラメータ感度",
+      "top_n": 7,
+      "rebalance": "weekly",
+      "lookback": 90,
+      "n_trades": 2442,
+      "theoretical_final": 187375.39,
+      "theoretical_total_ret_pct": 1773.75,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 187375.39,
+          "adjusted_total_ret_pct": 1773.75,
+          "return_loss_pct": -0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 14538.14,
+          "adjusted_total_ret_pct": 45.38,
+          "return_loss_pct": 1728.37
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 10115.47,
+          "adjusted_total_ret_pct": 1.15,
+          "return_loss_pct": 1772.6
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 10000.86,
+          "adjusted_total_ret_pct": 0.01,
+          "return_loss_pct": 1773.74
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 100.0,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-T7-MON",
+      "block": "A. パラメータ感度",
+      "top_n": 7,
+      "rebalance": "monthly",
+      "lookback": 90,
+      "n_trades": 618,
+      "theoretical_final": 162941.84,
+      "theoretical_total_ret_pct": 1529.42,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 162941.84,
+          "adjusted_total_ret_pct": 1529.42,
+          "return_loss_pct": 0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 70482.97,
+          "adjusted_total_ret_pct": 604.83,
+          "return_loss_pct": 924.59
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 33885.49,
+          "adjusted_total_ret_pct": 238.85,
+          "return_loss_pct": 1290.57
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 16905.42,
+          "adjusted_total_ret_pct": 69.05,
+          "return_loss_pct": 1460.37
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 95.49,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-T10-DAI",
+      "block": "A. パラメータ感度",
+      "top_n": 10,
+      "rebalance": "daily",
+      "lookback": 90,
+      "n_trades": 23627,
+      "theoretical_final": 66799.78,
+      "theoretical_total_ret_pct": 568.0,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 66799.78,
+          "adjusted_total_ret_pct": 568.0,
+          "return_loss_pct": 0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 10000.0,
+          "adjusted_total_ret_pct": 0.0,
+          "return_loss_pct": 568.0
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 10000.0,
+          "adjusted_total_ret_pct": 0.0,
+          "return_loss_pct": 568.0
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 10000.0,
+          "adjusted_total_ret_pct": 0.0,
+          "return_loss_pct": 568.0
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 100.0,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-T10-3DA",
+      "block": "A. パラメータ感度",
+      "top_n": 10,
+      "rebalance": "3day",
+      "lookback": 90,
+      "n_trades": 7905,
+      "theoretical_final": 99829.86,
+      "theoretical_total_ret_pct": 898.3,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 99829.86,
+          "adjusted_total_ret_pct": 898.3,
+          "return_loss_pct": 0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 10000.63,
+          "adjusted_total_ret_pct": 0.01,
+          "return_loss_pct": 898.29
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 10000.0,
+          "adjusted_total_ret_pct": 0.0,
+          "return_loss_pct": 898.3
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 10000.0,
+          "adjusted_total_ret_pct": 0.0,
+          "return_loss_pct": 898.3
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 100.0,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-T10-WEE",
+      "block": "A. パラメータ感度",
+      "top_n": 10,
+      "rebalance": "weekly",
+      "lookback": 90,
+      "n_trades": 3445,
+      "theoretical_final": 153704.99,
+      "theoretical_total_ret_pct": 1437.05,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 153704.99,
+          "adjusted_total_ret_pct": 1437.05,
+          "return_loss_pct": 0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 10815.77,
+          "adjusted_total_ret_pct": 8.16,
+          "return_loss_pct": 1428.89
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 10004.6,
+          "adjusted_total_ret_pct": 0.05,
+          "return_loss_pct": 1437.0
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 10000.0,
+          "adjusted_total_ret_pct": 0.0,
+          "return_loss_pct": 1437.05
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 100.0,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-T10-MON",
+      "block": "A. パラメータ感度",
+      "top_n": 10,
+      "rebalance": "monthly",
+      "lookback": 90,
+      "n_trades": 851,
+      "theoretical_final": 133005.81,
+      "theoretical_total_ret_pct": 1230.06,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 133005.81,
+          "adjusted_total_ret_pct": 1230.06,
+          "return_loss_pct": 0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 44287.24,
+          "adjusted_total_ret_pct": 342.87,
+          "return_loss_pct": 887.19
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 19539.05,
+          "adjusted_total_ret_pct": 95.39,
+          "return_loss_pct": 1134.67
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 11727.3,
+          "adjusted_total_ret_pct": 17.27,
+          "return_loss_pct": 1212.79
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 98.6,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-LB30",
+      "block": "A. Lookback感度",
+      "top_n": 5,
+      "rebalance": "weekly",
+      "lookback": 30,
+      "n_trades": 1766,
+      "theoretical_final": 112462.33,
+      "theoretical_total_ret_pct": 1024.62,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 112462.33,
+          "adjusted_total_ret_pct": 1024.62,
+          "return_loss_pct": -0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 17231.93,
+          "adjusted_total_ret_pct": 72.32,
+          "return_loss_pct": 952.3
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 10508.41,
+          "adjusted_total_ret_pct": 5.08,
+          "return_loss_pct": 1019.54
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 10014.66,
+          "adjusted_total_ret_pct": 0.15,
+          "return_loss_pct": 1024.47
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 99.99,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-LB60",
+      "block": "A. Lookback感度",
+      "top_n": 5,
+      "rebalance": "weekly",
+      "lookback": 60,
+      "n_trades": 1766,
+      "theoretical_final": 143795.76,
+      "theoretical_total_ret_pct": 1337.96,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 143795.76,
+          "adjusted_total_ret_pct": 1337.96,
+          "return_loss_pct": 0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 19443.49,
+          "adjusted_total_ret_pct": 94.43,
+          "return_loss_pct": 1243.53
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 10663.88,
+          "adjusted_total_ret_pct": 6.64,
+          "return_loss_pct": 1331.32
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 10019.14,
+          "adjusted_total_ret_pct": 0.19,
+          "return_loss_pct": 1337.77
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 99.99,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-LB90",
+      "block": "A. Lookback感度",
+      "top_n": 5,
+      "rebalance": "weekly",
+      "lookback": 90,
+      "n_trades": 1766,
+      "theoretical_final": 255561.86,
+      "theoretical_total_ret_pct": 2455.62,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 255561.86,
+          "adjusted_total_ret_pct": 2455.62,
+          "return_loss_pct": 0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 27332.1,
+          "adjusted_total_ret_pct": 173.32,
+          "return_loss_pct": 2282.3
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 11218.46,
+          "adjusted_total_ret_pct": 12.18,
+          "return_loss_pct": 2443.44
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 10035.13,
+          "adjusted_total_ret_pct": 0.35,
+          "return_loss_pct": 2455.27
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 99.99,
+      "verdict": "FAIL"
+    },
+    {
+      "id": "A-LB180",
+      "block": "A. Lookback感度",
+      "top_n": 5,
+      "rebalance": "weekly",
+      "lookback": 180,
+      "n_trades": 1766,
+      "theoretical_final": 76088.58,
+      "theoretical_total_ret_pct": 660.89,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "adjusted_final": 76088.58,
+          "adjusted_total_ret_pct": 660.89,
+          "return_loss_pct": 0.0
+        },
+        {
+          "name": "標準",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "adjusted_final": 14664.62,
+          "adjusted_total_ret_pct": 46.65,
+          "return_loss_pct": 614.24
+        },
+        {
+          "name": "慎重",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "adjusted_final": 10327.93,
+          "adjusted_total_ret_pct": 3.28,
+          "return_loss_pct": 657.61
+        },
+        {
+          "name": "悲観",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "adjusted_final": 10009.46,
+          "adjusted_total_ret_pct": 0.09,
+          "return_loss_pct": 660.8
+        }
+      ],
+      "pessimistic_deviation_relative_pct": 99.99,
+      "verdict": "FAIL"
+    }
+  ]
+}
