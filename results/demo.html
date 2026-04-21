@@ -1207,8 +1207,8 @@ function renderVerify(){
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 fetchState();
 fetchVerifyData();
-setInterval(fetchState,1000);       // 毎秒ポーリング (WebSocket経由で state.json が毎秒更新される)
-setInterval(fetchVerifyData,60000);
+setInterval(fetchState,300000);     // 5分ごとポーリング (画面更新の頻度、バックエンドは毎秒動作)
+setInterval(fetchVerifyData,300000);
 </script>
 </body>
 </html>
