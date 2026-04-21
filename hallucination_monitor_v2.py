@@ -188,20 +188,25 @@ def check_state_freshness(state: dict) -> tuple[bool, str]:
 
 
 def check_version(state: dict) -> tuple[bool, str]:
-    """7. state.json version = 2.0"""
+    """7. state.json version = 2.0 or 2.1 (v2系統)"""
     v = state.get("version")
-    ok = v == "2.0"
+    ok = v in ("2.0", "2.1")
     return ok, f"version={v}, version_name={state.get('version_name', '未設定')}"
 
 
 def check_ach_config(state: dict) -> tuple[bool, str]:
-    """8. ach_config v2 パラメータ確認"""
+    """8. ach_config v2/v2.1 パラメータ確認"""
     cfg = state.get("ach_config", {})
+    # v2 と v2.1 どちらも受け入れる (共通の4キーだけ検査)
     expected = {"top_n": 3, "lookback_days": 25, "rebalance_days": 7, "universe_size": 62}
     mismatches = [f"{k}={cfg.get(k)}≠{v}" for k, v in expected.items() if cfg.get(k) != v]
     if mismatches:
-        return False, f"v2設定ずれ: {', '.join(mismatches)}"
-    return True, f"Top{cfg['top_n']}/LB{cfg['lookback_days']}/R{cfg['rebalance_days']}d/{cfg['universe_size']}銘柄"
+        return False, f"v2/v2.1設定ずれ: {', '.join(mismatches)}"
+    # v2.1 新機能が入っていれば表示
+    extra = ""
+    if "corr_threshold" in cfg:
+        extra = f" /Corr<{cfg['corr_threshold']}/{cfg.get('weight_method', 'equal')}"
+    return True, f"Top{cfg['top_n']}/LB{cfg['lookback_days']}/R{cfg['rebalance_days']}d/{cfg['universe_size']}銘柄{extra}"
 
 
 def check_ws_connection(state: dict) -> tuple[bool, str]:

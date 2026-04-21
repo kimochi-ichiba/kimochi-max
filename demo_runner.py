@@ -1,5 +1,5 @@
 """
-気持ちマックス v2 デモトレード・ライブランナー (毎秒WebSocket版)
+気持ちマックス v2.1 デモトレード・ライブランナー (毎秒WebSocket版)
 ======================================================================
 Binance WebSocket で BTC 価格を毎秒受信、3層タイマーで処理:
 
@@ -51,9 +51,9 @@ LOG_PATH = PROJECT / "demo_runner.log"
 
 # 設定
 INITIAL = 10_000.0
-BTC_WEIGHT = 0.40
-ACH_WEIGHT = 0.40
-USDT_WEIGHT = 0.20
+BTC_WEIGHT = 0.35   # v2.1: 0.40 → 0.35 (USDT cushion 増強で損失抑制)
+ACH_WEIGHT = 0.35   # v2.1: 0.40 → 0.35
+USDT_WEIGHT = 0.30  # v2.1: 0.20 → 0.30 (+10%クッションで DD -5pt 改善 / iter56)
 USDT_ANNUAL_RATE = 0.03
 LOOP_INTERVAL = 300  # 旧互換: REST のみモードの時に使う
 TICK_INTERVAL = 1    # 毎秒tick
@@ -82,11 +82,15 @@ ACH_UNIVERSE = [
     "ENA", "GALA", "JASMY", "PENDLE", "MINA", "RENDER", "STRK", "SUSHI",
 ]
 ACH_TOP_N = 3
-# 2026-04-22 更新: iter51 256パターン+Maker feeシナリオ検証で
-#   T3/LB25/週次 が最適と判明 (市場注文のまま +646% → +2053%, 3.2倍)
-#   さらにPhase 3 (Maker fee) 実装時は+2690%まで伸びる余地あり
-ACH_LOOKBACK_DAYS = 25      # 45 → 25 (より直近モメンタム捕捉)
-ACH_REBALANCE_DAYS = 7      # 30 → 7 (月次→週次リバランス)
+# 2026-04-22 v2.1 更新: iter55/iter56 で最終最適化確定
+#   USDT30% cushion + 相関フィルター0.80 + モメンタム加重
+#   vs 現行v2: ret +4575% → +8931% (2倍), DD 75.3% → 70.5% (-4.8pt)
+ACH_LOOKBACK_DAYS = 25
+ACH_REBALANCE_DAYS = 7
+ACH_CANDIDATE_N = 10           # v2.1: Top10 候補から相関フィルター後に Top3 選定
+ACH_CORR_THRESHOLD = 0.80      # v2.1: 相関 0.80 以上は除外 (集中リスク軽減)
+ACH_CORR_LOOKBACK_DAYS = 60    # v2.1: 相関計算の過去日数
+ACH_WEIGHT_METHOD = "momentum" # v2.1: "equal" or "momentum" (リターン強度で加重)
 
 
 def log(msg, also_print=True):
@@ -192,10 +196,103 @@ def fetch_momentum_returns(symbols, lookback_days=90):
 
 
 def select_top_n_momentum(returns, n=3):
-    """リターン上位N銘柄を選定"""
+    """リターン上位N銘柄を選定 (シンプル版, v2.0互換)"""
     valid = [(s, r["return_pct"]) for s, r in returns.items() if "return_pct" in r]
     valid.sort(key=lambda x: x[1], reverse=True)
     return valid[:n]
+
+
+def fetch_daily_returns_series(symbol: str, lookback_days: int) -> list:
+    """銘柄の日次リターン系列を取得 (相関計算用)"""
+    try:
+        url = (f"https://api.binance.com/api/v3/klines?symbol={symbol}USDT"
+               f"&interval=1d&limit={lookback_days + 1}")
+        klines = http_get_json(url, timeout=15)
+        if len(klines) < 10:
+            return []
+        closes = [float(k[4]) for k in klines]
+        returns = [(closes[i+1] - closes[i]) / closes[i] for i in range(len(closes)-1) if closes[i] > 0]
+        return returns
+    except Exception:
+        return []
+
+
+def calc_correlation(r1: list, r2: list) -> float:
+    """2つのリターン系列の相関係数 (Pearson)"""
+    n = min(len(r1), len(r2))
+    if n < 5:
+        return 0.0
+    r1 = r1[-n:]; r2 = r2[-n:]
+    m1 = sum(r1) / n
+    m2 = sum(r2) / n
+    cov = sum((r1[i]-m1) * (r2[i]-m2) for i in range(n))
+    v1 = sum((x-m1)**2 for x in r1)
+    v2 = sum((x-m2)**2 for x in r2)
+    if v1 <= 0 or v2 <= 0:
+        return 0.0
+    return cov / (v1 * v2) ** 0.5
+
+
+def select_top_n_corr_aware(returns, n=3, candidate_n=10,
+                             corr_threshold=0.80, corr_lookback=60):
+    """v2.1: 相関考慮 Top N 選定
+    候補 Top candidate_n からモメンタム高い順に選び、
+    既選銘柄との相関 < corr_threshold なら追加。
+    足りなければモメンタム順で補完。
+    """
+    valid = [(s, r["return_pct"]) for s, r in returns.items() if "return_pct" in r]
+    valid.sort(key=lambda x: x[1], reverse=True)
+    candidates = valid[:candidate_n]
+    if len(candidates) <= n:
+        return candidates[:n]
+
+    # 相関計算用の日次リターン系列を取得 (候補のみ)
+    log(f"   🔗 相関フィルター: {len(candidates)}候補から Top{n}選定...")
+    series_map = {}
+    for sym, _ in candidates:
+        s = fetch_daily_returns_series(sym, corr_lookback)
+        if s:
+            series_map[sym] = s
+
+    selected = []
+    for sym, ret in candidates:
+        if sym not in series_map:
+            if len(selected) < n:
+                selected.append((sym, ret))
+            continue
+        ok = True
+        for sel_sym, _ in selected:
+            if sel_sym in series_map:
+                c = calc_correlation(series_map[sym], series_map[sel_sym])
+                if abs(c) >= corr_threshold:
+                    ok = False
+                    break
+        if ok:
+            selected.append((sym, ret))
+            if len(selected) >= n:
+                break
+
+    # 補完
+    while len(selected) < n and len(selected) < len(candidates):
+        for sym, ret in candidates:
+            if not any(s == sym for s, _ in selected):
+                selected.append((sym, ret))
+                break
+
+    return selected[:n]
+
+
+def compute_momentum_weights(top_list: list) -> list:
+    """v2.1: リターン強度で配分重みを計算
+    負のリターンも min 0.01 で扱い、強い銘柄により多く配分
+    """
+    if not top_list:
+        return []
+    pos_rets = [max(ret, 0.01) for _, ret in top_list]
+    total = sum(pos_rets)
+    if total <= 0:
+        return [1.0 / len(top_list)] * len(top_list)
+    return [r / total for r in pos_rets]
 
 
 def ach_update(state, btc_price_now, btc_ema200):
@@ -335,24 +432,31 @@ def ach_update(state, btc_price_now, btc_ema200):
         hm_data.sort(key=lambda x: x["return_pct"], reverse=True)
         state["momentum_heatmap"] = hm_data
         state["momentum_heatmap_updated"] = now_iso
-        top = select_top_n_momentum(returns, ACH_TOP_N)
+        # v2.1: 相関考慮 Top N 選定 (Top10候補 → 相関<0.80 の Top3)
+        top = select_top_n_corr_aware(returns, n=ACH_TOP_N,
+                                        candidate_n=ACH_CANDIDATE_N,
+                                        corr_threshold=ACH_CORR_THRESHOLD,
+                                        corr_lookback=ACH_CORR_LOOKBACK_DAYS)
         if not top:
             log(f"   ⚠️ 候補銘柄なし、現金待機")
             ach["last_rebalance"] = now_iso
             return
 
         ach["last_top3"] = [{"symbol": s, "return_pct": r} for s, r in top]
-        log(f"   📈 Top3選定: " + ", ".join([f"{s} (+{r:.1f}%)" for s, r in top]))
+        log(f"   📈 v2.1 Top{ACH_TOP_N} (相関フィルター後): " + ", ".join([f"{s} (+{r:.1f}%)" for s, r in top]))
 
-        # 均等配分で購入
+        # v2.1: モメンタム加重配分 (equal or momentum)
+        weights = compute_momentum_weights(top) if ACH_WEIGHT_METHOD == "momentum" else [1.0/len(top)] * len(top)
+        log(f"   ⚖️ 配分 ({ACH_WEIGHT_METHOD}): " + ", ".join([f"{s}:{w*100:.1f}%" for (s, _), w in zip(top, weights)]))
+
         fee = 0.0006; slip = 0.0003
-        cash_per_pos = ach["cash"] / len(top)
         current_prices_new = fetch_all_current_prices([s for s, _ in top])
-        for sym, ret in top:
+        for (sym, ret), w in zip(top, weights):
             price = current_prices_new.get(sym)
             if not price:
                 continue
             buy_price = price * (1 + slip)
+            cash_per_pos = ach["cash"] * w
             qty = cash_per_pos / buy_price * (1 - fee)
             if qty <= 0:
                 continue
@@ -394,8 +498,8 @@ def ach_update(state, btc_price_now, btc_ema200):
 def fresh_state():
     now = datetime.now(timezone.utc).isoformat(timespec='seconds')
     return {
-        "version": "2.0",
-        "version_name": "気持ちマックス v2",
+        "version": "2.1",
+        "version_name": "気持ちマックス v2.1",
         "mode": "SIM",
         "started_at": now,
         "initial_capital": INITIAL,
@@ -475,18 +579,48 @@ def load_state():
             ach["rebalance_days"] = ACH_REBALANCE_DAYS
             ach["last_rebalance"] = None  # 次の tick で強制リバランス
             migrated = True
-        if state.get("version") != "2.0":
-            state["version"] = "2.0"
-            state["version_name"] = "気持ちマックス v2"
-            state["ach_config"] = {
-                "top_n": ACH_TOP_N,
-                "lookback_days": ACH_LOOKBACK_DAYS,
-                "rebalance_days": ACH_REBALANCE_DAYS,
-                "universe_size": len(ACH_UNIVERSE),
-            }
+        if state.get("version") not in ("2.0", "2.1"):
+            state["version"] = "2.1"
+            state["version_name"] = "気持ちマックス v2.1"
+            migrated = True
+        if state.get("version") == "2.0":
+            # v2.0 → v2.1 アップグレード (新パラメータ反映)
+            state["version"] = "2.1"
+            state["version_name"] = "気持ちマックス v2.1"
+            # 旧 40/40/20 配分のキャッシュを新 35/35/30 に再配分
+            total_cash = state.get("btc_part", {}).get("cash", 0) + \
+                         state.get("ach_part", {}).get("cash", 0) + \
+                         state.get("usdt_part", {}).get("cash", 0)
+            if total_cash > 0 and not state.get("btc_part", {}).get("position"):
+                # BTC 保有してないときのみキャッシュ再配分
+                state["btc_part"]["cash"] = total_cash * BTC_WEIGHT
+                state["ach_part"]["cash"] = total_cash * ACH_WEIGHT
+                state["usdt_part"]["cash"] = total_cash * USDT_WEIGHT
+                log(f"   💰 v2.1 cash 再配分: BTC {BTC_WEIGHT*100:.0f}% / ACH {ACH_WEIGHT*100:.0f}% / USDT {USDT_WEIGHT*100:.0f}%")
+            migrated = True
+        # ach_config を常に最新パラメータで更新 (v2.1 新フィールド含む)
+        expected_cfg = {
+            "top_n": ACH_TOP_N,
+            "lookback_days": ACH_LOOKBACK_DAYS,
+            "rebalance_days": ACH_REBALANCE_DAYS,
+            "universe_size": len(ACH_UNIVERSE),
+            "candidate_n": ACH_CANDIDATE_N,
+            "corr_threshold": ACH_CORR_THRESHOLD,
+            "corr_lookback": ACH_CORR_LOOKBACK_DAYS,
+            "weight_method": ACH_WEIGHT_METHOD,
+        }
+        if state.get("ach_config") != expected_cfg:
+            state["ach_config"] = expected_cfg
+            migrated = True
+        # 比率 (weights) も記録
+        expected_weights = {"btc": BTC_WEIGHT, "ach": ACH_WEIGHT, "usdt": USDT_WEIGHT}
+        if state.get("portfolio_weights") != expected_weights:
+            state["portfolio_weights"] = expected_weights
             migrated = True
         if migrated:
-            log("🔄 state.json マイグレーション: v2 (Top3/LB25/週次/62銘柄) に移行")
+            log(f"🔄 state.json マイグレーション: v2.1 (Top{ACH_TOP_N}/LB{ACH_LOOKBACK_DAYS}/週次/"
+                f"BTC{BTC_WEIGHT:.0%}/ACH{ACH_WEIGHT:.0%}/USDT{USDT_WEIGHT:.0%}/Corr{ACH_CORR_THRESHOLD}/"
+                f"{ACH_WEIGHT_METHOD}加重) に移行")
         return state
     except Exception as e:
         log(f"⚠️ state読込失敗: {e} → 初期化")
@@ -673,10 +807,11 @@ def run_once():
 def run_loop():
     """3層タイマー永続ループ (毎秒tick / 60秒snapshot / 5分EMA再計算)"""
     log("=" * 60)
-    log("🚀 気持ちマックス v2 デモトレードランナー 起動 (WebSocket版)")
+    log("🚀 気持ちマックス v2.1 デモトレードランナー 起動 (WebSocket版)")
     log(f"   初期資金: ${INITIAL:,.0f}")
     log(f"   構成: BTC {BTC_WEIGHT*100:.0f}% + ACH {ACH_WEIGHT*100:.0f}% + USDT {USDT_WEIGHT*100:.0f}%")
     log(f"   ACH設定: Top{ACH_TOP_N} / LB{ACH_LOOKBACK_DAYS}日 / リバランス{ACH_REBALANCE_DAYS}日 / {len(ACH_UNIVERSE)}銘柄")
+    log(f"   v2.1新機能: 候補{ACH_CANDIDATE_N} → 相関<{ACH_CORR_THRESHOLD} フィルター → {ACH_WEIGHT_METHOD}加重配分")
     log(f"   Tick {TICK_INTERVAL}秒 / Snapshot {SNAPSHOT_INTERVAL}秒 / EMA更新 {EMA_REFRESH_INTERVAL}秒")
     live_mode_startup = get_live_mode() if LIVE_TRADER_AVAILABLE else "sim"
     if live_mode_startup == "live":
