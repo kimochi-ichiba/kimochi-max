@@ -40,7 +40,10 @@ LOG_PATH = Path("/tmp/kimochi_health.log")
 CHECK_INTERVAL = 60        # 60秒ごとチェック
 STALE_STATE_SEC = 300      # state.json 5分以上古いとstale判定
 STALE_WS_SEC = 30          # ws_age 30秒以上でWS stale判定
-AUTO_RESTART_AFTER = 180   # 3分連続異常で自動再起動
+# 自動再起動までの猶予 (デフォルト 5分)
+#   旧値(3分=180秒)はstate.json書き込み中の再起動でデータ破損リスクあり
+#   5分なら一時的な遅延を吸収しつつ、本当に異常な場合は確実に再起動
+AUTO_RESTART_AFTER = 300
 DANGER_AFTER = 600         # 10分連続異常で重大アラート
 
 

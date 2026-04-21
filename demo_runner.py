@@ -59,8 +59,12 @@ LOOP_INTERVAL = 300  # 旧互換: REST のみモードの時に使う
 TICK_INTERVAL = 1    # 毎秒tick
 SNAPSHOT_INTERVAL = 60   # 60秒ごとにstate.json永続化
 EMA_REFRESH_INTERVAL = 300  # 5分ごとにEMA200再計算
-MAX_TRADE_HISTORY = 100
-MAX_EQUITY_HISTORY = 2000
+# 取引履歴保持件数 (1000件: 月数件 × 60ヶ月 = 数百件で十分余裕)
+MAX_TRADE_HISTORY = 1000
+# equity履歴保持件数 (100,000件 = 1分粒度で約69日分)
+#   旧値 2000 では 33時間分しか持てず、月間グラフ・週間振り返り不可
+#   100K件で約2.4MB JSON → 妥当なファイルサイズ
+MAX_EQUITY_HISTORY = 100_000
 
 # ACH: モメンタムTop3戦略パラメータ
 ACH_UNIVERSE = [

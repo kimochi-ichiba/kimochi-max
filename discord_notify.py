@@ -31,7 +31,10 @@ DEFAULT_CONFIG = {
     "notify_trades": True,
     "notify_dd_alerts": True,
     "notify_daily_summary": True,
-    "dd_alert_thresholds": [5, 10, 20],
+    # DD通知閾値 (デフォルト [10, 20, 30]%)
+    # 仮想通貨は日次5%変動が日常的なため、5%だと通知スパムになる
+    # 10%=注意、20%=警戒、30%=危険レベル
+    "dd_alert_thresholds": [10, 20, 30],
     "last_dd_threshold_fired": 0,
     "last_daily_summary_date": None,
     "test_sent": False,

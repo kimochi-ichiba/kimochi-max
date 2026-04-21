@@ -91,8 +91,9 @@ class BTCTickerStream:
                     on_close=self._on_close,
                     on_open=self._on_open,
                 )
-                # 30秒ごとにping、10秒でtimeout → 切断検出
-                self._ws.run_forever(ping_interval=30, ping_timeout=10)
+                # 30秒ごとにping、15秒でtimeout → 切断検出
+                # (旧10秒はモバイル/不安定回線で誤切断する場合あり、15秒に拡大)
+                self._ws.run_forever(ping_interval=30, ping_timeout=15)
             except Exception as e:
                 self._log(f"[WS] 接続失敗: {e}")
             if self._stop:

@@ -32,7 +32,12 @@ from datetime import datetime, timezone, timedelta
 BINANCE_API = "https://api.binance.com"
 
 # 安全装置 (環境変数で上書き可)
-MAX_ORDER_USD = float(os.environ.get("KM_MAX_ORDER_USD", "100"))      # 1注文上限
+# 1注文USD上限 (デフォルト $2,000)
+#   根拠: 初期資金$10,000 × ACH40% ÷ Top3銘柄 = 約$1,333/銘柄が最大ACH発注
+#         BTC枠単発 $4,000 は分割発注で $2,000 × 2回として処理可能想定
+#         旧値(\$100)は ACH発注\$1,333をブロックする致命的バグだった
+#   環境変数 KM_MAX_ORDER_USD で変更可
+MAX_ORDER_USD = float(os.environ.get("KM_MAX_ORDER_USD", "2000"))
 # 1日取引上限 (デフォルト 20回)
 #   根拠: ACH月次リバランス時に最大6件 (全決済3+新規購入3) × 安全マージン3倍 = 18件
 #   旧値(5回)は iter47バックテストで資産を69%損なうことが判明、20回に引き上げ
