@@ -1,0 +1,293 @@
+{
+  "script": "_verify_trade_execution_sim.py",
+  "ran_at": "2026-04-21T13:45:12.919090+00:00",
+  "input_file": "/Users/sanosano/projects/kimochi-max/results/iter47_trade_limit.json",
+  "initial_capital": 10000,
+  "expected_start": "2020-01-01T00:00:00+00:00",
+  "expected_end": "2024-12-31T00:00:00+00:00",
+  "thresholds": {
+    "week_gap_tolerance_days": 10,
+    "max_weekly_jump_pct": 50.0,
+    "yearly_vs_weekly_tolerance_pct": 5.0
+  },
+  "patterns": [
+    {
+      "pattern_name": "A. 5回 (現行制限)",
+      "max_daily_trades": 5,
+      "verdict": "FAIL",
+      "weekly_structure": {
+        "status": "PASS",
+        "total": 262,
+        "ok_count": 262,
+        "first_date": "2020-01-05",
+        "last_date": "2025-01-05",
+        "coverage_ok": true,
+        "gap_issues_count": 0,
+        "jump_issues_count": 0,
+        "issues": []
+      },
+      "yearly_consistency": {
+        "status": "PASS",
+        "checks": [
+          {
+            "year": "2020",
+            "yearly_ret_pct": 71.35,
+            "expected_eq": 17135.0,
+            "actual_eq": 17135.38,
+            "diff_pct": 0.0,
+            "ok": true
+          },
+          {
+            "year": "2021",
+            "yearly_ret_pct": 100.75,
+            "expected_eq": 34399.28,
+            "actual_eq": 34399.59,
+            "diff_pct": 0.0,
+            "ok": true
+          },
+          {
+            "year": "2022",
+            "yearly_ret_pct": -24.73,
+            "expected_eq": 25892.57,
+            "actual_eq": 25891.22,
+            "diff_pct": 0.01,
+            "ok": true
+          },
+          {
+            "year": "2023",
+            "yearly_ret_pct": 54.47,
+            "expected_eq": 39994.17,
+            "actual_eq": 39994.8,
+            "diff_pct": 0.0,
+            "ok": true
+          },
+          {
+            "year": "2024",
+            "yearly_ret_pct": 39.03,
+            "expected_eq": 55604.77,
+            "actual_eq": 55606.57,
+            "diff_pct": 0.0,
+            "ok": true
+          }
+        ],
+        "issues": []
+      },
+      "blocked_events": {
+        "status": "FAIL",
+        "total": 17,
+        "invalid_dates": 0,
+        "invalid_symbols": 3,
+        "issues": [
+          "index 9: sym='IMX/USDT' が ACH_UNIVERSE に無い",
+          "index 13: sym='IMX/USDT' が ACH_UNIVERSE に無い",
+          "index 14: sym='BCH/USDT' が ACH_UNIVERSE に無い"
+        ]
+      }
+    },
+    {
+      "pattern_name": "B. 10回",
+      "max_daily_trades": 10,
+      "verdict": "PASS",
+      "weekly_structure": {
+        "status": "PASS",
+        "total": 262,
+        "ok_count": 262,
+        "first_date": "2020-01-05",
+        "last_date": "2025-01-05",
+        "coverage_ok": true,
+        "gap_issues_count": 0,
+        "jump_issues_count": 0,
+        "issues": []
+      },
+      "yearly_consistency": {
+        "status": "PASS",
+        "checks": [
+          {
+            "year": "2020",
+            "yearly_ret_pct": 78.76,
+            "expected_eq": 17876.0,
+            "actual_eq": 17876.14,
+            "diff_pct": 0.0,
+            "ok": true
+          },
+          {
+            "year": "2021",
+            "yearly_ret_pct": 238.46,
+            "expected_eq": 60503.58,
+            "actual_eq": 60504.15,
+            "diff_pct": 0.0,
+            "ok": true
+          },
+          {
+            "year": "2022",
+            "yearly_ret_pct": -30.49,
+            "expected_eq": 42056.43,
+            "actual_eq": 42059.21,
+            "diff_pct": 0.01,
+            "ok": true
+          },
+          {
+            "year": "2023",
+            "yearly_ret_pct": 68.94,
+            "expected_eq": 71054.83,
+            "actual_eq": 71056.58,
+            "diff_pct": 0.0,
+            "ok": true
+          },
+          {
+            "year": "2024",
+            "yearly_ret_pct": 32.24,
+            "expected_eq": 93965.22,
+            "actual_eq": 93967.61,
+            "diff_pct": 0.0,
+            "ok": true
+          }
+        ],
+        "issues": []
+      },
+      "blocked_events": {
+        "status": "PASS",
+        "total": 0,
+        "issues": [],
+        "note": "該当イベントなし"
+      }
+    },
+    {
+      "pattern_name": "C. 20回 (推奨)",
+      "max_daily_trades": 20,
+      "verdict": "PASS",
+      "weekly_structure": {
+        "status": "PASS",
+        "total": 262,
+        "ok_count": 262,
+        "first_date": "2020-01-05",
+        "last_date": "2025-01-05",
+        "coverage_ok": true,
+        "gap_issues_count": 0,
+        "jump_issues_count": 0,
+        "issues": []
+      },
+      "yearly_consistency": {
+        "status": "PASS",
+        "checks": [
+          {
+            "year": "2020",
+            "yearly_ret_pct": 78.76,
+            "expected_eq": 17876.0,
+            "actual_eq": 17876.14,
+            "diff_pct": 0.0,
+            "ok": true
+          },
+          {
+            "year": "2021",
+            "yearly_ret_pct": 238.46,
+            "expected_eq": 60503.58,
+            "actual_eq": 60504.15,
+            "diff_pct": 0.0,
+            "ok": true
+          },
+          {
+            "year": "2022",
+            "yearly_ret_pct": -30.49,
+            "expected_eq": 42056.43,
+            "actual_eq": 42059.21,
+            "diff_pct": 0.01,
+            "ok": true
+          },
+          {
+            "year": "2023",
+            "yearly_ret_pct": 68.94,
+            "expected_eq": 71054.83,
+            "actual_eq": 71056.58,
+            "diff_pct": 0.0,
+            "ok": true
+          },
+          {
+            "year": "2024",
+            "yearly_ret_pct": 32.24,
+            "expected_eq": 93965.22,
+            "actual_eq": 93967.61,
+            "diff_pct": 0.0,
+            "ok": true
+          }
+        ],
+        "issues": []
+      },
+      "blocked_events": {
+        "status": "PASS",
+        "total": 0,
+        "issues": [],
+        "note": "該当イベントなし"
+      }
+    },
+    {
+      "pattern_name": "D. 無制限",
+      "max_daily_trades": null,
+      "verdict": "PASS",
+      "weekly_structure": {
+        "status": "PASS",
+        "total": 262,
+        "ok_count": 262,
+        "first_date": "2020-01-05",
+        "last_date": "2025-01-05",
+        "coverage_ok": true,
+        "gap_issues_count": 0,
+        "jump_issues_count": 0,
+        "issues": []
+      },
+      "yearly_consistency": {
+        "status": "PASS",
+        "checks": [
+          {
+            "year": "2020",
+            "yearly_ret_pct": 78.76,
+            "expected_eq": 17876.0,
+            "actual_eq": 17876.14,
+            "diff_pct": 0.0,
+            "ok": true
+          },
+          {
+            "year": "2021",
+            "yearly_ret_pct": 238.46,
+            "expected_eq": 60503.58,
+            "actual_eq": 60504.15,
+            "diff_pct": 0.0,
+            "ok": true
+          },
+          {
+            "year": "2022",
+            "yearly_ret_pct": -30.49,
+            "expected_eq": 42056.43,
+            "actual_eq": 42059.21,
+            "diff_pct": 0.01,
+            "ok": true
+          },
+          {
+            "year": "2023",
+            "yearly_ret_pct": 68.94,
+            "expected_eq": 71054.83,
+            "actual_eq": 71056.58,
+            "diff_pct": 0.0,
+            "ok": true
+          },
+          {
+            "year": "2024",
+            "yearly_ret_pct": 32.24,
+            "expected_eq": 93965.22,
+            "actual_eq": 93967.61,
+            "diff_pct": 0.0,
+            "ok": true
+          }
+        ],
+        "issues": []
+      },
+      "blocked_events": {
+        "status": "PASS",
+        "total": 0,
+        "issues": [],
+        "note": "該当イベントなし"
+      }
+    }
+  ],
+  "verdict": "FAIL"
+}

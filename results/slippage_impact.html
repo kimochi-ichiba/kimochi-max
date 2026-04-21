@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>スリッページ影響検証 | 気持ちマックス</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, "Hiragino Kaku Gothic ProN", sans-serif;
+       background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); min-height: 100vh;
+       padding: 20px; color: #2c3e50; }
+.container { max-width: 1100px; margin: 0 auto; }
+h1 { color: white; text-align: center; font-size: 2rem; margin-bottom: 8px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+.subtitle { color: rgba(255,255,255,0.9); text-align: center; margin-bottom: 24px; }
+.verdict-badge { display: inline-block; padding: 12px 24px; border-radius: 999px;
+                  font-size: 1.3rem; font-weight: 700; color: white;
+                  background: #e53e3e; margin-bottom: 20px; }
+.verdict-wrap { text-align: center; }
+.card { background: white; border-radius: 16px; padding: 24px; margin-bottom: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+.card h2 { font-size: 1.3rem; margin-bottom: 16px; color: #4a5568;
+           border-left: 5px solid #667eea; padding-left: 12px; }
+.explain { background: #f0f4ff; border-left: 4px solid #667eea; padding: 14px;
+          border-radius: 8px; margin: 14px 0; line-height: 1.8; font-size: 0.95rem; }
+.note { background: #fffaf0; border-left: 4px solid #ed8936; padding: 10px 14px;
+        border-radius: 6px; margin-top: 12px; font-size: 0.9rem; }
+table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.9rem; }
+th { background: #667eea; color: white; padding: 10px 8px; text-align: left; }
+td { padding: 8px; border-bottom: 1px solid #e2e8f0; }
+.footer { text-align: center; color: rgba(255,255,255,0.8); padding: 20px;
+          font-size: 0.85rem; }
+</style></head><body>
+<div class="container">
+<h1>💸 スリッページ影響検証レポート</h1>
+<p class="subtitle">理論値と現実の運用値の乖離を定量化</p>
+
+<div class="verdict-wrap">
+  <div class="verdict-badge">🔴 実運用で理論値の70%以下になる戦略あり</div>
+</div>
+
+<div class="card">
+<h2>📖 この検証でわかること</h2>
+<div class="explain">
+バックテストの「月+30%」は、約定が理論通りに成立した場合の<strong>理論値</strong>です。
+現実には、注文するたびに<strong>スリッページ</strong>（注文価格と実際の約定価格のズレ）と
+<strong>手数料</strong>が発生します。<br><br>
+このツールは iter47 の4パターンを4シナリオ（楽観〜悲観）で再計算し、
+<strong>実運用でどこまで目減りするか</strong>を可視化します。<br><br>
+<strong>判定基準:</strong><br>
+・ 🟢 <strong>PASS</strong>: 悲観でも理論値の85%以上 → 健全<br>
+・ 🟡 <strong>WARN</strong>: 悲観で70-85% → 注意（慎重に運用）<br>
+・ 🔴 <strong>FAIL</strong>: 悲観で70%未満 → <strong>戦略見直し必要</strong>
+</div>
+</div>
+
+
+<div class="card">
+<h2>A. 5回 (現行制限)（取引 266回）</h2>
+<div style="padding:8px 14px; background:#e53e3e22; border-left:5px solid #e53e3e;
+            border-radius:8px; margin-bottom:14px;">
+  <strong style="color:#e53e3e;">判定: FAIL</strong> — 悲観シナリオでの理論値からの乖離
+  73.6%
+</div>
+<table>
+<thead><tr><th>シナリオ</th><th>スリッページ</th><th>手数料</th>
+<th>調整後最終</th><th>調整後リターン</th><th>理論からの差</th></tr></thead>
+<tbody><tr><td>🟢 楽観</td><td style="text-align:right;">0.00%</td><td style="text-align:right;">0.00%</td><td style="text-align:right;">¥55,162</td><td style="text-align:right;">+451.62%</td><td style="text-align:right; color:#c0392b;">-0.00%pt</td></tr><tr><td>🟡 標準</td><td style="text-align:right;">0.05%</td><td style="text-align:right;">0.10%</td><td style="text-align:right;">¥40,294</td><td style="text-align:right;">+302.94%</td><td style="text-align:right; color:#c0392b;">-148.68%pt</td></tr><tr><td>🟠 慎重</td><td style="text-align:right;">0.15%</td><td style="text-align:right;">0.15%</td><td style="text-align:right;">¥30,309</td><td style="text-align:right;">+203.09%</td><td style="text-align:right; color:#c0392b;">-248.53%pt</td></tr><tr><td>🔴 悲観</td><td style="text-align:right;">0.30%</td><td style="text-align:right;">0.20%</td><td style="text-align:right;">¥21,905</td><td style="text-align:right;">+119.05%</td><td style="text-align:right; color:#c0392b;">-332.57%pt</td></tr></tbody>
+</table>
+<div class="note">理論値: 最終 $55,162 / リターン +451.62%</div>
+</div>
+
+<div class="card">
+<h2>B. 10回（取引 300回）</h2>
+<div style="padding:8px 14px; background:#e53e3e22; border-left:5px solid #e53e3e;
+            border-radius:8px; margin-bottom:14px;">
+  <strong style="color:#e53e3e;">判定: FAIL</strong> — 悲観シナリオでの理論値からの乖離
+  77.8%
+</div>
+<table>
+<thead><tr><th>シナリオ</th><th>スリッページ</th><th>手数料</th>
+<th>調整後最終</th><th>調整後リターン</th><th>理論からの差</th></tr></thead>
+<tbody><tr><td>🟢 楽観</td><td style="text-align:right;">0.00%</td><td style="text-align:right;">0.00%</td><td style="text-align:right;">¥93,342</td><td style="text-align:right;">+833.42%</td><td style="text-align:right; color:#c0392b;">-0.00%pt</td></tr><tr><td>🟡 標準</td><td style="text-align:right;">0.05%</td><td style="text-align:right;">0.10%</td><td style="text-align:right;">¥63,123</td><td style="text-align:right;">+531.23%</td><td style="text-align:right; color:#c0392b;">-302.19%pt</td></tr><tr><td>🟠 慎重</td><td style="text-align:right;">0.15%</td><td style="text-align:right;">0.15%</td><td style="text-align:right;">¥43,838</td><td style="text-align:right;">+338.38%</td><td style="text-align:right; color:#c0392b;">-495.04%pt</td></tr><tr><td>🔴 悲観</td><td style="text-align:right;">0.30%</td><td style="text-align:right;">0.20%</td><td style="text-align:right;">¥28,526</td><td style="text-align:right;">+185.26%</td><td style="text-align:right; color:#c0392b;">-648.16%pt</td></tr></tbody>
+</table>
+<div class="note">理論値: 最終 $93,342 / リターン +833.42%</div>
+</div>
+
+<div class="card">
+<h2>C. 20回 (推奨)（取引 300回）</h2>
+<div style="padding:8px 14px; background:#e53e3e22; border-left:5px solid #e53e3e;
+            border-radius:8px; margin-bottom:14px;">
+  <strong style="color:#e53e3e;">判定: FAIL</strong> — 悲観シナリオでの理論値からの乖離
+  77.8%
+</div>
+<table>
+<thead><tr><th>シナリオ</th><th>スリッページ</th><th>手数料</th>
+<th>調整後最終</th><th>調整後リターン</th><th>理論からの差</th></tr></thead>
+<tbody><tr><td>🟢 楽観</td><td style="text-align:right;">0.00%</td><td style="text-align:right;">0.00%</td><td style="text-align:right;">¥93,342</td><td style="text-align:right;">+833.42%</td><td style="text-align:right; color:#c0392b;">-0.00%pt</td></tr><tr><td>🟡 標準</td><td style="text-align:right;">0.05%</td><td style="text-align:right;">0.10%</td><td style="text-align:right;">¥63,123</td><td style="text-align:right;">+531.23%</td><td style="text-align:right; color:#c0392b;">-302.19%pt</td></tr><tr><td>🟠 慎重</td><td style="text-align:right;">0.15%</td><td style="text-align:right;">0.15%</td><td style="text-align:right;">¥43,838</td><td style="text-align:right;">+338.38%</td><td style="text-align:right; color:#c0392b;">-495.04%pt</td></tr><tr><td>🔴 悲観</td><td style="text-align:right;">0.30%</td><td style="text-align:right;">0.20%</td><td style="text-align:right;">¥28,526</td><td style="text-align:right;">+185.26%</td><td style="text-align:right; color:#c0392b;">-648.16%pt</td></tr></tbody>
+</table>
+<div class="note">理論値: 最終 $93,342 / リターン +833.42%</div>
+</div>
+
+<div class="card">
+<h2>D. 無制限（取引 300回）</h2>
+<div style="padding:8px 14px; background:#e53e3e22; border-left:5px solid #e53e3e;
+            border-radius:8px; margin-bottom:14px;">
+  <strong style="color:#e53e3e;">判定: FAIL</strong> — 悲観シナリオでの理論値からの乖離
+  77.8%
+</div>
+<table>
+<thead><tr><th>シナリオ</th><th>スリッページ</th><th>手数料</th>
+<th>調整後最終</th><th>調整後リターン</th><th>理論からの差</th></tr></thead>
+<tbody><tr><td>🟢 楽観</td><td style="text-align:right;">0.00%</td><td style="text-align:right;">0.00%</td><td style="text-align:right;">¥93,342</td><td style="text-align:right;">+833.42%</td><td style="text-align:right; color:#c0392b;">-0.00%pt</td></tr><tr><td>🟡 標準</td><td style="text-align:right;">0.05%</td><td style="text-align:right;">0.10%</td><td style="text-align:right;">¥63,123</td><td style="text-align:right;">+531.23%</td><td style="text-align:right; color:#c0392b;">-302.19%pt</td></tr><tr><td>🟠 慎重</td><td style="text-align:right;">0.15%</td><td style="text-align:right;">0.15%</td><td style="text-align:right;">¥43,838</td><td style="text-align:right;">+338.38%</td><td style="text-align:right; color:#c0392b;">-495.04%pt</td></tr><tr><td>🔴 悲観</td><td style="text-align:right;">0.30%</td><td style="text-align:right;">0.20%</td><td style="text-align:right;">¥28,526</td><td style="text-align:right;">+185.26%</td><td style="text-align:right; color:#c0392b;">-648.16%pt</td></tr></tbody>
+</table>
+<div class="note">理論値: 最終 $93,342 / リターン +833.42%</div>
+</div>
+
+
+<div class="footer">生成日時: 2026-04-21T13:45:04.554886+00:00<br>🤖 気持ちマックス Phase 0 検証基盤<br>
+計算式: 調整後最終 = 初期 + (理論最終 - 初期) × (1 - コスト率)^取引回数</div>
+</div></body></html>

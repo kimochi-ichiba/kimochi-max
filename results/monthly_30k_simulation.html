@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>毎月3万円 × 5年投資シミュレーション | 気持ちマックス</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #2c3e50;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  h1 {
+    color: white;
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+  .subtitle {
+    color: rgba(255,255,255,0.9);
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+  .card {
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  }
+  .card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 18px;
+    color: #4a5568;
+    border-left: 5px solid #667eea;
+    padding-left: 14px;
+  }
+  .tldr {
+    background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    line-height: 1.9;
+    font-size: 1.05rem;
+  }
+  .tldr strong { color: #c0392b; font-size: 1.15rem; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    font-size: 0.95rem;
+  }
+  th {
+    background: #667eea;
+    color: white;
+    padding: 12px 10px;
+    text-align: center;
+    font-weight: 600;
+  }
+  th:first-child { border-top-left-radius: 8px; text-align: left; padding-left: 18px; }
+  th:last-child { border-top-right-radius: 8px; }
+  td {
+    padding: 12px 10px;
+    text-align: right;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  td:first-child { text-align: left; padding-left: 18px; font-weight: 600; }
+  tr:hover { background: #f7fafc; }
+  .highlight-row { background: #fff5d6 !important; }
+  .highlight-row td { font-weight: 700; color: #c0392b; }
+  .legend-box {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .chart-wrap {
+    position: relative;
+    height: 420px;
+    margin-top: 12px;
+  }
+  .explain {
+    background: #f0f4ff;
+    border-left: 4px solid #667eea;
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin: 16px 0;
+    line-height: 1.8;
+    font-size: 0.95rem;
+  }
+  .warn {
+    background: #fff5f5;
+    border-left: 4px solid #e53e3e;
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin: 16px 0;
+    line-height: 1.8;
+    font-size: 0.95rem;
+  }
+  .warn strong { color: #c0392b; }
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .scenario-box {
+    padding: 16px;
+    border-radius: 10px;
+    border: 2px solid #e2e8f0;
+    background: #fafbfc;
+  }
+  .scenario-box.primary { border-color: #667eea; background: #f0f4ff; }
+  .scenario-name { font-weight: 700; font-size: 1.05rem; margin-bottom: 4px; }
+  .scenario-rate { color: #718096; font-size: 0.85rem; margin-bottom: 10px; }
+  .scenario-result { font-size: 1.3rem; font-weight: 700; color: #2c3e50; }
+  .scenario-diff { font-size: 0.85rem; color: #48bb78; margin-top: 4px; }
+  .footer {
+    text-align: center;
+    color: rgba(255,255,255,0.8);
+    padding: 20px;
+    font-size: 0.85rem;
+  }
+  @media (max-width: 600px) {
+    h1 { font-size: 1.5rem; }
+    .card { padding: 18px; }
+    table { font-size: 0.8rem; }
+    th, td { padding: 8px 4px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>💰 毎月3万円 × 5年投資シミュレーション</h1>
+  <p class="subtitle">元本180万円が、運用次第でいくらに育つか？</p>
+
+  <!-- TL;DR -->
+  <div class="card">
+    <h2>🎯 ひとことで言うと</h2>
+    <div class="tldr">
+      毎月3万円を5年間積み立てると、積み立てた合計（元本）は <strong>180万円</strong> です。<br>
+      これを銀行に置いておくと増えませんが、運用すると大きく変わります。<br>
+      <br>
+      ・銀行預金：ほぼ<strong>180万円</strong>のまま<br>
+      ・インデックス投資（S&amp;P500想定・年7%）：約<strong>215万円</strong>（+35万円）<br>
+      ・💎 <strong>ビットコインをガチホ</strong>（年+30%想定）：約<strong>368万円</strong>（元本の2.0倍）<br>
+      ・🤖 気持ちマックス控えめ目標（月+3%）：約<strong>489万円</strong>（元本の2.7倍）<br>
+      ・🤖 気持ちマックスバックテスト想定（月+10%）：約<strong>9,100万円</strong>（※理論値・現実は下がる）
+    </div>
+    <div class="warn">
+      <strong>⚠️ 大事な前提:</strong> 下の数字は「毎月きっちり利益が出続けた場合」の理論計算です。実際の投資はマイナスの月もあるので、必ず<strong>バックテスト結果＜実運用成績</strong>になります。<br>
+      <strong>特に仮想通貨は値動きが激しい</strong>ので、5年の途中で「含み損-70%」のような時期を覚悟する必要があります。現実的な目標は「月3〜8%」が上限と考えてください（メモリ記録より）。
+    </div>
+  </div>
+
+  <!-- 成長グラフ -->
+  <div class="card">
+    <h2>📈 60ヶ月間の資産推移</h2>
+    <div class="explain">
+      横軸は経過月数（0〜60ヶ月）、縦軸は資産額です。毎月末に3万円を追加投資し、翌月から運用益がつく前提で計算しています。
+    </div>
+    <div class="chart-wrap">
+      <canvas id="growthChart"></canvas>
+    </div>
+  </div>
+
+  <!-- シナリオ別早見表 -->
+  <div class="card">
+    <h2>🎲 シナリオ別 5年後の資産</h2>
+    <h3 style="margin-top: 12px; margin-bottom: 10px; color: #4a5568; font-size: 1.05rem;">【 普通の投資 】</h3>
+    <div class="scenario-grid">
+      <div class="scenario-box">
+        <div class="scenario-name">🏦 銀行預金</div>
+        <div class="scenario-rate">年0.001%（普通預金）</div>
+        <div class="scenario-result">¥1,800,009</div>
+        <div class="scenario-diff">+9円</div>
+      </div>
+      <div class="scenario-box">
+        <div class="scenario-name">📜 国債・定期預金</div>
+        <div class="scenario-rate">年1%</div>
+        <div class="scenario-result">¥1,845,688</div>
+        <div class="scenario-diff">+45,688円（+2.5%）</div>
+      </div>
+      <div class="scenario-box primary">
+        <div class="scenario-name">📊 インデックス投資</div>
+        <div class="scenario-rate">年7%（S&P500長期平均）</div>
+        <div class="scenario-result">¥2,148,889</div>
+        <div class="scenario-diff">+348,889円（+19.4%）</div>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 24px; margin-bottom: 10px; color: #f39c12; font-size: 1.05rem;">【 💎 仮想通貨ガチホ（買って持つだけ） 】</h3>
+    <div class="scenario-grid">
+      <div class="scenario-box" style="border-color: #f39c12; background: #fff9ec;">
+        <div class="scenario-name">💎 BTC ガチホ（控えめ）</div>
+        <div class="scenario-rate">年+15%（過去の下限目安）</div>
+        <div class="scenario-result">¥2,589,000</div>
+        <div class="scenario-diff">+789,000円（+43.8%）</div>
+      </div>
+      <div class="scenario-box" style="border-color: #f39c12; background: #fff9ec;">
+        <div class="scenario-name">💎 BTC ガチホ（標準）</div>
+        <div class="scenario-rate">年+30%（過去5〜10年平均）</div>
+        <div class="scenario-result">¥3,681,000</div>
+        <div class="scenario-diff">+1,881,000円（元本の2.0倍）</div>
+      </div>
+      <div class="scenario-box" style="border-color: #f39c12; background: #fff9ec;">
+        <div class="scenario-name">💎 BTC ガチホ（強気）</div>
+        <div class="scenario-rate">年+50%（バブル時想定）</div>
+        <div class="scenario-result">¥5,742,000</div>
+        <div class="scenario-diff">+3,942,000円（元本の3.2倍）</div>
+      </div>
+      <div class="scenario-box" style="border-color: #e74c3c; background: #fdecea;">
+        <div class="scenario-name">🪙 アルトコイン（ETH等）</div>
+        <div class="scenario-rate">年+40%（BTCより高リスク）</div>
+        <div class="scenario-result">¥4,600,000</div>
+        <div class="scenario-diff">値動きはBTCの2倍激しい</div>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 24px; margin-bottom: 10px; color: #667eea; font-size: 1.05rem;">【 🤖 気持ちマックス（自動売買ボット） 】</h3>
+    <div class="scenario-grid">
+      <div class="scenario-box primary">
+        <div class="scenario-name">🟢 気持ちマックス控えめ</div>
+        <div class="scenario-rate">月+3%（年+42.6%相当）</div>
+        <div class="scenario-result">¥4,891,561</div>
+        <div class="scenario-diff">+3,091,561円（元本の2.7倍）</div>
+      </div>
+      <div class="scenario-box">
+        <div class="scenario-name">🟡 気持ちマックス目標</div>
+        <div class="scenario-rate">月+5%（年+79.6%相当）</div>
+        <div class="scenario-result">¥10,582,864</div>
+        <div class="scenario-diff">+8,782,864円（元本の5.9倍）</div>
+      </div>
+      <div class="scenario-box">
+        <div class="scenario-name">🔴 超楽観（バックテスト値）</div>
+        <div class="scenario-rate">月+10%（理論値）</div>
+        <div class="scenario-result">¥91,043,980</div>
+        <div class="scenario-diff">※現実的にはほぼ不可能</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 仮想通貨ガチホの注意 -->
+  <div class="card">
+    <h2>💎 仮想通貨ガチホの「現実」</h2>
+    <div class="explain">
+      「ビットコインをただ買って持っておく」戦略は、気持ちマックスのような自動売買より<strong>シンプル＆手数料が少ない</strong>という大きな強みがあります。ただし、以下のリアルな特徴があります。
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>ビットコイン（BTC）</th>
+          <th>アルトコイン（ETH等）</th>
+          <th>気持ちマックス</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>期待リターン</td><td>年+15〜+50%</td><td>年+20〜+80%</td><td>月+3〜+8%（目標）</td></tr>
+        <tr><td>最大下落（過去実績）</td><td>約-84%（2018年）</td><td>約-94%（2018年）</td><td>DD 10〜30%目標</td></tr>
+        <tr><td>管理の手間</td><td>ほぼ不要（買って放置）</td><td>ほぼ不要</td><td>自動だが監視必要</td></tr>
+        <tr><td>手数料</td><td>買う時のみ（0.1%前後）</td><td>買う時のみ</td><td>売買ごと発生</td></tr>
+        <tr><td>精神的負担</td><td>-70%の局面あり</td><td>-80%超の局面あり</td><td>アラート対応必要</td></tr>
+      </tbody>
+    </table>
+    <div class="warn">
+      <strong>💀 仮想通貨ガチホの落とし穴:</strong><br>
+      ・5年の途中で<strong>1〜2回は資産が半分以下になる局面</strong>が来る可能性が高いです<br>
+      ・そこで売らずに「追加で買い続けられる精神力」が必要です<br>
+      ・上の「+30%で5年後368万円」は、暴落で売らなかった人だけが手にできる金額です<br>
+      ・税金: 仮想通貨の利益は<strong>雑所得（最大55%課税）</strong>。株式の20%より重いです
+    </div>
+  </div>
+
+  <!-- 詳細テーブル -->
+  <div class="card">
+    <h2>📋 期間別 詳細シミュレーション</h2>
+    <div class="explain">
+      1年後、3年後、5年後、10年後、20年後の資産額をシナリオ別にまとめました。5年の行（黄色）が今回のご質問の答えです。
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>経過年数</th>
+          <th>積立元本</th>
+          <th>銀行<br>（年0.001%）</th>
+          <th>インデックス<br>（年7%）</th>
+          <th>💎BTC控えめ<br>（年+15%）</th>
+          <th>💎BTC標準<br>（年+30%）</th>
+          <th>💎BTC強気<br>（年+50%）</th>
+          <th>🤖気持ちマックス<br>月+3%</th>
+        </tr>
+      </thead>
+      <tbody id="detailTable"></tbody>
+    </table>
+  </div>
+
+  <!-- 気持ちマックスで実際やるなら -->
+  <div class="card">
+    <h2>🤖 気持ちマックスで実際にやるなら</h2>
+    <div class="explain">
+      気持ちマックスは仮想通貨（ビットコイン等）を自動売買するボットなので、上の「年7%のインデックス」とは別物です。メモリ記録によると：
+      <ul style="margin-top: 10px; padding-left: 20px; line-height: 2;">
+        <li>🎯 <strong>現実的な目標:</strong> 月3〜8%（年換算で+42〜+152%）</li>
+        <li>⚠️ <strong>事実上不可能:</strong> 月20〜30%の継続は神話レベル</li>
+        <li>💀 <strong>4つの沈黙キラー:</strong> 手数料、スリッページ、流動性、暴落時の自動停止ミス</li>
+        <li>🟢 <strong>現在のv95ベースライン:</strong> バックテストで月+30%だが、実運用ではこれより下がる前提</li>
+      </ul>
+    </div>
+    <div class="warn">
+      <strong>💡 おすすめの考え方:</strong> 「毎月3万円を気持ちマックスに投入して5年で何円になる？」という問いには、<strong>控えめに見て月+3%（年+42.6%）= 約489万円</strong>を現実的な上限イメージとして捉えるのが安全です。月+5%以上は宝くじ的な期待値になります。
+    </div>
+  </div>
+
+  <div class="footer">
+    🤖 気持ちマックス シミュレーションレポート | 生成日: 2026-04-21 | ポート 8080
+  </div>
+</div>
+
+<script>
+// 積立複利計算（月末入金）: FV = PMT × [((1+r)^n - 1) / r]
+// 月利 r, 月数 n, 毎月積立 PMT
+function futureValue(monthlyInvest, monthlyRate, months) {
+  if (monthlyRate === 0) return monthlyInvest * months;
+  return monthlyInvest * (Math.pow(1 + monthlyRate, months) - 1) / monthlyRate;
+}
+
+const PMT = 30000;  // 毎月3万円
+
+// 年利 → 月利換算
+const yearToMonth = (y) => Math.pow(1 + y, 1/12) - 1;
+
+const scenarios = [
+  { name: "銀行預金 (年0.001%)",         rate: yearToMonth(0.00001), color: "#a0aec0" },
+  { name: "インデックス投資 (年7%)",     rate: yearToMonth(0.07),    color: "#48bb78" },
+  { name: "💎 BTC ガチホ 控えめ (年+15%)", rate: yearToMonth(0.15),    color: "#f6ad55" },
+  { name: "💎 BTC ガチホ 標準 (年+30%)",   rate: yearToMonth(0.30),    color: "#f39c12" },
+  { name: "💎 BTC ガチホ 強気 (年+50%)",   rate: yearToMonth(0.50),    color: "#dd6b20" },
+  { name: "🤖 気持ちマックス控えめ (月+3%)", rate: 0.03,                color: "#667eea" },
+  { name: "🤖 気持ちマックス目標 (月+5%)",   rate: 0.05,                color: "#764ba2" },
+];
+
+// グラフ用データ（0〜60ヶ月、1ヶ月刻み）
+const months = Array.from({length: 61}, (_, i) => i);
+const datasets = scenarios.map(s => ({
+  label: s.name,
+  data: months.map(m => Math.round(futureValue(PMT, s.rate, m))),
+  borderColor: s.color,
+  backgroundColor: s.color + "20",
+  tension: 0.25,
+  pointRadius: 0,
+  pointHoverRadius: 5,
+  borderWidth: 2.5,
+}));
+
+// 元本ライン（参考）
+datasets.unshift({
+  label: "積立元本（運用なし）",
+  data: months.map(m => PMT * m),
+  borderColor: "#e53e3e",
+  borderDash: [5, 5],
+  backgroundColor: "transparent",
+  tension: 0,
+  pointRadius: 0,
+  borderWidth: 2,
+});
+
+new Chart(document.getElementById("growthChart"), {
+  type: "line",
+  data: { labels: months.map(m => m + "ヶ月"), datasets },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: {
+      legend: { position: "bottom", labels: { padding: 12, font: { size: 12 } } },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => ctx.dataset.label + ": ¥" + ctx.parsed.y.toLocaleString()
+        }
+      }
+    },
+    scales: {
+      y: {
+        ticks: {
+          callback: (v) => "¥" + (v/10000).toFixed(0) + "万"
+        },
+        title: { display: true, text: "資産額", font: { size: 13, weight: "bold" } }
+      },
+      x: {
+        title: { display: true, text: "経過月数", font: { size: 13, weight: "bold" } }
+      }
+    }
+  }
+});
+
+// 詳細テーブル（1, 3, 5, 10, 20年）
+const years = [1, 3, 5, 10, 20];
+const tbody = document.getElementById("detailTable");
+years.forEach(y => {
+  const n = y * 12;
+  const principal = PMT * n;
+  const r001  = futureValue(PMT, yearToMonth(0.00001), n);
+  const r7    = futureValue(PMT, yearToMonth(0.07),    n);
+  const btc15 = futureValue(PMT, yearToMonth(0.15),    n);
+  const btc30 = futureValue(PMT, yearToMonth(0.30),    n);
+  const btc50 = futureValue(PMT, yearToMonth(0.50),    n);
+  const r3m   = futureValue(PMT, 0.03, n);
+  const fmt = (v) => "¥" + Math.round(v).toLocaleString();
+  const tr = document.createElement("tr");
+  if (y === 5) tr.classList.add("highlight-row");
+  tr.innerHTML = `
+    <td>${y}年後</td>
+    <td>${fmt(principal)}</td>
+    <td>${fmt(r001)}</td>
+    <td>${fmt(r7)}</td>
+    <td>${fmt(btc15)}</td>
+    <td>${fmt(btc30)}</td>
+    <td>${fmt(btc50)}</td>
+    <td>${fmt(r3m)}</td>
+  `;
+  tbody.appendChild(tr);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+{
+  "script": "_verify_slippage_impact.py",
+  "ran_at": "2026-04-21T13:45:04.554886+00:00",
+  "input_file": "/Users/sanosano/projects/kimochi-max/results/iter47_trade_limit.json",
+  "initial_capital": 10000,
+  "scenarios_def": [
+    {
+      "name": "楽観",
+      "slippage_pct": 0.0,
+      "fee_pct": 0.0
+    },
+    {
+      "name": "標準",
+      "slippage_pct": 0.05,
+      "fee_pct": 0.1
+    },
+    {
+      "name": "慎重",
+      "slippage_pct": 0.15,
+      "fee_pct": 0.15
+    },
+    {
+      "name": "悲観",
+      "slippage_pct": 0.3,
+      "fee_pct": 0.2
+    }
+  ],
+  "fail_threshold_pct": 30.0,
+  "warn_threshold_pct": 15.0,
+  "patterns": [
+    {
+      "pattern_name": "A. 5回 (現行制限)",
+      "max_daily_trades": 5,
+      "n_trades": 266,
+      "theoretical_final": 55162.13,
+      "theoretical_total_ret_pct": 451.62,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "label": "Optimistic",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "total_cost_per_side_pct": 0.0,
+          "adjusted_final": 55162.13,
+          "adjusted_total_ret_pct": 451.62,
+          "return_loss_pct": 0.0,
+          "equity_shrinkage_pct": 0.0
+        },
+        {
+          "name": "標準",
+          "label": "Standard",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "total_cost_per_side_pct": 0.15,
+          "adjusted_final": 40294.29,
+          "adjusted_total_ret_pct": 302.94,
+          "return_loss_pct": 148.68,
+          "equity_shrinkage_pct": 32.92
+        },
+        {
+          "name": "慎重",
+          "label": "Conservative",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "total_cost_per_side_pct": 0.3,
+          "adjusted_final": 30308.91,
+          "adjusted_total_ret_pct": 203.09,
+          "return_loss_pct": 248.53,
+          "equity_shrinkage_pct": 55.03
+        },
+        {
+          "name": "悲観",
+          "label": "Pessimistic",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "total_cost_per_side_pct": 0.5,
+          "adjusted_final": 21904.57,
+          "adjusted_total_ret_pct": 119.05,
+          "return_loss_pct": 332.57,
+          "equity_shrinkage_pct": 73.64
+        }
+      ],
+      "pessimistic_deviation_pct_points": 332.57,
+      "pessimistic_deviation_relative_pct": 73.64,
+      "verdict": "FAIL"
+    },
+    {
+      "pattern_name": "B. 10回",
+      "max_daily_trades": 10,
+      "n_trades": 300,
+      "theoretical_final": 93341.57,
+      "theoretical_total_ret_pct": 833.42,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "label": "Optimistic",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "total_cost_per_side_pct": 0.0,
+          "adjusted_final": 93341.57,
+          "adjusted_total_ret_pct": 833.42,
+          "return_loss_pct": 0.0,
+          "equity_shrinkage_pct": 0.0
+        },
+        {
+          "name": "標準",
+          "label": "Standard",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "total_cost_per_side_pct": 0.15,
+          "adjusted_final": 63122.98,
+          "adjusted_total_ret_pct": 531.23,
+          "return_loss_pct": 302.19,
+          "equity_shrinkage_pct": 36.26
+        },
+        {
+          "name": "慎重",
+          "label": "Conservative",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "total_cost_per_side_pct": 0.3,
+          "adjusted_final": 43838.35,
+          "adjusted_total_ret_pct": 338.38,
+          "return_loss_pct": 495.04,
+          "equity_shrinkage_pct": 59.4
+        },
+        {
+          "name": "悲観",
+          "label": "Pessimistic",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "total_cost_per_side_pct": 0.5,
+          "adjusted_final": 28526.18,
+          "adjusted_total_ret_pct": 185.26,
+          "return_loss_pct": 648.16,
+          "equity_shrinkage_pct": 77.77
+        }
+      ],
+      "pessimistic_deviation_pct_points": 648.16,
+      "pessimistic_deviation_relative_pct": 77.77,
+      "verdict": "FAIL"
+    },
+    {
+      "pattern_name": "C. 20回 (推奨)",
+      "max_daily_trades": 20,
+      "n_trades": 300,
+      "theoretical_final": 93341.57,
+      "theoretical_total_ret_pct": 833.42,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "label": "Optimistic",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "total_cost_per_side_pct": 0.0,
+          "adjusted_final": 93341.57,
+          "adjusted_total_ret_pct": 833.42,
+          "return_loss_pct": 0.0,
+          "equity_shrinkage_pct": 0.0
+        },
+        {
+          "name": "標準",
+          "label": "Standard",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "total_cost_per_side_pct": 0.15,
+          "adjusted_final": 63122.98,
+          "adjusted_total_ret_pct": 531.23,
+          "return_loss_pct": 302.19,
+          "equity_shrinkage_pct": 36.26
+        },
+        {
+          "name": "慎重",
+          "label": "Conservative",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "total_cost_per_side_pct": 0.3,
+          "adjusted_final": 43838.35,
+          "adjusted_total_ret_pct": 338.38,
+          "return_loss_pct": 495.04,
+          "equity_shrinkage_pct": 59.4
+        },
+        {
+          "name": "悲観",
+          "label": "Pessimistic",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "total_cost_per_side_pct": 0.5,
+          "adjusted_final": 28526.18,
+          "adjusted_total_ret_pct": 185.26,
+          "return_loss_pct": 648.16,
+          "equity_shrinkage_pct": 77.77
+        }
+      ],
+      "pessimistic_deviation_pct_points": 648.16,
+      "pessimistic_deviation_relative_pct": 77.77,
+      "verdict": "FAIL"
+    },
+    {
+      "pattern_name": "D. 無制限",
+      "max_daily_trades": null,
+      "n_trades": 300,
+      "theoretical_final": 93341.57,
+      "theoretical_total_ret_pct": 833.42,
+      "scenarios": [
+        {
+          "name": "楽観",
+          "label": "Optimistic",
+          "emoji": "🟢",
+          "slippage_pct": 0.0,
+          "fee_pct": 0.0,
+          "total_cost_per_side_pct": 0.0,
+          "adjusted_final": 93341.57,
+          "adjusted_total_ret_pct": 833.42,
+          "return_loss_pct": 0.0,
+          "equity_shrinkage_pct": 0.0
+        },
+        {
+          "name": "標準",
+          "label": "Standard",
+          "emoji": "🟡",
+          "slippage_pct": 0.05,
+          "fee_pct": 0.1,
+          "total_cost_per_side_pct": 0.15,
+          "adjusted_final": 63122.98,
+          "adjusted_total_ret_pct": 531.23,
+          "return_loss_pct": 302.19,
+          "equity_shrinkage_pct": 36.26
+        },
+        {
+          "name": "慎重",
+          "label": "Conservative",
+          "emoji": "🟠",
+          "slippage_pct": 0.15,
+          "fee_pct": 0.15,
+          "total_cost_per_side_pct": 0.3,
+          "adjusted_final": 43838.35,
+          "adjusted_total_ret_pct": 338.38,
+          "return_loss_pct": 495.04,
+          "equity_shrinkage_pct": 59.4
+        },
+        {
+          "name": "悲観",
+          "label": "Pessimistic",
+          "emoji": "🔴",
+          "slippage_pct": 0.3,
+          "fee_pct": 0.2,
+          "total_cost_per_side_pct": 0.5,
+          "adjusted_final": 28526.18,
+          "adjusted_total_ret_pct": 185.26,
+          "return_loss_pct": 648.16,
+          "equity_shrinkage_pct": 77.77
+        }
+      ],
+      "pessimistic_deviation_pct_points": 648.16,
+      "pessimistic_deviation_relative_pct": 77.77,
+      "verdict": "FAIL"
+    }
+  ],
+  "verdict": "FAIL"
+}

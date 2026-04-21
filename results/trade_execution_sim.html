@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>バックテスト整合性検証 | 気持ちマックス</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, "Hiragino Kaku Gothic ProN", sans-serif;
+       background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); min-height: 100vh;
+       padding: 20px; color: #2c3e50; }
+.container { max-width: 1100px; margin: 0 auto; }
+h1 { color: white; text-align: center; font-size: 2rem; margin-bottom: 8px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+.subtitle { color: rgba(255,255,255,0.9); text-align: center; margin-bottom: 24px; }
+.verdict-badge { display: inline-block; padding: 12px 24px; border-radius: 999px;
+                  font-size: 1.3rem; font-weight: 700; color: white;
+                  background: #e53e3e; margin-bottom: 20px; }
+.verdict-wrap { text-align: center; }
+.card { background: white; border-radius: 16px; padding: 24px; margin-bottom: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+.card h2 { font-size: 1.3rem; margin-bottom: 16px; color: #4a5568;
+           border-left: 5px solid #667eea; padding-left: 12px; }
+.card h3 { font-size: 1.05rem; margin: 18px 0 8px; color: #4a5568; }
+.mini-stats { display: flex; gap: 16px; flex-wrap: wrap;
+              background: #f7fafc; padding: 10px 14px; border-radius: 8px; font-size: 0.9rem; }
+.mini-stats div { font-weight: 500; }
+.issue-list { padding: 10px 14px 10px 32px; background: #fff8e6; border-radius: 8px;
+              margin-top: 8px; font-size: 0.88rem; line-height: 1.7; }
+.explain { background: #f0f4ff; border-left: 4px solid #667eea; padding: 14px;
+          border-radius: 8px; margin: 14px 0; line-height: 1.8; font-size: 0.95rem; }
+table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.9rem; }
+th { background: #667eea; color: white; padding: 8px; text-align: left; }
+td { padding: 8px; border-bottom: 1px solid #e2e8f0; }
+.footer { text-align: center; color: rgba(255,255,255,0.8); padding: 20px;
+          font-size: 0.85rem; }
+</style></head><body>
+<div class="container">
+<h1>🔬 バックテスト整合性検証レポート</h1>
+<p class="subtitle">iter47 の構造的妥当性を7項目チェック</p>
+
+<div class="verdict-wrap">
+  <div class="verdict-badge">🔴 合成データ・欠損・範囲外あり（要調査）</div>
+</div>
+
+<div class="card">
+<h2>📖 何をチェックしているか</h2>
+<div class="explain">
+<strong>バックテスト結果の「構造的な妥当性」</strong>を検証するツールです。数字が正しいかではなく、
+「その数字を生み出すデータの形」に合成データ・欠損・架空イベントが混入していないかを見ます。<br><br>
+
+<strong>7つのチェック:</strong><br>
+① 週次データの日付が実在のカレンダー日か<br>
+② 週刻みに大きな欠損（±10日超）がないか<br>
+③ 週次で±50%超のジャンプがないか（合成データの疑い検出）<br>
+④ yearly 集計と週次末尾が整合するか（±5%以内）<br>
+⑤ blocked_events_sample の日付が2020-2024の範囲内か<br>
+⑥ blocked_events_sample の銘柄が ACH_UNIVERSE に存在するか<br>
+⑦ 期間カバレッジが2020-01〜2024-12を網羅しているか<br><br>
+
+<strong>判定基準:</strong><br>
+・ 🟢 <strong>PASS</strong>: 全項目OK → データは本物のバックテスト結果<br>
+・ 🟡 <strong>WARN</strong>: 軽度の逸脱 → 再取得推奨<br>
+・ 🔴 <strong>FAIL</strong>: 合成疑い/欠損/範囲外 → <strong>当該戦略の結果を信用しない</strong>
+</div>
+</div>
+
+
+<div class="card">
+<h2>A. 5回 (現行制限)</h2>
+<div style="padding:8px 14px; background:#e53e3e22; border-left:5px solid #e53e3e;
+            border-radius:8px; margin-bottom:14px;">
+  <strong style="color:#e53e3e;">判定: FAIL</strong>
+</div>
+
+<h3>① 週次推移の構造 (PASS)</h3>
+<div class="mini-stats">
+  <div>期間: 2020-01-05 〜 2025-01-05</div>
+  <div>データ点: 262 / 262</div>
+  <div>週刻み異常: 0件</div>
+  <div>ジャンプ異常: 0件</div>
+</div>
+<ul class="issue-list"><li>なし</li></ul>
+
+<h3>② 年別集計 vs 週次整合 (PASS)</h3>
+<table>
+<thead><tr><th>年</th><th>yearly%</th><th>期待$</th><th>実測$</th><th>乖離%</th><th>OK</th></tr></thead>
+<tbody><tr><td>2020年</td><td style="text-align:right;">+71.35%</td><td style="text-align:right;">$17,135</td><td style="text-align:right;">$17,135</td><td style="text-align:right;">0.00%</td><td style="text-align:center;">✅</td></tr><tr><td>2021年</td><td style="text-align:right;">+100.75%</td><td style="text-align:right;">$34,399</td><td style="text-align:right;">$34,400</td><td style="text-align:right;">0.00%</td><td style="text-align:center;">✅</td></tr><tr><td>2022年</td><td style="text-align:right;">-24.73%</td><td style="text-align:right;">$25,893</td><td style="text-align:right;">$25,891</td><td style="text-align:right;">0.01%</td><td style="text-align:center;">✅</td></tr><tr><td>2023年</td><td style="text-align:right;">+54.47%</td><td style="text-align:right;">$39,994</td><td style="text-align:right;">$39,995</td><td style="text-align:right;">0.00%</td><td style="text-align:center;">✅</td></tr><tr><td>2024年</td><td style="text-align:right;">+39.03%</td><td style="text-align:right;">$55,605</td><td style="text-align:right;">$55,607</td><td style="text-align:right;">0.00%</td><td style="text-align:center;">✅</td></tr></tbody>
+</table>
+
+<h3>③ ブロックイベント妥当性 (FAIL)</h3>
+<div class="mini-stats">
+  <div>総数: 17件</div>
+  <div>無効日付: 0件</div>
+  <div>無効銘柄: 3件</div>
+</div>
+<ul class="issue-list"><li>index 9: sym='IMX/USDT' が ACH_UNIVERSE に無い</li><li>index 13: sym='IMX/USDT' が ACH_UNIVERSE に無い</li><li>index 14: sym='BCH/USDT' が ACH_UNIVERSE に無い</li></ul>
+</div>
+
+<div class="card">
+<h2>B. 10回</h2>
+<div style="padding:8px 14px; background:#48bb7822; border-left:5px solid #48bb78;
+            border-radius:8px; margin-bottom:14px;">
+  <strong style="color:#48bb78;">判定: PASS</strong>
+</div>
+
+<h3>① 週次推移の構造 (PASS)</h3>
+<div class="mini-stats">
+  <div>期間: 2020-01-05 〜 2025-01-05</div>
+  <div>データ点: 262 / 262</div>
+  <div>週刻み異常: 0件</div>
+  <div>ジャンプ異常: 0件</div>
+</div>
+<ul class="issue-list"><li>なし</li></ul>
+
+<h3>② 年別集計 vs 週次整合 (PASS)</h3>
+<table>
+<thead><tr><th>年</th><th>yearly%</th><th>期待$</th><th>実測$</th><th>乖離%</th><th>OK</th></tr></thead>
+<tbody><tr><td>2020年</td><td style="text-align:right;">+78.76%</td><td style="text-align:right;">$17,876</td><td style="text-align:right;">$17,876</td><td style="text-align:right;">0.00%</td><td style="text-align:center;">✅</td></tr><tr><td>2021年</td><td style="text-align:right;">+238.46%</td><td style="text-align:right;">$60,504</td><td style="text-align:right;">$60,504</td><td style="text-align:right;">0.00%</td><td style="text-align:center;">✅</td></tr><tr><td>2022年</td><td style="text-align:right;">-30.49%</td><td style="text-align:right;">$42,056</td><td style="text-align:right;">$42,059</td><td style="text-align:right;">0.01%</td><td style="text-align:center;">✅</td></tr><tr><td>2023年</td><td style="text-align:right;">+68.94%</td><td style="text-align:right;">$71,055</td><td style="text-align:right;">$71,057</td><td style="text-align:right;">0.00%</td><td style="text-align:center;">✅</td></tr><tr><td>2024年</td><td style="text-align:right;">+32.24%</td><td style="text-align:right;">$93,965</td><td style="text-align:right;">$93,968</td><td style="text-align:right;">0.00%</td><td style="text-align:center;">✅</td></tr></tbody>
+</table>
+
+<h3>③ ブロックイベント妥当性 (PASS)</h3>
+<div class="mini-stats">
+  <div>総数: 0件</div>
+  <div>無効日付: 0件</div>
+  <div>無効銘柄: 0件</div>
+</div>
+<ul class="issue-list"><li>なし</li></ul>
+</div>
+
+<div class="card">
+<h2>C. 20回 (推奨)</h2>
+<div style="padding:8px 14px; background:#48bb7822; border-left:5px solid #48bb78;
+            border-radius:8px; margin-bottom:14px;">
+  <strong style="color:#48bb78;">判定: PASS</strong>
+</div>
+
+<h3>① 週次推移の構造 (PASS)</h3>
+<div class="mini-stats">
+  <div>期間: 2020-01-05 〜 2025-01-05</div>
+  <div>データ点: 262 / 262</div>
+  <div>週刻み異常: 0件</div>
+  <div>ジャンプ異常: 0件</div>
+</div>
+<ul class="issue-list"><li>なし</li></ul>
+
+<h3>② 年別集計 vs 週次整合 (PASS)</h3>
+<table>
+<thead><tr><th>年</th><th>yearly%</th><th>期待$</th><th>実測$</th><th>乖離%</th><th>OK</th></tr></thead>
+<tbody><tr><td>2020年</td><td style="text-align:right;">+78.76%</td><td style="text-align:right;">$17,876</td><td style="text-align:right;">$17,876</td><td style="text-align:right;">0.00%</td><td style="text-align:center;">✅</td></tr><tr><td>2021年</td><td style="text-align:right;">+238.46%</td><td style="text-align:right;">$60,504</td><td style="text-align:right;">$60,504</td><td style="text-align:right;">0.00%</td><td style="text-align:center;">✅</td></tr><tr><td>2022年</td><td style="text-align:right;">-30.49%</td><td style="text-align:right;">$42,056</td><td style="text-align:right;">$42,059</td><td style="text-align:right;">0.01%</td><td style="text-align:center;">✅</td></tr><tr><td>2023年</td><td style="text-align:right;">+68.94%</td><td style="text-align:right;">$71,055</td><td style="text-align:right;">$71,057</td><td style="text-align:right;">0.00%</td><td style="text-align:center;">✅</td></tr><tr><td>2024年</td><td style="text-align:right;">+32.24%</td><td style="text-align:right;">$93,965</td><td style="text-align:right;">$93,968</td><td style="text-align:right;">0.00%</td><td style="text-align:center;">✅</td></tr></tbody>
+</table>
+
+<h3>③ ブロックイベント妥当性 (PASS)</h3>
+<div class="mini-stats">
+  <div>総数: 0件</div>
+  <div>無効日付: 0件</div>
+  <div>無効銘柄: 0件</div>
+</div>
+<ul class="issue-list"><li>なし</li></ul>
+</div>
+
+<div class="card">
+<h2>D. 無制限</h2>
+<div style="padding:8px 14px; background:#48bb7822; border-left:5px solid #48bb78;
+            border-radius:8px; margin-bottom:14px;">
+  <strong style="color:#48bb78;">判定: PASS</strong>
+</div>
+
+<h3>① 週次推移の構造 (PASS)</h3>
+<div class="mini-stats">
+  <div>期間: 2020-01-05 〜 2025-01-05</div>
+  <div>データ点: 262 / 262</div>
+  <div>週刻み異常: 0件</div>
+  <div>ジャンプ異常: 0件</div>
+</div>
+<ul class="issue-list"><li>なし</li></ul>
+
+<h3>② 年別集計 vs 週次整合 (PASS)</h3>
+<table>
+<thead><tr><th>年</th><th>yearly%</th><th>期待$</th><th>実測$</th><th>乖離%</th><th>OK</th></tr></thead>
+<tbody><tr><td>2020年</td><td style="text-align:right;">+78.76%</td><td style="text-align:right;">$17,876</td><td style="text-align:right;">$17,876</td><td style="text-align:right;">0.00%</td><td style="text-align:center;">✅</td></tr><tr><td>2021年</td><td style="text-align:right;">+238.46%</td><td style="text-align:right;">$60,504</td><td style="text-align:right;">$60,504</td><td style="text-align:right;">0.00%</td><td style="text-align:center;">✅</td></tr><tr><td>2022年</td><td style="text-align:right;">-30.49%</td><td style="text-align:right;">$42,056</td><td style="text-align:right;">$42,059</td><td style="text-align:right;">0.01%</td><td style="text-align:center;">✅</td></tr><tr><td>2023年</td><td style="text-align:right;">+68.94%</td><td style="text-align:right;">$71,055</td><td style="text-align:right;">$71,057</td><td style="text-align:right;">0.00%</td><td style="text-align:center;">✅</td></tr><tr><td>2024年</td><td style="text-align:right;">+32.24%</td><td style="text-align:right;">$93,965</td><td style="text-align:right;">$93,968</td><td style="text-align:right;">0.00%</td><td style="text-align:center;">✅</td></tr></tbody>
+</table>
+
+<h3>③ ブロックイベント妥当性 (PASS)</h3>
+<div class="mini-stats">
+  <div>総数: 0件</div>
+  <div>無効日付: 0件</div>
+  <div>無効銘柄: 0件</div>
+</div>
+<ul class="issue-list"><li>なし</li></ul>
+</div>
+
+
+<div class="footer">生成日時: 2026-04-21T13:45:12.919090+00:00<br>🤖 気持ちマックス Phase 0 検証基盤</div>
+</div></body></html>
