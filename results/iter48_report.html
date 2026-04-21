@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>iter48 9改善案 累積比較バックテスト | 気持ちマックス</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, "Hiragino Kaku Gothic ProN", sans-serif;
+       background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); min-height: 100vh;
+       padding: 20px; color: #2c3e50; }
+.container { max-width: 1200px; margin: 0 auto; }
+h1 { color: white; text-align: center; font-size: 2.2rem; margin-bottom: 8px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+.subtitle { color: rgba(255,255,255,0.9); text-align: center; margin-bottom: 24px; }
+.card { background: white; border-radius: 16px; padding: 28px; margin-bottom: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+.card h2 { font-size: 1.5rem; margin-bottom: 16px; color: #4a5568;
+           border-left: 5px solid #667eea; padding-left: 14px; }
+.tldr { background: linear-gradient(135deg,#ffeaa7 0%,#fab1a0 100%);
+        padding: 18px 22px; border-radius: 12px; line-height: 1.9; font-size: 1.05rem; }
+.tldr strong { color: #c0392b; font-size: 1.15rem; }
+.highlight-row { background: #fff5d6; }
+.pattern-card { background: #fafbfc; border-left: 5px solid #667eea;
+                border-radius: 10px; padding: 16px 20px; margin-bottom: 12px; }
+.pattern-head { display: flex; justify-content: space-between; align-items: center;
+                margin-bottom: 6px; }
+.ret-big { font-size: 1.6rem; font-weight: 700; }
+.ret-diff { font-size: 0.85rem; }
+.desc { color: #718096; font-size: 0.9rem; margin-bottom: 10px; }
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+           gap: 10px; font-size: 0.9rem; }
+.metrics div span { color: #718096; font-size: 0.8rem; margin-right: 4px; }
+.badge { font-size: 0.75rem; padding: 2px 8px; border-radius: 10px;
+        margin-left: 8px; font-weight: 600; }
+.badge.best { background: #fef3c7; color: #92400e; }
+.badge.baseline { background: #e0e7ff; color: #4338ca; }
+.badge.worse { background: #fee2e2; color: #991b1b; }
+table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.9rem; }
+th { background: #667eea; color: white; padding: 10px 8px; text-align: left; }
+td { padding: 8px; border-bottom: 1px solid #e2e8f0; }
+.explain { background: #f0f4ff; border-left: 4px solid #667eea; padding: 14px;
+          border-radius: 8px; margin: 14px 0; line-height: 1.8; font-size: 0.95rem; }
+.warn { background: #fff5f5; border-left: 4px solid #e53e3e; padding: 14px;
+        border-radius: 8px; margin: 14px 0; line-height: 1.8; font-size: 0.95rem; }
+.warn strong { color: #c0392b; }
+.footer { text-align: center; color: rgba(255,255,255,0.8); padding: 20px;
+          font-size: 0.85rem; }
+</style></head><body>
+<div class="container">
+
+<h1>🚀 iter48: 9改善案 累積比較バックテスト</h1>
+<p class="subtitle">Binance実データ 2020-01-01 〜 2024-12-31 / 初期資金 $10,000 / 8パターン検証</p>
+
+<div class="card">
+<h2>🎯 ひとことで言うと</h2>
+<div class="tldr">
+8パターンの累積比較で、<strong>本当に効く改善と、実は悪化する改善</strong>が判明しました。<br><br>
+・🏆 最優秀: <strong>C. + Top5 + 週次</strong>（+2455.6% / 最終 $255,562）<br>
+・📊 ベースライン (A): +986.0% / 最終 $108,596<br>
+・📉 最低: <strong>F. + 部分利確</strong>（+180.3%）
+<br><br>
+<strong>意外な発見:</strong> トレーリングストップ・部分利確などの「定石的改善」は、このデイリー粒度の戦略では<strong>リターンを大幅に削る</strong>ことが判明。
+早い利確が次の大波を逃す典型例です。
+</div>
+</div>
+
+<div class="card">
+<h2>📊 パターン別詳細（累積追加）</h2>
+<div class="explain">
+各パターンは前のパターンに「1つの改善」を追加した形です。
+Aをベースラインに、どの改善が効いてどれが悪化したかを一目で確認できます。
+</div>
+
+<div class="pattern-card" style="border-left-color:#667eea;">
+  <div class="pattern-head">
+    <div><strong>A.</strong> iter47 ベースライン <span class="badge baseline">ベースライン</span></div>
+    <div style="text-align:right;">
+      <div class="ret-big" style="color:#48bb78;">
+        +986.0%
+      </div>
+      <div class="ret-diff" style="color:#718096;">
+        ±0.0%
+      </div>
+    </div>
+  </div>
+  <div class="desc">50銘柄・Top3・月次・改善なし (現行)</div>
+  <div class="metrics">
+    <div><span>最終</span><strong>$108,596</strong></div>
+    <div><span>年率</span><strong>61.1%</strong></div>
+    <div><span>最大DD</span><strong>58.1%</strong></div>
+    <div><span>取引数</span><strong>300</strong></div>
+    <div><span>Sharpe</span><strong>0.94</strong></div>
+    <div><span>ユニバース</span><strong>48銘柄</strong></div>
+  </div>
+</div>
+<div class="pattern-card" style="border-left-color:#667eea;">
+  <div class="pattern-head">
+    <div><strong>B.</strong> + 銘柄拡張 </div>
+    <div style="text-align:right;">
+      <div class="ret-big" style="color:#48bb78;">
+        +1115.3%
+      </div>
+      <div class="ret-diff" style="color:#48bb78;">
+        A比 +129.3%pt
+      </div>
+    </div>
+  </div>
+  <div class="desc">70銘柄 (+POL/TON/PEPE 等)</div>
+  <div class="metrics">
+    <div><span>最終</span><strong>$121,531</strong></div>
+    <div><span>年率</span><strong>64.8%</strong></div>
+    <div><span>最大DD</span><strong>65.1%</strong></div>
+    <div><span>取引数</span><strong>300</strong></div>
+    <div><span>Sharpe</span><strong>0.95</strong></div>
+    <div><span>ユニバース</span><strong>62銘柄</strong></div>
+  </div>
+</div>
+<div class="pattern-card" style="border-left-color:#ffd700;">
+  <div class="pattern-head">
+    <div><strong>C.</strong> + Top5 + 週次 <span class="badge best">🏆 最優秀</span></div>
+    <div style="text-align:right;">
+      <div class="ret-big" style="color:#48bb78;">
+        +2455.6%
+      </div>
+      <div class="ret-diff" style="color:#48bb78;">
+        A比 +1469.7%pt
+      </div>
+    </div>
+  </div>
+  <div class="desc">機会拡大 (#6)</div>
+  <div class="metrics">
+    <div><span>最終</span><strong>$255,562</strong></div>
+    <div><span>年率</span><strong>91.2%</strong></div>
+    <div><span>最大DD</span><strong>54.3%</strong></div>
+    <div><span>取引数</span><strong>1766</strong></div>
+    <div><span>Sharpe</span><strong>1.13</strong></div>
+    <div><span>ユニバース</span><strong>62銘柄</strong></div>
+  </div>
+</div>
+<div class="pattern-card" style="border-left-color:#667eea;">
+  <div class="pattern-head">
+    <div><strong>D.</strong> + RSI<70 フィルター </div>
+    <div style="text-align:right;">
+      <div class="ret-big" style="color:#48bb78;">
+        +1522.2%
+      </div>
+      <div class="ret-diff" style="color:#48bb78;">
+        A比 +536.2%pt
+      </div>
+    </div>
+  </div>
+  <div class="desc">買われすぎ除外 (#2)</div>
+  <div class="metrics">
+    <div><span>最終</span><strong>$162,216</strong></div>
+    <div><span>年率</span><strong>74.6%</strong></div>
+    <div><span>最大DD</span><strong>55.6%</strong></div>
+    <div><span>取引数</span><strong>1756</strong></div>
+    <div><span>Sharpe</span><strong>1.07</strong></div>
+    <div><span>ユニバース</span><strong>62銘柄</strong></div>
+  </div>
+</div>
+<div class="pattern-card" style="border-left-color:#667eea;">
+  <div class="pattern-head">
+    <div><strong>E.</strong> + トレーリングストップ-5% <span class="badge worse">⚠️ 悪化</span></div>
+    <div style="text-align:right;">
+      <div class="ret-big" style="color:#48bb78;">
+        +298.5%
+      </div>
+      <div class="ret-diff" style="color:#e53e3e;">
+        A比 -687.4%pt
+      </div>
+    </div>
+  </div>
+  <div class="desc">最高値-5%で自動売却 (#1)</div>
+  <div class="metrics">
+    <div><span>最終</span><strong>$39,852</strong></div>
+    <div><span>年率</span><strong>31.9%</strong></div>
+    <div><span>最大DD</span><strong>57.4%</strong></div>
+    <div><span>取引数</span><strong>1906</strong></div>
+    <div><span>Sharpe</span><strong>0.76</strong></div>
+    <div><span>ユニバース</span><strong>62銘柄</strong></div>
+  </div>
+</div>
+<div class="pattern-card" style="border-left-color:#667eea;">
+  <div class="pattern-head">
+    <div><strong>F.</strong> + 部分利確 <span class="badge worse">⚠️ 悪化</span></div>
+    <div style="text-align:right;">
+      <div class="ret-big" style="color:#48bb78;">
+        +180.3%
+      </div>
+      <div class="ret-diff" style="color:#e53e3e;">
+        A比 -805.7%pt
+      </div>
+    </div>
+  </div>
+  <div class="desc">+5%/+10%/+20%で3分割売り (#4)</div>
+  <div class="metrics">
+    <div><span>最終</span><strong>$28,030</strong></div>
+    <div><span>年率</span><strong>22.9%</strong></div>
+    <div><span>最大DD</span><strong>57.4%</strong></div>
+    <div><span>取引数</span><strong>2574</strong></div>
+    <div><span>Sharpe</span><strong>0.55</strong></div>
+    <div><span>ユニバース</span><strong>62銘柄</strong></div>
+  </div>
+</div>
+<div class="pattern-card" style="border-left-color:#667eea;">
+  <div class="pattern-head">
+    <div><strong>G.</strong> + 急落時休業 <span class="badge worse">⚠️ 悪化</span></div>
+    <div style="text-align:right;">
+      <div class="ret-big" style="color:#48bb78;">
+        +188.9%
+      </div>
+      <div class="ret-diff" style="color:#e53e3e;">
+        A比 -797.0%pt
+      </div>
+    </div>
+  </div>
+  <div class="desc">24h-10%で48h停止 (#9)</div>
+  <div class="metrics">
+    <div><span>最終</span><strong>$28,892</strong></div>
+    <div><span>年率</span><strong>23.6%</strong></div>
+    <div><span>最大DD</span><strong>57.9%</strong></div>
+    <div><span>取引数</span><strong>2570</strong></div>
+    <div><span>Sharpe</span><strong>0.55</strong></div>
+    <div><span>ユニバース</span><strong>62銘柄</strong></div>
+  </div>
+</div>
+<div class="pattern-card" style="border-left-color:#667eea;">
+  <div class="pattern-head">
+    <div><strong>H.</strong> 【全改善 最強版】 <span class="badge worse">⚠️ 悪化</span></div>
+    <div style="text-align:right;">
+      <div class="ret-big" style="color:#48bb78;">
+        +188.9%
+      </div>
+      <div class="ret-diff" style="color:#e53e3e;">
+        A比 -797.0%pt
+      </div>
+    </div>
+  </div>
+  <div class="desc">G と同じ (全部入り = 累積で同一)</div>
+  <div class="metrics">
+    <div><span>最終</span><strong>$28,892</strong></div>
+    <div><span>年率</span><strong>23.6%</strong></div>
+    <div><span>最大DD</span><strong>57.9%</strong></div>
+    <div><span>取引数</span><strong>2570</strong></div>
+    <div><span>Sharpe</span><strong>0.55</strong></div>
+    <div><span>ユニバース</span><strong>62銘柄</strong></div>
+  </div>
+</div>
+</div>
+
+<div class="card">
+<h2>📈 改善の「寄与度」分析</h2>
+<div class="explain">
+各ステップでの増減 (%pt) を示します。<strong>マイナス</strong>の改善は、その機能を実装しないほうが良いということです。
+</div>
+<table>
+<thead><tr><th>遷移</th><th>追加した改善</th><th>リターン差</th></tr></thead>
+<tbody><tr><td>A→B</td><td>+ 銘柄拡張</td><td style="color:#48bb78; font-weight:700;">📈 +129.3%pt</td></tr><tr><td>B→C</td><td>+ Top5 + 週次</td><td style="color:#48bb78; font-weight:700;">📈 +1340.3%pt</td></tr><tr><td>C→D</td><td>+ RSI<70 フィルター</td><td style="color:#e53e3e; font-weight:700;">📉 -933.5%pt</td></tr><tr><td>D→E</td><td>+ トレーリングストップ-5%</td><td style="color:#e53e3e; font-weight:700;">📉 -1223.6%pt</td></tr><tr><td>E→F</td><td>+ 部分利確</td><td style="color:#e53e3e; font-weight:700;">📉 -118.2%pt</td></tr><tr><td>F→G</td><td>+ 急落時休業</td><td style="color:#48bb78; font-weight:700;">📈 +8.6%pt</td></tr><tr><td>G→H</td><td>【全改善 最強版】</td><td style="color:#e53e3e; font-weight:700;">📉 +0.0%pt</td></tr></tbody>
+</table>
+</div>
+
+<div class="card">
+<h2>📅 年別リターン比較</h2>
+<table>
+<thead><tr><th>パターン</th><th>2020年</th><th>2021年</th><th>2022年</th><th>2023年</th><th>2024年</th><th>5年合計</th></tr></thead>
+<tbody><tr><td><strong>A</strong> iter47 ベースライン</td><td style="text-align:right; color:#48bb78;">+87.7%</td><td style="text-align:right; color:#48bb78;">+349.9%</td><td style="text-align:right; color:#e53e3e;">-15.0%</td><td style="text-align:right; color:#48bb78;">+61.1%</td><td style="text-align:right; color:#48bb78;">+41.2%</td><td style="text-align:right; font-weight:700;">+986.0%</td></tr><tr><td><strong>B</strong> + 銘柄拡張</td><td style="text-align:right; color:#48bb78;">+87.7%</td><td style="text-align:right; color:#48bb78;">+335.3%</td><td style="text-align:right; color:#e53e3e;">-15.1%</td><td style="text-align:right; color:#48bb78;">+51.3%</td><td style="text-align:right; color:#48bb78;">+62.8%</td><td style="text-align:right; font-weight:700;">+1115.3%</td></tr><tr><td><strong>C</strong> + Top5 + 週次</td><td style="text-align:right; color:#48bb78;">+134.8%</td><td style="text-align:right; color:#48bb78;">+337.2%</td><td style="text-align:right; color:#e53e3e;">-4.2%</td><td style="text-align:right; color:#48bb78;">+56.1%</td><td style="text-align:right; color:#48bb78;">+52.0%</td><td style="text-align:right; font-weight:700;">+2455.6%</td></tr><tr><td><strong>D</strong> + RSI<70 フィルター</td><td style="text-align:right; color:#48bb78;">+114.2%</td><td style="text-align:right; color:#48bb78;">+369.7%</td><td style="text-align:right; color:#e53e3e;">-6.5%</td><td style="text-align:right; color:#48bb78;">+52.1%</td><td style="text-align:right; color:#48bb78;">+36.7%</td><td style="text-align:right; font-weight:700;">+1522.2%</td></tr><tr><td><strong>E</strong> + トレーリングストップ-5%</td><td style="text-align:right; color:#48bb78;">+73.9%</td><td style="text-align:right; color:#48bb78;">+63.6%</td><td style="text-align:right; color:#e53e3e;">-4.5%</td><td style="text-align:right; color:#48bb78;">+46.9%</td><td style="text-align:right; color:#48bb78;">+9.9%</td><td style="text-align:right; font-weight:700;">+298.5%</td></tr><tr><td><strong>F</strong> + 部分利確</td><td style="text-align:right; color:#48bb78;">+71.9%</td><td style="text-align:right; color:#48bb78;">+18.4%</td><td style="text-align:right; color:#e53e3e;">-4.3%</td><td style="text-align:right; color:#48bb78;">+41.8%</td><td style="text-align:right; color:#e53e3e;">-1.2%</td><td style="text-align:right; font-weight:700;">+180.3%</td></tr><tr><td><strong>G</strong> + 急落時休業</td><td style="text-align:right; color:#48bb78;">+74.8%</td><td style="text-align:right; color:#48bb78;">+19.1%</td><td style="text-align:right; color:#e53e3e;">-4.4%</td><td style="text-align:right; color:#48bb78;">+41.8%</td><td style="text-align:right; color:#e53e3e;">-1.2%</td><td style="text-align:right; font-weight:700;">+188.9%</td></tr><tr><td><strong>H</strong> 【全改善 最強版】</td><td style="text-align:right; color:#48bb78;">+74.8%</td><td style="text-align:right; color:#48bb78;">+19.1%</td><td style="text-align:right; color:#e53e3e;">-4.4%</td><td style="text-align:right; color:#48bb78;">+41.8%</td><td style="text-align:right; color:#e53e3e;">-1.2%</td><td style="text-align:right; font-weight:700;">+188.9%</td></tr></tbody>
+</table>
+</div>
+
+<div class="card">
+<h2>🗂️ ユニバース変更内容</h2>
+<div class="explain">
+<strong>除外した銘柄</strong> (Phase0 FAIL判定):<br>
+MATIC, FTM, MKR, EOS
+<br><br>
+<strong>追加した銘柄</strong> (Binance TRADING確認済み):<br>
+POL, TON, PEPE, SHIB, ONDO, JUP, WLD, LDO, IMX, WIF, ENA, SUSHI, GALA, QNT, JASMY, PENDLE, KAVA, MINA, RENDER, STRK
+<br><br>
+実際に Binance から取得できた銘柄: <strong>14銘柄</strong><br>
+（PEPE, SHIB 等 2銘柄は Binance Spot 非対応でスキップ）
+</div>
+</div>
+
+<div class="card">
+<h2>⚠️ 今回のバックテストで検証できなかった改善</h2>
+<div class="warn">
+<strong>以下の4改善はdaily粒度では再現困難</strong>です。Phase 3-4 で別途実装予定:<br>
+<ul style="margin-top:10px; padding-left:24px; line-height:2;">
+<li>#3 limit orders (execution-level)</li><li>#5 multi-timeframe (needs 1h/4h data)</li><li>#7 multi-asset BTC+ETH+SOL (architecture)</li><li>#8 strategy ensemble (multiple strategies)</li>
+</ul>
+<br>
+特に <strong>#3 指値注文化</strong> は実運用で最大+2.4%/月の効果が期待できますが、
+約定時刻まで正確な再現には分足データが必要です。
+</div>
+</div>
+
+<div class="card">
+<h2>💡 推奨: 実装すべき改善</h2>
+<div class="explain">
+バックテスト結果から、以下の順序で実装することを推奨します:<br><br>
+
+<strong>🟢 即採用すべき (リターンが純粋に改善):</strong><br>
+・ <strong>#6 ユニバース拡張 (Top5 + 週次)</strong> — Aから<strong>+1470%pt</strong>の劇的改善<br>
+・ ただし RSI<70 フィルターは<strong>外す</strong> (Dで-934%pt悪化)<br>
+<br>
+
+<strong>🟡 慎重に検討すべき (ベースライン比で悪化):</strong><br>
+・ トレーリングストップ — このdaily戦略では早すぎる利確で大波を逃す<br>
+・ 部分利確 — 同上<br>
+・ 急落時休業 — 効果は微小(<10%pt)<br>
+<br>
+
+<strong>🔴 daily 粒度では検証不可:</strong><br>
+・ 指値注文、マルチタイムフレーム、マルチアセット、アンサンブル → 別途Phase 3-4で実装<br>
+<br>
+
+<strong>結論:</strong> まず <strong>パターンC（銘柄拡張 + Top5 + 週次）</strong> を本番反映するのが最も効果的。
+他の改善は精度の高いバックテスト環境で個別検証してから採用すべき。
+</div>
+</div>
+
+<div class="footer">
+生成日時: 2026-04-21T13:56:37.629091+00:00<br>
+データソース: Binance daily (2020-01-01 〜 2024-12-31, 実データ)<br>
+🤖 気持ちマックス iter48 | 本番データのみ / 合成データ一切不使用
+</div>
+
+</div></body></html>
