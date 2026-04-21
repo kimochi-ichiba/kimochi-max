@@ -465,10 +465,28 @@ def load_state():
             ach["rebalance_days"] = ACH_REBALANCE_DAYS
             ach["last_regime"] = None
             ach["last_top3"] = []
-            ach["note"] = "実市場連動: Top3モメンタム戦略 (過去90日リターン上位3銘柄保有、月次リバランス)"
+            ach["note"] = "実市場連動: Top3モメンタム戦略"
+            migrated = True
+        # v2 マイグレーション: パラメータが旧版なら更新し、メタ情報を v2 化
+        if ach.get("lookback_days") != ACH_LOOKBACK_DAYS:
+            ach["lookback_days"] = ACH_LOOKBACK_DAYS
+            migrated = True
+        if ach.get("rebalance_days") != ACH_REBALANCE_DAYS:
+            ach["rebalance_days"] = ACH_REBALANCE_DAYS
+            ach["last_rebalance"] = None  # 次の tick で強制リバランス
+            migrated = True
+        if state.get("version") != "2.0":
+            state["version"] = "2.0"
+            state["version_name"] = "気持ちマックス v2"
+            state["ach_config"] = {
+                "top_n": ACH_TOP_N,
+                "lookback_days": ACH_LOOKBACK_DAYS,
+                "rebalance_days": ACH_REBALANCE_DAYS,
+                "universe_size": len(ACH_UNIVERSE),
+            }
             migrated = True
         if migrated:
-            log("🔄 state.json マイグレーション: ACH を理論値 → 実市場連動版に移行")
+            log("🔄 state.json マイグレーション: v2 (Top3/LB25/週次/62銘柄) に移行")
         return state
     except Exception as e:
         log(f"⚠️ state読込失敗: {e} → 初期化")
