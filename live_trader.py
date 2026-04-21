@@ -33,7 +33,11 @@ BINANCE_API = "https://api.binance.com"
 
 # 安全装置 (環境変数で上書き可)
 MAX_ORDER_USD = float(os.environ.get("KM_MAX_ORDER_USD", "100"))      # 1注文上限
-MAX_DAILY_TRADES = int(os.environ.get("KM_MAX_DAILY_TRADES", "5"))    # 1日上限
+# 1日取引上限 (デフォルト 20回)
+#   根拠: ACH月次リバランス時に最大6件 (全決済3+新規購入3) × 安全マージン3倍 = 18件
+#   旧値(5回)は iter47バックテストで資産を69%損なうことが判明、20回に引き上げ
+#   環境変数 KM_MAX_DAILY_TRADES で変更可 (保守派=10, 攻め派=50など)
+MAX_DAILY_TRADES = int(os.environ.get("KM_MAX_DAILY_TRADES", "20"))
 MIN_BTC_ORDER = 0.00001  # Binance BTC最小取引単位
 
 STATE_PATH = Path("/Users/sanosano/projects/kimochi-max/results/demo_state.json")

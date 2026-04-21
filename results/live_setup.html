@@ -147,7 +147,7 @@ export KM_MODE='live'
 # export LIVE_ENABLED='1'
 # 取引上限 (任意で変更)
 export KM_MAX_ORDER_USD='100'
-export KM_MAX_DAILY_TRADES='5'
+export KM_MAX_DAILY_TRADES='20'
 EOF
 source ~/.zshrc</div>
     <div class="info">
@@ -210,7 +210,12 @@ launchctl kickstart -k gui/$(id -u)/com.sanosano.kimochimax.demo</div>
   <div class="check">✅ <b>APIキー2つ揃わないと LIVE は動かない</b> (BINANCE_API_KEY + BINANCE_SECRET)</div>
   <div class="check">✅ <b>LIVE_ENABLED=1 明示的設定が必須</b> (デフォルトは DRY_RUN 止まり)</div>
   <div class="check">✅ <b>1注文 $100 上限</b> (KM_MAX_ORDER_USD)</div>
-  <div class="check">✅ <b>1日 5回 取引上限</b> (KM_MAX_DAILY_TRADES)</div>
+  <div class="check">✅ <b>1日 20回 取引上限</b> (KM_MAX_DAILY_TRADES)<br>
+  <span style="font-size:11px;color:var(--muted2)">
+    根拠: ACH月次リバランス最大6件 × 安全マージン3倍。過去5年平均は0.28件/日。
+    旧値5回だと資産を69%損なうことがバックテストで判明
+    (<a href="/iter47_report.html" style="color:var(--blue)">比較検証レポート</a>)
+  </span></div>
   <div class="check">✅ <b>サーバー時刻ズレ1秒超で拒否</b> (Mac時刻異常を検出)</div>
   <div class="check">✅ <b>発注失敗時 SIMフォールバック</b> (エラー時も継続稼働)</div>
   <div class="check warn">⚠️ <b>APIキー出金権限は絶対OFF</b> (あなたが設定すること)</div>
