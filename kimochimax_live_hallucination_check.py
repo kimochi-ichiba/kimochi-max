@@ -30,7 +30,7 @@ FAIL_DEVIATION_PCT = 2.0
 
 
 def http_get_json(url, timeout=10, headers=None):
-    default_headers = {"User-Agent": "Mozilla/5.0 (気持ちマックスVerifier)"}
+    default_headers = {"User-Agent": "Mozilla/5.0 (KimochiMax-Verifier/1.0)"}
     if headers:
         default_headers.update(headers)
     req = urllib.request.Request(url, headers=default_headers)
