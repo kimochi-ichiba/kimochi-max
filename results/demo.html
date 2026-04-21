@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#060d17">
-<title>気持ちマックス Bot — BTC/ACH/USDT</title>
+<title>気持ちマックス v2 Bot — BTC/ACH/USDT</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon.png">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -284,7 +284,7 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
 <!-- ヘッダー -->
 <div class="hdr">
   <div class="live-dot"></div>
-  <div class="hdr-logo">気持ち<em>マックス</em></div>
+  <div class="hdr-logo">気持ち<em>マックス</em> v2</div>
   <div class="hbadge hb-sim">SIM</div>
   <div class="hbadge hb-sym" style="display:none">BTC·ACH·USDT</div>
   <div class="hbadge hb-lev">40/40/20</div>
@@ -515,11 +515,11 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
         </table>
       </div>
       <div class="sig-section">
-        <div class="sig-ttl">🏆 気持ちマックス バックテスト実績 (過去5年)</div>
+        <div class="sig-ttl">🏆 気持ちマックス v2 バックテスト実績 (過去5年)</div>
         <div class="tf3">
-          <div class="tfbox"><div class="tfn">年率</div><div class="tfd g">+54.8%</div><div class="tfs">2020-2024</div></div>
-          <div class="tfbox"><div class="tfn">最大DD</div><div class="tfd y">39.7%</div><div class="tfs">2022年</div></div>
-          <div class="tfbox"><div class="tfn">清算回数</div><div class="tfd g">4回</div><div class="tfs">ACH動的レバ</div></div>
+          <div class="tfbox"><div class="tfn">5年リターン</div><div class="tfd g">+2,053%</div><div class="tfs">iter51 Taker</div></div>
+          <div class="tfbox"><div class="tfn">最大DD</div><div class="tfd y">58%</div><div class="tfs">2022年</div></div>
+          <div class="tfbox"><div class="tfn">v1比</div><div class="tfd g">3.2倍</div><div class="tfs">+1,407%pt</div></div>
         </div>
       </div>
     </div>
@@ -527,10 +527,10 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
     <!-- 戦略タブ -->
     <div class="tpane" id="p-strat">
       <div class="sig-section">
-        <div class="sig-ttl">⚙️ 気持ちマックス 戦略パラメータ</div>
+        <div class="sig-ttl">⚙️ 気持ちマックス v2 戦略パラメータ</div>
         <div class="tf3">
           <div class="tfbox"><div class="tfn">BTC枠</div><div class="tfd o">40%</div><div class="tfs">EMA200</div></div>
-          <div class="tfbox"><div class="tfn">ACH枠</div><div class="tfd g">40%</div><div class="tfs">Top3モメンタム</div></div>
+          <div class="tfbox"><div class="tfn">ACH枠</div><div class="tfd g">40%</div><div class="tfs">Top3/LB25/週次</div></div>
           <div class="tfbox"><div class="tfn">USDT枠</div><div class="tfd b">20%</div><div class="tfs">年3%金利</div></div>
         </div>
         <div class="tf3">
@@ -544,8 +544,8 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
           <div style="font-size:12px;color:var(--muted2);line-height:1.6">BTC価格が200日移動平均の上で自動買い、下で自動売り。「コツコツ型」。</div>
         </div>
         <div style="padding:10px 14px;background:var(--bg3);border-radius:8px;margin-bottom:10px">
-          <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">⚡ ACH枠 40% — Top3モメンタム (実市場連動)</div>
-          <div style="font-size:12px;color:var(--muted2);line-height:1.6">50銘柄の過去90日リターン上位3銘柄を等分保有。月次リバランス。BTC下落時は現金待機。</div>
+          <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">⚡ ACH枠 40% — Top3モメンタム (v2: 週次リバランス)</div>
+          <div style="font-size:12px;color:var(--muted2);line-height:1.6">62銘柄（5ソース検証済）の過去25日リターン上位3銘柄を等分保有。<strong style="color:var(--green)">週次リバランス</strong>。BTC下落時は現金待機。</div>
         </div>
         <div style="padding:10px 14px;background:var(--bg3);border-radius:8px;margin-bottom:10px">
           <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">💵 USDT枠 20% — 現金クッション</div>
@@ -1066,7 +1066,7 @@ function renderTimeline(){
   if(d.started_at){
     events.push({
       ts: d.started_at, type:'info', icon:'🚀',
-      msg: '気持ちマックス 起動',
+      msg: '気持ちマックス v2 起動',
       detail: `初期資金 ${formatMoneyCompact(d.initial_capital)} でデモ運用開始`
     });
   }
