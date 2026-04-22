@@ -66,6 +66,28 @@ MAX_TRADE_HISTORY = 1000
 #   100K件で約2.4MB JSON → 妥当なファイルサイズ
 MAX_EQUITY_HISTORY = 100_000
 
+# ━━ F3_YEAREND: 年末リスク回避設定 ━━━━━━━━━━━━━━━━━━━━━━━━━
+# iter60 バックテストで唯一全条件クリアした防御機能。
+# 12/30〜翌1/2 の期間は全ポジション決済&新規エントリー停止。
+# 年末の薄商い+機関投資家手じまいによる大きな下落リスクを回避する。
+# バックテスト効果: 年利126%→121%で微減だが最大DD改善、全年プラス維持。
+ENABLE_YEAREND_EXIT = True         # 2026-04-23 有効化。12/30〜翌1/2の年末リスクを回避。
+YEAREND_EXIT_START_DAY = 30         # 12月のこの日から決済開始 (12/30)
+YEAREND_REENTRY_MONTH = 1           # 翌年のこの月から再エントリー許可
+YEAREND_REENTRY_DAY = 2             # 翌年のこの日から再エントリー許可 (1/2〜)
+
+
+def is_yearend_period(now: datetime) -> bool:
+    """12/30 00:00 UTC 〜 翌年1/2 00:00 UTC の間 True を返す。
+    year-end risk avoidance window の判定関数。
+    """
+    if now.month == 12 and now.day >= YEAREND_EXIT_START_DAY:
+        return True
+    if now.month == YEAREND_REENTRY_MONTH and now.day < YEAREND_REENTRY_DAY:
+        return True
+    return False
+
+
 # ACH: モメンタムTop3戦略パラメータ
 # 2026-04-21 更新: iter49 厳重バックテスト + 5ソース検証の結果を反映
 #   除外: MATIC, FTM, MKR, EOS (Binance取引停止、他取引所でも取引不可)
@@ -342,6 +364,44 @@ def ach_update(state, btc_price_now, btc_ema200):
         ach["positions"] = {}
         ach["last_regime"] = "bear_exited"
         ach["virtual_equity"] = ach["cash"]
+
+    # ━━ F3_YEAREND: ACH 年末リスク回避 ━━━━━━━━━━━━━━━━━
+    # 12/30 〜 翌 1/2 の期間は ACH 全ポジションを強制売却し、
+    # 新規エントリー(リバランス)も停止する。
+    yearend_now = ENABLE_YEAREND_EXIT and is_yearend_period(now)
+    if yearend_now and ach.get("positions"):
+        log(f"   🎆 F3_YEAREND: 年末期間検知 → ACH 全ポジション売却")
+        fee = 0.0006; slip = 0.0003
+        cur_prices_ye = fetch_all_current_prices(list(ach["positions"].keys()))
+        for sym, pos in list(ach["positions"].items()):
+            cur_price = cur_prices_ye.get(sym, pos.get("entry_price", 0))
+            sell_price = cur_price * (1 - slip)
+            proceeds = pos["qty"] * sell_price * (1 - fee)
+            pnl = proceeds - (pos["qty"] * pos["entry_price"] / (1 - fee))
+            ach["cash"] += proceeds
+            state["trades"].append({
+                "ts": now_iso, "part": "ACH", "action": "SELL",
+                "symbol": sym, "price": round(cur_price, 6),
+                "qty": round(pos["qty"], 6), "value_usd": round(proceeds, 2),
+                "pnl_usd": round(pnl, 2),
+                "reason": "F3_YEAREND_exit",
+                "mode": "SIM",
+            })
+            log(f"🎆 ACH YEAREND SELL {sym} @ ${cur_price:.4f} P&L=${pnl:+.2f}")
+            if DISCORD_AVAILABLE:
+                try:
+                    discord_notify.notify_trade("SELL", f"ACH:{sym}(YEAREND)", cur_price,
+                                                 pos["qty"], proceeds, pnl_usd=pnl)
+                except Exception as e:
+                    log(f"⚠️ Discord通知失敗: {e}")
+        ach["positions"] = {}
+        ach["last_regime"] = "yearend_exited"
+        ach["virtual_equity"] = ach["cash"]
+
+    # 年末期間は以後の処理（リバランス・新規購入）を完全スキップして終了
+    if yearend_now:
+        ach["virtual_equity"] = ach["cash"]
+        return
 
     # リバランス判定
     needs_rebalance = False
@@ -679,13 +739,49 @@ def process_tick(state, btc_data):
     btc_price = btc_data["current_price"]
     ema200 = btc_data["ema200"]
 
+    # ━━ F3_YEAREND: 年末リスク回避 ━━━━━━━━━━━━━━━━━
+    # 12/30 〜 翌 1/2 の期間は BTC/ACH を全決済し、新規エントリーを停止。
+    # USDT 部分は通常通り金利計算を継続する。
+    yearend = ENABLE_YEAREND_EXIT and is_yearend_period(now)
+
     # ━━ BTCマイルド部分 ━━━━━━━━━━━━━━━━━
     btc = state["btc_part"]
     btc["last_btc_price"] = btc_price
     btc["last_ema200"] = ema200
 
     signal_action = None
-    if btc_price > ema200 and not btc["position"]:
+    if yearend and btc["position"]:
+        # F3_YEAREND: 年末は BTC を強制売却
+        fee = 0.0006; slip = 0.0003
+        sell_price = btc_price * (1 - slip)
+        proceeds = btc["btc_qty"] * sell_price * (1 - fee)
+        pnl = proceeds - (btc["entry_price"] * btc["btc_qty"] if btc["entry_price"] else 0)
+        qty_was = btc["btc_qty"]
+        btc["cash"] = proceeds
+        btc["btc_qty"] = 0
+        btc["position"] = False
+        btc["last_signal"] = "YEAREND-SELL"
+        state["trades"].append({
+            "ts": now_iso, "part": "BTC", "action": "SELL",
+            "price": btc_price, "qty": round(qty_was, 6),
+            "value_usd": round(proceeds, 2),
+            "pnl_usd": round(pnl, 2),
+            "ema200": ema200,
+            "reason": "F3_YEAREND_exit",
+            "mode": "SIM",
+        })
+        signal_action = f"🎆 BTC YEAREND SELL @ ${btc_price:,.2f} (年末リスク回避, P&L: ${pnl:+,.2f})"
+        log(signal_action)
+        if DISCORD_AVAILABLE:
+            try:
+                discord_notify.notify_trade("SELL", "BTC(YEAREND)", btc_price,
+                                             qty_was, proceeds, pnl_usd=pnl, ema200=ema200)
+            except Exception as e:
+                log(f"⚠️ Discord通知失敗: {e}")
+    elif yearend and not btc["position"]:
+        # F3_YEAREND: 年末は新規 BTC 購入を見送り
+        btc["last_signal"] = "YEAREND-SKIP"
+    elif btc_price > ema200 and not btc["position"]:
         # BUY
         fee = 0.0006; slip = 0.0003
         buy_price = btc_price * (1 + slip)

@@ -65,6 +65,14 @@ class Config:
     # 💵 V3改善: 現金バッファ (緊急対応用)
     cash_buffer_pct: float = 0.05  # 5%を手元に残す
 
+    # 🎯 Maker指値注文設定 (手数料削減: Taker0.05% → Maker0.02%)
+    # 指値で発注し、タイムアウトまで約定を待ち、ダメなら成行フォールバック。
+    # 有効化は enable_maker_orders = True で切替。デフォルトFalseで安全。
+    enable_maker_orders: bool = False
+    limit_order_timeout_sec: int = 60          # 約定待ちタイムアウト (秒)
+    limit_order_poll_interval_sec: int = 2     # 約定確認の間隔 (秒)
+    fallback_to_market: bool = True            # タイムアウト時に成行でフォールバックするか
+
     # 運用設定
     initial_capital: float = 3000.0
     mode: str = "backtest"  # backtest | paper | live
@@ -188,6 +196,84 @@ class KellyBot:
     def _now_ts(self) -> datetime:
         return datetime.now()
 
+    # ---- Maker 指値注文ヘルパー ----
+    def _place_maker_order(self, side: str, symbol: str, size: float,
+                           reduce_only: bool = False) -> bool:
+        """指値注文で発注し、タイムアウトしたら成行にフォールバック。
+        side: 'buy' or 'sell'
+        戻り値: True=発注成功(指値か成行どちらかで約定), False=失敗
+        """
+        assert side in ("buy", "sell")
+        cfg = self.config
+
+        # Maker無効なら即成行
+        if not cfg.enable_maker_orders:
+            try:
+                if side == "buy":
+                    self.exchange.create_market_buy_order(symbol, size)
+                else:
+                    params = {"reduceOnly": True} if reduce_only else {}
+                    self.exchange.create_market_sell_order(symbol, size, params=params)
+                return True
+            except Exception as e:
+                self.logger.error(f"  成行{side}失敗 {symbol}: {e}")
+                return False
+
+        # 指値注文を試行
+        order_id = None
+        try:
+            ticker = self.exchange.fetch_ticker(symbol)
+            limit_price = float(ticker["bid"]) if side == "buy" else float(ticker["ask"])
+            if side == "buy":
+                order = self.exchange.create_limit_buy_order(symbol, size, limit_price)
+            else:
+                params = {"reduceOnly": True} if reduce_only else {}
+                order = self.exchange.create_limit_sell_order(symbol, size, limit_price, params=params)
+            order_id = order.get("id")
+            self.logger.info(f"  Maker LIMIT {side.upper()} {symbol} {size}@{limit_price}")
+
+            # 約定待ち
+            waited = 0
+            while waited < cfg.limit_order_timeout_sec:
+                time.sleep(cfg.limit_order_poll_interval_sec)
+                waited += cfg.limit_order_poll_interval_sec
+                try:
+                    status = self.exchange.fetch_order(order_id, symbol)
+                    if status.get("status") == "closed":
+                        self.logger.info(f"  Maker LIMIT {side.upper()} 約定完了 {symbol} ({waited}秒)")
+                        return True
+                except Exception as e:
+                    self.logger.warning(f"  約定確認エラー {symbol}: {e}")
+
+            # タイムアウト → キャンセル
+            self.logger.warning(f"  Maker LIMIT {side.upper()} タイムアウト({cfg.limit_order_timeout_sec}秒) キャンセル {symbol}")
+            try:
+                self.exchange.cancel_order(order_id, symbol)
+            except Exception as e:
+                self.logger.error(f"  キャンセル失敗 {symbol}: {e}")
+        except Exception as e:
+            self.logger.error(f"  Maker指値発注エラー {symbol}: {e}")
+            if order_id:
+                try:
+                    self.exchange.cancel_order(order_id, symbol)
+                except Exception:
+                    pass
+
+        # フォールバック: 成行
+        if cfg.fallback_to_market:
+            self.logger.info(f"  成行{side.upper()}へフォールバック {symbol}")
+            try:
+                if side == "buy":
+                    self.exchange.create_market_buy_order(symbol, size)
+                else:
+                    params = {"reduceOnly": True} if reduce_only else {}
+                    self.exchange.create_market_sell_order(symbol, size, params=params)
+                return True
+            except Exception as e:
+                self.logger.error(f"  成行フォールバック失敗 {symbol}: {e}")
+                return False
+        return False
+
     def should_rebalance(self) -> bool:
         if not self.state.last_rebalance:
             return True
@@ -230,11 +316,8 @@ class KellyBot:
                 })
 
                 if self.config.mode == "live":
-                    # 実ポジション決済
-                    try:
-                        self.exchange.create_market_sell_order(sym, size, params={"reduceOnly": True})
-                    except Exception as e:
-                        self.logger.error(f"  実決済失敗 {sym}: {e}")
+                    # 実ポジション決済 (Maker有効なら指値, それ以外は成行)
+                    self._place_maker_order("sell", sym, size, reduce_only=True)
 
                 del self.state.positions[sym]
             except Exception as e:
@@ -289,12 +372,15 @@ class KellyBot:
                 })
 
                 if self.config.mode == "live":
-                    # 実ポジション建て
+                    # 実ポジション建て (Maker有効なら指値, それ以外は成行)
                     try:
                         self.exchange.set_leverage(int(kelly_lev), sym)
-                        self.exchange.create_market_buy_order(sym, size)
                     except Exception as e:
-                        self.logger.error(f"  実エントリー失敗 {sym}: {e}")
+                        self.logger.error(f"  レバレッジ設定失敗 {sym}: {e}")
+                        del self.state.positions[sym]
+                        continue
+                    if not self._place_maker_order("buy", sym, size):
+                        self.logger.error(f"  実エントリー失敗 {sym}: 発注できず")
                         del self.state.positions[sym]
                         continue
 

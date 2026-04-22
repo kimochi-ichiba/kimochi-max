@@ -422,6 +422,26 @@ class Config:
     funding_rate_per_hour: float = 0.0000125 # Funding手数料 0.01%/8h = 0.00125%/h（Binance先物平均）
     tax_rate_jp: float = 0.20315            # 日本の税率 20.315%（所得300万円以下想定・住民税込）
 
+    # ── F3_YEAREND 年末リスク回避設定 ─────────────────
+    # iter60 バックテストで「唯一全条件クリア」した防御機能。
+    # 年末は流動性低下+機関投資家の手じまい+薄商いで大きな下落が起きやすいため、
+    # 12/30〜翌1/2までは全ポジションを決済し、新規エントリーも休む。
+    # バックテスト効果: 年利126%→121%で微減だが最大DDが改善、全年プラス維持。
+    enable_yearend_exit: bool = False          # 年末一括決済の有効/無効（最初はFalseで安全に）
+    yearend_exit_start_day: int = 30            # 12月のこの日から決済開始（12/30）
+    yearend_reentry_start_month: int = 1        # 翌年のこの月から再エントリー許可
+    yearend_reentry_day: int = 2                # 翌年のこの日から再エントリー許可（1/2〜）
+
+    # ── Maker指値注文（手数料削減）設定 ─────────────
+    # Binance先物の手数料は Taker(成行)=0.05% / Maker(指値)=0.02%。
+    # 往復で 0.10% → 0.04% に圧縮でき、年間1000回超のトレードで
+    # 数%〜十数%のリターン押し上げ相当の効果。
+    # 約定しないリスクがあるため、タイムアウト後は成行にフォールバック。
+    enable_maker_orders: bool = False           # 指値注文化の有効/無効（最初はFalseで安全に）
+    limit_order_timeout_sec: int = 60           # 指値注文の約定待ちタイムアウト（秒）
+    limit_order_poll_interval_sec: int = 2      # 約定確認の間隔（秒）
+    fallback_to_market: bool = True             # タイムアウト時に成行でフォールバックするか
+
     # ── ログ設定 ─────────────────────────────────
     log_level: str  = "INFO"
     log_file: str   = "trading_bot.log"
