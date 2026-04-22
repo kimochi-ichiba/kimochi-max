@@ -1,5 +1,5 @@
 """
-気持ちマックス v2.1 デモトレード・ライブランナー (毎秒WebSocket版)
+気持ちマックス v2.2 デモトレード・ライブランナー (毎秒WebSocket版)
 ======================================================================
 Binance WebSocket で BTC 価格を毎秒受信、3層タイマーで処理:
 
@@ -311,6 +311,38 @@ def ach_update(state, btc_price_now, btc_ema200):
     if "last_rebalance" not in ach:
         ach["last_rebalance"] = None
 
+    # 【v2.2 新機能】ACH 即時ベア退避
+    # BTC < EMA200 を検知した瞬間に ACH 保有ポジションを全売却して USDT 退避
+    # リバランス待たず即時実行することで、弱気相場の DD を大幅削減
+    if btc_ema200 and btc_price_now < btc_ema200 and ach.get("positions"):
+        log(f"   🚨 v2.2 ACH即時ベア退避: BTC < EMA200 検知 → ACH 全ポジション売却")
+        fee = 0.0006; slip = 0.0003
+        cur_prices_bear = fetch_all_current_prices(list(ach["positions"].keys()))
+        for sym, pos in list(ach["positions"].items()):
+            cur_price = cur_prices_bear.get(sym, pos.get("entry_price", 0))
+            sell_price = cur_price * (1 - slip)
+            proceeds = pos["qty"] * sell_price * (1 - fee)
+            pnl = proceeds - (pos["qty"] * pos["entry_price"] / (1 - fee))
+            ach["cash"] += proceeds
+            state["trades"].append({
+                "ts": now_iso, "part": "ACH", "action": "SELL",
+                "symbol": sym, "price": round(cur_price, 6),
+                "qty": round(pos["qty"], 6), "value_usd": round(proceeds, 2),
+                "pnl_usd": round(pnl, 2),
+                "reason": "v2.2_bear_regime_exit",
+                "mode": "SIM",
+            })
+            log(f"🔴 ACH BEAR SELL {sym} @ ${cur_price:.4f} P&L=${pnl:+.2f}")
+            if DISCORD_AVAILABLE:
+                try:
+                    discord_notify.notify_trade("SELL", f"ACH:{sym}(BEAR)", cur_price,
+                                                 pos["qty"], proceeds, pnl_usd=pnl)
+                except Exception as e:
+                    log(f"⚠️ Discord通知失敗: {e}")
+        ach["positions"] = {}
+        ach["last_regime"] = "bear_exited"
+        ach["virtual_equity"] = ach["cash"]
+
     # リバランス判定
     needs_rebalance = False
     if ach["last_rebalance"] is None:
@@ -498,8 +530,8 @@ def ach_update(state, btc_price_now, btc_ema200):
 def fresh_state():
     now = datetime.now(timezone.utc).isoformat(timespec='seconds')
     return {
-        "version": "2.1",
-        "version_name": "気持ちマックス v2.1",
+        "version": "2.2",
+        "version_name": "気持ちマックス v2.2",
         "mode": "SIM",
         "started_at": now,
         "initial_capital": INITIAL,
@@ -579,14 +611,14 @@ def load_state():
             ach["rebalance_days"] = ACH_REBALANCE_DAYS
             ach["last_rebalance"] = None  # 次の tick で強制リバランス
             migrated = True
-        if state.get("version") not in ("2.0", "2.1"):
-            state["version"] = "2.1"
-            state["version_name"] = "気持ちマックス v2.1"
+        if state.get("version") not in ("2.0", "2.1", "2.2"):
+            state["version"] = "2.2"
+            state["version_name"] = "気持ちマックス v2.2"
             migrated = True
-        if state.get("version") == "2.0":
-            # v2.0 → v2.1 アップグレード (新パラメータ反映)
-            state["version"] = "2.1"
-            state["version_name"] = "気持ちマックス v2.1"
+        if state.get("version") in ("2.0", "2.1"):
+            # v2.0/v2.1 → v2.2 アップグレード (ACH即時ベア退避機能追加)
+            state["version"] = "2.2"
+            state["version_name"] = "気持ちマックス v2.2"
             # 旧 40/40/20 配分のキャッシュを新 35/35/30 に再配分
             total_cash = state.get("btc_part", {}).get("cash", 0) + \
                          state.get("ach_part", {}).get("cash", 0) + \
@@ -596,7 +628,7 @@ def load_state():
                 state["btc_part"]["cash"] = total_cash * BTC_WEIGHT
                 state["ach_part"]["cash"] = total_cash * ACH_WEIGHT
                 state["usdt_part"]["cash"] = total_cash * USDT_WEIGHT
-                log(f"   💰 v2.1 cash 再配分: BTC {BTC_WEIGHT*100:.0f}% / ACH {ACH_WEIGHT*100:.0f}% / USDT {USDT_WEIGHT*100:.0f}%")
+                log(f"   💰 v2.2 cash 再配分: BTC {BTC_WEIGHT*100:.0f}% / ACH {ACH_WEIGHT*100:.0f}% / USDT {USDT_WEIGHT*100:.0f}%")
             migrated = True
         # ach_config を常に最新パラメータで更新 (v2.1 新フィールド含む)
         expected_cfg = {
@@ -618,7 +650,7 @@ def load_state():
             state["portfolio_weights"] = expected_weights
             migrated = True
         if migrated:
-            log(f"🔄 state.json マイグレーション: v2.1 (Top{ACH_TOP_N}/LB{ACH_LOOKBACK_DAYS}/週次/"
+            log(f"🔄 state.json マイグレーション: v2.2 (Top{ACH_TOP_N}/LB{ACH_LOOKBACK_DAYS}/週次/"
                 f"BTC{BTC_WEIGHT:.0%}/ACH{ACH_WEIGHT:.0%}/USDT{USDT_WEIGHT:.0%}/Corr{ACH_CORR_THRESHOLD}/"
                 f"{ACH_WEIGHT_METHOD}加重) に移行")
         return state
@@ -807,11 +839,11 @@ def run_once():
 def run_loop():
     """3層タイマー永続ループ (毎秒tick / 60秒snapshot / 5分EMA再計算)"""
     log("=" * 60)
-    log("🚀 気持ちマックス v2.1 デモトレードランナー 起動 (WebSocket版)")
+    log("🚀 気持ちマックス v2.2 デモトレードランナー 起動 (WebSocket版)")
     log(f"   初期資金: ${INITIAL:,.0f}")
     log(f"   構成: BTC {BTC_WEIGHT*100:.0f}% + ACH {ACH_WEIGHT*100:.0f}% + USDT {USDT_WEIGHT*100:.0f}%")
     log(f"   ACH設定: Top{ACH_TOP_N} / LB{ACH_LOOKBACK_DAYS}日 / リバランス{ACH_REBALANCE_DAYS}日 / {len(ACH_UNIVERSE)}銘柄")
-    log(f"   v2.1新機能: 候補{ACH_CANDIDATE_N} → 相関<{ACH_CORR_THRESHOLD} フィルター → {ACH_WEIGHT_METHOD}加重配分")
+    log(f"   v2.2新機能: ACH即時ベア退避 + Top{ACH_CANDIDATE_N}候補→相関<{ACH_CORR_THRESHOLD}→{ACH_WEIGHT_METHOD}加重")
     log(f"   Tick {TICK_INTERVAL}秒 / Snapshot {SNAPSHOT_INTERVAL}秒 / EMA更新 {EMA_REFRESH_INTERVAL}秒")
     live_mode_startup = get_live_mode() if LIVE_TRADER_AVAILABLE else "sim"
     if live_mode_startup == "live":
