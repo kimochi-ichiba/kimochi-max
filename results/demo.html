@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#060d17">
-<title>気持ちマックス v2.1 Bot — BTC/ACH/USDT</title>
+<title>気持ちマックス v2.2 Bot — BTC/ACH/USDT</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon.png">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -284,7 +284,7 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
 <!-- ヘッダー -->
 <div class="hdr">
   <div class="live-dot"></div>
-  <div class="hdr-logo">気持ち<em>マックス</em> v2.1</div>
+  <div class="hdr-logo">気持ち<em>マックス</em> v2.2</div>
   <div class="hbadge hb-sim">SIM</div>
   <div class="hbadge hb-sym" style="display:none">BTC·ACH·USDT</div>
   <div class="hbadge hb-lev">35/35/30</div>
@@ -300,9 +300,9 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
 <div class="statsbar">
   <div class="sb"><div class="sb-val" id="s-eq">—</div><div class="sb-lbl">総資産</div><div class="sb-sub" id="s-eq2"></div></div>
   <div class="sb"><div class="sb-val" id="s-pnl">—</div><div class="sb-lbl">総損益</div><div class="sb-sub" id="s-pnl2"></div></div>
-  <div class="sb"><div class="sb-val o" id="s-btc">—</div><div class="sb-lbl">BTC枠</div><div class="sb-sub" id="s-btc2">40%</div></div>
-  <div class="sb"><div class="sb-val g" id="s-ach">—</div><div class="sb-lbl">ACH枠</div><div class="sb-sub" id="s-ach2">40%</div></div>
-  <div class="sb"><div class="sb-val b" id="s-usdt">—</div><div class="sb-lbl">USDT枠</div><div class="sb-sub" id="s-usdt2">20%</div></div>
+  <div class="sb"><div class="sb-val o" id="s-btc">—</div><div class="sb-lbl">BTC枠</div><div class="sb-sub" id="s-btc2">35%</div></div>
+  <div class="sb"><div class="sb-val g" id="s-ach">—</div><div class="sb-lbl">ACH枠</div><div class="sb-sub" id="s-ach2">35%</div></div>
+  <div class="sb"><div class="sb-val b" id="s-usdt">—</div><div class="sb-lbl">USDT枠</div><div class="sb-sub" id="s-usdt2">30%</div></div>
   <div class="sb"><div class="sb-val c" id="s-trades">0件</div><div class="sb-lbl">取引数</div><div class="sb-sub">SIM実行</div></div>
   <div class="sb"><div class="sb-val p" id="s-proj">—</div><div class="sb-lbl">1年予測</div><div class="sb-sub">年+55%想定</div></div>
 </div>
@@ -387,9 +387,9 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
         <div class="pfc"><div class="pfl">ピーク資産</div><div class="pfv y" id="pf-peak">—</div><div class="pfs">最高記録</div></div>
       </div>
       <div class="pf-cards" style="margin-top:1px">
-        <div class="pfc"><div class="pfl">BTC枠 (40%)</div><div class="pfv o" id="pf-btc">—</div><div class="pfs" id="pf-btcsub">—</div></div>
-        <div class="pfc"><div class="pfl">ACH枠 (40%)</div><div class="pfv g" id="pf-ach">—</div><div class="pfs" id="pf-achsub">momentum_top3</div></div>
-        <div class="pfc"><div class="pfl">USDT枠 (20%)</div><div class="pfv b" id="pf-usdt">—</div><div class="pfs" id="pf-usdtsub">年3%金利</div></div>
+        <div class="pfc"><div class="pfl">BTC枠 (35%)</div><div class="pfv o" id="pf-btc">—</div><div class="pfs" id="pf-btcsub">—</div></div>
+        <div class="pfc"><div class="pfl">ACH枠 (35%)</div><div class="pfv g" id="pf-ach">—</div><div class="pfs" id="pf-achsub">momentum_top3</div></div>
+        <div class="pfc"><div class="pfl">USDT枠 (30%)</div><div class="pfv b" id="pf-usdt">—</div><div class="pfs" id="pf-usdtsub">年3%金利</div></div>
       </div>
       <div class="sig-section">
         <div class="sig-ttl">📊 配分比率（リアルタイム）</div>
@@ -419,11 +419,11 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
     <div class="tpane" id="p-heat">
       <div class="chart-wrap">
         <div class="chart-toolbar">
-          <span class="chart-title">🔥 50銘柄モメンタムヒートマップ</span>
+          <span class="chart-title">🔥 62銘柄モメンタムヒートマップ</span>
           <span id="heat-updated" style="font-size:11px;color:var(--muted)"></span>
         </div>
         <div style="padding:10px 18px;background:var(--bg3);font-size:12px;color:var(--muted2)">
-          過去90日のリターンを色で可視化。<b class="g">緑が深いほど急騰</b>、<b class="r">赤が深いほど急落</b>。上位3銘柄にACH枠が連動します。
+          過去25日のリターンを色で可視化。<b class="g">緑が深いほど急騰</b>、<b class="r">赤が深いほど急落</b>。上位3銘柄にACH枠が連動します。
         </div>
       </div>
       <div class="hm-legend">
@@ -515,7 +515,7 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
         </table>
       </div>
       <div class="sig-section">
-        <div class="sig-ttl">🏆 気持ちマックス v2.1 バックテスト実績 (過去5年)</div>
+        <div class="sig-ttl">🏆 気持ちマックス v2.2 バックテスト実績 (過去5年)</div>
         <div class="tf3">
           <div class="tfbox"><div class="tfn">5年リターン</div><div class="tfd g">+8,931%</div><div class="tfs">iter56 損失最小化</div></div>
           <div class="tfbox"><div class="tfn">最大DD</div><div class="tfd y">70.5%</div><div class="tfs">2022年</div></div>
@@ -527,7 +527,7 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
     <!-- 戦略タブ -->
     <div class="tpane" id="p-strat">
       <div class="sig-section">
-        <div class="sig-ttl">⚙️ 気持ちマックス v2.1 戦略パラメータ</div>
+        <div class="sig-ttl">⚙️ 気持ちマックス v2.2 戦略パラメータ</div>
         <div class="tf3">
           <div class="tfbox"><div class="tfn">BTC枠</div><div class="tfd o">35%</div><div class="tfs">EMA200</div></div>
           <div class="tfbox"><div class="tfn">ACH枠</div><div class="tfd g">35%</div><div class="tfs">Top3/相関<0.80</div></div>
@@ -540,15 +540,15 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
         </div>
         <div class="sig-ttl" style="margin-top:20px">📖 戦略解説</div>
         <div style="padding:10px 14px;background:var(--bg3);border-radius:8px;margin-bottom:10px">
-          <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">🪙 BTC枠 40% — EMA200戦略</div>
+          <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">🪙 BTC枠 35% — EMA200戦略</div>
           <div style="font-size:12px;color:var(--muted2);line-height:1.6">BTC価格が200日移動平均の上で自動買い、下で自動売り。「コツコツ型」。</div>
         </div>
         <div style="padding:10px 14px;background:var(--bg3);border-radius:8px;margin-bottom:10px">
-          <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">⚡ ACH枠 40% — Top3モメンタム (v2: 週次リバランス)</div>
-          <div style="font-size:12px;color:var(--muted2);line-height:1.6">62銘柄（5ソース検証済）の過去25日リターン上位3銘柄を等分保有。<strong style="color:var(--green)">週次リバランス</strong>。BTC下落時は現金待機。</div>
+          <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">⚡ ACH枠 35% — Top3モメンタム (v2.2: 週次リバランス + 即時ベア退避)</div>
+          <div style="font-size:12px;color:var(--muted2);line-height:1.6">62銘柄（5ソース検証済）の過去25日リターン上位3銘柄を等分保有。<strong style="color:var(--green)">週次リバランス</strong>。BTC&lt;EMA200を検知した瞬間に全売却（v2.2新機能）、現金待機。</div>
         </div>
         <div style="padding:10px 14px;background:var(--bg3);border-radius:8px;margin-bottom:10px">
-          <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">💵 USDT枠 20% — 現金クッション</div>
+          <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">💵 USDT枠 30% — 現金クッション</div>
           <div style="font-size:12px;color:var(--muted2);line-height:1.6">大暴落時の「買い増しチャンス資金」。年3%ステーキング金利想定。</div>
         </div>
       </div>
@@ -985,7 +985,7 @@ function renderCharts(d){
   const achV = d.ach_part.virtual_equity || d.ach_part.cash || 0;
   const usdtV = d.usdt_part.cash;
   const pieData = {
-    labels:['BTC枠 (40%)','ACH枠 (40%)','USDT枠 (20%)'],
+    labels:['BTC枠 (35%)','ACH枠 (35%)','USDT枠 (30%)'],
     datasets:[{data:[btcV,achV,usdtV],backgroundColor:['#ffa726','#00e676','#4fc3f7'],
       borderColor:getComputedStyle(document.documentElement).getPropertyValue('--bg2'),borderWidth:3,hoverOffset:8}]
   };
