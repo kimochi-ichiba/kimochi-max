@@ -21,7 +21,7 @@ import sys, os, json, time, urllib.request, urllib.error, urllib.parse
 from pathlib import Path
 from datetime import datetime, timezone
 
-PROJECT = Path("/Users/sanosano/projects/kimochi-max")
+PROJECT = Path(__file__).resolve().parent
 RESULTS_DIR = PROJECT / "results"
 RESULTS_DIR.mkdir(exist_ok=True)
 OUT_JSON = RESULTS_DIR / "ticker_existence.json"

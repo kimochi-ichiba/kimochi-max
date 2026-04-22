@@ -45,8 +45,8 @@ MAX_ORDER_USD = float(os.environ.get("KM_MAX_ORDER_USD", "2000"))
 MAX_DAILY_TRADES = int(os.environ.get("KM_MAX_DAILY_TRADES", "20"))
 MIN_BTC_ORDER = 0.00001  # Binance BTC最小取引単位
 
-STATE_PATH = Path("/Users/sanosano/projects/kimochi-max/results/demo_state.json")
-TRADE_LOG = Path("/Users/sanosano/projects/kimochi-max/live_trades.jsonl")
+STATE_PATH = (Path(__file__).resolve().parent / "results" / "demo_state.json")
+TRADE_LOG = (Path(__file__).resolve().parent / "live_trades.jsonl")
 
 
 def get_mode():

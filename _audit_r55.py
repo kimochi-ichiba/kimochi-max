@@ -2,9 +2,9 @@
 import json
 from pathlib import Path
 
-p = Path("/Users/sanosano/projects/kimochi-max/results/last_push.json")
+p = (Path(__file__).resolve().parent / "results" / "last_push.json")
 if not p.exists():
-    p = Path("/Users/sanosano/projects/kimochi-max/results/final_push.json")
+    p = (Path(__file__).resolve().parent / "results" / "final_push.json")
 data = json.load(open(p))
 
 print("=" * 100)

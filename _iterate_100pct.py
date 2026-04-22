@@ -14,7 +14,7 @@
 from __future__ import annotations
 import sys, json, time
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
@@ -307,6 +307,6 @@ if __name__ == "__main__":
         print(f"⚠️ 毎年プラス達成なし。更に探索が必要")
     print(f"{'=' * 140}")
 
-    out = Path("/Users/sanosano/projects/kimochi-max/results/iterate_100pct.json")
+    out = (Path(__file__).resolve().parent / "results" / "iterate_100pct.json")
     out.write_text(json.dumps(results, indent=2, ensure_ascii=False, default=str))
     print(f"\n💾 {out}")

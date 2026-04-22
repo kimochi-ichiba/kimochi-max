@@ -51,7 +51,7 @@ DAYS_SINCE_REBAL_WARN = 32  # 32日以上リバランスなしなら警告
 MAINTENANCE_MARGIN_RATE = 0.005
 
 # Bot起動パス
-BOT_DIR = "/Users/sanosano/projects/crypto-bot-pro"
+BOT_DIR = str(Path(__file__).resolve().parent)
 BOT_CMD = ["python3", "kelly_bot.py", "--mode", "paper", "--capital", "3000"]
 
 

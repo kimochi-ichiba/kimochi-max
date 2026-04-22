@@ -16,7 +16,7 @@
 from __future__ import annotations
 import sys, json, time
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
@@ -370,6 +370,6 @@ if __name__ == "__main__":
             for n, r in sorted(yearly_plus, key=lambda x: -x[1]["avg_annual_ret"])[:3]:
                 print(f"   {n}: 年率{r['avg_annual_ret']:+.1f}% / 勝率{r['win_rate']:.1f}%")
 
-    out = Path("/Users/sanosano/projects/kimochi-max/results/ruin_proof_v2.json")
+    out = (Path(__file__).resolve().parent / "results" / "ruin_proof_v2.json")
     out.write_text(json.dumps(results, indent=2, ensure_ascii=False, default=str))
     print(f"\n💾 {out}")

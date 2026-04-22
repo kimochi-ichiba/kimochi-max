@@ -11,7 +11,7 @@
 from __future__ import annotations
 import sys, json, time
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
@@ -328,6 +328,6 @@ if __name__ == "__main__":
         print(f"⚠️ 全戦略が年次マイナスを含む。パラメータ調整が必要")
     print(f"{'=' * 130}")
 
-    out = Path("/Users/sanosano/projects/kimochi-max/results/zero_loss_year.json")
+    out = (Path(__file__).resolve().parent / "results" / "zero_loss_year.json")
     out.write_text(json.dumps(results, indent=2, ensure_ascii=False, default=str))
     print(f"\n💾 {out}")

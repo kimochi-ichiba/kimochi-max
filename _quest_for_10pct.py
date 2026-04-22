@@ -7,7 +7,7 @@
 """
 import sys, json
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import pandas as pd
 import numpy as np
 from config import Config
@@ -391,6 +391,6 @@ if __name__ == "__main__":
         status = "🎯月10%到達" if avg >= 10 else ("⭐月5%超" if avg >= 5 else "")
         print(f"  {i}. {r['strategy']:30s}  月平均 {avg:+6.2f}%  {status}")
 
-    out = Path("/Users/sanosano/projects/kimochi-max/results/quest_for_10pct.json")
+    out = (Path(__file__).resolve().parent / "results" / "quest_for_10pct.json")
     out.write_text(json.dumps(all_results, indent=2, ensure_ascii=False))
     print(f"\n💾 {out}")

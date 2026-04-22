@@ -4,8 +4,8 @@ FIRE計画 高度版ダッシュボード - 税制×市場×運用方法の27パ
 import json
 from pathlib import Path
 
-DATA_PATH = Path("/Users/sanosano/projects/kimochi-max/results/fire_advanced.json")
-OUT_PATH = Path("/Users/sanosano/projects/kimochi-max/results/fire_advanced.html")
+DATA_PATH = (Path(__file__).resolve().parent / "results" / "fire_advanced.json")
+OUT_PATH = (Path(__file__).resolve().parent / "results" / "fire_advanced.html")
 
 
 def main():

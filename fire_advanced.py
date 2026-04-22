@@ -23,7 +23,7 @@ import json
 from pathlib import Path
 from datetime import datetime
 
-OUT_JSON = Path("/Users/sanosano/projects/kimochi-max/results/fire_advanced.json")
+OUT_JSON = (Path(__file__).resolve().parent / "results" / "fire_advanced.json")
 
 # 共通入力
 INITIAL = 4_000_000

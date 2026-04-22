@@ -14,7 +14,7 @@ DL MAX 2x LONG/SHORT両方向版 バックテスト
 from __future__ import annotations
 import sys, json, time
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
@@ -250,7 +250,7 @@ if __name__ == "__main__":
             results[f"{label}_mp{mp}_longshort"] = r
             print("  " + "-" * 115)
 
-    out = Path("/Users/sanosano/projects/kimochi-max/results/longshort_backtest.json")
+    out = (Path(__file__).resolve().parent / "results" / "longshort_backtest.json")
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(results, indent=2, ensure_ascii=False, default=str))
     print(f"\n💾 保存: {out}")

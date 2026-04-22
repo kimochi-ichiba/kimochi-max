@@ -23,7 +23,7 @@ import sys, json, urllib.request, urllib.error
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 
-CONFIG_PATH = Path("/Users/sanosano/projects/kimochi-max/discord_config.json")
+CONFIG_PATH = (Path(__file__).resolve().parent / "discord_config.json")
 
 DEFAULT_CONFIG = {
     "webhook_url": "",

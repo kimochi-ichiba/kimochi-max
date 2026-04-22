@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 
-PROJECT = Path("/Users/sanosano/projects/kimochi-max")
+PROJECT = Path(__file__).resolve().parent
 IN_JSON = PROJECT / "results" / "iter49_rigorous.json"
 OUT_HTML = PROJECT / "results" / "iter49_report.html"
 
@@ -23,7 +23,7 @@ def generate(d: dict) -> str:
     full_period_ret = d["full_period_ret"]
 
     # iter49_slippage.json から真の勝者を読込
-    slip_json = Path("/Users/sanosano/projects/kimochi-max/results/iter49_slippage.json")
+    slip_json = (Path(__file__).resolve().parent / "results" / "iter49_slippage.json")
     net_winner = None
     net_ranking = []
     if slip_json.exists():

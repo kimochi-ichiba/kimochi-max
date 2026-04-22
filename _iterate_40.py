@@ -8,7 +8,7 @@ from __future__ import annotations
 import sys, json, time, pickle
 from pathlib import Path
 from datetime import datetime
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
@@ -20,7 +20,7 @@ from _rsi_short_backtest import fetch_with_rsi
 from _legends_engine import run_legends
 
 TARGET_ANNUAL = 50.0  # この年率に達したら終了
-CACHE_PATH = Path("/Users/sanosano/projects/kimochi-max/results/_cache_alldata.pkl")
+CACHE_PATH = (Path(__file__).resolve().parent / "results" / "_cache_alldata.pkl")
 
 
 def load_data():
@@ -304,7 +304,7 @@ def main():
                   f"$10K→${r['final']:,.0f} (負年{r['negative_years']})")
     print(f"{'=' * 170}")
 
-    out = Path("/Users/sanosano/projects/kimochi-max/results/iterate_40.json")
+    out = (Path(__file__).resolve().parent / "results" / "iterate_40.json")
     out.write_text(json.dumps({
         "results": results,
         "best": best[0] if best else None,

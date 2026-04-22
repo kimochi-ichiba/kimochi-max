@@ -1,7 +1,7 @@
 """現実派でも年率+30-50%を目指す最終反復"""
 import sys, json, time
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _realistic_backtest import run_realistic
 from config import Config
 from data_fetcher import DataFetcher
@@ -94,6 +94,6 @@ if __name__ == "__main__":
         print(f"   $10K → 5年後 ${r['final']:,.0f}")
     print(f"{'=' * 170}")
 
-    out = Path("/Users/sanosano/projects/kimochi-max/results/realistic_push.json")
+    out = (Path(__file__).resolve().parent / "results" / "realistic_push.json")
     out.write_text(json.dumps(results, indent=2, ensure_ascii=False, default=str))
     print(f"\n💾 {out}")

@@ -2,11 +2,12 @@
 Kraken + Coinbase によるデータ追加検証
 Binance / MEXC に加えて 2 つの主要独立ソースでクロスチェック
 """
+from pathlib import Path
 import requests, time
 from datetime import datetime
 import pandas as pd
 import sys
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from config import Config
 from data_fetcher import DataFetcher
 from _racsm_backtest import assert_binance_source

@@ -3,8 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-IN_JSON = Path("/Users/sanosano/projects/kimochi-max/results/iter51_maker_finetune.json")
-OUT_HTML = Path("/Users/sanosano/projects/kimochi-max/results/iter51_report.html")
+IN_JSON = (Path(__file__).resolve().parent / "results" / "iter51_maker_finetune.json")
+OUT_HTML = (Path(__file__).resolve().parent / "results" / "iter51_report.html")
 
 
 def generate(d: dict) -> str:

@@ -1,7 +1,7 @@
 """2022年プラス化の最終反復"""
 import sys, json, time
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from _ruin_proof_v2 import run_v2
 from config import Config
@@ -98,6 +98,6 @@ if __name__ == "__main__":
         else:
             print(f"⚠️ 毎年プラス未達成")
 
-    out = Path("/Users/sanosano/projects/kimochi-max/results/final_polish.json")
+    out = (Path(__file__).resolve().parent / "results" / "final_polish.json")
     out.write_text(json.dumps(results, indent=2, ensure_ascii=False, default=str))
     print(f"\n💾 {out}")

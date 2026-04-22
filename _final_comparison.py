@@ -3,7 +3,7 @@
 """
 import sys, json
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from config import Config
 from data_fetcher import DataFetcher
@@ -99,7 +99,7 @@ else:
     print("  ⚠️  基準未達 — 不採用を推奨")
 
 # 結果保存
-out = Path("/Users/sanosano/projects/kimochi-max/results/final_comparison.json")
+out = (Path(__file__).resolve().parent / "results" / "final_comparison.json")
 out.parent.mkdir(exist_ok=True)
 out.write_text(json.dumps(results, indent=2, ensure_ascii=False, default=str))
 print(f"\n💾 保存: {out}")

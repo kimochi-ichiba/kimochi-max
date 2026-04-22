@@ -14,7 +14,7 @@ ACを土台に、案E/G/Hを組み合わせた8パターンを比較:
 from __future__ import annotations
 import sys, json, time, pickle
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
@@ -25,7 +25,7 @@ from _multipos_backtest import UNIVERSE_50
 from _rsi_short_backtest import fetch_with_rsi
 import _legends_engine as LE
 
-CACHE_PATH = Path("/Users/sanosano/projects/kimochi-max/results/_cache_alldata.pkl")
+CACHE_PATH = (Path(__file__).resolve().parent / "results" / "_cache_alldata.pkl")
 
 
 def load_data():
@@ -520,7 +520,7 @@ def main():
     print(f"🥇 2022年最良: {n} (2022 {r['yearly'].get(2022, 0):+.2f}%)")
     print("=" * 120)
 
-    out_path = Path("/Users/sanosano/projects/kimochi-max/results/iter42_improve.json")
+    out_path = (Path(__file__).resolve().parent / "results" / "iter42_improve.json")
     out_path.write_text(json.dumps({
         "results": results,
         "btc_yearly": btc_yearly,

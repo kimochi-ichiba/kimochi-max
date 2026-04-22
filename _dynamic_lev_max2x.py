@@ -1,6 +1,7 @@
 """Dynamic Leverage の MAX 2x 版と別レンジ版を検証"""
+from pathlib import Path
 import sys
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _quest_for_10pct import _prepare_df, _stats, FEE, SLIP, FUNDING_PH
 from config import Config
 from data_fetcher import DataFetcher

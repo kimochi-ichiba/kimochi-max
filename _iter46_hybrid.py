@@ -21,14 +21,14 @@ Iter46: ハイブリッド戦略(BTC + AC)の徹底最適化
 from __future__ import annotations
 import sys, json, time, pickle
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
 import _iter43_rethink as R43
 
-CACHE_PATH = Path("/Users/sanosano/projects/kimochi-max/results/_cache_alldata.pkl")
-OUT_PATH = Path("/Users/sanosano/projects/kimochi-max/results/iter46_hybrid.json")
+CACHE_PATH = (Path(__file__).resolve().parent / "results" / "_cache_alldata.pkl")
+OUT_PATH = (Path(__file__).resolve().parent / "results" / "iter46_hybrid.json")
 
 
 def load_data():

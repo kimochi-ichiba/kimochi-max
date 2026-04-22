@@ -19,12 +19,12 @@ from __future__ import annotations
 import sys, json, time, pickle
 from pathlib import Path
 from datetime import datetime, timezone
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from _iter52_risk_mgmt import run_v21_backtest, UNIVERSE_REMOVE, _rebalance_key
 import _iter52_risk_mgmt as M
 
-PROJECT = Path("/Users/sanosano/projects/kimochi-max")
+PROJECT = Path(__file__).resolve().parent
 RESULTS_DIR = PROJECT / "results"
 CACHE_PATH = RESULTS_DIR / "_cache_alldata.pkl"
 OUT_JSON = RESULTS_DIR / "iter52b_tuning.json"

@@ -19,6 +19,7 @@ $3,000スタート、月+8〜15%の安定戦略を反復検証
 
 from __future__ import annotations
 
+from pathlib import Path
 import sys
 import logging
 import warnings
@@ -31,7 +32,7 @@ import pandas as pd
 import ccxt
 
 warnings.filterwarnings("ignore")
-sys.path.insert(0, "/Users/sanosano/projects/crypto-bot-pro")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 logging.getLogger().setLevel(logging.WARNING)
 
 INITIAL = 3_000.0   # ユーザー希望

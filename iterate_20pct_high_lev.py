@@ -17,6 +17,7 @@ BNB+高レバで +20%/月狙える可能性。
 
 from __future__ import annotations
 
+from pathlib import Path
 import sys
 import logging
 import warnings
@@ -28,7 +29,7 @@ import pandas as pd
 import ccxt
 
 warnings.filterwarnings("ignore")
-sys.path.insert(0, "/Users/sanosano/projects/crypto-bot-pro")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 logging.getLogger().setLevel(logging.WARNING)
 
 INITIAL = 10_000.0

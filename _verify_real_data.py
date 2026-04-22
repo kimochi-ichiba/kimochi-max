@@ -13,7 +13,7 @@
 from __future__ import annotations
 import sys, time, json
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import requests
 import pandas as pd
@@ -140,7 +140,7 @@ print(f"  ❌ 乖離3%以上（要精査）:     {bad} / {len(results)}")
 print(f"  ？ 取得失敗（3ソース全部）: {none_} / {len(results)}")
 
 # ─── 7. 保存
-out = Path("/Users/sanosano/projects/kimochi-max/results/data_cross_verify.json")
+out = (Path(__file__).resolve().parent / "results" / "data_cross_verify.json")
 out.write_text(json.dumps(results, indent=2, ensure_ascii=False, default=str))
 print(f"\n💾 {out}")
 

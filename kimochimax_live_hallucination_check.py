@@ -18,7 +18,7 @@ import sys, os, json, time, subprocess, urllib.request, urllib.error, urllib.par
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 
-PROJECT = Path("/Users/sanosano/projects/kimochi-max")
+PROJECT = Path(__file__).resolve().parent
 RESULTS_DIR = PROJECT / "results"
 STATE_PATH = RESULTS_DIR / "demo_state.json"
 OUT_JSON = RESULTS_DIR / "kimochimax_live_hallucination_check.json"

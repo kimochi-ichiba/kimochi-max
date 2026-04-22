@@ -19,15 +19,15 @@ Iter44 Step3: ロバストネステスト (20回反復)
 from __future__ import annotations
 import sys, json, time, pickle, random
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
 
 import _iter43_rethink as R43
 
-CACHE_PATH = Path("/Users/sanosano/projects/kimochi-max/results/_cache_alldata.pkl")
-OUT_PATH = Path("/Users/sanosano/projects/kimochi-max/results/iter44_robustness.json")
+CACHE_PATH = (Path(__file__).resolve().parent / "results" / "_cache_alldata.pkl")
+OUT_PATH = (Path(__file__).resolve().parent / "results" / "iter44_robustness.json")
 
 
 def load_data():

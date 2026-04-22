@@ -10,7 +10,7 @@
 from __future__ import annotations
 import sys, json, time
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
@@ -267,7 +267,7 @@ if __name__ == "__main__":
             except Exception as e:
                 print(f"  {mp:>4d}件 | ERROR: {e}")
 
-    out = Path("/Users/sanosano/projects/kimochi-max/results/multipos_backtest.json")
+    out = (Path(__file__).resolve().parent / "results" / "multipos_backtest.json")
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps({k: v for k, v in results.items()}, indent=2,
                                 ensure_ascii=False, default=str))

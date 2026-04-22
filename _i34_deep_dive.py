@@ -9,7 +9,7 @@ I34 深掘り分析スクリプト
 from __future__ import annotations
 import sys, json, time, pickle
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
@@ -20,7 +20,7 @@ from _multipos_backtest import UNIVERSE_50
 from _rsi_short_backtest import fetch_with_rsi
 import _legends_engine as LE
 
-CACHE_PATH = Path("/Users/sanosano/projects/kimochi-max/results/_cache_alldata.pkl")
+CACHE_PATH = (Path(__file__).resolve().parent / "results" / "_cache_alldata.pkl")
 
 # ━━━━━ エンジンを一時的に計装 (モンキーパッチ) ━━━━━
 _orig_close = LE._close_pos
@@ -539,7 +539,7 @@ def main():
         "equity_2024_daily": eq_2024_list,
     }
 
-    out_path = Path("/Users/sanosano/projects/kimochi-max/results/i34_deep_dive.json")
+    out_path = (Path(__file__).resolve().parent / "results" / "i34_deep_dive.json")
     out_path.write_text(json.dumps(out, indent=2, ensure_ascii=False, default=str))
     print(f"\n💾 {out_path}")
     print(f"   2024 取引数: {len(trades_2024)}")

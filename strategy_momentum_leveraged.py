@@ -17,6 +17,7 @@ High-Momentum Leveraged Turtle - 月+20-30%挑戦版
 
 from __future__ import annotations
 
+from pathlib import Path
 import sys
 import logging
 import warnings
@@ -30,7 +31,7 @@ import pandas as pd
 import ccxt
 
 warnings.filterwarnings("ignore")
-sys.path.insert(0, "/Users/sanosano/projects/crypto-bot-pro")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 logging.getLogger().setLevel(logging.WARNING)
 

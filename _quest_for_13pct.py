@@ -8,7 +8,7 @@
 """
 import sys, json
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import pandas as pd
 import numpy as np
 from config import Config
@@ -331,6 +331,6 @@ if __name__ == "__main__":
         print(f"  {i}. {r['name']:35s}  月 {r['avg_month']:+6.2f}%  "
               f"DD最大 {max(r['r23']['max_dd_pct'], r['r24']['max_dd_pct']):.1f}%")
 
-    out = Path("/Users/sanosano/projects/kimochi-max/results/quest_for_13pct.json")
+    out = (Path(__file__).resolve().parent / "results" / "quest_for_13pct.json")
     out.write_text(json.dumps(all_results, indent=2, ensure_ascii=False))
     print(f"\n💾 {out}")

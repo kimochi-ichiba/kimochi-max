@@ -14,6 +14,7 @@ backtester_pyramiding.py
 
 from __future__ import annotations
 
+from pathlib import Path
 import sys
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
@@ -22,7 +23,7 @@ from typing import List, Optional
 import numpy as np
 import pandas as pd
 
-sys.path.insert(0, "/Users/sanosano/projects/crypto-bot-pro")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from data_fetcher import DataFetcher
 from config import Config
 

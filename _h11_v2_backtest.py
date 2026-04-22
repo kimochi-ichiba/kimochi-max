@@ -22,14 +22,14 @@ from datetime import datetime, timezone
 import numpy as np
 import pandas as pd
 
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from strategy_h11_v2 import (
     H11V2Config, detect_regime, compute_allocation,
     select_momentum_candidates, diversify_by_correlation,
     rsi, ema, atr,
 )
 
-PROJECT = Path("/Users/sanosano/projects/kimochi-max")
+PROJECT = Path(__file__).resolve().parent
 CACHE = PROJECT / "results/_cache_alldata.pkl"
 OUT_JSON = PROJECT / "results/h11_v2_backtest.json"
 

@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from datetime import datetime
 
-PROJECT = Path("/Users/sanosano/projects/kimochi-max")
+PROJECT = Path(__file__).resolve().parent
 IN_JSON = PROJECT / "results" / "iter60_all_defenses.json"
 OUT_HTML = PROJECT / "results" / "iter60_report.html"
 

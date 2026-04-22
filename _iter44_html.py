@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-BASE = Path("/Users/sanosano/projects/kimochi-max/results")
+BASE = (Path(__file__).resolve().parent / "results")
 DATA_1 = BASE / "iter44_multiexchange.json"
 DATA_2 = BASE / "iter44_trade_verify.json"
 DATA_3 = BASE / "iter44_robustness.json"

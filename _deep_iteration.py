@@ -9,7 +9,7 @@
 """
 import sys, json
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import pandas as pd
 import numpy as np
 from config import Config
@@ -325,6 +325,6 @@ if __name__ == "__main__":
             print(f"{name:45s} | ERROR {e}")
 
     # 結果保存
-    out = Path("/Users/sanosano/projects/kimochi-max/results/deep_iteration.json")
+    out = (Path(__file__).resolve().parent / "results" / "deep_iteration.json")
     out.write_text(json.dumps({"new_strategies": new_results}, indent=2, ensure_ascii=False))
     print(f"\n💾 {out}")

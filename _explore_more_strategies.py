@@ -7,7 +7,7 @@
 """
 import sys, json
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import pandas as pd
 import numpy as np
 from config import Config
@@ -296,6 +296,6 @@ if __name__ == "__main__":
     print(f"{'BTC Buy&Hold (参考)':35s} | {bh23:+7.2f}% {'':>8s} {'':>6s} | {bh24:+7.2f}% {'':>8s} {'':>6s}")
 
     # 結果保存
-    out = Path("/Users/sanosano/projects/kimochi-max/results/explore_more.json")
+    out = (Path(__file__).resolve().parent / "results" / "explore_more.json")
     out.write_text(json.dumps(all_results, indent=2, ensure_ascii=False))
     print(f"\n💾 {out}")

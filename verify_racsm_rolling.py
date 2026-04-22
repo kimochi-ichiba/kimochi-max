@@ -87,7 +87,7 @@ def main():
     years = [int(y) for y in args.years.split(",")]
     rbs   = [int(r) for r in args.rebalance.split(",")]
 
-    out_dir = Path("/Users/sanosano/projects/kimochi-max/results")
+    out_dir = (Path(__file__).resolve().parent / "results")
     all_results = []
     for year in years:
         for rb in rbs:

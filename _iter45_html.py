@@ -7,9 +7,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-DATA_PATH = Path("/Users/sanosano/projects/kimochi-max/results/iter45_low_dd.json")
-ITER43_PATH = Path("/Users/sanosano/projects/kimochi-max/results/iter43_rethink.json")
-OUT_PATH = Path("/Users/sanosano/projects/kimochi-max/results/iter45_report.html")
+DATA_PATH = (Path(__file__).resolve().parent / "results" / "iter45_low_dd.json")
+ITER43_PATH = (Path(__file__).resolve().parent / "results" / "iter43_rethink.json")
+OUT_PATH = (Path(__file__).resolve().parent / "results" / "iter45_report.html")
 
 
 def main():

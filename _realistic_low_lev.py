@@ -1,7 +1,7 @@
 """低レバ・広SL で現実派バックテストを反復"""
 import sys, json, time
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _realistic_backtest import run_realistic
 from config import Config
 from data_fetcher import DataFetcher
@@ -92,6 +92,6 @@ if __name__ == "__main__":
             print(f"   {n}: 年率{r['avg_annual_ret']:+.1f}% / 清算{r['n_liquidations']}回 / DD{r['max_dd']:.1f}%")
     print(f"{'=' * 170}")
 
-    out = Path("/Users/sanosano/projects/kimochi-max/results/realistic_low_lev.json")
+    out = (Path(__file__).resolve().parent / "results" / "realistic_low_lev.json")
     out.write_text(json.dumps(results, indent=2, ensure_ascii=False, default=str))
     print(f"\n💾 {out}")
