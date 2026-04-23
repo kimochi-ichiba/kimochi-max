@@ -52,6 +52,7 @@ from benchmarks import (
 )
 from metrics import compute_all_metrics
 from stability_analysis import (
+    CRYPTO_PROFILE,
     classify_setting,
     overfitting_summary,
     parameter_sensitivity,
@@ -327,12 +328,13 @@ def run_grid(
             except Exception as e:
                 sensitivity = {"error": str(e), "max_relative_change_pct": 0.0}
 
-        # W3 の IS/OOS で判定
+        # W3 の IS/OOS で判定 (仮想通貨現物運用向けプロファイル)
         classification = classify_setting(
             per_window["W3"]["is"],
             per_window["W3"]["oos"],
             sensitivity,
             params["usdt_w"],
+            profile=CRYPTO_PROFILE,
         )
 
         cell_results.append({
@@ -446,7 +448,7 @@ def build_md(payload: dict[str, Any]) -> str:
             f"| ${b['equity_end']:,.0f} |"
         )
 
-    # 本番用 Top 5
+    # 本番用 Top 5 + 詳細分析
     lines += ["", "## 本番用候補 Top 5 (OOS Sharpe 降順)", ""]
     if not payload["top_production_ready"]:
         lines.append("(該当なし — 全セルが本番用条件に満たない)")
@@ -461,6 +463,131 @@ def build_md(payload: dict[str, Any]) -> str:
                 f"| {ms['is_oos_cagr_gap_pct']:+.2f}% "
                 f"| {ms['sensitivity_max_change_pct']:.1f}% |"
             )
+        # 各 Top の詳細展開
+        lines += ["", "### Top 5 詳細分析 (W3 OOS 基準)", ""]
+        for rank, c in enumerate(payload["top_production_ready"], 1):
+            oos_m = c["windows"]["W3"]["oos"]
+            yearly = oos_m.get("yearly_return_pct", {})
+            regime = oos_m.get("regime_breakdown", {})
+            sens = c.get("sensitivity", {}).get("per_param", {})
+            params = c["params"]
+
+            lines.append(f"#### {rank}. `{c['label']}` (Stage {c['stage']})")
+            lines.append("")
+            lines.append(
+                f"**パラメータ**: "
+                f"BTC/ACH/USDT={params['btc_w']:.2f}/{params['ach_w']:.2f}/{params['usdt_w']:.2f}, "
+                f"top_n={params['top_n']}, lookback={params['lookback']}, "
+                f"rebalance={params['rebalance_days']}d, corr={params['corr_threshold']}, "
+                f"method={params['weight_method']}, adx={params['adx_min']}"
+            )
+            lines.append("")
+            lines.append(
+                f"**年別リターン (W3 OOS 期間)**: "
+                + ", ".join(f"{y}: {v:+.1f}%" for y, v in yearly.items())
+                if yearly else "**年別リターン**: (なし)"
+            )
+            lines.append("")
+            if regime.get("bull") or regime.get("bear"):
+                bull = regime.get("bull", {})
+                bear = regime.get("bear", {})
+                lines.append(
+                    f"**Regime 別**: "
+                    f"bull ({bull.get('weeks', 0)}週, {bull.get('return_pct', 0):+.1f}%, "
+                    f"DD {bull.get('max_dd_pct', 0):.1f}%) / "
+                    f"bear ({bear.get('weeks', 0)}週, {bear.get('return_pct', 0):+.1f}%, "
+                    f"DD {bear.get('max_dd_pct', 0):.1f}%)"
+                )
+                lines.append("")
+            if sens:
+                lines.append("**感度 (Sharpe 相対変化)**:")
+                for k, s in sens.items():
+                    lines.append(
+                        f"- {k}: {s['minus_param']}→{s.get('minus_metric')} / "
+                        f"{s['plus_param']}→{s.get('plus_metric')} "
+                        f"(max Δ {s['relative_change_pct']:.1f}%)"
+                    )
+                lines.append("")
+            # Benchmark 比較
+            lines.append(
+                f"**Benchmark 対比**: このセル OOS Sharpe {c['metrics_snapshot']['oos_sharpe']:.2f} "
+                f"(BTC buy&hold 全期間 Sharpe {payload['benchmarks'].get('buy_hold_BTC', {}).get('metrics', {}).get('sharpe_ratio', 0):.2f})"
+            )
+            lines.append("")
+
+    # 中立候補 Top 5 (本番用にあと一歩)
+    neutral_cells = [c for c in payload["cells"] if c["classification"] == "neutral"]
+    neutral_top = sorted(
+        neutral_cells,
+        key=lambda r: r["metrics_snapshot"].get("oos_sharpe", 0.0),
+        reverse=True,
+    )[:5]
+    lines += ["", "## 中立 Top 5 (production_ready にあと一歩)", ""]
+    if not neutral_top:
+        lines.append("(該当なし)")
+    else:
+        lines.append("| Stage | Label | OOS Sharpe | OOS MaxDD | IS-OOS gap | 不合格項目 |")
+        lines.append("|---|---|---|---|---|---|")
+        for c in neutral_top:
+            ms = c["metrics_snapshot"]
+            failed = [
+                k.replace("_", " ")
+                for k, v in c["production_checks"].items()
+                if not v
+            ]
+            lines.append(
+                f"| {c['stage']} | `{c['label']}` "
+                f"| {ms['oos_sharpe']:.2f} | {ms['oos_dd_pct']:.1f}% "
+                f"| {ms['is_oos_cagr_gap_pct']:+.2f}% "
+                f"| {', '.join(failed) or '(なし)'} |"
+            )
+        # neutral Top の詳細展開
+        lines += ["", "### 中立 Top 詳細分析 (W3 OOS 基準)", ""]
+        for rank, c in enumerate(neutral_top, 1):
+            oos_m = c["windows"]["W3"]["oos"]
+            yearly = oos_m.get("yearly_return_pct", {})
+            regime = oos_m.get("regime_breakdown", {})
+            sens = c.get("sensitivity", {}).get("per_param", {})
+            params = c["params"]
+
+            lines.append(f"#### {rank}. `{c['label']}` (Stage {c['stage']})")
+            lines.append("")
+            lines.append(
+                f"**パラメータ**: "
+                f"BTC/ACH/USDT={params['btc_w']:.2f}/{params['ach_w']:.2f}/{params['usdt_w']:.2f}, "
+                f"top_n={params['top_n']}, lookback={params['lookback']}, "
+                f"rebalance={params['rebalance_days']}d, corr={params['corr_threshold']}, "
+                f"method={params['weight_method']}, adx={params['adx_min']}"
+            )
+            if yearly:
+                lines.append(
+                    "**年別リターン (W3 OOS 期間)**: "
+                    + ", ".join(f"{y}: {v:+.1f}%" for y, v in yearly.items())
+                )
+            if regime.get("bull") or regime.get("bear"):
+                bull = regime.get("bull", {})
+                bear = regime.get("bear", {})
+                lines.append(
+                    f"**Regime 別**: "
+                    f"bull ({bull.get('weeks', 0)}週, {bull.get('return_pct', 0):+.1f}%, "
+                    f"DD {bull.get('max_dd_pct', 0):.1f}%) / "
+                    f"bear ({bear.get('weeks', 0)}週, {bear.get('return_pct', 0):+.1f}%, "
+                    f"DD {bear.get('max_dd_pct', 0):.1f}%)"
+                )
+            if sens:
+                lines.append("")
+                lines.append("**感度 (Sharpe 相対変化)**:")
+                for k, s in sens.items():
+                    minus_m = s.get("minus_metric")
+                    plus_m = s.get("plus_metric")
+                    lines.append(
+                        f"- {k}: {s['minus_param']}→"
+                        f"{minus_m if minus_m is None else f'{minus_m:.2f}'} / "
+                        f"{s['plus_param']}→"
+                        f"{plus_m if plus_m is None else f'{plus_m:.2f}'} "
+                        f"(max Δ {s['relative_change_pct']:.1f}%)"
+                    )
+            lines.append("")
 
     # 壊れやすい Top 5
     lines += ["", "## 壊れやすい Top 5 (OOS Sharpe 降順、ただし判定は fragile)", ""]

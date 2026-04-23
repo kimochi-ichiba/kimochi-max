@@ -118,6 +118,36 @@ def parameter_sensitivity(
 
 
 # ─────────────────────────────
+# 判定プロファイル (市場特性に応じた閾値セット)
+# ─────────────────────────────
+# デフォルト = 元々の保守的 (FX や低ボラ資産向け) 基準
+DEFAULT_PROFILE = {
+    "prod_sharpe_min": 0.5,
+    "prod_dd_max": 25.0,
+    "prod_sensitivity_max": 30.0,
+    "prod_cagr_gap_max": 5.0,
+    "prod_usdt_min": 0.20,
+    "fragile_sharpe_max": 0.3,
+    "fragile_dd_min": 35.0,
+    "fragile_sensitivity_min": 50.0,
+    "fragile_cagr_gap_min": 10.0,
+}
+
+# 仮想通貨現物運用向け (清算リスクなし、DD はある程度許容)
+CRYPTO_PROFILE = {
+    "prod_sharpe_min": 0.8,      # BTC buy&hold Sharpe 1.14 超えを基準に
+    "prod_dd_max": 40.0,         # 仮想通貨市場の通常 DD に合わせ緩和
+    "prod_sensitivity_max": 30.0,
+    "prod_cagr_gap_max": 10.0,   # ボラ大なので IS-OOS 差も大きめに
+    "prod_usdt_min": 0.20,
+    "fragile_sharpe_max": 0.5,
+    "fragile_dd_min": 55.0,      # 現物でも致命的 (BTC buy&hold 77% と同等)
+    "fragile_sensitivity_min": 50.0,
+    "fragile_cagr_gap_min": 20.0,
+}
+
+
+# ─────────────────────────────
 # 判定
 # ─────────────────────────────
 def classify_setting(
@@ -125,8 +155,16 @@ def classify_setting(
     oos_metrics: dict[str, Any],
     sensitivity: dict[str, Any] | None,
     usdt_weight: float,
+    *,
+    profile: dict[str, float] | None = None,
 ) -> dict[str, Any]:
-    """本番用 / 壊れやすい / 中立 の 3 区分で判定."""
+    """本番用 / 壊れやすい / 中立 の 3 区分で判定.
+
+    profile: 市場特性に応じた閾値セット (デフォルト = DEFAULT_PROFILE)
+             CRYPTO_PROFILE などを渡すと仮想通貨向け基準に切り替わる.
+    """
+    p = {**DEFAULT_PROFILE, **(profile or {})}
+
     oos_sharpe = float(oos_metrics.get("sharpe_ratio", 0.0))
     oos_dd = float(oos_metrics.get("max_drawdown_pct", 100.0))
     is_cagr = float(is_metrics.get("cagr_pct", 0.0))
@@ -141,24 +179,24 @@ def classify_setting(
 
     # Fragile チェック (いずれか)
     fragile_reasons: list[str] = []
-    if oos_sharpe < 0.3:
-        fragile_reasons.append(f"OOS Sharpe {oos_sharpe:.2f} < 0.3")
-    if oos_dd > 35.0:
-        fragile_reasons.append(f"OOS MaxDD {oos_dd:.1f}% > 35%")
-    if sens_change > 50.0:
-        fragile_reasons.append(f"Sensitivity {sens_change:.1f}% > 50%")
-    if overfitting_gap > 10.0:
+    if oos_sharpe < p["fragile_sharpe_max"]:
+        fragile_reasons.append(f"OOS Sharpe {oos_sharpe:.2f} < {p['fragile_sharpe_max']}")
+    if oos_dd > p["fragile_dd_min"]:
+        fragile_reasons.append(f"OOS MaxDD {oos_dd:.1f}% > {p['fragile_dd_min']}%")
+    if sens_change > p["fragile_sensitivity_min"]:
+        fragile_reasons.append(f"Sensitivity {sens_change:.1f}% > {p['fragile_sensitivity_min']}%")
+    if overfitting_gap > p["fragile_cagr_gap_min"]:
         fragile_reasons.append(
-            f"IS-OOS CAGR gap {overfitting_gap:.1f}% > 10%"
+            f"IS-OOS CAGR gap {overfitting_gap:.1f}% > {p['fragile_cagr_gap_min']}%"
         )
 
     # Production ready チェック (すべて満たす)
     prod_checks = {
-        "oos_sharpe_gt_0.5": oos_sharpe > 0.5,
-        "oos_dd_lt_25": oos_dd < 25.0,
-        "sensitivity_lt_30": sens_change < 30.0,
-        "is_oos_cagr_gap_lt_5": overfitting_gap < 5.0,
-        "usdt_weight_ge_0.2": usdt_weight >= 0.2,
+        f"oos_sharpe_gt_{p['prod_sharpe_min']}": oos_sharpe > p["prod_sharpe_min"],
+        f"oos_dd_lt_{p['prod_dd_max']}": oos_dd < p["prod_dd_max"],
+        f"sensitivity_lt_{p['prod_sensitivity_max']}": sens_change < p["prod_sensitivity_max"],
+        f"is_oos_cagr_gap_lt_{p['prod_cagr_gap_max']}": overfitting_gap < p["prod_cagr_gap_max"],
+        f"usdt_weight_ge_{p['prod_usdt_min']}": usdt_weight >= p["prod_usdt_min"],
     }
     production_ready = all(prod_checks.values())
 

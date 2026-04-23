@@ -7,6 +7,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from stability_analysis import (
+    CRYPTO_PROFILE,
+    DEFAULT_PROFILE,
     classify_setting,
     overfitting_summary,
     parameter_sensitivity,
@@ -95,6 +97,30 @@ def test_top_n_by_metric():
     top = top_n_by_metric(cells, "production_ready", "oos_sharpe", 2)
     assert len(top) == 2
     assert top[0]["metrics_snapshot"]["oos_sharpe"] == 1.0
+
+
+def test_classify_crypto_profile_allows_higher_dd():
+    """CRYPTO_PROFILE は OOS MaxDD 40% まで許容する."""
+    is_m = {"cagr_pct": 50.0, "sharpe_ratio": 1.2, "max_drawdown_pct": 35.0}
+    oos_m = {"cagr_pct": 45.0, "sharpe_ratio": 1.0, "max_drawdown_pct": 38.0}
+    sensitivity = {"max_relative_change_pct": 20.0}
+    r = classify_setting(
+        is_m, oos_m, sensitivity, usdt_weight=0.30, profile=CRYPTO_PROFILE
+    )
+    # Crypto: DD 38% は < 40% で OK、Sharpe 1.0 > 0.8 で OK、gap 5% < 10% で OK
+    assert r["classification"] == "production_ready"
+
+
+def test_classify_default_profile_same_case_is_fragile():
+    """同じケースをデフォルト基準で判定すると fragile になる (対比)."""
+    is_m = {"cagr_pct": 50.0, "sharpe_ratio": 1.2, "max_drawdown_pct": 35.0}
+    oos_m = {"cagr_pct": 45.0, "sharpe_ratio": 1.0, "max_drawdown_pct": 38.0}
+    sensitivity = {"max_relative_change_pct": 20.0}
+    r = classify_setting(is_m, oos_m, sensitivity, usdt_weight=0.30)
+    # Default: DD 38% > 35% で fragile
+    assert r["classification"] == "fragile"
+    assert DEFAULT_PROFILE["fragile_dd_min"] == 35.0
+    assert CRYPTO_PROFILE["fragile_dd_min"] == 55.0
 
 
 def test_overfitting_summary_basic():
