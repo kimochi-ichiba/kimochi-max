@@ -55,6 +55,9 @@ BTC_WEIGHT = 0.35   # v2.1: 0.40 → 0.35 (USDT cushion 増強で損失抑制)
 ACH_WEIGHT = 0.35   # v2.1: 0.40 → 0.35
 USDT_WEIGHT = 0.30  # v2.1: 0.20 → 0.30 (+10%クッションで DD -5pt 改善 / iter56)
 USDT_ANNUAL_RATE = 0.03
+# Binance VIP0: Taker 0.060%, Maker 0.020%
+# 実効fee = 約定率98.3%×Maker + 1.7%×Taker (iter62α/iter62 walk-forward 検証済)
+MAKER_EFFECTIVE_FEE = 0.000207
 LOOP_INTERVAL = 300  # 旧互換: REST のみモードの時に使う
 TICK_INTERVAL = 1    # 毎秒tick
 SNAPSHOT_INTERVAL = 60   # 60秒ごとにstate.json永続化
@@ -316,7 +319,7 @@ def ach_update(state, btc_price_now, btc_ema200):
     # リバランス待たず即時実行することで、弱気相場の DD を大幅削減
     if btc_ema200 and btc_price_now < btc_ema200 and ach.get("positions"):
         log(f"   🚨 v2.2 ACH即時ベア退避: BTC < EMA200 検知 → ACH 全ポジション売却")
-        fee = 0.0006; slip = 0.0003
+        fee = MAKER_EFFECTIVE_FEE; slip = 0.0003
         cur_prices_bear = fetch_all_current_prices(list(ach["positions"].keys()))
         for sym, pos in list(ach["positions"].items()):
             cur_price = cur_prices_bear.get(sym, pos.get("entry_price", 0))
@@ -408,7 +411,7 @@ def ach_update(state, btc_price_now, btc_ema200):
 
         # 全決済
         if ach.get("positions"):
-            fee = 0.0006; slip = 0.0003
+            fee = MAKER_EFFECTIVE_FEE; slip = 0.0003
             for sym, pos in list(ach["positions"].items()):
                 cur_price = current_prices.get(sym, pos["entry_price"])
                 sell_price = cur_price * (1 - slip)
@@ -481,7 +484,7 @@ def ach_update(state, btc_price_now, btc_ema200):
         weights = compute_momentum_weights(top) if ACH_WEIGHT_METHOD == "momentum" else [1.0/len(top)] * len(top)
         log(f"   ⚖️ 配分 ({ACH_WEIGHT_METHOD}): " + ", ".join([f"{s}:{w*100:.1f}%" for (s, _), w in zip(top, weights)]))
 
-        fee = 0.0006; slip = 0.0003
+        fee = MAKER_EFFECTIVE_FEE; slip = 0.0003
         current_prices_new = fetch_all_current_prices([s for s, _ in top])
         for (sym, ret), w in zip(top, weights):
             price = current_prices_new.get(sym)
@@ -687,7 +690,7 @@ def process_tick(state, btc_data):
     signal_action = None
     if btc_price > ema200 and not btc["position"]:
         # BUY
-        fee = 0.0006; slip = 0.0003
+        fee = MAKER_EFFECTIVE_FEE; slip = 0.0003
         buy_price = btc_price * (1 + slip)
         btc_qty = btc["cash"] / buy_price * (1 - fee)
         btc["btc_qty"] = btc_qty
@@ -713,7 +716,7 @@ def process_tick(state, btc_data):
                 log(f"⚠️ Discord通知失敗: {e}")
     elif btc_price < ema200 and btc["position"]:
         # SELL
-        fee = 0.0006; slip = 0.0003
+        fee = MAKER_EFFECTIVE_FEE; slip = 0.0003
         sell_price = btc_price * (1 - slip)
         proceeds = btc["btc_qty"] * sell_price * (1 - fee)
         pnl = proceeds - (btc["entry_price"] * btc["btc_qty"] if btc["entry_price"] else 0)
@@ -970,7 +973,7 @@ def run_loop():
                 # 【BUY/SELL シグナル発動】 snapshot時にまとめて発動 (安全)
                 sig = state["btc_part"].get("last_signal", "")
                 if sig == "READY-BUY":
-                    fee = 0.0006; slip = 0.0003
+                    fee = MAKER_EFFECTIVE_FEE; slip = 0.0003
                     btc = state["btc_part"]
                     live_mode = get_live_mode() if LIVE_TRADER_AVAILABLE else "sim"
                     buy_price = btc["last_btc_price"] * (1 + slip)
@@ -1014,7 +1017,7 @@ def run_loop():
                                                          ema200=cached_ema200)
                         except Exception: pass
                 elif sig == "READY-SELL":
-                    fee = 0.0006; slip = 0.0003
+                    fee = MAKER_EFFECTIVE_FEE; slip = 0.0003
                     btc = state["btc_part"]
                     live_mode = get_live_mode() if LIVE_TRADER_AVAILABLE else "sim"
                     sell_price = btc["last_btc_price"] * (1 - slip)
