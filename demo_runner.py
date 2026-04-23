@@ -84,11 +84,15 @@ ACH_UNIVERSE = [
     "POL", "TON", "ONDO", "JUP", "WLD", "LDO", "IMX", "WIF",
     "ENA", "GALA", "JASMY", "PENDLE", "MINA", "RENDER", "STRK", "SUSHI",
 ]
-ACH_TOP_N = 3
+ACH_TOP_N = 2
 # 2026-04-22 v2.1 更新: iter55/iter56 で最終最適化確定
 #   USDT30% cushion + 相関フィルター0.80 + モメンタム加重
 #   vs 現行v2: ret +4575% → +8931% (2倍), DD 75.3% → 70.5% (-4.8pt)
-ACH_LOOKBACK_DAYS = 25
+# 2026-04-24 v2.3 更新: iter66 グリッドサーチで top2_lb20 設定を採用
+#   Stage2 中立 Top1 (OOS Sharpe 1.37, IS-OOS CAGR gap 9.2%) を適用
+#   現行 v2.2 (top3/lookback25) から top2/lookback20 に変更
+#   期待: 集中度上昇で bull 相場の利益拡大、ただし DD は同水準 (46.9% @ W3 OOS)
+ACH_LOOKBACK_DAYS = 20
 ACH_REBALANCE_DAYS = 7
 ACH_CANDIDATE_N = 10           # v2.1: Top10 候補から相関フィルター後に Top3 選定
 ACH_CORR_THRESHOLD = 0.80      # v2.1: 相関 0.80 以上は除外 (集中リスク軽減)
