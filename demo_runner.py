@@ -103,10 +103,19 @@ ACH_UNIVERSE = [
     "POL", "TON", "ONDO", "JUP", "WLD", "LDO", "IMX", "WIF",
     "ENA", "GALA", "JASMY", "PENDLE", "MINA", "RENDER", "STRK", "SUSHI",
 ]
-ACH_TOP_N = 3
+ACH_TOP_N = 2
 # 2026-04-22 v2.1 更新: iter55/iter56 で最終最適化確定
 #   USDT30% cushion + 相関フィルター0.80 + モメンタム加重
 #   vs 現行v2: ret +4575% → +8931% (2倍), DD 75.3% → 70.5% (-4.8pt)
+# 2026-04-24 hybrid 検証: LB20 は DD 悪化 (46.82% → 55.61%) のため LB25 維持
+#   実データ検証で Top3/LB25 が Calmar 1.88 と判明。milestone_extraction 追加で Calmar 2.47 可能
+# 2026-04-24 C3 採用: Top3→Top2 のみ変更 (LB25/USDT30/corr0.80 は現行維持)
+#   iter66 母関数 2020-2024 フル期間検証 (feat/grid-search-benchmark ベースライン):
+#     現行 Top3: CAGR +122.7%, MaxDD 62.2%, Sharpe 1.23, final $564K
+#     Top2 のみ: CAGR +120.2%, MaxDD 62.0%, Sharpe 1.17, final $533K
+#     CAGR 影響 -2.5pp と軽微 (集中度上昇で勝ち銘柄の寄与大も、勝率は減)
+#   DD 減らすには corr 0.70 併用が必要だが CAGR -30pp の代償大で不採用
+#   Top2 単体は「様子見変更」: v2.2 base の安全性はほぼ維持したまま挙動観察
 ACH_LOOKBACK_DAYS = 25
 ACH_REBALANCE_DAYS = 7
 ACH_CANDIDATE_N = 10           # v2.1: Top10 候補から相関フィルター後に Top3 選定
