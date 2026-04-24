@@ -174,6 +174,19 @@ def run_bt_v24(
     trail_stop_ach: float,
     trail_stop_btc: float,
     initial: float = 10_000.0,
+    # iter71b: ABCD 改善オプション
+    chop_filter: bool = False,          # C: ADX が低いときに trail 閾値を緩める
+    chop_adx_threshold: float = 20.0,
+    chop_multiplier: float = 1.5,
+    partial_exit_ratio: float = 1.0,    # D: trail 発動時に売却する割合 (1.0=全売却, 0.5=半分)
+    # iter71c: ①〜⑤ 根本パラメータ (デフォルトは現行動作)
+    btc_weight: float = BTC_W,          # ①
+    ach_weight: float = ACH_W,          # ①
+    usdt_weight: float = USDT_W,        # ①
+    top_n: int = TOP_N,                 # ②
+    rebalance_days: int = REBALANCE_DAYS,  # ③
+    bear_ema_buffer: float = 0.0,       # ④ (0.0=ちょうど EMA200, 0.03=EMA200×0.97 まで Bull)
+    multi_lookback: bool = False,       # ⑤ (25+45+90 日平均)
 ) -> BTResult:
     """demo_runner.py v2.4 の決定ロジックをバックテスト向けに再現。
 
@@ -181,6 +194,12 @@ def run_bt_v24(
     - Bear 時に ACH の現金を USDT へ完全退避 (ポジションは既に Bear 即時退避で売却済)
     - ACH の mtm が peak から trail_stop_ach 下落で全売却 + USDT へ完全退避
     - BTC の btc_value が peak から trail_stop_btc 下落で全売却 + USDT へ完全退避
+
+    iter71b オプション:
+    - chop_filter=True の場合、BTC ADX < chop_adx_threshold の日は
+      trail_stop_ach / trail_stop_btc を chop_multiplier 倍に広げる
+    - partial_exit_ratio < 1.0 の場合、trail 発動時にその割合だけ売却し
+      残りは保持 (peak は現在の mtm/value にリセット)
     """
     start_ts = pd.Timestamp(start)
     end_ts = pd.Timestamp(end)
@@ -189,16 +208,16 @@ def run_bt_v24(
     if not dates:
         raise ValueError(f"期間 {start} 〜 {end} にデータがありません")
 
-    btc_cash = initial * BTC_W
+    btc_cash = initial * btc_weight
     btc_qty = 0.0
     btc_entry = 0.0
     btc_peak = 0.0  # v2.4: trail_stop_btc 用
 
-    ach_cash = initial * ACH_W
+    ach_cash = initial * ach_weight
     ach_positions: dict[str, float] = {}  # {sym: qty}
     ach_peak = 0.0  # v2.4: trail_stop_ach 用
 
-    usdt_cash = initial * USDT_W
+    usdt_cash = initial * usdt_weight
 
     equity_curve = [{"ts": dates[0] - pd.Timedelta(days=1), "equity": initial}]
     n_trades = 0
@@ -211,7 +230,21 @@ def run_bt_v24(
         btc_r = btc_df.loc[date]
         price = float(btc_r["close"])
         ema200 = btc_r.get("ema200")
-        btc_bullish = not pd.isna(ema200) and price > float(ema200)
+        # ④ bear_ema_buffer: EMA200 × (1 - buffer) を下回るまで Bull 扱い
+        btc_bullish = not pd.isna(ema200) and price > float(ema200) * (1 - bear_ema_buffer)
+
+        # C: chop filter - ADX が低い日は trail 閾値を広げる
+        if chop_filter:
+            btc_adx = btc_r.get("adx")
+            if not pd.isna(btc_adx) and float(btc_adx) < chop_adx_threshold:
+                effective_trail_ach = trail_stop_ach * chop_multiplier
+                effective_trail_btc = trail_stop_btc * chop_multiplier
+            else:
+                effective_trail_ach = trail_stop_ach
+                effective_trail_btc = trail_stop_btc
+        else:
+            effective_trail_ach = trail_stop_ach
+            effective_trail_btc = trail_stop_btc
 
         # ─────────────────────────────
         # BTC 側
@@ -225,17 +258,23 @@ def run_bt_v24(
             btc_peak = btc_qty * price  # v2.4: peak 初期化
             n_trades += 1
         # 2) v2.4: BTC トレイル判定 (EMA200 判定より先)
-        elif btc_qty > 0 and trail_stop_btc is not None:
+        elif btc_qty > 0 and effective_trail_btc is not None:
             btc_value_now = btc_cash + btc_qty * price
             if btc_value_now > btc_peak:
                 btc_peak = btc_value_now
-            elif btc_peak > 0 and (btc_peak - btc_value_now) / btc_peak >= trail_stop_btc:
+            elif btc_peak > 0 and (btc_peak - btc_value_now) / btc_peak >= effective_trail_btc:
                 sell_p = price * (1 - SLIP)
-                proceeds = btc_qty * sell_p * (1 - FEE)
-                usdt_cash += proceeds  # USDT へ完全退避
-                btc_qty = 0
-                btc_cash = 0
-                btc_peak = 0.0
+                sell_qty = btc_qty * partial_exit_ratio
+                proceeds = sell_qty * sell_p * (1 - FEE)
+                usdt_cash += proceeds
+                btc_qty -= sell_qty
+                if btc_qty <= 1e-10:
+                    btc_qty = 0
+                    btc_cash = 0
+                    btc_peak = 0.0
+                else:
+                    # D: 残りを保持、peak を現在値にリセット
+                    btc_peak = btc_qty * price
                 n_trades += 1
                 n_trail_btc += 1
         # 3) 通常 SELL (Bull→Bear 転換) - トレイルで既に売却済みなら no-op
@@ -279,28 +318,43 @@ def run_bt_v24(
                 ach_mtm += qty * float(df.loc[date, "close"])
 
         ach_trail_fired = False
-        if trail_stop_ach is not None:
+        if effective_trail_ach is not None:
             if ach_mtm > ach_peak:
                 ach_peak = ach_mtm
-            elif ach_peak > 0 and (ach_peak - ach_mtm) / ach_peak >= trail_stop_ach:
-                # 発動: 全ポジション売却 + ACH cash 全部 USDT へ
+            elif ach_peak > 0 and (ach_peak - ach_mtm) / ach_peak >= effective_trail_ach:
+                # 発動: 各ポジションを partial_exit_ratio だけ売却し USDT へ移動
+                trail_proceeds = 0.0
                 for sym in list(ach_positions.keys()):
                     df = all_data[sym]
                     if date in df.index:
                         p = float(df.loc[date, "close"]) * (1 - SLIP)
-                        ach_cash += ach_positions[sym] * p * (1 - FEE)
+                        sell_qty = ach_positions[sym] * partial_exit_ratio
+                        trail_proceeds += sell_qty * p * (1 - FEE)
+                        ach_positions[sym] -= sell_qty
+                        if ach_positions[sym] <= 1e-10:
+                            ach_positions.pop(sym)
                         n_trades += 1
-                        ach_positions.pop(sym)
-                usdt_cash += ach_cash
-                ach_cash = 0
-                ach_peak = 0.0
+                if not ach_positions:
+                    # 全売却: ACH cash も含めて USDT へ完全退避
+                    usdt_cash += trail_proceeds + ach_cash
+                    ach_cash = 0
+                    ach_peak = 0.0
+                else:
+                    # D: 売却分のみ USDT へ、残ポジは保持、peak を mtm にリセット
+                    usdt_cash += trail_proceeds
+                    new_mtm = ach_cash
+                    for sym, qty in ach_positions.items():
+                        df = all_data[sym]
+                        if date in df.index:
+                            new_mtm += qty * float(df.loc[date, "close"])
+                    ach_peak = new_mtm
                 n_trail_ach += 1
                 ach_trail_fired = True
 
         # ─────────────────────────────
         # ACH リバランス (トレイル発動日はスキップ)
         # ─────────────────────────────
-        cur_key = _reb_key(date, REBALANCE_DAYS)
+        cur_key = _reb_key(date, rebalance_days)
         if cur_key != last_key and not ach_trail_fired:
             # 既存ポジションを全決済 (Bear 退避で既に空のことが多い)
             for sym in list(ach_positions.keys()):
@@ -325,8 +379,8 @@ def run_bt_v24(
                         usdt_cash -= take
 
                 sel = select_top(
-                    all_data, universe, date, TOP_N, LOOKBACK,
-                    ADX_MIN, 0, WEIGHT_METHOD, False,
+                    all_data, universe, date, top_n, LOOKBACK,
+                    ADX_MIN, 0, WEIGHT_METHOD, multi_lookback,
                 )
                 if sel:
                     if WEIGHT_METHOD == "momentum":
