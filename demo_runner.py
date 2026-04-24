@@ -1,5 +1,5 @@
 """
-気持ちマックス v2.2 デモトレード・ライブランナー (毎秒WebSocket版)
+気持ちマックス v2.5 デモトレード・ライブランナー (毎秒WebSocket版)
 ======================================================================
 Binance WebSocket で BTC 価格を毎秒受信、3層タイマーで処理:
 
@@ -149,7 +149,7 @@ def log(msg, also_print=True):
     line = f"[{ts}] {msg}"
     if also_print:
         print(line, flush=True)
-    with open(LOG_PATH, "a") as f:
+    with open(LOG_PATH, "a", encoding="utf-8") as f:
         f.write(line + "\n")
 
 
@@ -1170,7 +1170,7 @@ def run_once():
 def run_loop():
     """3層タイマー永続ループ (毎秒tick / 60秒snapshot / 5分EMA再計算)"""
     log("=" * 60)
-    log("🚀 気持ちマックス v2.2 デモトレードランナー 起動 (WebSocket版)")
+    log("🚀 気持ちマックス v2.5 デモトレードランナー 起動 (WebSocket版)")
     log(f"   初期資金: ${INITIAL:,.0f}")
     log(f"   構成: BTC {BTC_WEIGHT*100:.0f}% + ACH {ACH_WEIGHT*100:.0f}% + USDT {USDT_WEIGHT*100:.0f}%")
     log(f"   ACH設定: Top{ACH_TOP_N} / LB{ACH_LOOKBACK_DAYS}日 / リバランス{ACH_REBALANCE_DAYS}日 / {len(ACH_UNIVERSE)}銘柄")
