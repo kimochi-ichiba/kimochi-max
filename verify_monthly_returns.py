@@ -13,6 +13,7 @@ v95.0戦略の月次リターン再現性検証
 
 from __future__ import annotations
 
+from pathlib import Path
 import sys
 import logging
 import warnings
@@ -21,7 +22,7 @@ from datetime import datetime, timedelta
 import numpy as np
 
 warnings.filterwarnings("ignore")
-sys.path.insert(0, "/Users/sanosano/projects/crypto-bot-pro")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from config import Config
 from backtester import Backtester

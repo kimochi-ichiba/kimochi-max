@@ -5,8 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-DATA_PATH = Path("/Users/sanosano/projects/kimochi-max/results/iter41_improve.json")
-OUT_PATH = Path("/Users/sanosano/projects/kimochi-max/results/iter41_report.html")
+DATA_PATH = (Path(__file__).resolve().parent / "results" / "iter41_improve.json")
+OUT_PATH = (Path(__file__).resolve().parent / "results" / "iter41_report.html")
 
 
 def main():

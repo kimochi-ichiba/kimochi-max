@@ -15,7 +15,7 @@ from __future__ import annotations
 import sys, json, time, threading
 from pathlib import Path
 from datetime import datetime
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
@@ -26,7 +26,7 @@ from data_fetcher import DataFetcher
 from _racsm_backtest import validate_ohlcv_data, assert_binance_source
 
 # ═══ 設定 ═══
-STATE_FILE     = Path("/Users/sanosano/projects/kimochi-max/dl_max2x_state.json")
+STATE_FILE     = (Path(__file__).resolve().parent / "dl_max2x_state.json")
 INITIAL_CAPITAL = 10_000.0
 # 監視銘柄（Binance実在・流動性上位50銘柄・検証済み）
 SYMBOLS = [

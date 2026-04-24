@@ -1,6 +1,7 @@
 """「素早く版」DL (ADX>20=1x, 25=2x, 30=3x) を5年検証で最終確認"""
+from pathlib import Path
 import sys
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from config import Config
 from data_fetcher import DataFetcher
 from _dynamic_lev_max2x import dynamic_leverage_custom

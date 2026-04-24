@@ -14,11 +14,11 @@ from __future__ import annotations
 import sys, json, time, pickle
 from pathlib import Path
 from datetime import datetime, timezone
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from _iter49_rigorous import run_h11_pure, UNIVERSE_REMOVE
 
-PROJECT = Path("/Users/sanosano/projects/kimochi-max")
+PROJECT = Path(__file__).resolve().parent
 RESULTS_DIR = PROJECT / "results"
 CACHE_PATH = RESULTS_DIR / "_cache_alldata.pkl"
 OUT_JSON = RESULTS_DIR / "iter50_finetune.json"

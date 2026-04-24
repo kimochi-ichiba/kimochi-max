@@ -13,8 +13,9 @@
   - 全戦略で清算モデル・日中SL・翌日エントリー
 """
 from __future__ import annotations
+from pathlib import Path
 import sys
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np

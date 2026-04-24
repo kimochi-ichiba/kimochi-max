@@ -19,14 +19,14 @@ Iter45: 低DD特化 (精神的ラク) 戦略バックテスト
 from __future__ import annotations
 import sys, json, time, pickle
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
 import _iter43_rethink as R43
 
-CACHE_PATH = Path("/Users/sanosano/projects/kimochi-max/results/_cache_alldata.pkl")
-OUT_PATH = Path("/Users/sanosano/projects/kimochi-max/results/iter45_low_dd.json")
+CACHE_PATH = (Path(__file__).resolve().parent / "results" / "_cache_alldata.pkl")
+OUT_PATH = (Path(__file__).resolve().parent / "results" / "iter45_low_dd.json")
 
 FEE = 0.0006
 SLIP = 0.0003

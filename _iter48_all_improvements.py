@@ -25,7 +25,7 @@ import sys, json, time, pickle
 from pathlib import Path
 from collections import defaultdict
 from datetime import datetime, timezone
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
@@ -36,7 +36,7 @@ from _racsm_backtest import validate_ohlcv_data, assert_binance_source
 from _rsi_short_backtest import fetch_with_rsi
 import _iter43_rethink as R43
 
-PROJECT = Path("/Users/sanosano/projects/kimochi-max")
+PROJECT = Path(__file__).resolve().parent
 RESULTS_DIR = PROJECT / "results"
 CACHE_PATH = RESULTS_DIR / "_cache_alldata.pkl"
 OUT_JSON = RESULTS_DIR / "iter48_all_improvements.json"

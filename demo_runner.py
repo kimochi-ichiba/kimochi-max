@@ -24,7 +24,7 @@ from pathlib import Path
 from datetime import datetime, timezone, timedelta
 from collections import deque
 
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 try:
     import discord_notify
     DISCORD_AVAILABLE = True
@@ -44,7 +44,7 @@ except ImportError:
     LIVE_TRADER_AVAILABLE = False
     get_live_mode = lambda: "sim"
 
-PROJECT = Path("/Users/sanosano/projects/kimochi-max")
+PROJECT = Path(__file__).resolve().parent
 RESULTS_DIR = PROJECT / "results"
 STATE_PATH = RESULTS_DIR / "demo_state.json"
 LOG_PATH = PROJECT / "demo_runner.log"

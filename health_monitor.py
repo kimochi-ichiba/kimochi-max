@@ -25,14 +25,14 @@ import sys, json, time, subprocess, os
 from pathlib import Path
 from datetime import datetime, timezone
 
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 try:
     import discord_notify
     NOTIFY_AVAILABLE = True
 except ImportError:
     NOTIFY_AVAILABLE = False
 
-PROJECT = Path("/Users/sanosano/projects/kimochi-max")
+PROJECT = Path(__file__).resolve().parent
 STATE_PATH = PROJECT / "results/demo_state.json"
 HEALTH_STATE = Path("/tmp/kimochi_health_state.json")
 LOG_PATH = Path("/tmp/kimochi_health.log")

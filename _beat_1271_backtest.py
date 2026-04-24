@@ -10,7 +10,7 @@
 from __future__ import annotations
 import sys, json, time
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
@@ -275,6 +275,6 @@ if __name__ == "__main__":
         print(f"  {tag} {i}. {name:45s}  {r['total_ret']:+8.1f}%  DD {r['max_dd']:>5.1f}%  "
               f"月{r['monthly_avg']:+5.2f}%")
 
-    out = Path("/Users/sanosano/projects/kimochi-max/results/beat_1271.json")
+    out = (Path(__file__).resolve().parent / "results" / "beat_1271.json")
     out.write_text(json.dumps(results, indent=2, ensure_ascii=False, default=str))
     print(f"\n💾 {out}")

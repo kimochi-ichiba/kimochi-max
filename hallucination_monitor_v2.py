@@ -160,12 +160,42 @@ def check_universe_trading() -> tuple[bool, str]:
         return False, f"取得失敗: {e}"
 
 
+def _find_pids_by_cmdline(pattern: str) -> list[str]:
+    """pgrep -f の cross-platform 版。pattern を含む CommandLine のPIDを返す。
+    Windows の venv は launcher→子 python.exe で2プロセス出るため、親子ペアは
+    「子」側だけをカウントして重複検知の誤報を回避。"""
+    if os.name == "nt":
+        ps_cmd = (
+            f"Get-CimInstance Win32_Process -Filter \"Name='python.exe'\" | "
+            f"Where-Object {{ $_.CommandLine -like '*{pattern}*' }} | "
+            f"Select-Object -Property ProcessId, ParentProcessId | "
+            f"ForEach-Object {{ \"$($_.ProcessId):$($_.ParentProcessId)\" }}"
+        )
+        try:
+            r = subprocess.run(
+                ["powershell", "-NoProfile", "-Command", ps_cmd],
+                capture_output=True, text=True, timeout=10
+            )
+            pairs = [line.split(":", 1) for line in r.stdout.strip().splitlines() if ":" in line]
+            pairs = [(p, pp) for p, pp in pairs if p.strip().isdigit()]
+            pids = {p for p, _ in pairs}
+            # 親も同じ pattern に合致するなら launcher → 親側を除外
+            parents_in_set = {pp for _, pp in pairs if pp in pids}
+            return [p for p, _ in pairs if p not in parents_in_set]
+        except Exception:
+            return []
+    try:
+        r = subprocess.run(["pgrep", "-f", pattern],
+                           capture_output=True, text=True, timeout=5)
+        return [p for p in r.stdout.strip().split("\n") if p]
+    except Exception:
+        return []
+
+
 def check_bot_process() -> tuple[bool, str]:
     """5. demo_runner.py プロセス稼働確認"""
     try:
-        r = subprocess.run(["pgrep", "-f", "demo_runner.py"],
-                           capture_output=True, text=True, timeout=5)
-        pids = [p for p in r.stdout.strip().split("\n") if p]
+        pids = _find_pids_by_cmdline("demo_runner.py")
         if len(pids) == 0:
             return False, "demo_runner.py 停止中"
         if len(pids) > 1:
@@ -188,9 +218,9 @@ def check_state_freshness(state: dict) -> tuple[bool, str]:
 
 
 def check_version(state: dict) -> tuple[bool, str]:
-    """7. state.json version = 2.0 or 2.1 (v2系統)"""
+    """7. state.json version = 2.x (v2系統 すべて受容)"""
     v = state.get("version")
-    ok = v in ("2.0", "2.1")
+    ok = isinstance(v, str) and v.startswith("2.")
     return ok, f"version={v}, version_name={state.get('version_name', '未設定')}"
 
 
@@ -246,6 +276,44 @@ def check_trade_ohlc(state: dict) -> tuple[bool, str]:
     return True, f"直近{len(details)}件 全OHLC内"
 
 
+def check_backtest_drift(state: dict) -> tuple[bool, str]:
+    """13. バックテスト v2.2 期待月率(+2.0%) vs 実 SIM 月率 の乖離チェック
+    SIM 稼働が 30 日未満なら WARN で即 PASS (データ不足)。
+    30日以上の実績があれば、月率の差が ±5% を超えたら警告。"""
+    started = state.get("started_at") or state.get("bot_started_at")
+    if not started:
+        # 代替: equity_history の先頭時刻
+        eh = state.get("equity_history") or []
+        if eh:
+            started = eh[0].get("time") or eh[0].get("ts")
+    if not started:
+        return True, "稼働開始時刻不明のためスキップ"
+    try:
+        dt_start = datetime.fromisoformat(str(started).replace("Z", "+00:00"))
+        if dt_start.tzinfo is None:
+            dt_start = dt_start.replace(tzinfo=timezone.utc)
+    except Exception:
+        return True, f"開始時刻解析失敗: {started}"
+
+    now = datetime.now(timezone.utc)
+    days = (now - dt_start).total_seconds() / 86400
+    if days < 30:
+        return True, f"SIM {days:.1f}日 (30日未満のため乖離判定スキップ)"
+
+    # 実 SIM 月率 = (現在/初期) ^ (30/days) - 1
+    total = state.get("total_equity", 0)
+    initial = state.get("initial_equity") or 10_000.0
+    if initial <= 0 or total <= 0:
+        return True, "総資産が0または負（スキップ）"
+    actual_monthly = (total / initial) ** (30 / days) - 1
+    expected_monthly = 0.020  # v2.2 backtest 期待 +2.0%/月 (iter59 控えめ想定)
+    drift = actual_monthly - expected_monthly
+    if abs(drift) > 0.05:  # ±5% 乖離
+        return False, (f"月率乖離 {drift*100:+.1f}% "
+                       f"(実績 {actual_monthly*100:+.2f}% vs 期待 {expected_monthly*100:+.1f}%)")
+    return True, f"月率 {actual_monthly*100:+.2f}% / 期待 {expected_monthly*100:+.1f}% (差 {drift*100:+.1f}%)"
+
+
 def check_equity_consistency(state: dict) -> tuple[bool, str]:
     """11. 総資産 = BTC + ACH + USDT 整合性"""
     total = state.get("total_equity", 0)
@@ -268,9 +336,7 @@ def check_process_unique() -> tuple[bool, str]:
     """12. プロセス重複検出"""
     for name in ["demo_runner.py", "health_monitor.py", "hallucination_monitor_v2.py"]:
         try:
-            r = subprocess.run(["pgrep", "-f", name], capture_output=True, text=True, timeout=5)
-            pids = [p for p in r.stdout.strip().split("\n") if p]
-            # 自分自身を除外
+            pids = _find_pids_by_cmdline(name)
             my_pid = str(os.getpid())
             pids = [p for p in pids if p != my_pid]
             if len(pids) > 1:
@@ -342,6 +408,7 @@ def run_check():
             ("9. WS接続", check_ws_connection),
             ("10. 取引OHLC", check_trade_ohlc),
             ("11. 残高整合性", check_equity_consistency),
+            ("13. バックテスト乖離", check_backtest_drift),
         ]:
             try:
                 ok, msg = fn(state)
@@ -353,14 +420,14 @@ def run_check():
                 log(f"⚠️ [{name}] 例外: {e}", "WARN")
                 warn_count += 1
     else:
-        log("⚠️ state.json が無いため state系6項目スキップ", "WARN")
-        warn_count += 6
+        log("⚠️ state.json が無いため state系7項目スキップ", "WARN")
+        warn_count += 7
 
-    total_checks = 12
+    total_checks = 13
     pass_count = total_checks - fail_count - warn_count
 
     if fail_count == 0:
-        log(f"🟢 全12項目PASS — ハルシネーションなし (PASS:{pass_count}/WARN:{warn_count})", "INFO")
+        log(f"🟢 全13項目PASS — ハルシネーションなし (PASS:{pass_count}/WARN:{warn_count})", "INFO")
     else:
         log(f"🔴 {fail_count}件の異常 (PASS:{pass_count}/WARN:{warn_count}/FAIL:{fail_count})", "ALERT")
         # flag作成

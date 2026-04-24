@@ -4,7 +4,7 @@ import sys, json
 from pathlib import Path
 from datetime import datetime, timezone
 
-PROJECT = Path("/Users/sanosano/projects/kimochi-max")
+PROJECT = Path(__file__).resolve().parent
 RESULTS_DIR = PROJECT / "results"
 IN_JSON = RESULTS_DIR / "iter49_rigorous.json"
 OUT_JSON = RESULTS_DIR / "iter49_slippage.json"

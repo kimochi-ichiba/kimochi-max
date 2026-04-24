@@ -22,14 +22,14 @@ from __future__ import annotations
 import sys, json, time, pickle
 from pathlib import Path
 from datetime import datetime, timezone
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import _iter43_rethink as R43
 from _iter54_comprehensive import select_top
 import _iter54_comprehensive as M
 
-PROJECT = Path("/Users/sanosano/projects/kimochi-max")
+PROJECT = Path(__file__).resolve().parent
 RESULTS_DIR = PROJECT / "results"
 CACHE_PATH = RESULTS_DIR / "_cache_alldata.pkl"
 OUT_JSON = RESULTS_DIR / "iter60_all_defenses.json"

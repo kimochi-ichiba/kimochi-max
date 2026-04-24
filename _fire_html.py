@@ -4,8 +4,8 @@ FIRE計画 HTMLダッシュボード生成 (気持ちマックスUI)
 import json
 from pathlib import Path
 
-DATA_PATH = Path("/Users/sanosano/projects/kimochi-max/results/fire_simulation.json")
-OUT_PATH = Path("/Users/sanosano/projects/kimochi-max/results/fire_plan.html")
+DATA_PATH = (Path(__file__).resolve().parent / "results" / "fire_simulation.json")
+OUT_PATH = (Path(__file__).resolve().parent / "results" / "fire_plan.html")
 
 
 def main():

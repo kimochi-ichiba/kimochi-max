@@ -20,7 +20,7 @@ from __future__ import annotations
 import sys, json, time, pickle
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
@@ -31,7 +31,7 @@ from _racsm_backtest import assert_binance_source
 from _multipos_backtest import UNIVERSE_50
 from _rsi_short_backtest import fetch_with_rsi
 
-PROJECT = Path("/Users/sanosano/projects/kimochi-max")
+PROJECT = Path(__file__).resolve().parent
 STATE_PATH = PROJECT / "kimochimax_bot_state.json"
 LOG_PATH = PROJECT / "kimochimax_bot.log"
 

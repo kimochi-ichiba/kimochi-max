@@ -17,13 +17,13 @@ from __future__ import annotations
 import sys, json, time, pickle, urllib.request, urllib.error, urllib.parse
 from pathlib import Path
 from datetime import datetime, timezone
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
 
-CACHE_PATH = Path("/Users/sanosano/projects/kimochi-max/results/_cache_alldata.pkl")
-OUT_PATH = Path("/Users/sanosano/projects/kimochi-max/results/iter44_multiexchange.json")
+CACHE_PATH = (Path(__file__).resolve().parent / "results" / "_cache_alldata.pkl")
+OUT_PATH = (Path(__file__).resolve().parent / "results" / "iter44_multiexchange.json")
 
 SYMBOLS_TO_CHECK = [
     # (キャッシュのsymbol, Binance symbol, MEXC symbol, Bitget symbol, yfinance symbol)

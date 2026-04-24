@@ -22,7 +22,7 @@ import math
 from pathlib import Path
 from datetime import datetime
 
-OUT_JSON = Path("/Users/sanosano/projects/kimochi-max/results/fire_simulation.json")
+OUT_JSON = (Path(__file__).resolve().parent / "results" / "fire_simulation.json")
 
 # ユーザー計画
 INITIAL_CAPITAL = 4_000_000      # 初期資金 400万円

@@ -5,7 +5,7 @@ from __future__ import annotations
 import sys, json
 from pathlib import Path
 from datetime import datetime
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 
 def render_html(data, out_path):
@@ -233,8 +233,8 @@ def render_html(data, out_path):
 
 
 if __name__ == "__main__":
-    in_path = Path("/Users/sanosano/projects/kimochi-max/results/iterate_40.json")
-    out_path = Path("/Users/sanosano/projects/kimochi-max/results/iterate_40_report.html")
+    in_path = (Path(__file__).resolve().parent / "results" / "iterate_40.json")
+    out_path = (Path(__file__).resolve().parent / "results" / "iterate_40_report.html")
     data = json.loads(in_path.read_text())
     render_html(data, out_path)
     print(f"📄 HTML: {out_path}")

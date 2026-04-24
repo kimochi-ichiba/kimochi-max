@@ -4,7 +4,7 @@ R04の毎年プラス + R07の+100%年率を両立させる精密反復
 from __future__ import annotations
 import sys, json, time
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from _ruin_proof_backtest import run_ruin_proof
 from config import Config
@@ -98,6 +98,6 @@ if __name__ == "__main__":
                 print(f"   🎯 {n}: 年率{r['avg_annual_ret']:+.1f}% / DD{r['max_dd']:.1f}%")
     print(f"{'=' * 145}")
 
-    out = Path("/Users/sanosano/projects/kimochi-max/results/refine_iteration.json")
+    out = (Path(__file__).resolve().parent / "results" / "refine_iteration.json")
     out.write_text(json.dumps(results, indent=2, ensure_ascii=False, default=str))
     print(f"\n💾 {out}")

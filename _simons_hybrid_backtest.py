@@ -21,7 +21,7 @@ from __future__ import annotations
 import sys, json, time, requests
 from pathlib import Path
 from datetime import datetime
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
@@ -910,7 +910,7 @@ if __name__ == "__main__":
     print("=" * 100)
 
     # ━━━ 保存 ━━━
-    out_json = Path("/Users/sanosano/projects/kimochi-max/results/simons_hybrid.json")
+    out_json = (Path(__file__).resolve().parent / "results" / "simons_hybrid.json")
     out_json.write_text(json.dumps({
         "configs": [{"name": n, **{k: v for k, v in c.items()}} for n, c in configs],
         "results": results,
@@ -921,7 +921,7 @@ if __name__ == "__main__":
     print(f"\n💾 JSON: {out_json}")
 
     # ━━━ HTMLレポート生成 ━━━
-    out_html = Path("/Users/sanosano/projects/kimochi-max/results/simons_hybrid_report.html")
+    out_html = (Path(__file__).resolve().parent / "results" / "simons_hybrid_report.html")
     best_name = final_best[0] if final_best else list(results.keys())[0]
     render_html(results, halluc, best_name, sample_compare, out_html)
     print(f"📄 HTMLレポート: {out_html}")

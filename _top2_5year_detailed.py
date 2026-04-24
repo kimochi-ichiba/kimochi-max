@@ -10,7 +10,7 @@
 from __future__ import annotations
 import sys, json
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from config import Config
 from data_fetcher import DataFetcher
@@ -131,7 +131,7 @@ def run():
         print(f"  {strat_name:40s}: 最悪 {worst_label:25s}  {worst:+.2f}%")
 
     # JSON保存
-    out_path = Path("/Users/sanosano/projects/kimochi-max/results/top2_5year.json")
+    out_path = (Path(__file__).resolve().parent / "results" / "top2_5year.json")
     out_path.parent.mkdir(parents=True, exist_ok=True)
     save_data = {
         "strategies": results,

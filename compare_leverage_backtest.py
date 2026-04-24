@@ -9,11 +9,12 @@ compare_leverage_backtest.py
 
 from __future__ import annotations
 
+from pathlib import Path
 import sys
 import logging
 from datetime import datetime, timedelta
 
-sys.path.insert(0, "/Users/sanosano/projects/crypto-bot-pro")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from config import Config
 from backtester import Backtester

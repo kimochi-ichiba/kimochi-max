@@ -1,7 +1,7 @@
 """年率+100%への最終挑戦: 2022年もプラスを狙う"""
 import sys, json, time
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from _bulletproof_backtest import run
 from config import Config
@@ -104,6 +104,6 @@ if __name__ == "__main__":
                 print(f"   {n}: 年率{r['avg_annual_ret']:+.1f}% / 勝率{r['win_rate']:.1f}% / DD{r['max_dd']:.1f}% / $10K→${r['final']:,.0f}")
     print(f"{'=' * 170}")
 
-    out = Path("/Users/sanosano/projects/kimochi-max/results/push_100.json")
+    out = (Path(__file__).resolve().parent / "results" / "push_100.json")
     out.write_text(json.dumps(results, indent=2, ensure_ascii=False, default=str))
     print(f"\n💾 {out}")

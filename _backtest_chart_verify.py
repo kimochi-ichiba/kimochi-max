@@ -21,13 +21,13 @@ from __future__ import annotations
 import json, pickle, sys, math
 from pathlib import Path
 from datetime import datetime
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
 
-CACHE_PATH = Path("/Users/sanosano/projects/kimochi-max/results/_cache_alldata.pkl")
-OUT_JSON = Path("/Users/sanosano/projects/kimochi-max/results/backtest_chart_verify.json")
+CACHE_PATH = (Path(__file__).resolve().parent / "results" / "_cache_alldata.pkl")
+OUT_JSON = (Path(__file__).resolve().parent / "results" / "backtest_chart_verify.json")
 
 # BTC年別実リターン(独立計算で確定済み、iter44で検証完了)
 BTC_YEARLY_GROUND_TRUTH = {
@@ -305,7 +305,7 @@ def main():
     print("🔬 バックテスト推移 独立検証 (5項目)")
     print("=" * 80)
 
-    RESULTS = Path("/Users/sanosano/projects/kimochi-max/results")
+    RESULTS = (Path(__file__).resolve().parent / "results")
 
     # 検証対象リスト (JSON | key_path | 戦略種類 | 表示名)
     targets = [

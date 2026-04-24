@@ -39,7 +39,7 @@ import ccxt
 
 # ================== 設定 ==================
 
-BOT_DIR = Path("/Users/sanosano/projects/crypto-bot-pro")
+BOT_DIR = Path(__file__).resolve().parent
 STATE_FILE = BOT_DIR / "kelly_bot_state.json"
 VALIDATOR_LOG = BOT_DIR / "validator.log"
 VALIDATOR_ALERTS = BOT_DIR / "validator_alerts.log"

@@ -13,7 +13,7 @@
 from __future__ import annotations
 import sys, json, time
 from pathlib import Path
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
@@ -241,7 +241,7 @@ if __name__ == "__main__":
               f"{r['max_dd']:>4.1f}% | {r['n_trades']:>4d} | {r['n_liquidations']:>4d} {tag}")
         results[name] = r
 
-    out = Path("/Users/sanosano/projects/kimochi-max/results/liquidation_backtest.json")
+    out = (Path(__file__).resolve().parent / "results" / "liquidation_backtest.json")
     out.write_text(json.dumps(results, indent=2, ensure_ascii=False, default=str))
     print(f"\n💾 {out}")
 

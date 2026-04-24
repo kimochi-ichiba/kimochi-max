@@ -14,15 +14,15 @@ from __future__ import annotations
 import sys, json, time, pickle, urllib.request, urllib.error
 from pathlib import Path
 from datetime import datetime, timezone
-sys.path.insert(0, "/Users/sanosano/projects/kimochi-max")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pandas as pd
 import numpy as np
 from _multipos_backtest import UNIVERSE_50
 
-CACHE_PATH = Path("/Users/sanosano/projects/kimochi-max/results/_cache_alldata.pkl")
-ITER43_PATH = Path("/Users/sanosano/projects/kimochi-max/results/iter43_rethink.json")
-OUT_PATH = Path("/Users/sanosano/projects/kimochi-max/results/iter43_hallucination.json")
+CACHE_PATH = (Path(__file__).resolve().parent / "results" / "_cache_alldata.pkl")
+ITER43_PATH = (Path(__file__).resolve().parent / "results" / "iter43_rethink.json")
+OUT_PATH = (Path(__file__).resolve().parent / "results" / "iter43_hallucination.json")
 
 
 def fetch_coingecko_daily(coin_id, from_ts, to_ts):

@@ -28,7 +28,7 @@ import pandas as pd
 import ccxt
 
 warnings.filterwarnings("ignore")
-sys.path.insert(0, "/Users/sanosano/projects/crypto-bot-pro")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 logging.getLogger().setLevel(logging.WARNING)
 
 # ボット設定と同じ
