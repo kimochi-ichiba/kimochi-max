@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#060d17">
-<title>気持ちマックス v2.2 Bot — BTC/ACH/USDT</title>
+<title>気持ちマックス v2.4 Bot — BTC/ACH/USDT</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon.png">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -388,7 +388,7 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
       </div>
       <div class="pf-cards" style="margin-top:1px">
         <div class="pfc"><div class="pfl">BTC枠 (35%)</div><div class="pfv o" id="pf-btc">—</div><div class="pfs" id="pf-btcsub">—</div></div>
-        <div class="pfc"><div class="pfl">ACH枠 (35%)</div><div class="pfv g" id="pf-ach">—</div><div class="pfs" id="pf-achsub">momentum_top3</div></div>
+        <div class="pfc"><div class="pfl">ACH枠 (35%)</div><div class="pfv g" id="pf-ach">—</div><div class="pfs" id="pf-achsub">momentum_top2_dynamic_regime</div></div>
         <div class="pfc"><div class="pfl">USDT枠 (30%)</div><div class="pfv b" id="pf-usdt">—</div><div class="pfs" id="pf-usdtsub">年3%金利</div></div>
       </div>
       <div class="sig-section">
@@ -423,7 +423,7 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
           <span id="heat-updated" style="font-size:11px;color:var(--muted)"></span>
         </div>
         <div style="padding:10px 18px;background:var(--bg3);font-size:12px;color:var(--muted2)">
-          過去25日のリターンを色で可視化。<b class="g">緑が深いほど急騰</b>、<b class="r">赤が深いほど急落</b>。上位3銘柄にACH枠が連動します。
+          過去25日のリターンを色で可視化。<b class="g">緑が深いほど急騰</b>、<b class="r">赤が深いほど急落</b>。上位2銘柄にACH枠が連動します。
         </div>
       </div>
       <div class="hm-legend">
@@ -515,7 +515,7 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
         </table>
       </div>
       <div class="sig-section">
-        <div class="sig-ttl">🏆 気持ちマックス v2.2 バックテスト実績 (過去5年)</div>
+        <div class="sig-ttl">🏆 気持ちマックス v2.4 バックテスト実績 (過去5年)</div>
         <div class="tf3">
           <div class="tfbox"><div class="tfn">5年リターン</div><div class="tfd g">+8,931%</div><div class="tfs">iter56 損失最小化</div></div>
           <div class="tfbox"><div class="tfn">最大DD</div><div class="tfd y">70.5%</div><div class="tfs">2022年</div></div>
@@ -527,10 +527,10 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
     <!-- 戦略タブ -->
     <div class="tpane" id="p-strat">
       <div class="sig-section">
-        <div class="sig-ttl">⚙️ 気持ちマックス v2.2 戦略パラメータ</div>
+        <div class="sig-ttl">⚙️ 気持ちマックス v2.4 戦略パラメータ</div>
         <div class="tf3">
           <div class="tfbox"><div class="tfn">BTC枠</div><div class="tfd o">35%</div><div class="tfs">EMA200</div></div>
-          <div class="tfbox"><div class="tfn">ACH枠</div><div class="tfd g">35%</div><div class="tfs">Top3/相関<0.80</div></div>
+          <div class="tfbox"><div class="tfn">ACH枠</div><div class="tfd g">35%→60%</div><div class="tfs">Top2 + trail30%</div></div>
           <div class="tfbox"><div class="tfn">USDT枠</div><div class="tfd b">30%</div><div class="tfs">クッション強化</div></div>
         </div>
         <div class="tf3">
@@ -544,8 +544,8 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
           <div style="font-size:12px;color:var(--muted2);line-height:1.6">BTC価格が200日移動平均の上で自動買い、下で自動売り。「コツコツ型」。</div>
         </div>
         <div style="padding:10px 14px;background:var(--bg3);border-radius:8px;margin-bottom:10px">
-          <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">⚡ ACH枠 35% — Top3モメンタム (v2.2: 週次リバランス + 即時ベア退避)</div>
-          <div style="font-size:12px;color:var(--muted2);line-height:1.6">62銘柄（5ソース検証済）の過去25日リターン上位3銘柄を等分保有。<strong style="color:var(--green)">週次リバランス</strong>。BTC&lt;EMA200を検知した瞬間に全売却（v2.2新機能）、現金待機。</div>
+          <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">⚡ ACH枠 35%→60% — Top2モメンタム (v2.4: dynamic_regime + trail_stop)</div>
+          <div style="font-size:12px;color:var(--muted2);line-height:1.6">62銘柄（5ソース検証済）の過去25日リターン上位2銘柄を momentum 加重で保有。<strong style="color:var(--green)">週次リバランス</strong>。Bull 相場では ACH 比率を 60% に引き上げ（USDT から補充）、BTC&lt;EMA200 を検知した瞬間に全売却→USDT 退避。さらに <strong style="color:var(--red)">ACH 時価が高値から 30% 下落</strong>すると全 USDT 退避（trail_stop_ach）、<strong style="color:var(--red)">BTC も高値から 20% 下落で全売却</strong>（trail_stop_btc）。</div>
         </div>
         <div style="padding:10px 14px;background:var(--bg3);border-radius:8px;margin-bottom:10px">
           <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">💵 USDT枠 30% — 現金クッション</div>
@@ -842,7 +842,7 @@ function render(){
       <td style="text-align:right;color:var(--blue)">${formatMoneyCompact(d.btc_part.cash)}</td>
       <td style="text-align:right">${d.btc_part.btc_qty>0?d.btc_part.btc_qty.toFixed(6)+' BTC':'—'}</td>
       <td style="text-align:right;font-weight:700">${formatMoneyCompact(btcVal)}</td></tr>
-    <tr class="lrow-g"><td><b style="color:var(--green)">⚡ ACH</b><div style="font-size:10px;color:var(--muted)">Top3モメンタム</div></td>
+    <tr class="lrow-g"><td><b style="color:var(--green)">⚡ ACH</b><div style="font-size:10px;color:var(--muted)">Top2モメンタム</div></td>
       <td>${achStatus}</td>
       <td style="text-align:right;color:var(--blue)">${formatMoneyCompact(d.ach_part.cash||0)}</td>
       <td style="text-align:right;color:var(--muted2)">${Object.keys(achPositions).join(', ')||'—'}</td>
@@ -865,7 +865,7 @@ function render(){
   document.getElementById('pf-btc').textContent = formatMoneyCompact(btcVal);
   document.getElementById('pf-btcsub').textContent = d.btc_part.position?'保有中':'現金待機';
   document.getElementById('pf-ach').textContent = formatMoneyCompact(achVal);
-  document.getElementById('pf-achsub').textContent = (d.ach_part.strategy||'momentum_top3')+' / '+Object.keys(achPositions).length+'銘柄';
+  document.getElementById('pf-achsub').textContent = (d.ach_part.strategy||'momentum_top2_dynamic_regime')+' / '+Object.keys(achPositions).length+'銘柄';
   document.getElementById('pf-usdt').textContent = formatMoneyCompact(usdtVal);
 
   // 予測タブ
