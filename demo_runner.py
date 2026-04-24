@@ -51,9 +51,12 @@ LOG_PATH = PROJECT / "demo_runner.log"
 
 # 設定
 INITIAL = 10_000.0
-BTC_WEIGHT = 0.25   # v2.5: 0.35 → 0.25 (iter71d で multi_lookback と組合せ最良)
-ACH_WEIGHT = 0.25   # v2.5: 0.35 → 0.25
-USDT_WEIGHT = 0.50  # v2.5: 0.30 → 0.50 (multi_lookback+USDT50% で 2025Q1 損失 -45% → -36%)
+BTC_WEIGHT = 0.35   # v2.1: 0.40 → 0.35 (USDT cushion 増強で損失抑制)
+ACH_WEIGHT = 0.35   # v2.1: 0.40 → 0.35
+USDT_WEIGHT = 0.30  # v2.1: 0.20 → 0.30 (+10%クッションで DD -5pt 改善 / iter56)
+# 注: v2.5 は multi_lookback のみを採用し、配分は 35/35/30 を維持。
+#     iter71e の WF 検証で「配分変更単独は OOS 2/4 のみ勝ち = 効果限定的」と判明。
+#     multi_lookback 単独で OOS 3/4 勝ちのため、配分変更を加える意味は薄い。
 USDT_ANNUAL_RATE = 0.03
 # Binance VIP0: Taker 0.060%, Maker 0.020%
 # 実効fee = 約定率98.3%×Maker + 1.7%×Taker (iter62α/iter62 walk-forward 検証済)
@@ -772,7 +775,7 @@ def fresh_state():
             "dynamic_regime_active": DYNAMIC_REGIME,
             "multi_lookback_active": ACH_MULTI_LOOKBACK,
             "multi_lookback_days": list(ACH_MULTI_LOOKBACK_DAYS),
-            "note": "v2.5: Top2 モメンタム (25+45+90 日平均) + dynamic_regime + trail_stop + 配分 25/25/50",
+            "note": "v2.5: Top2 モメンタム (25+45+90 日 multi_lookback 平均) + dynamic_regime + trail_stop / 配分 35/35/30 維持",
         },
         "usdt_part": {
             "cash": INITIAL * USDT_WEIGHT,
@@ -861,7 +864,7 @@ def load_state():
             state.setdefault("n_milestone_ach_exits", 0)
             migrated = True
             log(f"   🔄 v2.4 migration: dynamic_regime=on, trail_ach={TRAIL_STOP_ACH*100:.0f}%, trail_btc={TRAIL_STOP_BTC*100:.0f}%")
-        # v2.4 → v2.5 アップグレード (multi_lookback + 配分 25/25/50)
+        # v2.4 → v2.5 アップグレード (multi_lookback のみ追加、配分は据え置き)
         if state.get("version") == "2.4":
             state["version"] = "2.5"
             state["version_name"] = "気持ちマックス v2.5"
@@ -869,25 +872,8 @@ def load_state():
             ach_p["multi_lookback_active"] = ACH_MULTI_LOOKBACK
             ach_p["multi_lookback_days"] = list(ACH_MULTI_LOOKBACK_DAYS)
             ach_p["strategy"] = "momentum_top2_dynamic_regime_multi_lb"
-            # 配分 35/35/30 → 25/25/50 への段階移行
-            # 保有ポジションなし & BTC 非保有時のみ cash 再配分 (安全策)
-            btc_p = state.setdefault("btc_part", {})
-            usdt_p = state.setdefault("usdt_part", {})
-            if not btc_p.get("position") and not ach_p.get("positions"):
-                total_cash = (
-                    btc_p.get("cash", 0)
-                    + ach_p.get("cash", 0)
-                    + usdt_p.get("cash", 0)
-                )
-                if total_cash > 0:
-                    btc_p["cash"] = total_cash * BTC_WEIGHT
-                    ach_p["cash"] = total_cash * ACH_WEIGHT
-                    usdt_p["cash"] = total_cash * USDT_WEIGHT
-                    log(f"   💰 v2.5 cash 再配分: BTC {BTC_WEIGHT*100:.0f}% / "
-                        f"ACH {ACH_WEIGHT*100:.0f}% / USDT {USDT_WEIGHT*100:.0f}%")
             migrated = True
-            log(f"   🔄 v2.5 migration: multi_lookback={ACH_MULTI_LOOKBACK_DAYS}, "
-                f"配分 BTC/ACH/USDT={BTC_WEIGHT:.0%}/{ACH_WEIGHT:.0%}/{USDT_WEIGHT:.0%}")
+            log(f"   🔄 v2.5 migration: multi_lookback={ACH_MULTI_LOOKBACK_DAYS} (配分は 35/35/30 維持)")
         # ach_config を常に最新パラメータで更新 (v2.5 multi_lookback 追加)
         expected_cfg = {
             "top_n": ACH_TOP_N,
