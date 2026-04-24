@@ -1,0 +1,427 @@
+{
+  "meta": {
+    "generated_at": "2026-04-24T06:31:02+00:00",
+    "elapsed_sec": 10.2,
+    "mode": "軽量 (Binance + PKL サンプル突合 + 手計算検証)"
+  },
+  "existence_check": {
+    "BTC": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "BTCUSDT"
+    },
+    "ETH": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "ETHUSDT"
+    },
+    "BNB": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "BNBUSDT"
+    },
+    "SOL": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "SOLUSDT"
+    },
+    "XRP": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "XRPUSDT"
+    },
+    "ADA": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "ADAUSDT"
+    },
+    "AVAX": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "AVAXUSDT"
+    },
+    "DOGE": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "DOGEUSDT"
+    },
+    "TRX": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "TRXUSDT"
+    },
+    "DOT": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "DOTUSDT"
+    },
+    "LINK": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "LINKUSDT"
+    },
+    "UNI": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "UNIUSDT"
+    },
+    "LTC": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "LTCUSDT"
+    },
+    "ATOM": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "ATOMUSDT"
+    },
+    "NEAR": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "NEARUSDT"
+    },
+    "ICP": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "ICPUSDT"
+    },
+    "ETC": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "ETCUSDT"
+    },
+    "XLM": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "XLMUSDT"
+    },
+    "FIL": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "FILUSDT"
+    },
+    "APT": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "APTUSDT"
+    },
+    "ARB": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "ARBUSDT"
+    },
+    "OP": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "OPUSDT"
+    },
+    "INJ": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "INJUSDT"
+    },
+    "SUI": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "SUIUSDT"
+    },
+    "SEI": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "SEIUSDT"
+    },
+    "TIA": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "TIAUSDT"
+    },
+    "RUNE": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "RUNEUSDT"
+    },
+    "ALGO": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "ALGOUSDT"
+    },
+    "SAND": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "SANDUSDT"
+    },
+    "MANA": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "MANAUSDT"
+    },
+    "AXS": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "AXSUSDT"
+    },
+    "CHZ": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "CHZUSDT"
+    },
+    "ENJ": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "ENJUSDT"
+    },
+    "GRT": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "GRTUSDT"
+    },
+    "AAVE": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "AAVEUSDT"
+    },
+    "SNX": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "SNXUSDT"
+    },
+    "CRV": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "CRVUSDT"
+    },
+    "HBAR": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "HBARUSDT"
+    },
+    "VET": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "VETUSDT"
+    },
+    "THETA": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "THETAUSDT"
+    },
+    "EGLD": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "EGLDUSDT"
+    },
+    "XTZ": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "XTZUSDT"
+    },
+    "FLOW": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "FLOWUSDT"
+    },
+    "IOTA": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "IOTAUSDT"
+    },
+    "DASH": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "DASHUSDT"
+    },
+    "ZEC": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "ZECUSDT"
+    },
+    "POL": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "POLUSDT"
+    },
+    "TON": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "TONUSDT"
+    },
+    "ONDO": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "ONDOUSDT"
+    },
+    "JUP": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "JUPUSDT"
+    },
+    "WLD": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "WLDUSDT"
+    },
+    "LDO": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "LDOUSDT"
+    },
+    "IMX": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "IMXUSDT"
+    },
+    "WIF": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "WIFUSDT"
+    },
+    "ENA": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "ENAUSDT"
+    },
+    "GALA": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "GALAUSDT"
+    },
+    "JASMY": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "JASMYUSDT"
+    },
+    "PENDLE": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "PENDLEUSDT"
+    },
+    "MINA": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "MINAUSDT"
+    },
+    "RENDER": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "RENDERUSDT"
+    },
+    "STRK": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "STRKUSDT"
+    },
+    "SUSHI": {
+      "exists": true,
+      "status": "TRADING",
+      "pair": "SUSHIUSDT"
+    },
+    "(除外) MATIC": {
+      "exists": false,
+      "status": "NOT_LISTED",
+      "pair": null
+    },
+    "(除外) FTM": {
+      "exists": false,
+      "status": "NOT_LISTED",
+      "pair": null
+    },
+    "(除外) MKR": {
+      "exists": false,
+      "status": "NOT_LISTED",
+      "pair": null
+    },
+    "(除外) EOS": {
+      "exists": false,
+      "status": "NOT_LISTED",
+      "pair": null
+    }
+  },
+  "cache_integrity": [
+    {
+      "symbol": "BTC",
+      "cache_present": true,
+      "cache_last_date": "2025-04-19",
+      "cache_last_close": 85046.9,
+      "binance_close": 85077.01,
+      "binance_kline_date": "2025-04-19",
+      "same_day_match": true,
+      "delta_pct": 0.0354,
+      "within_1pct": true
+    },
+    {
+      "symbol": "ETH",
+      "cache_present": true,
+      "cache_last_date": "2025-04-19",
+      "cache_last_close": 1612.44,
+      "binance_close": 1613.27,
+      "binance_kline_date": "2025-04-19",
+      "same_day_match": true,
+      "delta_pct": 0.0515,
+      "within_1pct": true
+    },
+    {
+      "symbol": "SOL",
+      "cache_present": true,
+      "cache_last_date": "2025-04-19",
+      "cache_last_close": 139.77,
+      "binance_close": 139.87,
+      "binance_kline_date": "2025-04-19",
+      "same_day_match": true,
+      "delta_pct": 0.0715,
+      "within_1pct": true
+    },
+    {
+      "symbol": "XRP",
+      "cache_present": true,
+      "cache_last_date": "2025-04-19",
+      "cache_last_close": 2.0865,
+      "binance_close": 2.0877,
+      "binance_kline_date": "2025-04-19",
+      "same_day_match": true,
+      "delta_pct": 0.0575,
+      "within_1pct": true
+    },
+    {
+      "symbol": "DOGE",
+      "cache_present": true,
+      "cache_last_date": "2025-04-19",
+      "cache_last_close": 0.1573,
+      "binance_close": 0.1573,
+      "binance_kline_date": "2025-04-19",
+      "same_day_match": true,
+      "delta_pct": 0.0572,
+      "within_1pct": true
+    }
+  ],
+  "logic_verify": {
+    "period": "2020-01-01 〜 2020-01-15",
+    "first_btc_close": 7197.57,
+    "first_btc_ema200": 8773.97,
+    "btc_bullish_on_start": false,
+    "first_equity": 10002.67,
+    "initial_within_10pct": true,
+    "expected_usdt_interest_14d": 3.45,
+    "n_trades": 3,
+    "final": 9938.31,
+    "total_ret_pct": -0.62,
+    "note": "手計算突合: (1) 初期 equity が $10,000 ±10% 内 / (2) BTC EMA200 判定が 2020-01 時点で妥当 (下回り想定) / (3) USDT 金利モデルが日割 0.03/365 で算術通り"
+  },
+  "c3_backtest": {
+    "config": "Top2/LB25/BTC35/ACH35/USDT30/corr0.80",
+    "period": "2020-01-01 〜 2024-12-31",
+    "cagr_pct": 120.18,
+    "max_dd_pct": 62.03,
+    "sharpe": 1.17,
+    "final": 533459.0,
+    "n_trades": 751,
+    "n_bear_exits": 38,
+    "yearly": {
+      "2019": 0.0,
+      "2020": 131.23,
+      "2021": 430.29,
+      "2022": 8.36,
+      "2023": 7.18,
+      "2024": 274.62
+    }
+  }
+}
