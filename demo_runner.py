@@ -126,6 +126,15 @@ ACH_CORR_THRESHOLD = 0.80      # v2.1: 相関 0.80 以上は除外 (集中リス
 ACH_CORR_LOOKBACK_DAYS = 60    # v2.1: 相関計算の過去日数
 ACH_WEIGHT_METHOD = "momentum" # v2.1: "equal" or "momentum" (リターン強度で加重)
 
+# ━━ v2.4 dynamic_regime + trail_stop (iter67〜iter70) ━━━━━━━━━━━━━━
+# iter67 推奨 (bullw=0.60) + iter69 (ACH trail 0.30) + iter70 (BTC trail 0.20)。
+# W4 (2024-01〜2025-04-19) 検証で iter67 単独比 CAGR +52pt, DD -9pt 改善。
+# 目標 DD<55% には未達 (実績 58.2%) だが、過学習疑惑期間でも明確に改善。
+DYNAMIC_REGIME = True          # Bull/Bear で ACH 比率を動的に切替
+BULL_ACH_WEIGHT = 0.60         # Bull 時の ACH 目標比率 (USDT から補充)
+TRAIL_STOP_ACH = 0.30          # ACH 時価が peak から 30% 下落で全 USDT 退避
+TRAIL_STOP_BTC = 0.20          # BTC 時価が peak から 20% 下落で全 USDT 退避
+
 
 def log(msg, also_print=True):
     ts = datetime.now(timezone.utc).astimezone().isoformat(timespec='seconds')
@@ -474,6 +483,52 @@ def ach_update(state, btc_price_now, btc_ema200):
         mtm_total += pos["current_value"]
     ach["virtual_equity"] = round(mtm_total, 4)
 
+    # v2.4: ACH ピーク追跡 + トレーリングストップ判定
+    if DYNAMIC_REGIME and TRAIL_STOP_ACH is not None:
+        peak = ach.get("peak_equity", 0.0)
+        if mtm_total > peak:
+            ach["peak_equity"] = mtm_total
+        elif peak > 0 and (peak - mtm_total) / peak >= TRAIL_STOP_ACH:
+            # 発動: 全ポジション売却 + ACH cash を USDT へ完全移動
+            log(f"🛑 ACH TRAIL_STOP 発動 (peak ${peak:,.2f} → ${mtm_total:,.2f}, -{(peak - mtm_total) / peak * 100:.1f}%)")
+            if ach.get("positions"):
+                fee = MAKER_EFFECTIVE_FEE; slip = 0.0003
+                for sym, pos in list(ach["positions"].items()):
+                    cur_price = current_prices.get(sym, pos["entry_price"])
+                    sell_price = cur_price * (1 - slip)
+                    proceeds = pos["qty"] * sell_price * (1 - fee)
+                    pnl = proceeds - (pos["entry_price"] * pos["qty"])
+                    ach["cash"] = ach.get("cash", 0) + proceeds
+                    state["trades"].append({
+                        "ts": now_iso, "part": "ACH", "action": "TRAIL_EXIT",
+                        "symbol": sym, "price": round(cur_price, 6),
+                        "qty": round(pos["qty"], 6),
+                        "value_usd": round(proceeds, 2),
+                        "pnl_usd": round(pnl, 2),
+                        "reason": f"v2.4 trail_stop_ach {TRAIL_STOP_ACH*100:.0f}%",
+                        "mode": "SIM",
+                    })
+                    log(f"  🔴 ACH TRAIL_EXIT {sym} @ ${cur_price:.4f} qty={pos['qty']:.6f} P&L=${pnl:+.2f}")
+                    if DISCORD_AVAILABLE:
+                        try:
+                            discord_notify.notify_trade(
+                                "TRAIL_EXIT", f"ACH:{sym}", cur_price,
+                                pos["qty"], proceeds, pnl_usd=pnl,
+                            )
+                        except Exception:
+                            pass
+                ach["positions"] = {}
+            # ACH cash を USDT へ完全移動
+            take = ach.get("cash", 0)
+            state.setdefault("usdt_part", {})
+            state["usdt_part"]["cash"] = state["usdt_part"].get("cash", 0) + take
+            ach["cash"] = 0
+            ach["peak_equity"] = 0.0
+            ach["virtual_equity"] = 0.0
+            ach["last_regime"] = "milestone_exited"
+            state["n_milestone_ach_exits"] = state.get("n_milestone_ach_exits", 0) + 1
+            return  # リバランス処理はスキップ
+
     # リバランス実行
     if needs_rebalance:
         log(f"🔄 ACH 月次リバランス実行")
@@ -508,6 +563,13 @@ def ach_update(state, btc_price_now, btc_ema200):
         # BTCレジーム判定: bear regime (BTC < EMA200) は新規購入スキップ = 現金待機
         if btc_price_now < btc_ema200:
             log(f"   ⚠️ BTC < EMA200 (Bear regime) → ACH 新規購入スキップ、現金待機")
+            # v2.4: dynamic_regime なら ACH cash を USDT へ完全退避
+            if DYNAMIC_REGIME and ach.get("cash", 0) > 0:
+                take = ach["cash"]
+                state.setdefault("usdt_part", {})
+                state["usdt_part"]["cash"] = state["usdt_part"].get("cash", 0) + take
+                ach["cash"] = 0
+                log(f"   💰 v2.4 dynamic_regime: ACH cash → USDT 退避 ${take:,.2f}")
             # Bear時でもヒートマップは生成 (観察用)
             if hm_refresh:
                 log(f"   🔍 ヒートマップ用に{len(ACH_UNIVERSE)}銘柄モメンタム取得中...")
@@ -525,7 +587,26 @@ def ach_update(state, btc_price_now, btc_ema200):
             ach["virtual_equity"] = ach["cash"]
             return
 
-        # モメンタム上位3銘柄を選定
+        # v2.4: dynamic_regime Bull 時に ACH 目標比率を引き上げ (USDT から補充)
+        if DYNAMIC_REGIME:
+            btc_p = state.get("btc_part", {})
+            usdt_p = state.setdefault("usdt_part", {})
+            total_eq = (
+                btc_p.get("cash", 0)
+                + btc_p.get("btc_qty", 0) * btc_price_now
+                + ach.get("cash", 0)
+                + usdt_p.get("cash", 0)
+            )
+            target_ach_cash = total_eq * BULL_ACH_WEIGHT
+            if ach.get("cash", 0) < target_ach_cash:
+                shortage = target_ach_cash - ach["cash"]
+                take = min(shortage, usdt_p.get("cash", 0))
+                if take > 0:
+                    ach["cash"] += take
+                    usdt_p["cash"] = usdt_p.get("cash", 0) - take
+                    log(f"   💰 v2.4 dynamic_regime Bull: ACH 補充 +${take:,.2f} (目標比率 {BULL_ACH_WEIGHT*100:.0f}%)")
+
+        # モメンタム上位2銘柄を選定 (v2.4: Top2 + dynamic_regime)
         log(f"   🔍 {len(ACH_UNIVERSE)}銘柄のモメンタム取得中...")
         returns = fetch_momentum_returns(ACH_UNIVERSE, ACH_LOOKBACK_DAYS)
         # ヒートマップ用に全銘柄のリターンをstateに保存
@@ -602,8 +683,8 @@ def ach_update(state, btc_price_now, btc_ema200):
 def fresh_state():
     now = datetime.now(timezone.utc).isoformat(timespec='seconds')
     return {
-        "version": "2.2",
-        "version_name": "気持ちマックス v2.2",
+        "version": "2.4",
+        "version_name": "気持ちマックス v2.4",
         "mode": "SIM",
         "started_at": now,
         "initial_capital": INITIAL,
@@ -618,6 +699,7 @@ def fresh_state():
             "last_signal": "HOLD",
             "entry_price": 0.0,
             "entry_ts": None,
+            "peak_equity": 0.0,          # v2.4: BTC トレーリング用
         },
         "ach_part": {
             "cash": INITIAL * ACH_WEIGHT,
@@ -625,12 +707,14 @@ def fresh_state():
             "last_tick": now,
             "positions": {},          # {sym: {qty, entry_price, entry_ts, current_price, current_value, unrealized_pnl, momentum_at_entry}}
             "last_rebalance": None,   # 次回リバランス判定用
-            "last_regime": None,      # "bear_skip" or "bull_invested"
+            "last_regime": None,      # "bear_skip" or "bull_invested" or "milestone_exited"
             "last_top3": [],          # 最終リバランス時の選定銘柄
-            "strategy": "momentum_top3",
+            "strategy": "momentum_top2_dynamic_regime",
             "lookback_days": ACH_LOOKBACK_DAYS,
             "rebalance_days": ACH_REBALANCE_DAYS,
-            "note": "実市場連動: Top3モメンタム戦略 (過去90日リターン上位3銘柄保有、月次リバランス)",
+            "peak_equity": 0.0,          # v2.4: ACH トレーリング用
+            "dynamic_regime_active": DYNAMIC_REGIME,
+            "note": "v2.4: Top2 モメンタム + dynamic_regime (bull 60% / bear 0%) + trail_stop (ACH 30% / BTC 20%)",
         },
         "usdt_part": {
             "cash": INITIAL * USDT_WEIGHT,
@@ -641,6 +725,9 @@ def fresh_state():
         "peak_equity": INITIAL,
         "max_dd_observed": 0.0,
         "ticks_processed": 0,
+
+        "n_milestone_btc_exits": 0,   # v2.4: BTC トレーリング発動カウンタ
+        "n_milestone_ach_exits": 0,   # v2.4: ACH トレーリング発動カウンタ
 
         "trades": [],
         "equity_history": [
@@ -683,9 +770,9 @@ def load_state():
             ach["rebalance_days"] = ACH_REBALANCE_DAYS
             ach["last_rebalance"] = None  # 次の tick で強制リバランス
             migrated = True
-        if state.get("version") not in ("2.0", "2.1", "2.2"):
-            state["version"] = "2.2"
-            state["version_name"] = "気持ちマックス v2.2"
+        if state.get("version") not in ("2.0", "2.1", "2.2", "2.3", "2.4"):
+            state["version"] = "2.4"
+            state["version_name"] = "気持ちマックス v2.4"
             migrated = True
         if state.get("version") in ("2.0", "2.1"):
             # v2.0/v2.1 → v2.2 アップグレード (ACH即時ベア退避機能追加)
@@ -702,6 +789,20 @@ def load_state():
                 state["usdt_part"]["cash"] = total_cash * USDT_WEIGHT
                 log(f"   💰 v2.2 cash 再配分: BTC {BTC_WEIGHT*100:.0f}% / ACH {ACH_WEIGHT*100:.0f}% / USDT {USDT_WEIGHT*100:.0f}%")
             migrated = True
+        # v2.x → v2.4 アップグレード (dynamic_regime + trail_stop 追加)
+        if state.get("version") in ("2.0", "2.1", "2.2", "2.3"):
+            state["version"] = "2.4"
+            state["version_name"] = "気持ちマックス v2.4"
+            btc_p = state.setdefault("btc_part", {})
+            btc_p["peak_equity"] = btc_p.get("peak_equity", 0.0)
+            ach_p = state.setdefault("ach_part", {})
+            ach_p["peak_equity"] = ach_p.get("peak_equity", 0.0)
+            ach_p["dynamic_regime_active"] = DYNAMIC_REGIME
+            ach_p["strategy"] = "momentum_top2_dynamic_regime"
+            state.setdefault("n_milestone_btc_exits", 0)
+            state.setdefault("n_milestone_ach_exits", 0)
+            migrated = True
+            log(f"   🔄 v2.4 migration: dynamic_regime=on, trail_ach={TRAIL_STOP_ACH*100:.0f}%, trail_btc={TRAIL_STOP_BTC*100:.0f}%")
         # ach_config を常に最新パラメータで更新 (v2.1 新フィールド含む)
         expected_cfg = {
             "top_n": ACH_TOP_N,
@@ -722,9 +823,11 @@ def load_state():
             state["portfolio_weights"] = expected_weights
             migrated = True
         if migrated:
-            log(f"🔄 state.json マイグレーション: v2.2 (Top{ACH_TOP_N}/LB{ACH_LOOKBACK_DAYS}/週次/"
+            version_now = state.get("version", "2.4")
+            regime_label = f"+dynamic_regime(bull{BULL_ACH_WEIGHT*100:.0f}%)+trail_ach{TRAIL_STOP_ACH*100:.0f}%+trail_btc{TRAIL_STOP_BTC*100:.0f}%" if DYNAMIC_REGIME else ""
+            log(f"🔄 state.json マイグレーション: v{version_now} (Top{ACH_TOP_N}/LB{ACH_LOOKBACK_DAYS}/週次/"
                 f"BTC{BTC_WEIGHT:.0%}/ACH{ACH_WEIGHT:.0%}/USDT{USDT_WEIGHT:.0%}/Corr{ACH_CORR_THRESHOLD}/"
-                f"{ACH_WEIGHT_METHOD}加重) に移行")
+                f"{ACH_WEIGHT_METHOD}加重{regime_label}) に移行")
         return state
     except Exception as e:
         log(f"⚠️ state読込失敗: {e} → 初期化")
@@ -804,6 +907,9 @@ def process_tick(state, btc_data):
         btc["last_signal"] = "BUY"
         btc["entry_price"] = btc_price
         btc["entry_ts"] = now_iso
+        # v2.4: trail_stop_btc 用 peak を新規購入時点の時価にリセット
+        if DYNAMIC_REGIME:
+            btc["peak_equity"] = btc_qty * btc_price
         state["trades"].append({
             "ts": now_iso, "part": "BTC", "action": "BUY",
             "price": btc_price, "qty": round(btc_qty, 6),
@@ -819,7 +925,51 @@ def process_tick(state, btc_data):
                                              btc_qty, btc_qty * btc_price, ema200=ema200)
             except Exception as e:
                 log(f"⚠️ Discord通知失敗: {e}")
-    elif btc_price < ema200 and btc["position"]:
+    elif btc["position"] and DYNAMIC_REGIME and TRAIL_STOP_BTC is not None:
+        # v2.4: BTC トレーリングストップ判定 (EMA200 判定より先にチェック)
+        btc_value_now = btc["cash"] + btc["btc_qty"] * btc_price
+        peak = btc.get("peak_equity", 0.0)
+        if btc_value_now > peak:
+            btc["peak_equity"] = btc_value_now
+        elif peak > 0 and (peak - btc_value_now) / peak >= TRAIL_STOP_BTC:
+            # トレーリングストップ発動: 全売却 + USDT へ完全移動
+            fee = MAKER_EFFECTIVE_FEE; slip = 0.0003
+            sell_price = btc_price * (1 - slip)
+            proceeds = btc["btc_qty"] * sell_price * (1 - fee)
+            pnl = proceeds - (btc["entry_price"] * btc["btc_qty"] if btc["entry_price"] else 0)
+            qty_was = btc["btc_qty"]
+            # USDT へ完全移動 (btc_cash は 0 のはずだが念のため加算)
+            state.setdefault("usdt_part", {})
+            state["usdt_part"]["cash"] = state["usdt_part"].get("cash", 0) + proceeds + btc.get("cash", 0)
+            btc["btc_qty"] = 0
+            btc["cash"] = 0
+            btc["position"] = False
+            btc["peak_equity"] = 0.0
+            btc["last_signal"] = "TRAIL_STOP_EXIT"
+            state["n_milestone_btc_exits"] = state.get("n_milestone_btc_exits", 0) + 1
+            state["trades"].append({
+                "ts": now_iso, "part": "BTC", "action": "TRAIL_EXIT",
+                "price": btc_price, "qty": round(qty_was, 6),
+                "value_usd": round(proceeds, 2),
+                "pnl_usd": round(pnl, 2),
+                "ema200": ema200,
+                "reason": f"v2.4 trail_stop_btc {TRAIL_STOP_BTC*100:.0f}%",
+                "mode": "SIM",
+            })
+            signal_action = (
+                f"🛑 BTC TRAIL_STOP @ ${btc_price:,.2f} "
+                f"(peak→-{TRAIL_STOP_BTC*100:.0f}%, P&L: ${pnl:+,.2f})"
+            )
+            log(signal_action)
+            if DISCORD_AVAILABLE:
+                try:
+                    discord_notify.notify_trade(
+                        "TRAIL_EXIT", "BTC", btc_price,
+                        qty_was, proceeds, pnl_usd=pnl, ema200=ema200,
+                    )
+                except Exception as e:
+                    log(f"⚠️ Discord通知失敗: {e}")
+    if btc_price < ema200 and btc["position"]:
         # SELL
         fee = MAKER_EFFECTIVE_FEE; slip = 0.0003
         sell_price = btc_price * (1 - slip)
