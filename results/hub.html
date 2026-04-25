@@ -76,23 +76,37 @@ html, body { background: var(--bg); color: var(--text);
 .device-card.outside { border-left: 4px solid var(--orange); }
 .device-card .name { font-size: 13px; color: var(--muted2); font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-.device-card .url {
-  display: block; background: var(--bg); border: 1px solid var(--border2);
+.device-card .url-input {
+  display: block; width: 100%; background: var(--bg); border: 1px solid var(--border2);
   border-radius: 8px; padding: 10px 12px;
   font-family: "SF Mono", Menlo, Consolas, monospace;
   font-size: 13px; word-break: break-all;
   color: var(--green); text-decoration: none;
   margin-top: 6px;
   transition: 0.15s;
+  -webkit-user-select: all; user-select: all;
+  cursor: text;
 }
-.device-card .url:hover { background: var(--bg4); color: var(--text); }
+.device-card .url-input:focus { outline: 2px solid var(--blue); background: var(--bg4); }
+.device-card .url-input:hover { background: var(--bg4); }
+.device-card .btn-row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.device-card .copy-btn, .device-card .open-btn {
+  border-radius: 6px; padding: 6px 12px; font-size: 11px; font-weight: 700;
+  cursor: pointer; font-family: inherit; border: 1px solid;
+  flex: 1; min-width: 100px;
+  transition: 0.15s;
+}
 .device-card .copy-btn {
-  background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue);
-  border-radius: 6px; padding: 4px 10px; font-size: 11px; font-weight: 700;
-  cursor: pointer; margin-top: 8px;
-  font-family: inherit;
+  background: var(--blue-bg); color: var(--blue); border-color: var(--blue);
 }
-.device-card .copy-btn:hover { background: var(--blue); color: var(--bg); }
+.device-card .copy-btn:hover, .device-card .copy-btn:active {
+  background: var(--blue); color: var(--bg);
+}
+.device-card .open-btn {
+  background: var(--green-bg); color: var(--green); border-color: var(--green);
+  text-decoration: none; text-align: center;
+}
+.device-card .open-btn:hover { background: var(--green); color: var(--bg); }
 .device-card .note { font-size: 11px; color: var(--muted2); margin-top: 6px; }
 
 /* ━━━ カテゴリ ━━━ */
@@ -175,29 +189,49 @@ html, body { background: var(--bg); color: var(--text);
     <div class="device-grid">
       <div class="device-card windows">
         <div class="name">💻 Windows / このパソコン</div>
-        <a class="url" href="hub.html">http://localhost:8767/hub.html</a>
-        <button class="copy-btn" onclick="copyUrl('http://localhost:8767/hub.html', this)">📋 URL をコピー</button>
+        <input class="url-input" type="text" readonly
+               value="http://localhost:8767/hub.html"
+               onclick="this.select()" onfocus="this.select()">
+        <div class="btn-row">
+          <button class="copy-btn" onclick="copyUrl(this)">📋 コピー</button>
+          <a class="open-btn" href="http://localhost:8767/hub.html">🌐 開く</a>
+        </div>
         <div class="note">同じ Windows 上のブラウザで開く時。Chrome/Edge/Firefox など全部 OK。</div>
       </div>
 
       <div class="device-card iphone">
         <div class="name">📱 iPhone / Android (同じ Wi-Fi)</div>
-        <a class="url" href="http://192.168.11.7:8767/hub.html">http://192.168.11.7:8767/hub.html</a>
-        <button class="copy-btn" onclick="copyUrl('http://192.168.11.7:8767/hub.html', this)">📋 URL をコピー</button>
+        <input class="url-input" type="text" readonly
+               value="http://192.168.11.7:8767/hub.html"
+               onclick="this.select()" onfocus="this.select()">
+        <div class="btn-row">
+          <button class="copy-btn" onclick="copyUrl(this)">📋 コピー</button>
+          <a class="open-btn" href="http://192.168.11.7:8767/hub.html">🌐 開く</a>
+        </div>
         <div class="note">同じ家の Wi-Fi に繋がっているスマホから。Safari でホーム画面に追加すれば PWA 起動可。</div>
       </div>
 
       <div class="device-card mac">
         <div class="name">🖥️ Mac (同じ Wi-Fi)</div>
-        <a class="url" href="http://192.168.11.7:8767/hub.html">http://192.168.11.7:8767/hub.html</a>
-        <button class="copy-btn" onclick="copyUrl('http://192.168.11.7:8767/hub.html', this)">📋 URL をコピー</button>
+        <input class="url-input" type="text" readonly
+               value="http://192.168.11.7:8767/hub.html"
+               onclick="this.select()" onfocus="this.select()">
+        <div class="btn-row">
+          <button class="copy-btn" onclick="copyUrl(this)">📋 コピー</button>
+          <a class="open-btn" href="http://192.168.11.7:8767/hub.html">🌐 開く</a>
+        </div>
         <div class="note">家の Wi-Fi に繋がっている Mac から。Safari/Chrome どちらでも OK。</div>
       </div>
 
       <div class="device-card outside">
         <div class="name">🌐 外出先 (Tailscale 経由)</div>
-        <a class="url" href="http://100.103.25.44:8767/hub.html">http://100.103.25.44:8767/hub.html</a>
-        <button class="copy-btn" onclick="copyUrl('http://100.103.25.44:8767/hub.html', this)">📋 URL をコピー</button>
+        <input class="url-input" type="text" readonly
+               value="http://100.103.25.44:8767/hub.html"
+               onclick="this.select()" onfocus="this.select()">
+        <div class="btn-row">
+          <button class="copy-btn" onclick="copyUrl(this)">📋 コピー</button>
+          <a class="open-btn" href="http://100.103.25.44:8767/hub.html">🌐 開く</a>
+        </div>
         <div class="note">Tailscale VPN に繋いだ状態で外出先からアクセスできる。出張時等に便利。</div>
       </div>
     </div>
@@ -461,23 +495,85 @@ html, body { background: var(--bg); color: var(--text);
 </div>
 
 <script>
-function copyUrl(url, btn) {
-  navigator.clipboard.writeText(url).then(() => {
-    const original = btn.textContent;
-    btn.textContent = '✅ コピーしました';
+// 堅牢なコピー機能 (HTTP / HTTPS 両対応、3 段フォールバック)
+function copyUrl(btn) {
+  // 同じ device-card 内の input を取得
+  const card = btn.closest('.device-card');
+  const input = card.querySelector('.url-input');
+  if (!input) return;
+  const url = input.value;
+  const original = btn.textContent;
+
+  function showSuccess() {
+    btn.textContent = '✅ コピーしました!';
     btn.style.background = 'var(--green-bg)';
     btn.style.color = 'var(--green)';
     btn.style.borderColor = 'var(--green)';
     setTimeout(() => {
       btn.textContent = original;
-      btn.style.background = 'var(--blue-bg)';
-      btn.style.color = 'var(--blue)';
-      btn.style.borderColor = 'var(--blue)';
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.style.borderColor = '';
     }, 1800);
-  }).catch(() => {
-    btn.textContent = '⚠️ コピー失敗、長押しでコピーしてください';
-  });
+  }
+
+  function showFallback() {
+    // input の中身を選択状態にして「手動コピーしてください」と促す
+    input.focus();
+    input.setSelectionRange(0, input.value.length);
+    btn.textContent = '↑ 上の URL を長押し→コピー';
+    btn.style.background = 'var(--yellow-bg)';
+    btn.style.color = 'var(--yellow)';
+    btn.style.borderColor = 'var(--yellow)';
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 4000);
+  }
+
+  // 方法 1: navigator.clipboard (HTTPS / localhost のみ動く)
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(url).then(showSuccess).catch(tryExecCommand);
+  } else {
+    tryExecCommand();
+  }
+
+  // 方法 2: document.execCommand('copy') (HTTP でも動く古い API)
+  function tryExecCommand() {
+    try {
+      input.focus();
+      input.setSelectionRange(0, input.value.length);
+      const successful = document.execCommand('copy');
+      // タップ位置を保つために少し待つ
+      setTimeout(() => input.blur(), 100);
+      if (successful) {
+        showSuccess();
+      } else {
+        showFallback();
+      }
+    } catch (err) {
+      showFallback();
+    }
+  }
 }
+
+// ページロード時に現在のホスト名で URL を上書き (どこからアクセスしてもうまくいくように)
+window.addEventListener('DOMContentLoaded', () => {
+  const currentHost = window.location.host;  // 例: 192.168.11.7:8767
+  const currentProtocol = window.location.protocol; // 例: http:
+  // 「現在開いている URL に基づく自分用 URL」を 1 つ追加表示も可だが、
+  // 4 デバイス分のリンクは固定で OK。
+  // ただし「いま開いてる URL 自身」が分かるよう、ヒーロー部に表示
+  const heroSub = document.querySelector('.hero .sub');
+  if (heroSub) {
+    const currentDiv = document.createElement('div');
+    currentDiv.style.cssText = 'margin-top: 8px; font-size: 12px; color: var(--muted);';
+    currentDiv.innerHTML = `📍 今開いている URL: <code style="background:var(--bg);padding:2px 6px;border-radius:4px;color:var(--green);">${currentProtocol}//${currentHost}/hub.html</code>`;
+    heroSub.appendChild(currentDiv);
+  }
+});
 </script>
 </body>
 </html>
