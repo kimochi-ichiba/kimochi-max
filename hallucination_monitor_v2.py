@@ -218,9 +218,12 @@ def check_state_freshness(state: dict) -> tuple[bool, str]:
 
 
 def check_version(state: dict) -> tuple[bool, str]:
-    """7. state.json version = 2.x (v2系統 すべて受容)"""
+    """7. state.json version = 2.x or 3.x (v2/v3 系統 すべて受容)
+
+    v3.0 (cycle hunter) は iter76 WF 4/4 勝ち採用構成として認可済。
+    """
     v = state.get("version")
-    ok = isinstance(v, str) and v.startswith("2.")
+    ok = isinstance(v, str) and (v.startswith("2.") or v.startswith("3."))
     return ok, f"version={v}, version_name={state.get('version_name', '未設定')}"
 
 
