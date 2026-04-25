@@ -1,5 +1,5 @@
 """
-気持ちマックス v2.5 デモトレード・ライブランナー (毎秒WebSocket版)
+気持ちマックス v3.0 (旧 v5.0_balanced) デモトレード・ライブランナー (毎秒WebSocket版)
 ======================================================================
 Binance WebSocket で BTC 価格を毎秒受信、3層タイマーで処理:
 
@@ -8,10 +8,12 @@ Binance WebSocket で BTC 価格を毎秒受信、3層タイマーで処理:
  [5分]  EMA200再計算 (REST klines) + BTCマイルドシグナル判定
  [24h]  50銘柄モメンタム更新 (ヒートマップ)
 
-構成:
-  - BTC 40% : EMA200上で保有、下で現金化 (BTCマイルド)
-  - ACH 40% : Top3モメンタム実市場連動 (過去90日リターン、月次リバランス)
-  - USDT 20%: 年3%金利 (日割)
+v3.0 構成 (iter76 WF 4/4 勝ち採用候補):
+  - BTC 35% : EMA200上で保有、下で現金化 (BTCマイルド)
+  - ACH 45% : Top2モメンタム実市場連動 (multi_lookback 25+45+90 日平均)
+  - USDT 20%: 年3%金利 (クッション減らして攻め)
+  - Bull 時 ACH 比率 65% に拡張 (dynamic_regime)
+  - 期待値: 過去 5 年再現で 53.9 倍、ユーザー予想 (BTC 5x/alt 10x) で 15-30 倍
 
 起動:
   python3 demo_runner.py           # 通常ループ (毎秒tick)
@@ -51,12 +53,12 @@ LOG_PATH = PROJECT / "demo_runner.log"
 
 # 設定
 INITIAL = 10_000.0
-BTC_WEIGHT = 0.35   # v2.1: 0.40 → 0.35 (USDT cushion 増強で損失抑制)
-ACH_WEIGHT = 0.35   # v2.1: 0.40 → 0.35
-USDT_WEIGHT = 0.30  # v2.1: 0.20 → 0.30 (+10%クッションで DD -5pt 改善 / iter56)
-# 注: v2.5 は multi_lookback のみを採用し、配分は 35/35/30 を維持。
-#     iter71e の WF 検証で「配分変更単独は OOS 2/4 のみ勝ち = 効果限定的」と判明。
-#     multi_lookback 単独で OOS 3/4 勝ちのため、配分変更を加える意味は薄い。
+# v3.0 (iter76 WF 4/4 勝ち採用候補):
+#   BTC 35% / ACH 45% / USDT 20%、bull_ach 0.65
+#   v2.5 (35/35/30) と比較: 4 期間全て上回る、複利 +301% → +344%、DD ほぼ同じ
+BTC_WEIGHT = 0.35   # 据え置き (v2.5 と同じ)
+ACH_WEIGHT = 0.45   # v3.0: 0.35 → 0.45 (アルト集中で爆発捕捉)
+USDT_WEIGHT = 0.20  # v3.0: 0.30 → 0.20 (クッション減らして攻め)
 USDT_ANNUAL_RATE = 0.03
 # Binance VIP0: Taker 0.060%, Maker 0.020%
 # 実効fee = 約定率98.3%×Maker + 1.7%×Taker (iter62α/iter62 walk-forward 検証済)
@@ -139,7 +141,7 @@ ACH_MULTI_LOOKBACK_DAYS = [25, 45, 90]
 # W4 (2024-01〜2025-04-19) 検証で iter67 単独比 CAGR +52pt, DD -9pt 改善。
 # 目標 DD<55% には未達 (実績 58.2%) だが、過学習疑惑期間でも明確に改善。
 DYNAMIC_REGIME = True          # Bull/Bear で ACH 比率を動的に切替
-BULL_ACH_WEIGHT = 0.60         # Bull 時の ACH 目標比率 (USDT から補充)
+BULL_ACH_WEIGHT = 0.65         # v3.0: 0.60 → 0.65 (Bull で更に攻める、iter76 4/4 勝ち)
 TRAIL_STOP_ACH = 0.30          # ACH 時価が peak から 30% 下落で全 USDT 退避
 TRAIL_STOP_BTC = 0.20          # BTC 時価が peak から 20% 下落で全 USDT 退避
 
@@ -742,8 +744,8 @@ def ach_update(state, btc_price_now, btc_ema200):
 def fresh_state():
     now = datetime.now(timezone.utc).isoformat(timespec='seconds')
     return {
-        "version": "2.5",
-        "version_name": "気持ちマックス v2.5",
+        "version": "3.0",
+        "version_name": "気持ちマックス v3.0 (cycle hunter, iter76 4/4 勝ち)",
         "mode": "SIM",
         "started_at": now,
         "initial_capital": INITIAL,
@@ -831,9 +833,9 @@ def load_state():
             ach["rebalance_days"] = ACH_REBALANCE_DAYS
             ach["last_rebalance"] = None  # 次の tick で強制リバランス
             migrated = True
-        if state.get("version") not in ("2.0", "2.1", "2.2", "2.3", "2.4", "2.5"):
-            state["version"] = "2.5"
-            state["version_name"] = "気持ちマックス v2.5"
+        if state.get("version") not in ("2.0", "2.1", "2.2", "2.3", "2.4", "2.5", "3.0"):
+            state["version"] = "3.0"
+            state["version_name"] = "気持ちマックス v3.0 (cycle hunter)"
             migrated = True
         if state.get("version") in ("2.0", "2.1"):
             # v2.0/v2.1 → v2.2 アップグレード (ACH即時ベア退避機能追加)
@@ -874,6 +876,31 @@ def load_state():
             ach_p["strategy"] = "momentum_top2_dynamic_regime_multi_lb"
             migrated = True
             log(f"   🔄 v2.5 migration: multi_lookback={ACH_MULTI_LOOKBACK_DAYS} (配分は 35/35/30 維持)")
+        # v2.5 → v3.0 アップグレード (iter76 4/4 勝ち採用構成、配分 35/45/20、bull_ach 0.65)
+        if state.get("version") == "2.5":
+            state["version"] = "3.0"
+            state["version_name"] = "気持ちマックス v3.0 (cycle hunter)"
+            ach_p = state.setdefault("ach_part", {})
+            ach_p["strategy"] = "momentum_top2_v3.0_cycle_hunter"
+            # 配分 35/35/30 → 35/45/20 への段階移行
+            # 保有ポジションなし & BTC 非保有時のみ cash 再配分 (安全策)
+            btc_p = state.setdefault("btc_part", {})
+            usdt_p = state.setdefault("usdt_part", {})
+            if not btc_p.get("position") and not ach_p.get("positions"):
+                total_cash = (
+                    btc_p.get("cash", 0)
+                    + ach_p.get("cash", 0)
+                    + usdt_p.get("cash", 0)
+                )
+                if total_cash > 0:
+                    btc_p["cash"] = total_cash * BTC_WEIGHT     # 0.35
+                    ach_p["cash"] = total_cash * ACH_WEIGHT     # 0.45 ← 増額
+                    usdt_p["cash"] = total_cash * USDT_WEIGHT   # 0.20 ← 減額
+                    log(f"   💰 v3.0 cash 再配分: BTC {BTC_WEIGHT*100:.0f}% / "
+                        f"ACH {ACH_WEIGHT*100:.0f}% / USDT {USDT_WEIGHT*100:.0f}%")
+            migrated = True
+            log(f"   🚀 v3.0 migration: BULL_ACH 0.65, 配分 35/45/20 "
+                f"(iter76 WF 4/4 勝ち採用構成)")
         # ach_config を常に最新パラメータで更新 (v2.5 multi_lookback 追加)
         expected_cfg = {
             "top_n": ACH_TOP_N,
@@ -1170,7 +1197,7 @@ def run_once():
 def run_loop():
     """3層タイマー永続ループ (毎秒tick / 60秒snapshot / 5分EMA再計算)"""
     log("=" * 60)
-    log("🚀 気持ちマックス v2.5 デモトレードランナー 起動 (WebSocket版)")
+    log("🚀 気持ちマックス v3.0 (cycle hunter) デモトレードランナー 起動 (WebSocket版)")
     log(f"   初期資金: ${INITIAL:,.0f}")
     log(f"   構成: BTC {BTC_WEIGHT*100:.0f}% + ACH {ACH_WEIGHT*100:.0f}% + USDT {USDT_WEIGHT*100:.0f}%")
     log(f"   ACH設定: Top{ACH_TOP_N} / LB{ACH_LOOKBACK_DAYS}日 / リバランス{ACH_REBALANCE_DAYS}日 / {len(ACH_UNIVERSE)}銘柄")
