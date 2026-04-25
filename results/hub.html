@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a1628">
+<title>気持ちマックス Bot ハブ - 全レポート</title>
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="manifest" href="manifest.json">
+<style>
+:root {
+  --bg: #0a1628; --bg2: #122340; --bg3: #1a3052; --bg4: #243d5e;
+  --text: #e0eaf5; --muted: #7a92b0; --muted2: #abc1d8;
+  --border: #1f3a5e; --border2: #2c4d75;
+  --green: #4ade80; --green-bg: rgba(74,222,128,0.15);
+  --red: #f87171; --red-bg: rgba(248,113,113,0.15);
+  --yellow: #fbbf24; --yellow-bg: rgba(251,191,36,0.15);
+  --blue: #60a5fa; --blue-bg: rgba(96,165,250,0.15);
+  --purple: #a78bfa; --purple-bg: rgba(167,139,250,0.15);
+  --orange: #fb923c; --orange-bg: rgba(251,146,60,0.15);
+  --pink: #f472b6; --pink-bg: rgba(244,114,182,0.15);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { background: var(--bg); color: var(--text);
+  font-family: -apple-system, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  font-size: 15px; line-height: 1.6; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 20px 16px 80px; }
+
+/* ━━━ ヒーロー ━━━ */
+.hero {
+  background: linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 50%, #0d2a4d 100%);
+  border: 1px solid var(--border); border-radius: 18px;
+  padding: 32px 26px; margin-bottom: 22px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -40%; right: -20%; width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(96,165,250,0.2) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero h1 { font-size: 30px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 10px;
+  position: relative; }
+.hero h1 em { color: var(--yellow); font-style: normal; }
+.hero .live-dot {
+  display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 12px var(--green);
+  animation: pulse 2s ease-in-out infinite; margin-right: 6px; vertical-align: middle;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.hero .sub { color: var(--muted2); font-size: 14px; margin-top: 6px; position: relative; }
+.hero .stats { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 16px; position: relative; }
+.hero .stat-pill {
+  background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+  border-radius: 12px; padding: 8px 14px; font-size: 13px;
+}
+.hero .stat-pill strong { color: var(--green); }
+
+/* ━━━ デバイス URL ━━━ */
+.device-urls {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px; margin-bottom: 22px;
+}
+.device-urls h2 { font-size: 18px; font-weight: 700; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px; }
+.device-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px; }
+.device-card {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 16px; position: relative;
+}
+.device-card.iphone { border-left: 4px solid var(--pink); }
+.device-card.windows { border-left: 4px solid var(--blue); }
+.device-card.mac { border-left: 4px solid var(--purple); }
+.device-card.outside { border-left: 4px solid var(--orange); }
+.device-card .name { font-size: 13px; color: var(--muted2); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+.device-card .url-input {
+  display: block; width: 100%; background: var(--bg); border: 1px solid var(--border2);
+  border-radius: 8px; padding: 10px 12px;
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px; word-break: break-all;
+  color: var(--green); text-decoration: none;
+  margin-top: 6px;
+  transition: 0.15s;
+  -webkit-user-select: all; user-select: all;
+  cursor: text;
+}
+.device-card .url-input:focus { outline: 2px solid var(--blue); background: var(--bg4); }
+.device-card .url-input:hover { background: var(--bg4); }
+.device-card .btn-row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.device-card .copy-btn, .device-card .open-btn {
+  border-radius: 6px; padding: 6px 12px; font-size: 11px; font-weight: 700;
+  cursor: pointer; font-family: inherit; border: 1px solid;
+  flex: 1; min-width: 100px;
+  transition: 0.15s;
+}
+.device-card .copy-btn {
+  background: var(--blue-bg); color: var(--blue); border-color: var(--blue);
+}
+.device-card .copy-btn:hover, .device-card .copy-btn:active {
+  background: var(--blue); color: var(--bg);
+}
+.device-card .open-btn {
+  background: var(--green-bg); color: var(--green); border-color: var(--green);
+  text-decoration: none; text-align: center;
+}
+.device-card .open-btn:hover { background: var(--green); color: var(--bg); }
+.device-card .note { font-size: 11px; color: var(--muted2); margin-top: 6px; }
+
+/* ━━━ カテゴリ ━━━ */
+.category {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px; margin-bottom: 18px;
+}
+.category h2 {
+  font-size: 19px; font-weight: 800; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.category h2 .badge {
+  font-size: 11px; padding: 3px 10px; border-radius: 12px;
+  background: var(--bg3); color: var(--muted2); font-weight: 700;
+}
+
+.report-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px; }
+.report-card {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px;
+  transition: 0.15s; text-decoration: none; color: var(--text);
+  display: flex; flex-direction: column; gap: 6px;
+  position: relative; overflow: hidden;
+}
+.report-card:hover { background: var(--bg4); border-color: var(--blue); transform: translateY(-1px); }
+.report-card.featured { border: 2px solid var(--yellow); background: linear-gradient(135deg, var(--yellow-bg), var(--bg3)); }
+.report-card.live { border: 2px solid var(--green); background: linear-gradient(135deg, var(--green-bg), var(--bg3)); }
+.report-card .icon { font-size: 24px; }
+.report-card .title { font-size: 14px; font-weight: 700; }
+.report-card .desc { font-size: 12px; color: var(--muted2); line-height: 1.5; }
+.report-card .tag {
+  display: inline-block; font-size: 10px; padding: 2px 8px;
+  border-radius: 10px; background: var(--bg);
+  color: var(--muted2); font-weight: 600;
+  margin-top: 4px; align-self: flex-start;
+}
+.report-card .tag.new { background: var(--green-bg); color: var(--green); }
+.report-card .tag.popular { background: var(--yellow-bg); color: var(--yellow); }
+
+/* ━━━ レスポンシブ ━━━ */
+@media (max-width: 720px) {
+  .wrap { padding: 14px 10px 60px; }
+  .hero { padding: 22px 18px; }
+  .hero h1 { font-size: 22px; }
+  .hero .stats { gap: 8px; }
+  .hero .stat-pill { font-size: 11px; padding: 6px 10px; }
+  .device-grid { grid-template-columns: 1fr; }
+  .report-grid { grid-template-columns: 1fr; }
+  .category { padding: 16px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ━━━ ヒーロー ━━━ -->
+  <div class="hero">
+    <h1>🎛️ 気持ち<em>マックス</em> Bot ハブ</h1>
+    <div class="sub">
+      <span class="live-dot"></span>v3.0 (cycle hunter) SIM 稼働中 ·
+      全 HTML レポート集約 · iPhone / Windows / Mac 対応
+    </div>
+    <div class="stats">
+      <div class="stat-pill">バージョン: <strong>v3.0</strong></div>
+      <div class="stat-pill">監視: <strong>13/13 PASS</strong></div>
+      <div class="stat-pill">期待 CAGR: <strong>80-90%/年</strong></div>
+      <div class="stat-pill">5 年期待倍率: <strong>15-25 倍</strong></div>
+    </div>
+  </div>
+
+  <!-- ━━━ デバイス別 URL ━━━ -->
+  <div class="device-urls">
+    <h2>📱 デバイス別アクセス URL</h2>
+    <p style="color: var(--muted2); font-size: 13px; margin-bottom: 14px;">
+      気持ちマックス Bot のローカルダッシュボード/レポート集にアクセスする URL です。
+      コピーボタンを押してブラウザの URL 欄に貼り付けてください。
+    </p>
+
+    <div class="device-grid">
+      <div class="device-card windows">
+        <div class="name">💻 Windows / このパソコン</div>
+        <input class="url-input" type="text" readonly
+               value="http://localhost:8767/hub.html"
+               onclick="this.select()" onfocus="this.select()">
+        <div class="btn-row">
+          <button class="copy-btn" onclick="copyUrl(this)">📋 コピー</button>
+          <a class="open-btn" href="http://localhost:8767/hub.html">🌐 開く</a>
+        </div>
+        <div class="note">同じ Windows 上のブラウザで開く時。Chrome/Edge/Firefox など全部 OK。</div>
+      </div>
+
+      <div class="device-card iphone">
+        <div class="name">📱 iPhone / Android (同じ Wi-Fi)</div>
+        <input class="url-input" type="text" readonly
+               value="http://192.168.11.7:8767/hub.html"
+               onclick="this.select()" onfocus="this.select()">
+        <div class="btn-row">
+          <button class="copy-btn" onclick="copyUrl(this)">📋 コピー</button>
+          <a class="open-btn" href="http://192.168.11.7:8767/hub.html">🌐 開く</a>
+        </div>
+        <div class="note">同じ家の Wi-Fi に繋がっているスマホから。Safari でホーム画面に追加すれば PWA 起動可。</div>
+      </div>
+
+      <div class="device-card mac">
+        <div class="name">🖥️ Mac (同じ Wi-Fi)</div>
+        <input class="url-input" type="text" readonly
+               value="http://192.168.11.7:8767/hub.html"
+               onclick="this.select()" onfocus="this.select()">
+        <div class="btn-row">
+          <button class="copy-btn" onclick="copyUrl(this)">📋 コピー</button>
+          <a class="open-btn" href="http://192.168.11.7:8767/hub.html">🌐 開く</a>
+        </div>
+        <div class="note">家の Wi-Fi に繋がっている Mac から。Safari/Chrome どちらでも OK。</div>
+      </div>
+
+      <div class="device-card outside">
+        <div class="name">🌐 外出先 (Tailscale 経由)</div>
+        <input class="url-input" type="text" readonly
+               value="http://100.103.25.44:8767/hub.html"
+               onclick="this.select()" onfocus="this.select()">
+        <div class="btn-row">
+          <button class="copy-btn" onclick="copyUrl(this)">📋 コピー</button>
+          <a class="open-btn" href="http://100.103.25.44:8767/hub.html">🌐 開く</a>
+        </div>
+        <div class="note">Tailscale VPN に繋いだ状態で外出先からアクセスできる。出張時等に便利。</div>
+      </div>
+    </div>
+
+    <div style="background: var(--blue-bg); border: 1px solid var(--blue);
+                border-radius: 10px; padding: 12px; margin-top: 14px; font-size: 13px;">
+      <strong style="color: var(--blue);">💡 iPhone でアプリのように使う方法</strong><br>
+      Safari でアクセス → 共有ボタン → 「ホーム画面に追加」<br>
+      → アイコンができるのでタップでフルスクリーン起動 (PWA 対応済)
+    </div>
+  </div>
+
+  <!-- ━━━ ライブダッシュボード (最重要) ━━━ -->
+  <div class="category">
+    <h2>⚡ ライブ・状態 <span class="badge">毎秒更新</span></h2>
+    <div class="report-grid">
+      <a class="report-card live" href="demo.html">
+        <div class="icon">📊</div>
+        <div class="title">ライブダッシュボード</div>
+        <div class="desc">SIM 稼働中の最新状態。総資産・BTC 価格・ポジション・取引履歴をリアルタイム表示。</div>
+        <span class="tag popular">⭐ 一番大事</span>
+      </a>
+      <a class="report-card" href="kimochimax_live_hallucination_report.html">
+        <div class="icon">🔍</div>
+        <div class="title">ハルシネーション検査</div>
+        <div class="desc">5 分ごとの自動チェック結果。13/13 PASS なら全て正常。</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ━━━ Bot 解説 (新規) ━━━ -->
+  <div class="category">
+    <h2>📖 Bot を理解する <span class="badge">新規追加</span></h2>
+    <div class="report-grid">
+      <a class="report-card featured" href="profit_structure.html">
+        <div class="icon">💰</div>
+        <div class="title">収益構造ガイド</div>
+        <div class="desc">v2.5/v3.0 の戦略を専門用語なしで解説。資産配分・5 年シミュレーション・リスクを図解。</div>
+        <span class="tag new">NEW</span>
+      </a>
+      <a class="report-card featured" href="key_numbers_explained.html">
+        <div class="icon">🔢</div>
+        <div class="title">3 つの大事な数字 (51.7x / 4 勝 0 敗 / 22 倍)</div>
+        <div class="desc">会話に出てきた重要な数字の正体を 1 つずつ詳しく解説。</div>
+        <span class="tag new">NEW</span>
+      </a>
+      <a class="report-card featured" href="data_verification.html">
+        <div class="icon">✅</div>
+        <div class="title">データ確認レポート (本物?)</div>
+        <div class="desc">「ハルシネーション (架空データ) を使ってないか?」を検証。100% 本物の Binance OHLCV と確認。</div>
+        <span class="tag new">NEW</span>
+      </a>
+      <a class="report-card" href="backtest_v4_vs_v25.html">
+        <div class="icon">⚔️</div>
+        <div class="title">v2.5 vs v4.0 実データ比較</div>
+        <div class="desc">期間別の実バックテストで v2.5 と v4 の強み・弱みを比較。</div>
+        <span class="tag new">NEW</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ━━━ 検証レポート ━━━ -->
+  <div class="category">
+    <h2>🔬 検証・バックテスト <span class="badge">過去データ</span></h2>
+    <div class="report-grid">
+      <a class="report-card" href="bear_test_report.html">
+        <div class="icon">🐻</div>
+        <div class="title">ベア相場耐性テスト</div>
+        <div class="desc">2018-2022 のベア相場で Bot がどう振る舞うか。</div>
+      </a>
+      <a class="report-card" href="c3_verification_report.html">
+        <div class="icon">📊</div>
+        <div class="title">C3 採用根拠 (Top2)</div>
+        <div class="desc">なぜ Top 3 → Top 2 に変えたか、その検証データ。</div>
+      </a>
+      <a class="report-card" href="iter61_report.html">
+        <div class="icon">⭐</div>
+        <div class="title">iter61 F3+Maker 採用構成</div>
+        <div class="desc">「22 倍」の元となった iter61 の検証レポート (5 年で +85.95% CAGR)。</div>
+      </a>
+      <a class="report-card" href="iter60_report.html">
+        <div class="icon">🛡️</div>
+        <div class="title">iter60 全防御機能検証</div>
+        <div class="desc">F3_YEAREND 等の防御機能の効果検証。</div>
+      </a>
+      <a class="report-card" href="kimochimax_v23_c3_pnl_report.html">
+        <div class="icon">📈</div>
+        <div class="title">v2.3 C3 PnL レポート</div>
+        <div class="desc">v2.3 (C3 Top2 採用) の損益分析。</div>
+      </a>
+      <a class="report-card" href="backtest_chart_verify.html">
+        <div class="icon">📈</div>
+        <div class="title">バックテストチャート検証</div>
+        <div class="desc">バックテストの数値が本物かグラフで確認。</div>
+      </a>
+      <a class="report-card" href="v22_10k_5year_forecast.html">
+        <div class="icon">🔮</div>
+        <div class="title">v2.2 で 10k → 5年予測</div>
+        <div class="desc">v2.2 構成での 5 年予測値 (古い参考値)。</div>
+      </a>
+      <a class="report-card" href="monthly_30k_simulation.html">
+        <div class="icon">💵</div>
+        <div class="title">月 3 万円積立シミュレーション</div>
+        <div class="desc">毎月積み立てしながら Bot 運用するとどうなるか。</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ━━━ FIRE プラン ━━━ -->
+  <div class="category">
+    <h2>🔥 資産形成プラン <span class="badge">FIRE 計画</span></h2>
+    <div class="report-grid">
+      <a class="report-card" href="fire_plan.html">
+        <div class="icon">🔥</div>
+        <div class="title">FIRE 計画 (基本)</div>
+        <div class="desc">月 40 万円の生活費を Bot 運用で賄うプラン。</div>
+      </a>
+      <a class="report-card" href="fire_advanced.html">
+        <div class="icon">🚀</div>
+        <div class="title">FIRE 計画 (高度版)</div>
+        <div class="desc">複数戦略を組み合わせた拡張 FIRE プラン。</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ━━━ 安全性・運用 ━━━ -->
+  <div class="category">
+    <h2>🔒 安全性・運用 <span class="badge">設定</span></h2>
+    <div class="report-grid">
+      <a class="report-card" href="safety_audit_v2.html">
+        <div class="icon">🛡️</div>
+        <div class="title">安全性監査 v2</div>
+        <div class="desc">Bot の安全性チェック結果。資金保護機能の確認。</div>
+      </a>
+      <a class="report-card" href="ticker_5sources.html">
+        <div class="icon">📡</div>
+        <div class="title">価格ソース 5 種検証</div>
+        <div class="desc">Binance / MEXC / CoinGecko / CMC / Bybit の価格整合性。</div>
+      </a>
+      <a class="report-card" href="ticker_existence.html">
+        <div class="icon">🔎</div>
+        <div class="title">銘柄存在チェック</div>
+        <div class="desc">62 銘柄が実際にどの取引所で取引可能か。</div>
+      </a>
+      <a class="report-card" href="slippage_impact.html">
+        <div class="icon">⚖️</div>
+        <div class="title">スリッページ影響分析</div>
+        <div class="desc">取引手数料・スリッページが利益に与える影響。</div>
+      </a>
+      <a class="report-card" href="trade_execution_sim.html">
+        <div class="icon">🎯</div>
+        <div class="title">取引執行シミュ</div>
+        <div class="desc">実際の取引でどれくらいズレるかの試算。</div>
+      </a>
+      <a class="report-card" href="autostart_setup.html">
+        <div class="icon">⚙️</div>
+        <div class="title">自動起動設定</div>
+        <div class="desc">PC 起動時に Bot を自動で立ち上げる方法。</div>
+      </a>
+      <a class="report-card" href="discord_setup.html">
+        <div class="icon">💬</div>
+        <div class="title">Discord 通知設定</div>
+        <div class="desc">取引・異常検知を Discord に通知する設定。</div>
+      </a>
+      <a class="report-card" href="slack_setup.html">
+        <div class="icon">📢</div>
+        <div class="title">Slack 通知設定</div>
+        <div class="desc">取引・異常検知を Slack に通知する設定。</div>
+      </a>
+      <a class="report-card" href="live_setup.html">
+        <div class="icon">🚀</div>
+        <div class="title">実資金運用設定</div>
+        <div class="desc">SIM から実資金 (Live) モードに切り替える手順。</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ━━━ 戦略アーカイブ ━━━ -->
+  <div class="category">
+    <h2>📦 戦略アーカイブ (iter 41-51 の進化記録) <span class="badge">参考用</span></h2>
+    <div class="report-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+      <a class="report-card" href="iter41_report.html">
+        <div class="title">iter41 ベース</div>
+        <div class="desc">最初の Bot 構成</div>
+      </a>
+      <a class="report-card" href="iter42_report.html">
+        <div class="title">iter42 (22 倍の元)</div>
+        <div class="desc">ACG2 構成、+85.95% CAGR</div>
+      </a>
+      <a class="report-card" href="iter43_report.html">
+        <div class="title">iter43 再考</div>
+        <div class="desc">基盤戦略の見直し</div>
+      </a>
+      <a class="report-card" href="iter44_final_report.html">
+        <div class="title">iter44 最終</div>
+        <div class="desc">取引検証・ロバスト性</div>
+      </a>
+      <a class="report-card" href="iter45_report.html">
+        <div class="title">iter45 低 DD</div>
+        <div class="desc">最大下落率を抑える試み</div>
+      </a>
+      <a class="report-card" href="iter46_report.html">
+        <div class="title">iter46 ハイブリッド</div>
+        <div class="desc">複数戦略のハイブリッド</div>
+      </a>
+      <a class="report-card" href="iter47_report.html">
+        <div class="title">iter47 取引制限</div>
+        <div class="desc">取引頻度を抑える</div>
+      </a>
+      <a class="report-card" href="iter48_report.html">
+        <div class="title">iter48 全部入り</div>
+        <div class="desc">全改善案を組み合わせ</div>
+      </a>
+      <a class="report-card" href="iter49_report.html">
+        <div class="title">iter49 厳重</div>
+        <div class="desc">厳重バックテスト</div>
+      </a>
+      <a class="report-card" href="iter51_report.html">
+        <div class="title">iter51 Maker 微調整</div>
+        <div class="desc">手数料モデルの調整</div>
+      </a>
+      <a class="report-card" href="iterate_40_report.html">
+        <div class="title">iterate_40</div>
+        <div class="desc">40 戦略を一気に試した記録</div>
+      </a>
+      <a class="report-card" href="h11_v2_report.html">
+        <div class="title">H11 v2</div>
+        <div class="desc">H11 戦略の検証</div>
+      </a>
+      <a class="report-card" href="i34_deep_dive_report.html">
+        <div class="title">i34 深掘り</div>
+        <div class="desc">i34 戦略の詳細分析</div>
+      </a>
+      <a class="report-card" href="simons_hybrid_report.html">
+        <div class="title">Simons ハイブリッド</div>
+        <div class="desc">Renaissance 風の検証</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ━━━ 旧 INDEX ━━━ -->
+  <div class="category">
+    <h2>📋 旧 INDEX (参考用) <span class="badge">廃止予定</span></h2>
+    <div class="report-grid">
+      <a class="report-card" href="index.html">
+        <div class="icon">📂</div>
+        <div class="title">旧 index.html</div>
+        <div class="desc">過去のレポート一覧 (このページに置き換え)。</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ━━━ フッター ━━━ -->
+  <div style="text-align: center; margin-top: 40px; padding: 20px; color: var(--muted); font-size: 12px;">
+    <strong>気持ちマックス Bot Hub</strong><br>
+    全 HTML レポートを集約したアクセスハブ・2026-04-26 生成<br><br>
+    📂 GitHub: <a href="https://github.com/kimochi-ichiba/kimochi-max" target="_blank" style="color: var(--blue);">kimochi-ichiba/kimochi-max</a><br>
+    🚀 SIM 稼働中: v3.0 (cycle hunter) - PID 68712
+  </div>
+
+</div>
+
+<script>
+// 堅牢なコピー機能 (HTTP / HTTPS 両対応、3 段フォールバック)
+function copyUrl(btn) {
+  // 同じ device-card 内の input を取得
+  const card = btn.closest('.device-card');
+  const input = card.querySelector('.url-input');
+  if (!input) return;
+  const url = input.value;
+  const original = btn.textContent;
+
+  function showSuccess() {
+    btn.textContent = '✅ コピーしました!';
+    btn.style.background = 'var(--green-bg)';
+    btn.style.color = 'var(--green)';
+    btn.style.borderColor = 'var(--green)';
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 1800);
+  }
+
+  function showFallback() {
+    // input の中身を選択状態にして「手動コピーしてください」と促す
+    input.focus();
+    input.setSelectionRange(0, input.value.length);
+    btn.textContent = '↑ 上の URL を長押し→コピー';
+    btn.style.background = 'var(--yellow-bg)';
+    btn.style.color = 'var(--yellow)';
+    btn.style.borderColor = 'var(--yellow)';
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 4000);
+  }
+
+  // 方法 1: navigator.clipboard (HTTPS / localhost のみ動く)
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(url).then(showSuccess).catch(tryExecCommand);
+  } else {
+    tryExecCommand();
+  }
+
+  // 方法 2: document.execCommand('copy') (HTTP でも動く古い API)
+  function tryExecCommand() {
+    try {
+      input.focus();
+      input.setSelectionRange(0, input.value.length);
+      const successful = document.execCommand('copy');
+      // タップ位置を保つために少し待つ
+      setTimeout(() => input.blur(), 100);
+      if (successful) {
+        showSuccess();
+      } else {
+        showFallback();
+      }
+    } catch (err) {
+      showFallback();
+    }
+  }
+}
+
+// ページロード時に現在のホスト名で URL を上書き (どこからアクセスしてもうまくいくように)
+window.addEventListener('DOMContentLoaded', () => {
+  const currentHost = window.location.host;  // 例: 192.168.11.7:8767
+  const currentProtocol = window.location.protocol; // 例: http:
+  // 「現在開いている URL に基づく自分用 URL」を 1 つ追加表示も可だが、
+  // 4 デバイス分のリンクは固定で OK。
+  // ただし「いま開いてる URL 自身」が分かるよう、ヒーロー部に表示
+  const heroSub = document.querySelector('.hero .sub');
+  if (heroSub) {
+    const currentDiv = document.createElement('div');
+    currentDiv.style.cssText = 'margin-top: 8px; font-size: 12px; color: var(--muted);';
+    currentDiv.innerHTML = `📍 今開いている URL: <code style="background:var(--bg);padding:2px 6px;border-radius:4px;color:var(--green);">${currentProtocol}//${currentHost}/hub.html</code>`;
+    heroSub.appendChild(currentDiv);
+  }
+});
+</script>
+</body>
+</html>

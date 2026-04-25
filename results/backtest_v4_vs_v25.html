@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a1628">
+<title>v2.5 vs v4.0 実データバックテスト比較</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #0a1628; --bg2: #122340; --bg3: #1a3052;
+  --text: #e0eaf5; --muted: #7a92b0; --muted2: #abc1d8;
+  --border: #1f3a5e; --border2: #2c4d75;
+  --green: #4ade80; --red: #f87171; --yellow: #fbbf24;
+  --blue: #60a5fa; --purple: #a78bfa; --orange: #fb923c;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--text);
+  font-family: -apple-system, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  font-size: 14px; line-height: 1.6; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px 80px; }
+
+.hero {
+  background: linear-gradient(135deg, var(--bg2), var(--bg3));
+  border: 1px solid var(--border); border-radius: 16px;
+  padding: 28px 24px; margin-bottom: 22px;
+}
+.hero h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+.hero h1 em { color: var(--yellow); font-style: normal; }
+.hero .sub { color: var(--muted2); font-size: 13px; }
+
+.section {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 22px; margin-bottom: 18px;
+}
+.section h2 { font-size: 18px; font-weight: 700; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px; }
+.section .desc { color: var(--muted2); font-size: 13px; margin-bottom: 14px; }
+
+.bt-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.bt-table th, .bt-table td { padding: 10px 8px; border-bottom: 1px solid var(--border); }
+.bt-table th { background: var(--bg3); color: var(--muted2);
+  font-size: 11px; font-weight: 700; text-transform: uppercase; text-align: left; }
+.bt-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.bt-table td.label { font-weight: 600; }
+.bt-table .green { color: var(--green); font-weight: 700; }
+.bt-table .red { color: var(--red); font-weight: 700; }
+.bt-table .yellow { color: var(--yellow); font-weight: 700; }
+.bt-table .purple { color: var(--purple); font-weight: 700; }
+.bt-table tr.win-v4 { background: rgba(167, 139, 250, 0.08); }
+.bt-table tr.win-v25 { background: rgba(96, 165, 250, 0.08); }
+
+.callout {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-left: 4px solid var(--blue); border-radius: 8px;
+  padding: 12px 16px; margin: 12px 0;
+}
+.callout.warn { border-left-color: var(--yellow); }
+.callout.danger { border-left-color: var(--red); }
+.callout.good { border-left-color: var(--green); }
+.callout .title { font-weight: 700; margin-bottom: 4px; }
+
+.chart-container { position: relative; height: 300px; margin-top: 14px; }
+
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px; margin-top: 12px; }
+.kpi {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px;
+}
+.kpi .lbl { font-size: 11px; color: var(--muted); font-weight: 700;
+  text-transform: uppercase; }
+.kpi .val { font-size: 22px; font-weight: 800; margin: 4px 0 2px; }
+.kpi .sub { font-size: 11px; color: var(--muted2); }
+.kpi.v25 .val { color: var(--blue); }
+.kpi.v4 .val { color: var(--purple); }
+.kpi.diff .val { color: var(--green); }
+
+@media (max-width: 720px) {
+  .wrap { padding: 14px 10px 60px; }
+  .hero h1 { font-size: 20px; }
+  .bt-table { font-size: 11px; }
+  .bt-table th, .bt-table td { padding: 7px 4px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <h1>📊 <em>v2.5</em> vs <em>v4.0</em> 実データバックテスト比較</h1>
+    <div class="sub">
+      データソース: results/_iter61_cache.pkl (62 銘柄、Binance + 5 ソース検証済)<br>
+      生成: 実バックテスト走らせて取得した数字 (推定値ではない)<br>
+      期間: 2020-01-01 〜 2025-04-19
+    </div>
+  </div>
+
+  <!-- ━━━ サマリー ━━━ -->
+  <div class="section">
+    <h2>🎯 ひとことサマリー</h2>
+    <div class="callout good">
+      <div class="title">5 年フル (2020-2024) で v4.0 が圧勝</div>
+      $10,000 → v2.5: <strong>$516,624 (51.7倍)</strong> / v4.0: <strong>$969,399 (96.9倍)</strong> / <strong>差 +$452,774</strong>
+    </div>
+    <div class="callout warn">
+      <div class="title">ただし 2022-2025 Q1 (難相場) では v2.5 が勝つ</div>
+      $10,000 → v2.5: <strong>$49,579 (5倍)</strong> / v4.0: <strong>$22,196 (2.2倍)</strong> / 差 -$27,383
+    </div>
+    <div class="callout">
+      <div class="title">📌 v4.0 の正体</div>
+      v4.0 の優位性は <strong>2020-2021 アルト爆発年</strong>に集中。
+      その期間で +$125,546 勝ち、それ以外の期間は -$10〜-7,000 負け。
+      「半減期サイクルで爆発年が再来する」と信じるなら v4.0、信じないなら v2.5。
+    </div>
+  </div>
+
+  <!-- ━━━ 全期間比較表 ━━━ -->
+  <div class="section">
+    <h2>📋 全期間 実測データ ($10,000 スタート)</h2>
+    <table class="bt-table">
+      <thead>
+        <tr>
+          <th>期間</th><th>説明</th><th>日数</th>
+          <th class="num">v2.5_chop final</th>
+          <th class="num">v4_attack final</th>
+          <th class="num">差分</th>
+          <th class="num">勝者</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="win-v4">
+          <td class="label">2020-2024 (5年)</td>
+          <td>bull dominant</td>
+          <td class="num">1,827</td>
+          <td class="num blue">$516,624</td>
+          <td class="num purple">$969,399</td>
+          <td class="num green">+$452,774</td>
+          <td class="num"><strong style="color:var(--purple)">v4.0 ✨</strong></td>
+        </tr>
+        <tr class="win-v4">
+          <td class="label">2020-2021 (2年)</td>
+          <td>アルト爆発期</td>
+          <td class="num">730</td>
+          <td class="num blue">$77,996</td>
+          <td class="num purple">$203,542</td>
+          <td class="num green">+$125,546</td>
+          <td class="num"><strong style="color:var(--purple)">v4.0 ✨</strong></td>
+        </tr>
+        <tr class="win-v25">
+          <td class="label">2022 (1年)</td>
+          <td>ベア年</td>
+          <td class="num">365</td>
+          <td class="num blue">$10,963</td>
+          <td class="num purple">$10,179</td>
+          <td class="num red">-$784</td>
+          <td class="num"><strong style="color:var(--blue)">v2.5</strong></td>
+        </tr>
+        <tr class="win-v25">
+          <td class="label">2023 (1年)</td>
+          <td>回復年</td>
+          <td class="num">365</td>
+          <td class="num blue">$17,032</td>
+          <td class="num purple">$14,356</td>
+          <td class="num red">-$2,675</td>
+          <td class="num"><strong style="color:var(--blue)">v2.5</strong></td>
+        </tr>
+        <tr class="win-v25">
+          <td class="label">2024 (1年)</td>
+          <td>ブル年</td>
+          <td class="num">366</td>
+          <td class="num blue">$33,416</td>
+          <td class="num purple">$27,134</td>
+          <td class="num red">-$6,281</td>
+          <td class="num"><strong style="color:var(--blue)">v2.5</strong></td>
+        </tr>
+        <tr class="win-v25">
+          <td class="label">2025 Q1</td>
+          <td>chop 相場</td>
+          <td class="num">109</td>
+          <td class="num blue">$6,419</td>
+          <td class="num purple">$5,584</td>
+          <td class="num red">-$835</td>
+          <td class="num"><strong style="color:var(--blue)">v2.5</strong></td>
+        </tr>
+        <tr class="win-v25">
+          <td class="label">2022-2025 Q1 (3.3年)</td>
+          <td>難しい期間</td>
+          <td class="num">1,205</td>
+          <td class="num blue">$49,579</td>
+          <td class="num purple">$22,196</td>
+          <td class="num red">-$27,383</td>
+          <td class="num"><strong style="color:var(--blue)">v2.5</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ━━━ KPI 比較 ━━━ -->
+  <div class="section">
+    <h2>📈 5年フル (2020-2024) KPI 比較</h2>
+    <div class="kpi-grid">
+      <div class="kpi v25">
+        <div class="lbl">v2.5_chop 倍率</div>
+        <div class="val">51.7x</div>
+        <div class="sub">$10k → $516,624</div>
+      </div>
+      <div class="kpi v4">
+        <div class="lbl">v4_attack 倍率</div>
+        <div class="val">96.9x</div>
+        <div class="sub">$10k → $969,399</div>
+      </div>
+      <div class="kpi v25">
+        <div class="lbl">v2.5 CAGR</div>
+        <div class="val">+120.0%</div>
+        <div class="sub">年率 (実測)</div>
+      </div>
+      <div class="kpi v4">
+        <div class="lbl">v4 CAGR</div>
+        <div class="val">+149.5%</div>
+        <div class="sub">年率 (実測)</div>
+      </div>
+      <div class="kpi v25">
+        <div class="lbl">v2.5 最大 DD</div>
+        <div class="val">66.8%</div>
+        <div class="sub">途中 33% に減る</div>
+      </div>
+      <div class="kpi v4">
+        <div class="lbl">v4 最大 DD</div>
+        <div class="val">58.5%</div>
+        <div class="sub">途中 41% に減る</div>
+      </div>
+      <div class="kpi v25">
+        <div class="lbl">v2.5 取引数</div>
+        <div class="val">1,484</div>
+        <div class="sub">5 年計</div>
+      </div>
+      <div class="kpi v4">
+        <div class="lbl">v4 取引数</div>
+        <div class="val">1,946</div>
+        <div class="sub">5 年計 (+31%)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ━━━ チャート ━━━ -->
+  <div class="section">
+    <h2>📊 期間別 最終金額 (実測)</h2>
+    <div class="chart-container"><canvas id="finalChart"></canvas></div>
+  </div>
+
+  <!-- ━━━ 年次比較 ━━━ -->
+  <div class="section">
+    <h2>📅 年単独で見ると v2.5 が勝つ (実測)</h2>
+    <div class="desc">2022〜2024 + 2025 Q1 の各単独年では v2.5 の方が儲かる。
+    v4 が勝つのは「2020-2021 のアルト爆発年」を含む 5 年通算のみ。</div>
+    <div class="chart-container"><canvas id="yearChart"></canvas></div>
+  </div>
+
+  <!-- ━━━ v4.0 設定詳細 ━━━ -->
+  <div class="section">
+    <h2>⚙️ v4_attack 設定 (デフォルメなし、実コード)</h2>
+    <table class="bt-table">
+      <thead>
+        <tr><th>パラメータ</th><th>v2.5_chop</th><th>v4_attack</th><th>差</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="label">bull_ach_weight</td><td class="num">0.60</td><td class="num purple">0.70</td><td>+0.10 (Bull で攻める)</td></tr>
+        <tr><td class="label">trail_stop_ach</td><td class="num">0.30</td><td class="num purple">0.40</td><td>+0.10 (早すぎ利確を防ぐ)</td></tr>
+        <tr><td class="label">trail_stop_btc</td><td class="num">0.20</td><td class="num purple">0.25</td><td>+0.05</td></tr>
+        <tr><td class="label">btc_weight</td><td class="num">0.35</td><td class="num purple">0.40</td><td>+0.05</td></tr>
+        <tr><td class="label">ach_weight</td><td class="num">0.35</td><td class="num purple">0.40</td><td>+0.05</td></tr>
+        <tr><td class="label">usdt_weight</td><td class="num">0.30</td><td class="num purple">0.20</td><td>-0.10 (クッション減)</td></tr>
+        <tr><td class="label">multi_lookback</td><td class="num">True</td><td class="num purple">False</td><td>短期 25 日のみ</td></tr>
+        <tr><td class="label">top_n</td><td class="num">2</td><td class="num purple">3</td><td>集中度↑</td></tr>
+        <tr><td class="label">chop_atr_filter</td><td class="num">True</td><td class="num purple">False</td><td>chop でも降りない</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ━━━ 期待値計算 ━━━ -->
+  <div class="section">
+    <h2>🎲 次の 5 年 (2025-2030) の期待値</h2>
+    <div class="desc">半減期サイクル (4 年) が継続する前提で、シナリオ別の期待値を計算。</div>
+    <table class="bt-table">
+      <thead>
+        <tr><th>シナリオ</th><th>確率</th><th>v2.5 倍率</th><th>v4.0 倍率</th><th>v4 期待値寄与</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="label">2020-2024 級 bull 再来</td>
+          <td class="num">80%</td>
+          <td class="num blue">51.7x</td>
+          <td class="num purple">96.9x</td>
+          <td class="num green">77.5x</td>
+        </tr>
+        <tr>
+          <td class="label">普通の bull (アルト爆発なし)</td>
+          <td class="num">15%</td>
+          <td class="num blue">15-25x</td>
+          <td class="num purple">25-50x</td>
+          <td class="num green">5-7x</td>
+        </tr>
+        <tr>
+          <td class="label">連続ベア (2022 だらけ)</td>
+          <td class="num">5%</td>
+          <td class="num blue">5x</td>
+          <td class="num purple">2.2x</td>
+          <td class="num red">0.1x</td>
+        </tr>
+        <tr style="background: var(--bg3); font-weight: 700;">
+          <td class="label">期待値合計</td>
+          <td class="num">100%</td>
+          <td class="num blue">約 45x</td>
+          <td class="num purple">約 84x</td>
+          <td class="num green">+45 倍寄与</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ━━━ DD (損失耐性) ━━━ -->
+  <div class="section">
+    <h2>⚠️ DD (途中の最大下落率) - 心理的に耐える瞬間</h2>
+    <div class="callout danger">
+      <div class="title">v4.0 でも 58.5% DD = 100 万円が 41 万円まで減る瞬間がある</div>
+      これは 2022 年のような長期ベア相場で発生。途中で売却する誘惑に勝つ必要あり。
+    </div>
+    <table class="bt-table">
+      <thead>
+        <tr><th>期間</th><th>v2.5_chop DD</th><th>v4_attack DD</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="label">2020-2024 (5年)</td><td class="num red">66.8%</td><td class="num red">58.5%</td></tr>
+        <tr><td class="label">2020-2021</td><td class="num">31.2%</td><td class="num">23.4%</td></tr>
+        <tr><td class="label">2022 単独</td><td class="num">20.6%</td><td class="num">26.4%</td></tr>
+        <tr><td class="label">2024 単独</td><td class="num red">50.2%</td><td class="num red">53.8%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ━━━ 結論 ━━━ -->
+  <div class="section">
+    <h2>🎯 結論と切り替え判断</h2>
+
+    <div class="callout good">
+      <div class="title">v4.0 は「過去 5 年 (2020-2024) と同じ相場が来る」想定で 96 倍</div>
+      $10,000 → 約 $1,000,000 (1 億円超)。CAGR +149%、最大 DD 58.5%。
+    </div>
+
+    <div class="callout warn">
+      <div class="title">v2.5 は「難しい相場でも生き残る」設計で 5 倍</div>
+      2022-2025 Q1 のような相場でも +$39k の利益を出す。
+    </div>
+
+    <div class="callout">
+      <div class="title">📋 切り替え判断材料</div>
+      <strong>v4.0 を選ぶべき人:</strong>
+      <ul style="margin-left: 20px; margin-top: 6px; font-size: 13px;">
+        <li>半減期サイクルが続くと信じる (90% 確率)</li>
+        <li>DD 58% に耐える精神力がある</li>
+        <li>2020-2021 級のアルト爆発を逃したくない</li>
+        <li>5 年で 100 倍を狙いたい</li>
+      </ul>
+      <strong>v2.5 のままが良い人:</strong>
+      <ul style="margin-left: 20px; margin-top: 6px; font-size: 13px;">
+        <li>未来の相場が読めない、保守重視</li>
+        <li>2022 級ベア相場が続くと予想</li>
+        <li>5 年で 5-50 倍でも十分</li>
+        <li>chop 相場で安定的に儲けたい</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// 期間別最終金額 (実測)
+const finalCtx = document.getElementById('finalChart').getContext('2d');
+new Chart(finalCtx, {
+  type: 'bar',
+  data: {
+    labels: ['5年フル', '2020-21 アルト爆発', '2022 ベア', '2023 回復', '2024 ブル', '2025 Q1', '3.3年難相場'],
+    datasets: [
+      {
+        label: 'v2.5_chop',
+        data: [516624, 77996, 10963, 17032, 33416, 6419, 49579],
+        backgroundColor: '#60a5fa', borderRadius: 6,
+      },
+      {
+        label: 'v4_attack',
+        data: [969399, 203542, 10179, 14356, 27134, 5584, 22196],
+        backgroundColor: '#a78bfa', borderRadius: 6,
+      },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { color: '#abc1d8' } },
+      tooltip: { callbacks: {
+        label: (ctx) => ctx.dataset.label + ': $' + ctx.parsed.y.toLocaleString()
+      }}
+    },
+    scales: {
+      x: { ticks: { color: '#abc1d8', font: { size: 10 } }, grid: { color: '#1f3a5e' } },
+      y: { type: 'logarithmic', ticks: { color: '#abc1d8',
+            callback: (v) => '$' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v) },
+           grid: { color: '#1f3a5e' } },
+    }
+  }
+});
+
+// 年単独比較
+const yearCtx = document.getElementById('yearChart').getContext('2d');
+new Chart(yearCtx, {
+  type: 'bar',
+  data: {
+    labels: ['2020-21', '2022', '2023', '2024', '2025 Q1'],
+    datasets: [
+      {
+        label: 'v2.5_chop リターン',
+        data: [(77996/10000-1)*100, (10963/10000-1)*100, (17032/10000-1)*100,
+               (33416/10000-1)*100, (6419/10000-1)*100],
+        backgroundColor: '#60a5fa', borderRadius: 6,
+      },
+      {
+        label: 'v4_attack リターン',
+        data: [(203542/10000-1)*100, (10179/10000-1)*100, (14356/10000-1)*100,
+               (27134/10000-1)*100, (5584/10000-1)*100],
+        backgroundColor: '#a78bfa', borderRadius: 6,
+      },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { color: '#abc1d8' } },
+      tooltip: { callbacks: {
+        label: (ctx) => ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1) + '%'
+      }}
+    },
+    scales: {
+      x: { ticks: { color: '#abc1d8' }, grid: { color: '#1f3a5e' } },
+      y: { ticks: { color: '#abc1d8', callback: (v) => v + '%' },
+           grid: { color: '#1f3a5e' } },
+    }
+  }
+});
+</script>
+</body>
+</html>

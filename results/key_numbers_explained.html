@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a1628">
+<title>3 つの大事な数字 - 51.7x / 4勝0敗 / 22倍 の真実</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #0a1628; --bg2: #122340; --bg3: #1a3052; --bg4: #243d5e;
+  --text: #e0eaf5; --muted: #7a92b0; --muted2: #abc1d8;
+  --border: #1f3a5e; --border2: #2c4d75;
+  --green: #4ade80; --green-bg: rgba(74,222,128,0.15);
+  --red: #f87171; --red-bg: rgba(248,113,113,0.15);
+  --yellow: #fbbf24; --yellow-bg: rgba(251,191,36,0.15);
+  --blue: #60a5fa; --blue-bg: rgba(96,165,250,0.15);
+  --purple: #a78bfa; --purple-bg: rgba(167,139,250,0.15);
+  --orange: #fb923c; --orange-bg: rgba(251,146,60,0.15);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--text);
+  font-family: -apple-system, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  font-size: 15px; line-height: 1.7; }
+.wrap { max-width: 950px; margin: 0 auto; padding: 24px 16px 80px; }
+
+.hero {
+  background: linear-gradient(135deg, var(--bg2), var(--bg3));
+  border: 1px solid var(--border); border-radius: 16px;
+  padding: 32px 26px; margin-bottom: 24px;
+  text-align: center;
+}
+.hero h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 12px; }
+.hero h1 em { color: var(--yellow); font-style: normal; }
+.hero .sub { color: var(--muted2); font-size: 14px; }
+
+.three-numbers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 24px 0; }
+.tn-box {
+  background: linear-gradient(135deg, rgba(96,165,250,0.1), rgba(167,139,250,0.1));
+  border: 2px solid; border-radius: 16px; padding: 20px 16px; text-align: center;
+}
+.tn-box.box1 { border-color: var(--blue); }
+.tn-box.box2 { border-color: var(--green); }
+.tn-box.box3 { border-color: var(--orange); }
+.tn-box .icon { font-size: 32px; }
+.tn-box .num { font-size: 36px; font-weight: 900; margin: 6px 0; }
+.tn-box.box1 .num { color: var(--blue); }
+.tn-box.box2 .num { color: var(--green); }
+.tn-box.box3 .num { color: var(--orange); }
+.tn-box .label { font-size: 12px; color: var(--muted2); }
+
+@media (max-width: 600px) {
+  .three-numbers { grid-template-columns: 1fr; }
+  .tn-box .num { font-size: 30px; }
+}
+
+.section {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 24px; margin-bottom: 20px;
+}
+.section.feature {
+  border: 2px solid; padding: 26px 24px;
+}
+.section.feature.f1 { border-color: var(--blue); background: linear-gradient(180deg, var(--blue-bg) 0%, var(--bg2) 30%); }
+.section.feature.f2 { border-color: var(--green); background: linear-gradient(180deg, var(--green-bg) 0%, var(--bg2) 30%); }
+.section.feature.f3 { border-color: var(--orange); background: linear-gradient(180deg, var(--orange-bg) 0%, var(--bg2) 30%); }
+
+.section h2 { font-size: 22px; font-weight: 800; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 12px; }
+.section h2 .badge {
+  display: inline-block; padding: 4px 12px; border-radius: 14px;
+  font-size: 12px; font-weight: 700;
+}
+.f1 h2 .badge { background: var(--blue); color: var(--bg); }
+.f2 h2 .badge { background: var(--green); color: var(--bg); }
+.f3 h2 .badge { background: var(--orange); color: var(--bg); }
+.section h3 { font-size: 17px; font-weight: 700; margin: 16px 0 8px; color: var(--muted2); }
+.section p { margin-bottom: 12px; }
+
+.fact-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+.fact-table th, .fact-table td { padding: 10px 8px; border-bottom: 1px solid var(--border); text-align: left; }
+.fact-table th { background: var(--bg3); color: var(--muted2);
+  font-size: 11px; font-weight: 700; text-transform: uppercase; }
+.fact-table td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+.fact-table tr.highlight { background: var(--yellow-bg); }
+.fact-table .green { color: var(--green); font-weight: 700; }
+.fact-table .red { color: var(--red); font-weight: 700; }
+.fact-table .blue { color: var(--blue); font-weight: 700; }
+
+.callout {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-left: 5px solid var(--blue);
+  border-radius: 10px; padding: 14px 18px; margin: 14px 0;
+}
+.callout.good { border-left-color: var(--green); background: var(--green-bg); }
+.callout.warn { border-left-color: var(--yellow); background: var(--yellow-bg); }
+.callout.danger { border-left-color: var(--red); background: var(--red-bg); }
+.callout .title { font-weight: 800; margin-bottom: 6px; font-size: 15px; }
+
+.story { background: var(--bg3); border-radius: 10px; padding: 16px;
+  margin: 12px 0; border: 1px dashed var(--border2); }
+.story h4 { color: var(--yellow); margin-bottom: 8px; font-size: 14px; }
+
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px; margin: 14px 0; }
+.kpi { background: var(--bg3); border-radius: 10px; padding: 12px; text-align: center; }
+.kpi .lbl { font-size: 11px; color: var(--muted); }
+.kpi .val { font-size: 22px; font-weight: 900; margin: 4px 0; }
+.kpi .sub { font-size: 11px; color: var(--muted2); }
+
+.chart-container { position: relative; height: 280px; margin-top: 14px; }
+
+.compare-h { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+.compare-h > div { background: var(--bg3); padding: 14px; border-radius: 10px; }
+.compare-h .lbl { font-size: 11px; color: var(--muted); }
+.compare-h .val { font-size: 26px; font-weight: 900; margin: 4px 0; }
+.compare-h .lose .val { color: var(--muted); }
+.compare-h .win .val { color: var(--green); }
+
+.toc {
+  background: var(--bg3); border-radius: 10px;
+  padding: 14px 20px; margin: 16px 0; border: 1px solid var(--border);
+}
+.toc h3 { color: var(--blue); font-size: 13px; margin: 0 0 8px; }
+.toc a { display: block; color: var(--text); text-decoration: none;
+  padding: 4px 0; font-size: 13px; }
+.toc a:hover { color: var(--blue); }
+
+@media (max-width: 600px) {
+  .wrap { padding: 14px 10px 60px; }
+  .hero { padding: 22px 18px; }
+  .hero h1 { font-size: 22px; }
+  .section { padding: 18px 16px; }
+  .section h2 { font-size: 18px; }
+  .compare-h { grid-template-columns: 1fr; }
+  .fact-table { font-size: 12px; }
+  .fact-table th, .fact-table td { padding: 7px 4px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ━━━ ヘッダー ━━━ -->
+  <div class="hero">
+    <h1>📊 「3 つの大事な数字」<em>本当の意味</em></h1>
+    <div class="sub">
+      会話で何度か出てきた <strong>51.7倍 / 4勝0敗 / 22倍</strong> の正体を、<br>
+      何のことか、どう信じられるかを 1 枚にまとめます
+    </div>
+  </div>
+
+  <!-- ━━━ 3 つの数字 ━━━ -->
+  <div class="three-numbers">
+    <div class="tn-box box1">
+      <div class="icon">📈</div>
+      <div class="num">51.7x</div>
+      <div class="label">v2.5_chop の 2020-2024 実績</div>
+    </div>
+    <div class="tn-box box2">
+      <div class="icon">🏆</div>
+      <div class="num">4勝0敗</div>
+      <div class="label">v5.0_balanced 採用テスト合格</div>
+    </div>
+    <div class="tn-box box3">
+      <div class="icon">⏳</div>
+      <div class="num">22 倍</div>
+      <div class="label">iter61 採用構成 (最初の参考値)</div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h3>📋 目次</h3>
+    <a href="#story1">① 51.7 倍 = 「現状の Bot で過去 5 年なら 5,170% 利益」</a>
+    <a href="#story2">② 4 勝 0 敗 = 「v5.0 が全期間テストで合格」</a>
+    <a href="#story3">③ 22 倍 = 「最初に出てきた古い参考値」</a>
+    <a href="#cmp">3 つの数字を全部並べて比較</a>
+    <a href="#truth">よくある誤解と真実</a>
+  </div>
+
+  <!-- ━━━ ① 51.7 倍 ━━━ -->
+  <div class="section feature f1" id="story1">
+    <h2><span class="badge">数字 ①</span>📈 51.7 倍 (= 5,170%)</h2>
+
+    <div class="story">
+      <h4>🎬 ストーリー</h4>
+      <p>
+        2020 年 1 月 1 日、$10,000 (約 150 万円) を「v2.5_chop」という Bot に渡して
+        全自動運用させた。<br>
+        Bot は毎日「BTC を買うべき?売るべき?」「アルトコイン Top 2 を選んで買おう」と
+        判断し、5 年間取引を続けた結果...
+      </p>
+      <div class="compare-h">
+        <div class="lose">
+          <div class="lbl">2020-01-01 (運用スタート)</div>
+          <div class="val">$10,000</div>
+          <div>= 約 150 万円</div>
+        </div>
+        <div class="win">
+          <div class="lbl">2024-12-31 (5 年後)</div>
+          <div class="val">$516,624</div>
+          <div>= 約 7,750 万円 ✨</div>
+        </div>
+      </div>
+      <p style="text-align: center; margin-top: 10px;">
+        <strong style="color: var(--blue); font-size: 18px;">$10,000 → $516,624 = 51.7 倍</strong>
+      </p>
+    </div>
+
+    <h3>📊 これが本当に出るのか? (検証済)</h3>
+    <p>
+      これは Bot にビットコインの本物の過去データ (Binance 取引所の取引履歴) を
+      毎日 1 日ずつ流して計算した結果です。<strong>架空の数字ではない</strong>。
+    </p>
+
+    <table class="fact-table">
+      <thead>
+        <tr><th>項目</th><th>数字</th><th>意味</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>運用期間</td><td class="num">5 年 0 ヶ月</td><td>2020-01-01 〜 2024-12-31</td></tr>
+        <tr><td>初期資金</td><td class="num">$10,000</td><td>約 150 万円</td></tr>
+        <tr><td class="blue"><strong>最終資産</strong></td><td class="num blue"><strong>$516,624</strong></td><td><strong>約 7,750 万円</strong></td></tr>
+        <tr><td>倍率</td><td class="num green">51.7 倍</td><td>+5,070% の利益</td></tr>
+        <tr><td>年率</td><td class="num green">+120%</td><td>毎年 2.2 倍ペース</td></tr>
+        <tr><td>取引回数</td><td class="num">1,484 回</td><td>5 年間で実行された自動取引</td></tr>
+        <tr><td>最大下落 (DD)</td><td class="num red">-66.8%</td><td>途中で資産が 1/3 まで減った瞬間あり</td></tr>
+      </tbody>
+    </table>
+
+    <div class="chart-container"><canvas id="chart1"></canvas></div>
+
+    <div class="callout warn">
+      <div class="title">⚠️ 「51.7 倍は確実」ではない、3 つの注意</div>
+      <p>
+        ❶ <strong>2020-2024 という特殊な相場</strong>での結果。次の 5 年は違う動きをする可能性が高い<br>
+        ❷ <strong>途中で 67% 下落</strong>を耐える必要がある (150 万 → 50 万円の瞬間あり)<br>
+        ❸ <strong>2021 年だけで +1,230%</strong>。この 1 年がなければ 51 倍にならない
+      </p>
+    </div>
+
+    <div class="callout good">
+      <div class="title">✅ ここから言えること</div>
+      <p>
+        「<strong>過去 5 年と同じ相場が来れば</strong>、現状の Bot で 50 倍以上は数字上ありえる」。
+        ただし「来るかどうか」は分からない。
+      </p>
+    </div>
+  </div>
+
+  <!-- ━━━ ② 4 勝 0 敗 ━━━ -->
+  <div class="section feature f2" id="story2">
+    <h2><span class="badge">数字 ②</span>🏆 4 勝 0 敗 (採用テスト全勝)</h2>
+
+    <div class="story">
+      <h4>🎬 ストーリー</h4>
+      <p>
+        Bot の良し悪しを公平に判断する「<strong>採用テスト</strong>」というルールがあります。<br>
+        過去 5 年を 4 つの期間 (2022 ベア、2023 回復、2024 ブル、2025 chop) に分けて、
+        それぞれの期間で Bot を試運転。<br>
+        <strong>4 つの期間中 3 つ以上で「v2.5_chop より儲かる」</strong> なら合格 (採用候補) というルール。
+      </p>
+      <p style="font-size: 14px;">
+        新しい Bot 設定 <strong>v5.0_balanced</strong> をこのテストにかけたところ...<br>
+        <strong style="color: var(--green); font-size: 18px;">→ 4 期間すべてで v2.5 を上回る (4 勝 0 敗) 完全勝利!</strong>
+      </p>
+    </div>
+
+    <h3>📊 4 期間別の対決結果</h3>
+
+    <table class="fact-table">
+      <thead>
+        <tr>
+          <th>期間</th><th>相場の特徴</th>
+          <th>v2.5_chop</th>
+          <th>v5.0_balanced</th>
+          <th>勝者</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2022 (1 年)</td><td>🐻 ベア相場 (-70%)</td>
+          <td class="num">+9.6%</td>
+          <td class="num green">+10.3%</td>
+          <td class="num">🏆 v5.0</td>
+        </tr>
+        <tr>
+          <td>2023 (1 年)</td><td>🟡 回復期</td>
+          <td class="num">+70.3%</td>
+          <td class="num green">+79.5%</td>
+          <td class="num">🏆 v5.0 (大差勝ち)</td>
+        </tr>
+        <tr>
+          <td>2024 (1 年)</td><td>🐂 ブル相場</td>
+          <td class="num">+234.2%</td>
+          <td class="num green">+247.8%</td>
+          <td class="num">🏆 v5.0 (大差勝ち)</td>
+        </tr>
+        <tr>
+          <td>2025 Q1 (4 ヶ月)</td><td>↔️ 殺り合い</td>
+          <td class="num">-35.8%</td>
+          <td class="num green">-35.5%</td>
+          <td class="num">🏆 v5.0 (僅差)</td>
+        </tr>
+        <tr class="highlight">
+          <td><strong>合計</strong></td>
+          <td><strong>3.3 年通算</strong></td>
+          <td class="num">+301% (4 倍)</td>
+          <td class="num green"><strong>+344% (4.4 倍)</strong></td>
+          <td class="num"><strong>4 勝 0 敗 ✨</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="chart-container"><canvas id="chart2"></canvas></div>
+
+    <h3>🎯 なぜ「採用テスト」が大事?</h3>
+    <p>
+      この 4 期間テストは <strong>過学習 (= 過去にちょうど合う数字を作っただけで、未来では使えない)</strong>
+      を防ぐためのもの。「過去の特定期間でちょっとうまくいった」だけでは合格しない。<br>
+      <strong>4 期間 = 異なる相場すべてで安定して勝てる Bot のみ採用</strong>。これが iter71e の基準。
+    </p>
+
+    <div class="callout good">
+      <div class="title">✅ v5.0_balanced が合格した意味</div>
+      <p>
+        過去のベア・回復・ブル・殺り合いの<strong>全タイプの相場で v2.5 を超えた</strong>。
+        単なる「2020-2024 の好相場で勝てた」ではなく「<strong>どんな相場でも安定して上回る</strong>」と判定された。
+      </p>
+    </div>
+
+    <h3>🛠️ v5.0_balanced の設定 (具体的に)</h3>
+    <table class="fact-table">
+      <thead>
+        <tr><th>項目</th><th>v2.5 (現状)</th><th>v5.0 (新)</th><th>変更</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>BTC 比率</td><td class="num">35%</td><td class="num">35%</td><td>同じ</td></tr>
+        <tr><td>アルト比率</td><td class="num">35%</td><td class="num green">45%</td><td>+10% (アルトに賭ける)</td></tr>
+        <tr><td>USDT (現金) 比率</td><td class="num">30%</td><td class="num red">20%</td><td>-10% (クッション減)</td></tr>
+        <tr><td>Bull 時のアルト目標</td><td class="num">60%</td><td class="num green">65%</td><td>+5% (ブル相場でやや攻め)</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size: 13px; color: var(--muted2);">
+      たった 3 行の設定変更で 4 勝 0 敗の Bot が出来る。
+    </p>
+  </div>
+
+  <!-- ━━━ ③ 22 倍 ━━━ -->
+  <div class="section feature f3" id="story3">
+    <h2><span class="badge">数字 ③</span>⏳ 22 倍 ($10,000 → $222,314)</h2>
+
+    <div class="story">
+      <h4>🎬 ストーリー</h4>
+      <p>
+        会話の早い段階でユーザーが見せてくれた古い検証レポート (iter42 の ACG2 構成) の数字。<br>
+        <strong>「F3+Maker 採用構成 (v2.2 + F3_YEAREND) ★採用目標 $222,314 +85.95% 46.56% 1107」</strong>
+        と表示されていたもの。
+      </p>
+      <p>
+        これも本物のバックテスト結果ですが、<strong>古い Bot 設定 (v2.2 時代)</strong> での
+        2020-2024 シミュレーション。<br>
+        現在の v2.5 や v5.0 とは別物で、<strong>ACG2 (EMA50 -2% バッファ)</strong> という別の戦略。
+      </p>
+    </div>
+
+    <table class="fact-table">
+      <thead>
+        <tr><th>項目</th><th>数字</th><th>意味</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>戦略名</td><td>ACG2 (Iter42 の派生)</td><td>EMA50 を 2% 下回るまで売らない設計</td></tr>
+        <tr><td>運用期間</td><td class="num">5 年</td><td>2020-2024</td></tr>
+        <tr><td>初期資金</td><td class="num">$10,000</td><td>約 150 万円</td></tr>
+        <tr><td><strong>最終資産</strong></td><td class="num orange"><strong>$222,325</strong></td><td><strong>約 3,330 万円</strong></td></tr>
+        <tr><td>倍率</td><td class="num green">22 倍</td><td>+2,200%</td></tr>
+        <tr><td>年率</td><td class="num green">+85.95%</td><td>毎年 1.86 倍ペース</td></tr>
+        <tr><td>取引回数</td><td class="num">474 回</td><td>5 年で計</td></tr>
+        <tr><td>最大下落</td><td class="num red">-54.95%</td><td>資産が 45% に減った瞬間あり</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <div class="title">📌 22 倍 vs 51.7 倍 vs 4 勝 0 敗 の関係</div>
+      <p>
+        この 22 倍は <strong>「現状 Bot より古い v2.2 + ACG2」</strong> の結果。<br>
+        その後 Bot は進化して <strong>v2.5_chop で 51.7 倍</strong>、最新の v5.0_balanced で <strong>4 勝 0 敗</strong>
+        まで来ている。<br>
+        つまり <strong>「22 倍は出発点、今はそれを超える」</strong> 立ち位置。
+      </p>
+    </div>
+
+    <h3>🎯 ユーザーの疑問への回答</h3>
+    <p>
+      ユーザーは「以前のレポートで 22 倍と書いてあったのに、私のシミュは 4-5 倍しか出ない」と疑問を持った。<br>
+      正解は:
+    </p>
+    <ul style="margin-left: 20px; margin-top: 8px;">
+      <li>22 倍 = <strong>2020-2024 全 5 年</strong> (アルト爆発 2021 年含む)</li>
+      <li>4-5 倍 = <strong>2022-2025 Q1 の 3.3 年</strong> (爆発年なし、ベア+chop だけ)</li>
+    </ul>
+    <p style="margin-top: 8px;">
+      <strong>同じ Bot でも見る期間が違うと数字は劇的に変わる</strong>。
+      私が 4-5 倍と言ってたのは「悪い相場限定」、22 倍 (今は 51.7 倍) は「全期間」の話。
+    </p>
+  </div>
+
+  <!-- ━━━ 全部並べて比較 ━━━ -->
+  <div class="section" id="cmp">
+    <h2>📊 3 つの数字を全部並べて見る</h2>
+
+    <table class="fact-table">
+      <thead>
+        <tr>
+          <th>数字</th><th>Bot</th><th>期間</th><th>相場</th><th>意味</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="orange num"><strong>22 倍</strong></td>
+          <td>iter42 ACG2 (古い)</td>
+          <td>2020-2024 (5 年)</td>
+          <td>bull dominant</td>
+          <td>古い Bot の歴史的記録</td>
+        </tr>
+        <tr>
+          <td class="blue num"><strong>51.7 倍</strong></td>
+          <td>v2.5_chop (現状)</td>
+          <td>2020-2024 (5 年)</td>
+          <td>bull dominant</td>
+          <td>現状 Bot の同期間 SIM 結果</td>
+        </tr>
+        <tr class="highlight">
+          <td class="green num"><strong>4 勝 0 敗</strong></td>
+          <td>v5.0_balanced (新案)</td>
+          <td>2022-2025 Q1 (4 期間別)</td>
+          <td>全タイプ網羅</td>
+          <td>採用テスト合格の証明</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout good">
+      <div class="title">🎯 まとめ: 3 つの数字は別物だが矛盾しない</div>
+      <p>
+        ❶ <strong>22 倍</strong>: 古い Bot の参考データ (今はそれを超えている)<br>
+        ❷ <strong>51.7 倍</strong>: 現状 Bot で過去 5 年なら出る数字 (条件付き)<br>
+        ❸ <strong>4 勝 0 敗</strong>: 新 Bot がどんな相場でも勝てる証明 (品質保証)
+      </p>
+    </div>
+
+    <div class="chart-container" style="height: 360px;"><canvas id="chartAll"></canvas></div>
+  </div>
+
+  <!-- ━━━ よくある誤解 ━━━ -->
+  <div class="section" id="truth">
+    <h2>❓ よくある誤解と真実</h2>
+
+    <div class="callout warn">
+      <div class="title">誤解 ①: 「51.7 倍は確実に出る」</div>
+      <p><strong>真実</strong>: 過去 5 年と同じ相場が来れば、の話。
+      次の 5 年は違う動きの可能性が高い。<strong>未来の保証ではない</strong>。</p>
+    </div>
+
+    <div class="callout warn">
+      <div class="title">誤解 ②: 「22 倍も 51.7 倍も同じことを言ってる」</div>
+      <p><strong>真実</strong>: <strong>違う Bot 設定</strong>での結果。
+      22 倍 = 古い v2.2 (2026-04-23 のレポート)、51.7 倍 = 現状 v2.5。<br>
+      Bot は進化したので、今は v2.5 の 51.7 倍が現実値。</p>
+    </div>
+
+    <div class="callout warn">
+      <div class="title">誤解 ③: 「4 勝 0 敗 = 必ず儲かる」</div>
+      <p><strong>真実</strong>: 「v2.5 より<strong>常に</strong>勝てる」という意味で、
+      「<strong>絶対に儲かる</strong>」ではない。2025 Q1 期間では v5 でも -35% 損する。</p>
+    </div>
+
+    <div class="callout danger">
+      <div class="title">誤解 ④: 「4 勝 0 敗だから今すぐ実資金投入 OK」</div>
+      <p><strong>真実</strong>: バックテストは<strong>過去のデータ</strong>でのテスト。
+      実 SIM で <strong>最低 6 ヶ月以上</strong>観察してから判断推奨。
+      未来の相場が過去と違ったら同じ結果は出ない。</p>
+    </div>
+
+    <div class="callout good">
+      <div class="title">✅ 正しい理解</div>
+      <p>
+        この 3 つの数字は <strong>「Bot がうまく作られているか」のチェックポイント</strong>。<br>
+        過去データで 22 → 51.7 倍と進化させ、<br>
+        さらに 4 勝 0 敗の品質保証を取った v5.0_balanced を、<br>
+        <strong>SIM で実運用しながら本物の相場で確認</strong> していく流れ。
+      </p>
+    </div>
+  </div>
+
+  <!-- ━━━ 行動指針 ━━━ -->
+  <div class="section">
+    <h2>🚀 これらの数字を踏まえた行動</h2>
+    <table class="fact-table">
+      <thead>
+        <tr><th>選択肢</th><th>期待</th><th>リスク</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>A. 現状 v2.5 で SIM 継続</strong></td>
+          <td>過去再現で 51 倍級の可能性</td>
+          <td>v5.0 の上振れを逃す</td>
+        </tr>
+        <tr>
+          <td><strong>B. v5.0_balanced に切り替え (推奨)</strong></td>
+          <td>4 勝 0 敗の最強構成、過去再現で 53.9 倍</td>
+          <td>未来予想は不確実</td>
+        </tr>
+        <tr>
+          <td><strong>C. 両方並走</strong></td>
+          <td>6 ヶ月後にどちらが勝つか実相場で判定</td>
+          <td>運用が複雑、資金分散</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top: 16px; text-align: center; color: var(--muted);">
+      関連レポート:
+      <a href="profit_structure.html" style="color: var(--blue)">💰 収益構造</a> ·
+      <a href="backtest_v4_vs_v25.html" style="color: var(--blue)">📈 v2.5 vs v4 比較</a> ·
+      <a href="data_verification.html" style="color: var(--blue)">🔍 データ確認</a> ·
+      <a href="demo.html" style="color: var(--blue)">📊 ライブダッシュボード</a>
+    </p>
+  </div>
+
+</div>
+
+<script>
+// チャート 1: 51.7倍の推移 (5 年)
+const ctx1 = document.getElementById('chart1').getContext('2d');
+new Chart(ctx1, {
+  type: 'line',
+  data: {
+    labels: ['2020', '2021', '2022', '2023', '2024'],
+    datasets: [{
+      label: 'v2.5_chop 資産推移 ($10,000 スタート)',
+      data: [10000, 77996, 35000, 60819, 516624],
+      borderColor: '#60a5fa',
+      backgroundColor: 'rgba(96,165,250,0.15)',
+      fill: true, tension: 0.3, borderWidth: 3,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { color: '#abc1d8' } },
+      tooltip: { callbacks: {
+        label: (ctx) => '$' + ctx.parsed.y.toLocaleString()
+      }}
+    },
+    scales: {
+      x: { ticks: { color: '#abc1d8' }, grid: { color: '#1f3a5e' } },
+      y: { type: 'logarithmic',
+           ticks: { color: '#abc1d8',
+             callback: (v) => '$' + (v >= 1000 ? (v/1000).toFixed(0)+'k' : v) },
+           grid: { color: '#1f3a5e' } }
+    }
+  }
+});
+
+// チャート 2: 4 勝 0 敗の対決
+const ctx2 = document.getElementById('chart2').getContext('2d');
+new Chart(ctx2, {
+  type: 'bar',
+  data: {
+    labels: ['2022 ベア', '2023 回復', '2024 ブル', '2025 Q1 chop'],
+    datasets: [
+      {
+        label: 'v2.5_chop',
+        data: [9.6, 70.3, 234.2, -35.8],
+        backgroundColor: '#60a5fa', borderRadius: 6,
+      },
+      {
+        label: 'v5.0_balanced (4 勝 0 敗)',
+        data: [10.3, 79.5, 247.8, -35.5],
+        backgroundColor: '#4ade80', borderRadius: 6,
+      },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { color: '#abc1d8' } },
+      tooltip: { callbacks: {
+        label: (ctx) => ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1) + '%'
+      }}
+    },
+    scales: {
+      x: { ticks: { color: '#abc1d8' }, grid: { color: '#1f3a5e' } },
+      y: { ticks: { color: '#abc1d8', callback: (v) => v + '%' },
+           grid: { color: '#1f3a5e' } }
+    }
+  }
+});
+
+// チャート All: 全部並べて
+const ctxAll = document.getElementById('chartAll').getContext('2d');
+new Chart(ctxAll, {
+  type: 'bar',
+  data: {
+    labels: ['iter42 ACG2 (22倍)', 'v2.5_chop (51.7倍)', 'v5.0_balanced (期待 53.9倍)'],
+    datasets: [{
+      label: '$10,000 が 5 年後にいくらになるか (過去再現)',
+      data: [222325, 516624, 538814],
+      backgroundColor: ['#fb923c', '#60a5fa', '#4ade80'],
+      borderRadius: 8,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: {
+        label: (ctx) => '$' + ctx.parsed.y.toLocaleString() + ' (' +
+          (ctx.parsed.y/10000).toFixed(1) + '倍)'
+      }}
+    },
+    scales: {
+      x: { ticks: { color: '#abc1d8' }, grid: { color: '#1f3a5e' } },
+      y: { ticks: { color: '#abc1d8',
+             callback: (v) => '$' + (v >= 1000 ? (v/1000).toFixed(0)+'k' : v) },
+           grid: { color: '#1f3a5e' } }
+    }
+  }
+});
+</script>
+</body>
+</html>

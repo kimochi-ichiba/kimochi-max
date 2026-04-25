@@ -202,13 +202,25 @@ html[data-theme="light"] .hb-sim{background:#d1fae5;color:#065f46;border-color:#
 .tfbox .tfs{font-size:10px;color:var(--muted)}
 
 /* ━━━ 予測 ━━━ */
-.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
-.proj-card{background:var(--bg3);padding:20px;text-align:center}
+.proj-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)}
+.proj-card{background:var(--bg3);padding:18px 12px;text-align:center;position:relative}
+.proj-card.scenario-low{border-top:3px solid #fbbf24}
+.proj-card.scenario-mid{border-top:3px solid #4ade80;background:linear-gradient(135deg,rgba(74,222,128,0.08),var(--bg3))}
+.proj-card.scenario-high{border-top:3px solid #a78bfa}
 .proj-card.highlight{background:linear-gradient(135deg,#0a1f2c,#0f2a3d);border:1px solid var(--blue)}
 html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,#dbeafe,#bfdbfe)}
-.proj-lbl{font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:10px}
-.proj-val{font-size:30px;font-weight:900;letter-spacing:-.8px;margin-bottom:4px}
-.proj-sub{font-size:11px;color:var(--muted)}
+.proj-lbl{font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:8px}
+.proj-val{font-size:22px;font-weight:900;letter-spacing:-.5px;margin-bottom:2px}
+.proj-val.smaller{font-size:18px}
+.proj-jpy{font-size:13px;color:var(--green);font-weight:700;margin-bottom:4px}
+.proj-mult{font-size:14px;color:var(--yellow);font-weight:700;margin-bottom:4px}
+.proj-sub{font-size:10px;color:var(--muted);line-height:1.4}
+@media(max-width:640px){
+  .proj-grid{grid-template-columns:1fr 1fr}
+  .proj-card{padding:14px 10px}
+  .proj-val{font-size:18px}
+  .proj-val.smaller{font-size:16px}
+}
 
 /* ━━━ バッジシステム ━━━ */
 .badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;padding:14px 18px}
@@ -314,7 +326,7 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
   <div class="sb"><div class="sb-val g" id="s-ach">—</div><div class="sb-lbl">ACH枠</div><div class="sb-sub" id="s-ach2">35%</div></div>
   <div class="sb"><div class="sb-val b" id="s-usdt">—</div><div class="sb-lbl">USDT枠</div><div class="sb-sub" id="s-usdt2">30%</div></div>
   <div class="sb"><div class="sb-val c" id="s-trades">0件</div><div class="sb-lbl">取引数</div><div class="sb-sub">SIM実行</div></div>
-  <div class="sb"><div class="sb-val p" id="s-proj">—</div><div class="sb-lbl">1年予測</div><div class="sb-sub">年+55%想定</div></div>
+  <div class="sb"><div class="sb-val p" id="s-proj">—</div><div class="sb-lbl">1年予測 (中央)</div><div class="sb-sub">年+75%想定</div></div>
 </div>
 
 <!-- DDバー -->
@@ -501,27 +513,50 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
 
     <!-- 予測タブ -->
     <div class="tpane" id="p-proj">
+      <!-- 4 カード: 現在 + 5 年後 3 シナリオ (USD + JPY 両表示) -->
       <div class="proj-grid">
-        <div class="proj-card">
+        <div class="proj-card highlight">
           <div class="proj-lbl">現在</div>
           <div class="proj-val" id="pj-now">—</div>
+          <div class="proj-jpy" id="pj-now-jpy">—</div>
           <div class="proj-sub">スタート地点</div>
         </div>
-        <div class="proj-card highlight">
-          <div class="proj-lbl">1年後 (年率+55%想定)</div>
-          <div class="proj-val b" id="pj-1y">—</div>
-          <div class="proj-sub" id="pj-1ys">—</div>
+        <div class="proj-card scenario-low">
+          <div class="proj-lbl">🟡 5年後 (保守)</div>
+          <div class="proj-val smaller" id="pj-5y-low">—</div>
+          <div class="proj-jpy" id="pj-5y-low-jpy">—</div>
+          <div class="proj-mult" id="pj-5y-low-mult">—</div>
+          <div class="proj-sub">年+55% / 困難な相場想定</div>
         </div>
-        <div class="proj-card">
-          <div class="proj-lbl">5年後</div>
-          <div class="proj-val y" id="pj-5y">—</div>
-          <div class="proj-sub" id="pj-5ys">—</div>
+        <div class="proj-card scenario-mid">
+          <div class="proj-lbl">🟢 5年後 (中央)</div>
+          <div class="proj-val smaller" id="pj-5y-mid">—</div>
+          <div class="proj-jpy" id="pj-5y-mid-jpy">—</div>
+          <div class="proj-mult" id="pj-5y-mid-mult">—</div>
+          <div class="proj-sub">年+75% / ユーザー予想 (BTC 5x/alt 10x)</div>
+        </div>
+        <div class="proj-card scenario-high">
+          <div class="proj-lbl">🌈 5年後 (楽観)</div>
+          <div class="proj-val smaller" id="pj-5y-high">—</div>
+          <div class="proj-jpy" id="pj-5y-high-jpy">—</div>
+          <div class="proj-mult" id="pj-5y-high-mult">—</div>
+          <div class="proj-sub">年+122% / 2020-2024 完全再現</div>
         </div>
       </div>
       <div class="sig-section">
-        <div class="sig-ttl">📈 年別成長シミュレーション (年率+54.8%想定)</div>
+        <div class="sig-ttl">📈 年別成長シミュレーション (3 シナリオ・USD / 円 両表示)</div>
+        <div style="font-size:11px;color:var(--muted);padding:0 14px 8px">
+          🟡 保守 = ベア+chop 期間と同等水準 (難しい相場でも生存) /
+          🟢 中央 = ユーザー予想 (BTC 5x / 主要アルト 10x) シナリオ /
+          🌈 楽観 = 2020-2024 が完全再現された場合 (バックテスト実測値)
+        </div>
         <table class="ttable">
-          <thead><tr><th>経過年</th><th>予測残高</th><th>増加額</th><th style="text-align:right">倍率</th></tr></thead>
+          <thead><tr>
+            <th>経過年</th>
+            <th>🟡 保守</th>
+            <th>🟢 中央</th>
+            <th>🌈 楽観</th>
+          </tr></thead>
           <tbody id="growth-tbody"></tbody>
         </table>
       </div>
@@ -818,7 +853,7 @@ function render(){
   animateValue(document.getElementById('s-usdt'),'usdtv',usdtVal,formatMoneyCompact);
   document.getElementById('s-usdt2').textContent = (usdtVal/total*100).toFixed(1)+'%';
   document.getElementById('s-trades').textContent = (d.trades||[]).length+'件';
-  document.getElementById('s-proj').textContent = formatMoneyCompact(total*1.548);
+  document.getElementById('s-proj').textContent = formatMoneyCompact(total*1.75);  // 中央シナリオ +75%
 
   // DDバー
   const dd = d.max_dd_observed || 0;
@@ -909,21 +944,51 @@ function render(){
   document.getElementById('pf-achsub').textContent = (d.ach_part.strategy||'momentum_top2_dynamic_regime')+' / '+Object.keys(achPositions).length+'銘柄';
   document.getElementById('pf-usdt').textContent = formatMoneyCompact(usdtVal);
 
-  // 予測タブ
+  // 予測タブ (3 シナリオ + 円表示、150 円/$ 想定)
+  const JPY_RATE = 150;
+  const fmtJPY = (usd) => {
+    const yen = usd * JPY_RATE;
+    if (yen >= 1e8) return `約${(yen/1e8).toFixed(2)}億円`;
+    if (yen >= 1e4) return `約${Math.round(yen/1e4).toLocaleString()}万円`;
+    return `約${Math.round(yen).toLocaleString()}円`;
+  };
+
+  // 3 シナリオの年率
+  const RATES = {
+    low:  1.548,  // 保守 +54.8%/年 (= 元の 8.9 倍)
+    mid:  1.75,   // 中央 +75%/年   (ユーザー予想シナリオ)
+    high: 2.22,   // 楽観 +122%/年  (バックテスト実測 v3.0)
+  };
+
+  // 現在
   document.getElementById('pj-now').textContent = formatMoneyCompact(total);
-  const proj1 = total*1.548;
-  const proj5 = total*Math.pow(1.548,5);
-  document.getElementById('pj-1y').textContent = formatMoneyCompact(proj1);
-  document.getElementById('pj-1ys').textContent = (proj1/total).toFixed(2)+'倍';
-  document.getElementById('pj-5y').textContent = formatMoneyCompact(proj5);
-  document.getElementById('pj-5ys').textContent = (proj5/total).toFixed(1)+'倍';
+  document.getElementById('pj-now-jpy').textContent = fmtJPY(total);
+
+  // 5 年後 3 シナリオ
+  for (const [key, rate] of Object.entries(RATES)) {
+    const v = total * Math.pow(rate, 5);
+    const mult = v / total;
+    document.getElementById(`pj-5y-${key}`).textContent = formatMoneyCompact(v);
+    document.getElementById(`pj-5y-${key}-jpy`).textContent = fmtJPY(v);
+    document.getElementById(`pj-5y-${key}-mult`).textContent =
+      mult >= 10 ? mult.toFixed(1)+'倍' : mult.toFixed(2)+'倍';
+  }
+
+  // 成長表 (3 シナリオ並列)
   let gh='';
   for(let y=1;y<=5;y++){
-    const v=total*Math.pow(1.548,y);
-    const g=v-total;
-    gh+=`<tr><td>${y}年後</td><td style="text-align:right">${formatMoneyCompact(v)}</td>
-      <td style="text-align:right" class="g">+${formatMoneyCompact(g)}</td>
-      <td style="text-align:right"><b>${(v/total).toFixed(2)}倍</b></td></tr>`;
+    const cells = ['low','mid','high'].map(k => {
+      const v = total * Math.pow(RATES[k], y);
+      const mult = (v/total).toFixed(1);
+      const colorVar = k === 'low' ? 'var(--yellow)' :
+                       k === 'mid' ? 'var(--green)' : 'var(--purple)';
+      return `<td style="text-align:right">
+        <div style="font-weight:700">${formatMoneyCompact(v)}</div>
+        <div style="font-size:10px;color:${colorVar}">${fmtJPY(v)}</div>
+        <div style="font-size:10px;color:var(--muted)">${mult}倍</div>
+      </td>`;
+    }).join('');
+    gh+=`<tr><td><strong>${y}年後</strong></td>${cells}</tr>`;
   }
   document.getElementById('growth-tbody').innerHTML = gh;
 
