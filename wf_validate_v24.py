@@ -187,6 +187,13 @@ def run_bt_v24(
     rebalance_days: int = REBALANCE_DAYS,  # ③
     bear_ema_buffer: float = 0.0,       # ④ (0.0=ちょうど EMA200, 0.03=EMA200×0.97 まで Bull)
     multi_lookback: bool = False,       # ⑤ (25+45+90 日平均)
+    # v3.0: 動的レバ + ATR chop filter (15-20 倍狙い)
+    leverage_max: float = 1.0,          # v3.0①: ADX 強い Bull で最大 leverage_max 倍 (1.0=現状)
+    leverage_adx_strong: float = 30.0,  # ADX > これで leverage_max の 0.5 倍掛け
+    leverage_adx_super: float = 50.0,   # ADX > これで leverage_max フル掛け
+    chop_atr_filter: bool = False,      # v3.0④: ATR/価格の比で chop 検知
+    chop_atr_threshold: float = 0.04,   # ATR/close > これで chop 判定 (4%)
+    chop_atr_multiplier: float = 2.0,   # chop 中の trail 閾値倍率
 ) -> BTResult:
     """demo_runner.py v2.4 の決定ロジックをバックテスト向けに再現。
 
@@ -245,6 +252,26 @@ def run_bt_v24(
         else:
             effective_trail_ach = trail_stop_ach
             effective_trail_btc = trail_stop_btc
+
+        # v3.0④: ATR-based chop filter (殺り合い相場検知)
+        if chop_atr_filter:
+            atr = btc_r.get("atr")
+            if not pd.isna(atr) and atr is not None and price > 0:
+                atr_pct = float(atr) / price
+                if atr_pct > chop_atr_threshold:
+                    effective_trail_ach = trail_stop_ach * chop_atr_multiplier
+                    effective_trail_btc = trail_stop_btc * chop_atr_multiplier
+
+        # v3.0①: 動的レバレッジ (BTC bullish + ADX 強でレバ掛け)
+        leverage = 1.0
+        if leverage_max > 1.0 and btc_bullish:
+            adx = btc_r.get("adx")
+            if not pd.isna(adx) and adx is not None:
+                if float(adx) >= leverage_adx_super:
+                    leverage = leverage_max
+                elif float(adx) >= leverage_adx_strong:
+                    # 線形補間: super で max, strong で max*0.5
+                    leverage = 1.0 + (leverage_max - 1.0) * 0.5
 
         # ─────────────────────────────
         # BTC 側
@@ -418,6 +445,19 @@ def run_bt_v24(
             if date in df.index:
                 ach_value += qty * float(df.loc[date, "close"])
         total = btc_cash + btc_qty * price + ach_value + usdt_cash
+
+        # v3.0①: レバレッジ適用 (簡易モデル: 日次リターンを leverage 倍、funding cost 控除)
+        if leverage > 1.0 and equity_curve:
+            prev_eq = equity_curve[-1]["equity"]
+            if prev_eq > 0:
+                day_ret_1x = total / prev_eq - 1
+                # funding cost: 余分なレバ分につき 0.025%/日 (年 9% 想定 perp)
+                funding = (leverage - 1.0) * 0.00025
+                day_ret_leveraged = day_ret_1x * leverage - funding
+                total = prev_eq * (1 + day_ret_leveraged)
+                # 内部状態は 1x のままだが equity だけ leverage 反映
+                # (簡易モデル: 完全な perp 再現ではないが方向性を捉える)
+
         equity_curve.append({"ts": date, "equity": total})
 
     return _finalize(
