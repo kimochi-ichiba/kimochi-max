@@ -55,3 +55,10 @@ v2_sim_log.txt
 results/demo_state.json
 results/demo_state.json.tmp
 results/demo_state.json.bak
+
+# ━━━ DB 移行 (groovy-sprouting-origami v4) ━━━
+data/kimochi.db
+data/kimochi.db-wal
+data/kimochi.db-shm
+data/backups/*.db.gz
+legacy/
