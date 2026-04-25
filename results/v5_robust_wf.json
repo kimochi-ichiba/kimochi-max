@@ -1,0 +1,484 @@
+{
+  "title": "v5.0 厳密 WF 検証",
+  "configs": {
+    "v2.5_chop": "v2.5_chop (PR #12 採用候補、基準)",
+    "v4_attack": "v4_attack (PR #15 攻め極振り)",
+    "v5.0_user": "v5.0_user (BTC 30/ACH 50/USDT 20、ユーザー予想最適)",
+    "v5.0_balanced": "v5.0_balanced (35/45/20、調整版)",
+    "v5.0_alt_heavy": "v5.0_alt_heavy (25/55/20、極アルト)"
+  },
+  "wf_4_windows": {
+    "W1": {
+      "v2.5_chop": {
+        "total_ret": 9.63,
+        "max_dd": 22.05,
+        "final": 10962.68,
+        "cagr": 9.63,
+        "n_trades": 10
+      },
+      "v4_attack": {
+        "total_ret": 1.79,
+        "max_dd": 20.35,
+        "final": 10178.99,
+        "cagr": 1.79,
+        "n_trades": 14
+      },
+      "v5.0_user": {
+        "total_ret": 10.74,
+        "max_dd": 22.96,
+        "final": 11073.92,
+        "cagr": 10.75,
+        "n_trades": 10
+      },
+      "v5.0_balanced": {
+        "total_ret": 10.33,
+        "max_dd": 23.17,
+        "final": 11032.53,
+        "cagr": 10.33,
+        "n_trades": 10
+      },
+      "v5.0_alt_heavy": {
+        "total_ret": 11.12,
+        "max_dd": 22.71,
+        "final": 11111.72,
+        "cagr": 11.13,
+        "n_trades": 10
+      }
+    },
+    "W2": {
+      "v2.5_chop": {
+        "total_ret": 70.32,
+        "max_dd": 40.23,
+        "final": 17031.55,
+        "cagr": 70.38,
+        "n_trades": 191
+      },
+      "v4_attack": {
+        "total_ret": 43.56,
+        "max_dd": 44.43,
+        "final": 14356.27,
+        "cagr": 43.6,
+        "n_trades": 278
+      },
+      "v5.0_user": {
+        "total_ret": 70.65,
+        "max_dd": 41.53,
+        "final": 17064.82,
+        "cagr": 70.71,
+        "n_trades": 191
+      },
+      "v5.0_balanced": {
+        "total_ret": 79.46,
+        "max_dd": 40.69,
+        "final": 17946.5,
+        "cagr": 79.54,
+        "n_trades": 191
+      },
+      "v5.0_alt_heavy": {
+        "total_ret": 72.8,
+        "max_dd": 41.87,
+        "final": 17280.37,
+        "cagr": 72.87,
+        "n_trades": 191
+      }
+    },
+    "W3": {
+      "v2.5_chop": {
+        "total_ret": 234.16,
+        "max_dd": 49.97,
+        "final": 33415.89,
+        "cagr": 233.33,
+        "n_trades": 341
+      },
+      "v4_attack": {
+        "total_ret": 171.34,
+        "max_dd": 58.61,
+        "final": 27134.4,
+        "cagr": 170.79,
+        "n_trades": 312
+      },
+      "v5.0_user": {
+        "total_ret": 251.23,
+        "max_dd": 51.51,
+        "final": 35123.36,
+        "cagr": 250.33,
+        "n_trades": 341
+      },
+      "v5.0_balanced": {
+        "total_ret": 247.76,
+        "max_dd": 51.47,
+        "final": 34775.57,
+        "cagr": 246.87,
+        "n_trades": 341
+      },
+      "v5.0_alt_heavy": {
+        "total_ret": 250.09,
+        "max_dd": 51.42,
+        "final": 35009.04,
+        "cagr": 249.19,
+        "n_trades": 341
+      }
+    },
+    "W4": {
+      "v2.5_chop": {
+        "total_ret": -35.81,
+        "max_dd": 39.39,
+        "final": 6418.8,
+        "cagr": -77.36,
+        "n_trades": 68
+      },
+      "v4_attack": {
+        "total_ret": -44.16,
+        "max_dd": 47.73,
+        "final": 5583.56,
+        "cagr": -85.81,
+        "n_trades": 86
+      },
+      "v5.0_user": {
+        "total_ret": -37.64,
+        "max_dd": 40.85,
+        "final": 6235.54,
+        "cagr": -79.46,
+        "n_trades": 68
+      },
+      "v5.0_balanced": {
+        "total_ret": -35.53,
+        "max_dd": 38.81,
+        "final": 6446.51,
+        "cagr": -77.04,
+        "n_trades": 68
+      },
+      "v5.0_alt_heavy": {
+        "total_ret": -38.52,
+        "max_dd": 41.42,
+        "final": 6148.44,
+        "cagr": -80.4,
+        "n_trades": 68
+      }
+    }
+  },
+  "scenarios": {
+    "full_2020_2024": {
+      "v2.5_chop": {
+        "total_ret": 5066.24,
+        "max_dd": 66.76,
+        "final": 516624.37,
+        "cagr": 120.04,
+        "label": "5 年フル (極端 bull)"
+      },
+      "v4_attack": {
+        "total_ret": 9593.99,
+        "max_dd": 58.47,
+        "final": 969398.59,
+        "cagr": 149.54,
+        "label": "5 年フル (極端 bull)"
+      },
+      "v5.0_user": {
+        "total_ret": 5619.58,
+        "max_dd": 68.17,
+        "final": 571957.51,
+        "cagr": 124.56,
+        "label": "5 年フル (極端 bull)"
+      },
+      "v5.0_balanced": {
+        "total_ret": 5288.14,
+        "max_dd": 67.72,
+        "final": 538813.93,
+        "cagr": 121.89,
+        "label": "5 年フル (極端 bull)"
+      },
+      "v5.0_alt_heavy": {
+        "total_ret": 5767.71,
+        "max_dd": 68.52,
+        "final": 586771.02,
+        "cagr": 125.71,
+        "label": "5 年フル (極端 bull)"
+      }
+    },
+    "2024_only": {
+      "v2.5_chop": {
+        "total_ret": 234.16,
+        "max_dd": 49.97,
+        "final": 33415.89,
+        "cagr": 233.33,
+        "label": "2024 単独 (穏やか bull、ユーザー予想 近似)"
+      },
+      "v4_attack": {
+        "total_ret": 171.34,
+        "max_dd": 58.61,
+        "final": 27134.4,
+        "cagr": 170.79,
+        "label": "2024 単独 (穏やか bull、ユーザー予想 近似)"
+      },
+      "v5.0_user": {
+        "total_ret": 251.23,
+        "max_dd": 51.51,
+        "final": 35123.36,
+        "cagr": 250.33,
+        "label": "2024 単独 (穏やか bull、ユーザー予想 近似)"
+      },
+      "v5.0_balanced": {
+        "total_ret": 247.76,
+        "max_dd": 51.47,
+        "final": 34775.57,
+        "cagr": 246.87,
+        "label": "2024 単独 (穏やか bull、ユーザー予想 近似)"
+      },
+      "v5.0_alt_heavy": {
+        "total_ret": 250.09,
+        "max_dd": 51.42,
+        "final": 35009.04,
+        "cagr": 249.19,
+        "label": "2024 単独 (穏やか bull、ユーザー予想 近似)"
+      }
+    },
+    "2023_2024": {
+      "v2.5_chop": {
+        "total_ret": 508.19,
+        "max_dd": 50.34,
+        "final": 60819.27,
+        "cagr": 146.46,
+        "label": "2 年中庸 bull"
+      },
+      "v4_attack": {
+        "total_ret": 297.75,
+        "max_dd": 57.2,
+        "final": 39775.04,
+        "cagr": 99.34,
+        "label": "2 年中庸 bull"
+      },
+      "v5.0_user": {
+        "total_ret": 539.29,
+        "max_dd": 51.85,
+        "final": 63928.66,
+        "cagr": 152.68,
+        "label": "2 年中庸 bull"
+      },
+      "v5.0_balanced": {
+        "total_ret": 556.78,
+        "max_dd": 51.64,
+        "final": 65677.71,
+        "cagr": 156.11,
+        "label": "2 年中庸 bull"
+      },
+      "v5.0_alt_heavy": {
+        "total_ret": 563.99,
+        "max_dd": 52.07,
+        "final": 66398.71,
+        "cagr": 157.51,
+        "label": "2 年中庸 bull"
+      }
+    },
+    "2022_only": {
+      "v2.5_chop": {
+        "total_ret": 9.63,
+        "max_dd": 22.05,
+        "final": 10962.68,
+        "cagr": 9.63,
+        "label": "ベア年単独"
+      },
+      "v4_attack": {
+        "total_ret": 1.79,
+        "max_dd": 20.35,
+        "final": 10178.99,
+        "cagr": 1.79,
+        "label": "ベア年単独"
+      },
+      "v5.0_user": {
+        "total_ret": 10.74,
+        "max_dd": 22.96,
+        "final": 11073.92,
+        "cagr": 10.75,
+        "label": "ベア年単独"
+      },
+      "v5.0_balanced": {
+        "total_ret": 10.33,
+        "max_dd": 23.17,
+        "final": 11032.53,
+        "cagr": 10.33,
+        "label": "ベア年単独"
+      },
+      "v5.0_alt_heavy": {
+        "total_ret": 11.12,
+        "max_dd": 22.71,
+        "final": 11111.72,
+        "cagr": 11.13,
+        "label": "ベア年単独"
+      }
+    },
+    "hard_3_3yr": {
+      "v2.5_chop": {
+        "total_ret": 395.79,
+        "max_dd": 53.38,
+        "final": 49579.25,
+        "cagr": 62.46,
+        "label": "ベア + chop (3.3 年)"
+      },
+      "v4_attack": {
+        "total_ret": 121.96,
+        "max_dd": 63.51,
+        "final": 22196.19,
+        "cagr": 27.34,
+        "label": "ベア + chop (3.3 年)"
+      },
+      "v5.0_user": {
+        "total_ret": 404.85,
+        "max_dd": 55.71,
+        "final": 50484.67,
+        "cagr": 63.36,
+        "label": "ベア + chop (3.3 年)"
+      },
+      "v5.0_balanced": {
+        "total_ret": 383.7,
+        "max_dd": 55.71,
+        "final": 48370.18,
+        "cagr": 61.25,
+        "label": "ベア + chop (3.3 年)"
+      },
+      "v5.0_alt_heavy": {
+        "total_ret": 401.37,
+        "max_dd": 55.71,
+        "final": 50136.62,
+        "cagr": 63.01,
+        "label": "ベア + chop (3.3 年)"
+      }
+    }
+  },
+  "sensitivity": {
+    "sens_60_45": {
+      "bull_ach": 0.6,
+      "ach_w": 0.45,
+      "btc_w": 0.35000000000000003,
+      "total": 300.12700313468946,
+      "final": 400127
+    },
+    "sens_60_50": {
+      "bull_ach": 0.6,
+      "ach_w": 0.5,
+      "btc_w": 0.3,
+      "total": 288.6097415866265,
+      "final": 388609
+    },
+    "sens_60_55": {
+      "bull_ach": 0.6,
+      "ach_w": 0.55,
+      "btc_w": 0.24999999999999994,
+      "total": 285.07046216606244,
+      "final": 385070
+    },
+    "sens_65_45": {
+      "bull_ach": 0.65,
+      "ach_w": 0.45,
+      "btc_w": 0.35000000000000003,
+      "total": 343.91373130046094,
+      "final": 443913
+    },
+    "sens_65_50": {
+      "bull_ach": 0.65,
+      "ach_w": 0.5,
+      "btc_w": 0.3,
+      "total": 313.9124808224867,
+      "final": 413912
+    },
+    "sens_65_55": {
+      "bull_ach": 0.65,
+      "ach_w": 0.55,
+      "btc_w": 0.24999999999999994,
+      "total": 313.2848975869952,
+      "final": 413284
+    },
+    "sens_70_45": {
+      "bull_ach": 0.7,
+      "ach_w": 0.45,
+      "btc_w": 0.35000000000000003,
+      "total": 341.6913834617715,
+      "final": 441691
+    },
+    "sens_70_50": {
+      "bull_ach": 0.7,
+      "ach_w": 0.5,
+      "btc_w": 0.3,
+      "total": 361.32017369695717,
+      "final": 461320
+    },
+    "sens_70_55": {
+      "bull_ach": 0.7,
+      "ach_w": 0.55,
+      "btc_w": 0.24999999999999994,
+      "total": 327.2991181301843,
+      "final": 427299
+    }
+  },
+  "summary": [
+    {
+      "id": "v2.5_chop",
+      "name": "v2.5_chop (PR #12 採用候補、基準)",
+      "rets": [
+        9.63,
+        70.32,
+        234.16,
+        -35.81
+      ],
+      "total": 300.5132612998406,
+      "max_dd": 49.97,
+      "final": 400513,
+      "wins": 0
+    },
+    {
+      "id": "v4_attack",
+      "name": "v4_attack (PR #15 攻め極振り)",
+      "rets": [
+        1.79,
+        43.56,
+        171.34,
+        -44.16
+      ],
+      "total": 121.41028670793341,
+      "max_dd": 58.61,
+      "final": 221410,
+      "wins": 0
+    },
+    {
+      "id": "v5.0_user",
+      "name": "v5.0_user (BTC 30/ACH 50/USDT 20、ユーザー予想最適)",
+      "rets": [
+        10.74,
+        70.65,
+        251.23,
+        -37.64
+      ],
+      "total": 313.9124808224867,
+      "max_dd": 51.51,
+      "final": 413912,
+      "wins": 3
+    },
+    {
+      "id": "v5.0_balanced",
+      "name": "v5.0_balanced (35/45/20、調整版)",
+      "rets": [
+        10.33,
+        79.46,
+        247.76,
+        -35.53
+      ],
+      "total": 343.91373130046094,
+      "max_dd": 51.47,
+      "final": 443913,
+      "wins": 4
+    },
+    {
+      "id": "v5.0_alt_heavy",
+      "name": "v5.0_alt_heavy (25/55/20、極アルト)",
+      "rets": [
+        11.12,
+        72.8,
+        250.09,
+        -38.52
+      ],
+      "total": 313.2848975869952,
+      "max_dd": 51.42,
+      "final": 413284,
+      "wins": 3
+    }
+  ]
+}
