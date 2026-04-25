@@ -1,0 +1,9 @@
+DROP INDEX IF EXISTS idx_runs_dedup;
+DROP INDEX IF EXISTS idx_runs_lb_topn;
+DROP INDEX IF EXISTS idx_runs_type_strategy;
+DROP INDEX IF EXISTS idx_runs_trial_group;
+DROP INDEX IF EXISTS idx_runs_parent;
+DROP TABLE IF EXISTS run_periods;
+DROP TABLE IF EXISTS run_yearly;
+DROP TABLE IF EXISTS runs;
+DROP TABLE IF EXISTS cost_models;

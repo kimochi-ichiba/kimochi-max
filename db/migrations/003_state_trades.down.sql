@@ -1,0 +1,9 @@
+DROP INDEX IF EXISTS idx_snap_pos_symbol;
+DROP INDEX IF EXISTS idx_snapshots_mode_ts;
+DROP INDEX IF EXISTS idx_trades_symbol_ts;
+DROP INDEX IF EXISTS idx_trades_mode_run;
+DROP TABLE IF EXISTS positions;
+DROP TABLE IF EXISTS snapshot_positions;
+DROP TABLE IF EXISTS snapshots;
+DROP TABLE IF EXISTS trade_fills;
+DROP TABLE IF EXISTS trades;
