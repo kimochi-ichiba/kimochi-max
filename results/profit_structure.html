@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a1628">
+<title>気持ちマックス v2.5 収益構造</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #0a1628; --bg2: #122340; --bg3: #1a3052;
+  --text: #e0eaf5; --muted: #7a92b0; --muted2: #abc1d8;
+  --border: #1f3a5e; --border2: #2c4d75;
+  --green: #4ade80; --green-bg: rgba(74,222,128,0.12);
+  --red: #f87171; --red-bg: rgba(248,113,113,0.12);
+  --yellow: #fbbf24; --yellow-bg: rgba(251,191,36,0.12);
+  --blue: #60a5fa; --blue-bg: rgba(96,165,250,0.12);
+  --purple: #a78bfa; --purple-bg: rgba(167,139,250,0.12);
+  --orange: #fb923c;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--text);
+  font-family: -apple-system, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  font-size: 14px; line-height: 1.6; }
+.wrap { max-width: 980px; margin: 0 auto; padding: 24px 16px 80px; }
+
+/* ━━━ ヘッダー ━━━ */
+.hero {
+  background: linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px; padding: 28px 24px; margin-bottom: 24px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: 0; right: 0; width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(96,165,250,0.15) 0%, transparent 70%);
+}
+.hero h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+.hero h1 em { color: var(--yellow); font-style: normal; }
+.hero .sub { color: var(--muted2); font-size: 14px; }
+.live-dot {
+  display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 12px var(--green);
+  animation: pulse 2s ease-in-out infinite; margin-right: 6px; vertical-align: middle;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+.hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 22px; }
+.stat-box {
+  background: rgba(0,0,0,0.25); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 16px;
+}
+.stat-box .lbl { color: var(--muted); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 4px; }
+.stat-box .val { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
+.stat-box .sub { font-size: 11px; color: var(--muted2); margin-top: 2px; }
+.stat-box .val.green { color: var(--green); }
+.stat-box .val.yellow { color: var(--yellow); }
+
+/* ━━━ セクション ━━━ */
+.section {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 22px 22px; margin-bottom: 18px;
+}
+.section h2 { font-size: 18px; font-weight: 700; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px; }
+.section h2 .icon { font-size: 24px; }
+.section .desc { color: var(--muted2); font-size: 13px; margin-bottom: 16px; }
+
+/* ━━━ 配分カード ━━━ */
+.allocation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.alloc-card {
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: 10px; padding: 16px; position: relative; overflow: hidden;
+}
+.alloc-card::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+}
+.alloc-card.btc::before { background: var(--orange); }
+.alloc-card.ach::before { background: var(--green); }
+.alloc-card.usdt::before { background: var(--blue); }
+.alloc-card .name { font-size: 12px; color: var(--muted); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.05em; }
+.alloc-card .pct { font-size: 32px; font-weight: 900; margin: 6px 0 4px; }
+.alloc-card .amount { font-size: 14px; color: var(--muted2); margin-bottom: 8px; }
+.alloc-card .role { font-size: 12px; color: var(--text); line-height: 1.5; }
+.alloc-card.btc .pct { color: var(--orange); }
+.alloc-card.ach .pct { color: var(--green); }
+.alloc-card.usdt .pct { color: var(--blue); }
+
+/* ━━━ 戦略ステップ ━━━ */
+.flow { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.flow-item {
+  background: var(--bg3); border-left: 3px solid var(--blue);
+  border-radius: 8px; padding: 12px 16px;
+}
+.flow-item .step { font-size: 11px; color: var(--blue); font-weight: 700;
+  text-transform: uppercase; margin-bottom: 4px; }
+.flow-item .what { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.flow-item .why { font-size: 12px; color: var(--muted2); }
+
+/* ━━━ バックテスト表 ━━━ */
+.bt-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
+.bt-table th, .bt-table td {
+  padding: 10px 8px; border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+.bt-table th {
+  background: var(--bg3); color: var(--muted2);
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.bt-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.bt-table .green { color: var(--green); font-weight: 700; }
+.bt-table .red { color: var(--red); font-weight: 700; }
+.bt-table .yellow { color: var(--yellow); font-weight: 700; }
+.bt-table tr.highlight { background: var(--blue-bg); }
+
+/* ━━━ ハイライトボックス ━━━ */
+.callout {
+  background: var(--blue-bg); border: 1px solid var(--blue);
+  border-radius: 10px; padding: 14px 18px; margin: 14px 0;
+}
+.callout.warn { background: var(--yellow-bg); border-color: var(--yellow); }
+.callout.danger { background: var(--red-bg); border-color: var(--red); }
+.callout.good { background: var(--green-bg); border-color: var(--green); }
+.callout .title { font-weight: 700; margin-bottom: 4px; }
+
+/* ━━━ チャート ━━━ */
+.chart-container { position: relative; height: 280px; margin-top: 12px; }
+
+/* ━━━ 期待値リスト ━━━ */
+.exp-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.exp-item {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px;
+}
+.exp-item .lbl { font-size: 11px; color: var(--muted); font-weight: 700;
+  text-transform: uppercase; margin-bottom: 6px; }
+.exp-item .val { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+.exp-item .desc { font-size: 12px; color: var(--muted2); }
+.exp-item.good .val { color: var(--green); }
+.exp-item.bad .val { color: var(--red); }
+.exp-item.neutral .val { color: var(--blue); }
+
+/* ━━━ レスポンシブ ━━━ */
+@media (max-width: 640px) {
+  .wrap { padding: 14px 10px 60px; }
+  .hero { padding: 20px 16px; }
+  .hero h1 { font-size: 22px; }
+  .hero-stats { grid-template-columns: 1fr 1fr; }
+  .allocation-grid { grid-template-columns: 1fr; }
+  .exp-list { grid-template-columns: 1fr; }
+  .section { padding: 18px 16px; }
+  .bt-table { font-size: 11px; }
+  .bt-table th, .bt-table td { padding: 8px 4px; }
+}
+
+/* ━━━ ナビ ━━━ */
+.nav-bar {
+  position: sticky; top: 0; background: rgba(10,22,40,0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 16px; margin: -24px -16px 20px;
+  z-index: 100;
+  display: flex; gap: 8px; overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.nav-bar a {
+  color: var(--muted2); text-decoration: none;
+  padding: 6px 12px; border-radius: 6px;
+  font-size: 12px; font-weight: 600;
+  white-space: nowrap;
+  transition: 0.15s;
+}
+.nav-bar a:hover { background: var(--bg3); color: var(--text); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ナビ -->
+  <div class="nav-bar">
+    <a href="#now">📍 今の状態</a>
+    <a href="#allocation">💰 資産配分</a>
+    <a href="#strategy">⚙️ 戦略</a>
+    <a href="#backtest">📊 過去成績</a>
+    <a href="#validation">🔍 過学習検証</a>
+    <a href="#expected">🎯 期待値</a>
+    <a href="#scenarios">💵 5年シミュ</a>
+    <a href="#risk">⚠️ リスク</a>
+  </div>
+
+  <!-- ━━━ ヘッダー ━━━ -->
+  <div class="hero" id="top">
+    <h1>💎 気持ち<em>マックス</em> v2.5 収益構造</h1>
+    <div class="sub">
+      <span class="live-dot"></span>SIM 稼働中
+      &nbsp;·&nbsp; 仮想 $10,000 (約 150 万円相当) を 3 つの部分に分けて運用
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-box">
+        <div class="lbl">総資産</div>
+        <div class="val green">$10,000.67</div>
+        <div class="sub">運用開始時から +0.67 (利息)</div>
+      </div>
+      <div class="stat-box">
+        <div class="lbl">最大下落 (DD)</div>
+        <div class="val">0.00%</div>
+        <div class="sub">運用開始からまだ取引ゼロ</div>
+      </div>
+      <div class="stat-box">
+        <div class="lbl">バージョン</div>
+        <div class="val yellow">v2.5</div>
+        <div class="sub">multi_lookback 採用</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ━━━ ① 今の状態 ━━━ -->
+  <div class="section" id="now">
+    <h2><span class="icon">📍</span>今の状態 (2026-04-25 18:57 JST)</h2>
+    <div class="desc">SIM (仮想資金) で稼働中。実際のお金は 1 円も動いていません。</div>
+
+    <div class="callout">
+      <div class="title">🐻 ベア相場のため待機中</div>
+      <div>BTC 価格 $77,769 が EMA200 ($83,809) の <strong>下</strong>。
+      v2.5 のルールでは <strong>BTC を持たない</strong>。アルトコイン (ACH 部分) も
+      Bear 即時退避 → 全部現金待機。次のリバランス (週次) で BTC が
+      EMA200 の上に戻れば再び動き出します。</div>
+    </div>
+
+    <table class="bt-table">
+      <thead>
+        <tr><th>項目</th><th>値</th><th>意味</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>BTC 価格</td><td class="num">$77,769</td><td>24h: -1.1%</td></tr>
+        <tr><td>BTC EMA200</td><td class="num">$83,809</td><td>200日移動平均 (基準線)</td></tr>
+        <tr><td>判定</td><td class="num red">Bear</td><td>EMA200 を 7.2% 下回る</td></tr>
+        <tr><td>BTC ポジション</td><td class="num">なし</td><td>Bear 検知で売却済</td></tr>
+        <tr><td>ACH ポジション</td><td class="num">なし</td><td>Bear 即時退避済</td></tr>
+        <tr><td>稼働日数</td><td class="num">5 日</td><td>2026-04-21 から</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ━━━ ② 資産配分 ━━━ -->
+  <div class="section" id="allocation">
+    <h2><span class="icon">💰</span>資産配分 (3 つの部分)</h2>
+    <div class="desc">10 万円を 3 つに分けて、別々の役割をもたせる。</div>
+
+    <div class="allocation-grid">
+      <div class="alloc-card btc">
+        <div class="name">🪙 BTC 部分</div>
+        <div class="pct">35%</div>
+        <div class="amount">$3,500 (約 52 万円)</div>
+        <div class="role">「コツコツ型」<br>BTC が 200 日平均より上なら買い、下なら売り</div>
+      </div>
+      <div class="alloc-card ach">
+        <div class="name">⚡ ACH 部分 (アルトコイン)</div>
+        <div class="pct">35→60%</div>
+        <div class="amount">$3,500〜$6,000</div>
+        <div class="role">「攻め型」<br>強い 2 銘柄に集中投資、Bull 相場で 60% に拡大</div>
+      </div>
+      <div class="alloc-card usdt">
+        <div class="name">💵 USDT 部分 (現金)</div>
+        <div class="pct">30%</div>
+        <div class="amount">$3,000 (約 45 万円)</div>
+        <div class="role">「守り」<br>暴落時のクッション、年 3% 利息想定</div>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <canvas id="allocChart"></canvas>
+    </div>
+  </div>
+
+  <!-- ━━━ ③ 戦略 ━━━ -->
+  <div class="section" id="strategy">
+    <h2><span class="icon">⚙️</span>戦略の流れ (v2.5)</h2>
+    <div class="desc">Bot は 1 秒ごとに価格をチェックし、ルールに従って自動売買します。</div>
+
+    <div class="flow">
+      <div class="flow-item">
+        <div class="step">STEP 1</div>
+        <div class="what">BTC 価格と EMA200 を比較</div>
+        <div class="why">価格 &gt; EMA200 → ブル相場 / 価格 &lt; EMA200 → ベア相場</div>
+      </div>
+      <div class="flow-item">
+        <div class="step">STEP 2 (ブル相場のとき)</div>
+        <div class="what">BTC を 35% 分買って保有</div>
+        <div class="why">EMA200 を割るまで持ち続ける (長期トレンドフォロー)</div>
+      </div>
+      <div class="flow-item">
+        <div class="step">STEP 3 (ブル相場のとき)</div>
+        <div class="what">アルトコイン Top2 を multi_lookback で選定</div>
+        <div class="why">過去 25日 + 45日 + 90日 のリターンを平均し、強い 2 銘柄を選ぶ (短期ノイズ排除)</div>
+      </div>
+      <div class="flow-item">
+        <div class="step">STEP 4 (ブル相場のとき)</div>
+        <div class="what">USDT から ACH へ補充して 60% に拡大</div>
+        <div class="why">攻めの局面で利益を最大化 (dynamic regime)</div>
+      </div>
+      <div class="flow-item">
+        <div class="step">STEP 5 (週次リバランス)</div>
+        <div class="what">7 日ごとに ACH を入れ替え</div>
+        <div class="why">弱くなった銘柄を売って強い銘柄に乗り換え</div>
+      </div>
+      <div class="flow-item">
+        <div class="step">STEP 6 (ベア検知)</div>
+        <div class="what">BTC &lt; EMA200 を見たら全アルト即売却</div>
+        <div class="why">下落相場で資産を守る (Bear 即時退避)</div>
+      </div>
+      <div class="flow-item">
+        <div class="step">STEP 7 (トレイルストップ)</div>
+        <div class="what">ピークから -20% (BTC) または -30% (ACH) で全売却</div>
+        <div class="why">含み益を抱えたまま落とさないための保険</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ━━━ ④ バックテスト ━━━ -->
+  <div class="section" id="backtest">
+    <h2><span class="icon">📊</span>過去 3.3 年の成績 (バックテスト実測)</h2>
+    <div class="desc">2022-01〜2025-04 で 10 万円を運用したシミュレーション結果。</div>
+
+    <table class="bt-table">
+      <thead>
+        <tr><th>年</th><th>相場</th><th>リターン</th><th>判定</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>2022</td><td>🐻 ベア (-70%)</td><td class="num green">+9.6%</td><td>守りが効いた</td></tr>
+        <tr><td>2023</td><td>🟡 回復</td><td class="num green">+55.5%</td><td>復調を捉えた</td></tr>
+        <tr><td>2024</td><td>🐂 ブル</td><td class="num green">+225.4%</td><td>爆発的に伸びた</td></tr>
+        <tr><td>2025 Q1</td><td>↔️ 殺り合い</td><td class="num red">-36.6%</td><td>whipsaw で削られた</td></tr>
+        <tr class="highlight">
+          <td><strong>合計</strong></td><td><strong>3.3 年複利</strong></td>
+          <td class="num green"><strong>+262%</strong></td>
+          <td><strong>10 万 → 36.2 万円</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="chart-container">
+      <canvas id="returnsChart"></canvas>
+    </div>
+  </div>
+
+  <!-- ━━━ ⑤ 過学習検証 ━━━ -->
+  <div class="section" id="validation">
+    <h2><span class="icon">🔍</span>過学習検証 (Walk-Forward)</h2>
+    <div class="desc">「過去に合わせただけ」ではなく「未来でも効く」かを 4 つの期間で検証。</div>
+
+    <table class="bt-table">
+      <thead>
+        <tr><th>窓</th><th>OOS 期間</th><th>v2.4 (旧)</th><th>v2.5 (今)</th><th>勝敗</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>W1</td><td>2022 ベア</td><td class="num">+5.9%</td><td class="num green">+9.6%</td><td>🏆 v2.5</td></tr>
+        <tr><td>W2</td><td>2023 回復</td><td class="num">+47.3%</td><td class="num green">+55.5%</td><td>🏆 v2.5</td></tr>
+        <tr><td>W3</td><td>2024 ブル</td><td class="num green">+269.8%</td><td class="num">+225.4%</td><td>❌ v2.4</td></tr>
+        <tr><td>W4</td><td>2025 Q1</td><td class="num red">-45.4%</td><td class="num red">-36.6%</td><td>🏆 v2.5</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout good">
+      <div class="title">✅ 4 窓中 3 勝 = 75/100 点</div>
+      過学習ではなく本物の改善。ただし「ブル爆発相場」だけは v2.4 が強いのでトレードオフ。
+    </div>
+  </div>
+
+  <!-- ━━━ ⑥ 期待値 ━━━ -->
+  <div class="section" id="expected">
+    <h2><span class="icon">🎯</span>10-30 年運用の期待値 (4 年周期前提)</h2>
+    <div class="desc">仮想通貨は半減期 4 年周期で動く想定。1 サイクル = ブル + ベア + 殺り合い。</div>
+
+    <div class="exp-list">
+      <div class="exp-item neutral">
+        <div class="lbl">$10,000 → 5 年後 (中位)</div>
+        <div class="val">$35-45k</div>
+        <div class="desc">3.5〜4.5 倍 / 下のシミュ表参照</div>
+      </div>
+      <div class="exp-item good">
+        <div class="lbl">$10,000 → 5 年後 (楽観)</div>
+        <div class="val">$70k</div>
+        <div class="desc">7 倍、ブル続きの場合</div>
+      </div>
+      <div class="exp-item good">
+        <div class="lbl">$10,000 → 5 年後 (超楽観)</div>
+        <div class="val">$222k</div>
+        <div class="desc">22 倍、2020-2024 完全再現 (iter61 実績)</div>
+      </div>
+      <div class="exp-item neutral">
+        <div class="lbl">$10,000 → 10 年後 (中位)</div>
+        <div class="val">$100-200k</div>
+        <div class="desc">10〜20 倍、2 サイクル経験</div>
+      </div>
+      <div class="exp-item bad">
+        <div class="lbl">最悪 DD (一時下落)</div>
+        <div class="val">-54%</div>
+        <div class="desc">資産が半分近くまで減る瞬間がある</div>
+      </div>
+    </div>
+
+    <div class="callout warn" style="margin-top:14px">
+      <div class="title">📐 数字の根拠 (正直に)</div>
+      上記は<strong>下の「5 年シミュ」セクションと整合した数字</strong>です。
+      以前は単純 CAGR 35-50%/年で計算していましたが、それは「毎年同じペースで増える」
+      前提の理想値で、実際は<strong>ベア年に -40〜-50% 食らう</strong>ためもっと低くなります。<br>
+      「中位 3.5-4.5 倍」が現実的な期待値、「楽観 7 倍」は 2020-2024 並みのブル続きが
+      再現された場合のみ。
+    </div>
+
+    <div class="callout warn">
+      <div class="title">⚠️ 数字は保証ではなく「過去の実績」</div>
+      仮想通貨自体が 5-10 年後に存在するか、4 年周期が継続するかは未保証。
+      失っても生活に支障のない金額のみで運用すること。
+    </div>
+  </div>
+
+  <!-- ━━━ ⑦ 5 年シミュレーション ━━━ -->
+  <div class="section" id="scenarios">
+    <h2><span class="icon">💵</span>$10,000 を 5 年運用すると?</h2>
+    <div class="desc">
+      仮想通貨は 4 年周期 (半減期サイクル) で動くため、5 年で 1 サイクル + 次の入口を経験する。
+      過去のパターンから 4 つのシナリオを試算 (確実な予想ではなく「あり得る範囲」)。
+    </div>
+
+    <table class="bt-table">
+      <thead>
+        <tr>
+          <th>シナリオ</th><th>1年目</th><th>2年目</th><th>3年目</th>
+          <th>4年目</th><th>5年目</th><th>5年後</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>🌈 超楽観</strong><br><span style="color:var(--muted);font-size:11px">2020-2024 完全再現 (iter61 実績)</span></td>
+          <td class="num green">+46%</td>
+          <td class="num green">+1,230%</td>
+          <td class="num red">-1%</td>
+          <td class="num green">+14%</td>
+          <td class="num green">+4%</td>
+          <td class="num green"><strong>$222,000<br><span style="font-size:11px">(22 倍)</span></strong></td>
+        </tr>
+        <tr>
+          <td><strong>🌟 楽観</strong><br><span style="color:var(--muted);font-size:11px">アルト爆発年なし、ブル続き</span></td>
+          <td class="num green">+50%</td>
+          <td class="num green">+120%</td>
+          <td class="num green">+200%</td>
+          <td class="num green">+30%</td>
+          <td class="num red">-45%</td>
+          <td class="num green"><strong>$70,000<br><span style="font-size:11px">(7 倍)</span></strong></td>
+        </tr>
+        <tr class="highlight">
+          <td><strong>🟢 中位 (現実的)</strong><br><span style="color:var(--muted);font-size:11px">バックテスト平均ベース</span></td>
+          <td class="num green">+50%</td>
+          <td class="num green">+100%</td>
+          <td class="num red">-40%</td>
+          <td class="num green">+30%</td>
+          <td class="num green">+80%</td>
+          <td class="num green"><strong>$35,000〜<br>$45,000<br><span style="font-size:11px">(3.5〜4.5 倍)</span></strong></td>
+        </tr>
+        <tr>
+          <td><strong>🟡 悲観</strong><br><span style="color:var(--muted);font-size:11px">即ベア + 回復遅め</span></td>
+          <td class="num red">-40%</td>
+          <td class="num green">+10%</td>
+          <td class="num green">+30%</td>
+          <td class="num green">+70%</td>
+          <td class="num green">+15%</td>
+          <td class="num yellow"><strong>$13,000〜<br>$17,000<br><span style="font-size:11px">(1.3〜1.7 倍)</span></strong></td>
+        </tr>
+        <tr>
+          <td><strong>🔴 最悪</strong><br><span style="color:var(--muted);font-size:11px">仮想通貨自体が衰退</span></td>
+          <td class="num red">-50%</td>
+          <td class="num red">-30%</td>
+          <td class="num red">-20%</td>
+          <td class="num green">+10%</td>
+          <td class="num green">+5%</td>
+          <td class="num red"><strong>$3,000〜<br>$4,000<br><span style="font-size:11px">(60〜70% 損)</span></strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="chart-container" style="height:320px;margin-top:20px">
+      <canvas id="projChart"></canvas>
+    </div>
+
+    <h3 style="font-size:15px;margin-top:24px;margin-bottom:10px">📊 他の運用方法と比較</h3>
+    <table class="bt-table">
+      <thead>
+        <tr><th>運用方法</th><th>5 年後 (中央値)</th><th>最悪</th><th>最良</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>銀行預金 (0.001%)</td>
+          <td class="num">$10,005</td>
+          <td class="num">$10,005</td>
+          <td class="num">$10,005</td>
+        </tr>
+        <tr>
+          <td>S&amp;P 500 ETF</td>
+          <td class="num green">$15,000</td>
+          <td class="num">$8,000</td>
+          <td class="num green">$22,000</td>
+        </tr>
+        <tr>
+          <td>BTC 単純保有</td>
+          <td class="num green">$30,000</td>
+          <td class="num red">$5,000</td>
+          <td class="num green">$80,000</td>
+        </tr>
+        <tr class="highlight">
+          <td><strong>気持ちマックス v2.5</strong></td>
+          <td class="num green"><strong>$35,000〜45,000</strong></td>
+          <td class="num red"><strong>$3,000</strong></td>
+          <td class="num green"><strong>$70,000</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <div class="title">💡 中央値ベースの結論</div>
+      <strong>$10,000 → 約 $35,000〜45,000 (5 年で 3.5〜4.5 倍)</strong> が一番起きそうな結果。
+      銀行預金 ($10,005) や S&P 500 ($15,000) より大きく増える可能性がある一方、
+      最悪 $3,000 まで減る覚悟も必要。<br><br>
+      毎年同じペースではなく、「凄く儲かる年」と「半額になる年」が交互に来るので、
+      <strong>5 年連続で持ち続ける精神力</strong>が一番のハードル。
+    </div>
+
+    <div class="callout good">
+      <div class="title">🌈 「超楽観 $222k」の根拠 (iter61 F3+Maker 実績)</div>
+      これは <strong>2020-2024 の過去 5 年をそのまま再現</strong>した場合の数字。
+      <a href="iter61_report.html" style="color:var(--blue)">iter61 採用構成レポート</a>
+      参照、CAGR +85.95% / 取引 1,107 回。<br><br>
+      <strong>2021 年の +1,230%</strong> (アルトコイン爆発相場で SOL/AVAX 等が
+      数十倍化) が全期間の利益の大半を稼いだ。<strong>次の 5 年で同じことが
+      起きる保証は無い</strong>が、半減期サイクル (2024 年半減期 → 2025-2026 ピーク)
+      が過去パターン通りなら、似た爆発年が 1 回来る可能性はある。<br><br>
+      <strong>取引数 1,107 回</strong>は週次リバランス × 5 年 × Top3 銘柄 × 売買 ≈
+      理論値と整合。DD 46.56% は 2021 年ピークから 2022 年安値までの一時下落。
+    </div>
+
+    <div class="callout warn">
+      <div class="title">⚠️ この数字の前提</div>
+      <ul style="margin-left:20px;margin-top:6px;color:var(--muted2);font-size:13px">
+        <li>過去 5 年 (2020-2025) のデータをもとにした推定</li>
+        <li>仮想通貨が 5 年後も存在し、4 年周期 (半減期) パターンが続く前提</li>
+        <li>取引所が破綻しない、API 障害なし、Bot が止まらない前提</li>
+        <li>v2.5 の Bot ロジックが将来も同じ性能を出す前提</li>
+        <li>毎年の取引手数料・税金は含まない (実際は -10〜20% 引かれる)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ━━━ ⑧ リスク ━━━ -->
+  <div class="section" id="risk">
+    <h2><span class="icon">⚠️</span>主なリスク</h2>
+
+    <div class="callout danger">
+      <div class="title">🔴 大幅下落 (DD 50% 級)</div>
+      ピークから資産が半分まで減る瞬間が必ず来る。100 万円 → 46 万円の含み損で
+      売らずに持ち続ける必要がある。
+    </div>
+    <div class="callout warn">
+      <div class="title">🟡 殺り合い相場での whipsaw</div>
+      2025 Q1 のような上下揺れ相場では、トレイルストップが連続発動して
+      -36% まで削られた。v2.5 でも完全には防げない。
+    </div>
+    <div class="callout warn">
+      <div class="title">🟡 ブル相場の出遅れ</div>
+      v2.5 の multi_lookback (3 期間平均) は短期の急騰を平均化するため、
+      v2.4 比で年率 -46pt の機会損失あり (2024 年で実証)。
+    </div>
+    <div class="callout">
+      <div class="title">⚪ システム的リスク</div>
+      取引所が破綻、Binance の listing 停止、API 障害、ボット停止等。
+      実資金投入時は「失っても困らない金額」に限定する。
+    </div>
+  </div>
+
+  <!-- ━━━ フッター ━━━ -->
+  <div class="section" style="text-align: center; color: var(--muted);">
+    <div style="font-size: 12px;">
+      生成日時: 2026-04-25 19:00 JST &middot; 気持ちマックス v2.5 SIM<br>
+      関連: <a href="demo.html" style="color: var(--blue);">📊 ライブダッシュボード</a> ·
+      <a href="bear_test_report.html" style="color: var(--blue);">🐻 ベア相場耐性テスト</a> ·
+      <a href="https://github.com/kimochi-ichiba/kimochi-max/pull/11" style="color: var(--blue);">🔧 PR #11 (DB 移行)</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// 配分パイチャート
+const allocCtx = document.getElementById('allocChart').getContext('2d');
+new Chart(allocCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['BTC 35%', 'ACH 35% (35→60%)', 'USDT 30%'],
+    datasets: [{
+      data: [35, 35, 30],
+      backgroundColor: ['#fb923c', '#4ade80', '#60a5fa'],
+      borderColor: '#1a3052',
+      borderWidth: 3,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { color: '#abc1d8', padding: 16 } },
+      tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${ctx.parsed}%` } }
+    },
+    cutout: '55%',
+  }
+});
+
+// 5 年シミュレーション折れ線
+const projCtx = document.getElementById('projChart').getContext('2d');
+function compound(start, rates) {
+  const out = [start];
+  let v = start;
+  for (const r of rates) { v *= (1 + r/100); out.push(Math.round(v)); }
+  return out;
+}
+new Chart(projCtx, {
+  type: 'line',
+  data: {
+    labels: ['開始', '1 年後', '2 年後', '3 年後', '4 年後', '5 年後'],
+    datasets: [
+      {
+        label: '🌈 超楽観 ($222k)',
+        data: compound(10000, [46, 1230, -1, 14, 4]),
+        borderColor: '#a78bfa', backgroundColor: 'rgba(167,139,250,0.1)',
+        tension: 0.3, borderWidth: 3, borderDash: [6, 3],
+      },
+      {
+        label: '🌟 楽観 ($70k)',
+        data: compound(10000, [50, 120, 200, 30, -45]),
+        borderColor: '#4ade80', backgroundColor: 'rgba(74,222,128,0.1)',
+        tension: 0.3, borderWidth: 3,
+      },
+      {
+        label: '🟢 中位 ($40k)',
+        data: compound(10000, [50, 100, -40, 30, 80]),
+        borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.1)',
+        tension: 0.3, borderWidth: 3,
+      },
+      {
+        label: '🟡 悲観 ($15k)',
+        data: compound(10000, [-40, 10, 30, 70, 15]),
+        borderColor: '#fbbf24', backgroundColor: 'rgba(251,191,36,0.1)',
+        tension: 0.3, borderWidth: 2,
+      },
+      {
+        label: '🔴 最悪 ($3.5k)',
+        data: compound(10000, [-50, -30, -20, 10, 5]),
+        borderColor: '#f87171', backgroundColor: 'rgba(248,113,113,0.1)',
+        tension: 0.3, borderWidth: 2,
+      },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { color: '#abc1d8', boxWidth: 14 } },
+      tooltip: { callbacks: {
+        label: (ctx) => ctx.dataset.label + ': $' + ctx.parsed.y.toLocaleString()
+      }}
+    },
+    scales: {
+      x: { ticks: { color: '#abc1d8' }, grid: { color: '#1f3a5e' } },
+      y: { ticks: { color: '#abc1d8',
+            callback: (v) => '$' + (v / 1000).toFixed(0) + 'k' },
+           grid: { color: '#1f3a5e' } },
+    }
+  }
+});
+
+// バックテスト棒グラフ
+const retCtx = document.getElementById('returnsChart').getContext('2d');
+new Chart(retCtx, {
+  type: 'bar',
+  data: {
+    labels: ['2022 (ベア)', '2023 (回復)', '2024 (ブル)', '2025 Q1 (chop)'],
+    datasets: [{
+      label: 'リターン (%)',
+      data: [9.6, 55.5, 225.4, -36.6],
+      backgroundColor: (ctx) => ctx.parsed.y >= 0 ? '#4ade80' : '#f87171',
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { color: '#abc1d8' }, grid: { color: '#1f3a5e' } },
+      y: { ticks: { color: '#abc1d8', callback: (v) => v + '%' },
+           grid: { color: '#1f3a5e' } },
+    }
+  }
+});
+</script>
+</body>
+</html>
