@@ -1,0 +1,197 @@
+{
+  "graph": {
+    "_iter41_html": [],
+    "_iter41_improve": [],
+    "_iter42_html": [],
+    "_iter42_improve": [],
+    "_iter43_hallucination": [],
+    "_iter43_html": [],
+    "_iter43_html_v2": [],
+    "_iter43_rethink": [
+      "_iter42_improve"
+    ],
+    "_iter44_html": [],
+    "_iter44_multiexchange_verify": [],
+    "_iter44_robustness": [
+      "_iter43_rethink"
+    ],
+    "_iter44_trade_verify": [],
+    "_iter45_html": [],
+    "_iter45_low_dd": [
+      "_iter43_rethink"
+    ],
+    "_iter46_html": [],
+    "_iter46_html_v2": [],
+    "_iter46_hybrid": [
+      "_iter42_improve",
+      "_iter43_rethink"
+    ],
+    "_iter47_html": [],
+    "_iter47_trade_limit": [
+      "_iter43_rethink"
+    ],
+    "_iter48_all_improvements": [
+      "_iter43_rethink"
+    ],
+    "_iter48_html": [],
+    "_iter49_html": [],
+    "_iter49_rigorous": [
+      "_iter43_rethink"
+    ],
+    "_iter50_finetune": [
+      "_iter49_rigorous"
+    ],
+    "_iter51_html": [],
+    "_iter51_maker_finetune": [
+      "_iter43_rethink",
+      "_iter49_rigorous"
+    ],
+    "_iter52_risk_mgmt": [
+      "_iter43_rethink"
+    ],
+    "_iter52b_tuning": [
+      "_iter52_risk_mgmt"
+    ],
+    "_iter53_adx_weight": [
+      "_iter43_rethink",
+      "_iter49_rigorous"
+    ],
+    "_iter54_comprehensive": [
+      "_iter43_rethink"
+    ],
+    "_iter55_balanced": [
+      "_iter54_comprehensive"
+    ],
+    "_iter56_dd_minimize": [
+      "_iter43_rethink",
+      "_iter54_comprehensive"
+    ],
+    "_iter57_ultra_safe": [
+      "_iter43_rethink",
+      "_iter54_comprehensive"
+    ],
+    "_iter58_deep_exploration": [
+      "_iter43_rethink"
+    ],
+    "_iter59_v22_verify": [
+      "_iter43_rethink",
+      "_iter54_comprehensive"
+    ],
+    "_iter60_all_defenses": [
+      "_iter43_rethink",
+      "_iter54_comprehensive"
+    ],
+    "_iter61_f3_maker": [
+      "_iter60_all_defenses"
+    ],
+    "_iterate_100pct": [],
+    "_iterate_100pct_v2": [],
+    "_iterate_40": []
+  },
+  "stats": {
+    "n_files": 40,
+    "n_with_iter_deps": 20,
+    "n_imported_iters": 6,
+    "n_leaves": 34,
+    "most_depended": [
+      [
+        "_iter43_rethink",
+        15
+      ],
+      [
+        "_iter54_comprehensive",
+        5
+      ],
+      [
+        "_iter49_rigorous",
+        3
+      ],
+      [
+        "_iter42_improve",
+        2
+      ],
+      [
+        "_iter52_risk_mgmt",
+        1
+      ]
+    ]
+  },
+  "leaves": [
+    "_iter41_html",
+    "_iter41_improve",
+    "_iter42_html",
+    "_iter43_hallucination",
+    "_iter43_html",
+    "_iter43_html_v2",
+    "_iter44_html",
+    "_iter44_multiexchange_verify",
+    "_iter44_robustness",
+    "_iter44_trade_verify",
+    "_iter45_html",
+    "_iter45_low_dd",
+    "_iter46_html",
+    "_iter46_html_v2",
+    "_iter46_hybrid",
+    "_iter47_html",
+    "_iter47_trade_limit",
+    "_iter48_all_improvements",
+    "_iter48_html",
+    "_iter49_html",
+    "_iter50_finetune",
+    "_iter51_html",
+    "_iter51_maker_finetune",
+    "_iter52b_tuning",
+    "_iter53_adx_weight",
+    "_iter55_balanced",
+    "_iter56_dd_minimize",
+    "_iter57_ultra_safe",
+    "_iter58_deep_exploration",
+    "_iter59_v22_verify",
+    "_iter61_f3_maker",
+    "_iterate_100pct",
+    "_iterate_100pct_v2",
+    "_iterate_40"
+  ],
+  "topological_order": [
+    "_iter41_html",
+    "_iter41_improve",
+    "_iter42_html",
+    "_iter42_improve",
+    "_iter43_hallucination",
+    "_iter43_html",
+    "_iter43_html_v2",
+    "_iter44_html",
+    "_iter44_multiexchange_verify",
+    "_iter44_trade_verify",
+    "_iter45_html",
+    "_iter46_html",
+    "_iter46_html_v2",
+    "_iter47_html",
+    "_iter48_html",
+    "_iter49_html",
+    "_iter51_html",
+    "_iterate_100pct",
+    "_iterate_100pct_v2",
+    "_iterate_40",
+    "_iter43_rethink",
+    "_iter44_robustness",
+    "_iter45_low_dd",
+    "_iter46_hybrid",
+    "_iter47_trade_limit",
+    "_iter48_all_improvements",
+    "_iter49_rigorous",
+    "_iter52_risk_mgmt",
+    "_iter54_comprehensive",
+    "_iter58_deep_exploration",
+    "_iter50_finetune",
+    "_iter51_maker_finetune",
+    "_iter53_adx_weight",
+    "_iter52b_tuning",
+    "_iter55_balanced",
+    "_iter56_dd_minimize",
+    "_iter57_ultra_safe",
+    "_iter59_v22_verify",
+    "_iter60_all_defenses",
+    "_iter61_f3_maker"
+  ]
+}
