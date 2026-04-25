@@ -194,6 +194,14 @@ def run_bt_v24(
     chop_atr_filter: bool = False,      # v3.0④: ATR/価格の比で chop 検知
     chop_atr_threshold: float = 0.04,   # ATR/close > これで chop 判定 (4%)
     chop_atr_multiplier: float = 2.0,   # chop 中の trail 閾値倍率
+    # v3.1: 攻め強化
+    leverage_adx_min: float = 15.0,     # v3.1①改: ADX > これで leverage 開始 (低めに)
+    leverage_floor_pct: float = 0.10,   # 清算ライン: equity が initial の N% 以下で停止
+    sniper_enabled: bool = False,       # v3.1③: 新規上場スナイパー
+    sniper_alloc: float = 0.05,         # 各スナイパー試行に資金の N%
+    sniper_listing_days: int = 30,      # 上場後 N 日内にエントリー
+    sniper_tp_multiple: float = 5.0,    # +N 倍で利確
+    sniper_sl_pct: float = 0.50,        # -N% で損切り
 ) -> BTResult:
     """demo_runner.py v2.4 の決定ロジックをバックテスト向けに再現。
 
@@ -262,16 +270,18 @@ def run_bt_v24(
                     effective_trail_ach = trail_stop_ach * chop_atr_multiplier
                     effective_trail_btc = trail_stop_btc * chop_atr_multiplier
 
-        # v3.0①: 動的レバレッジ (BTC bullish + ADX 強でレバ掛け)
+        # v3.0①/v3.1①改: 動的レバレッジ (ADX 閾値下げ、3 段階)
         leverage = 1.0
         if leverage_max > 1.0 and btc_bullish:
             adx = btc_r.get("adx")
             if not pd.isna(adx) and adx is not None:
-                if float(adx) >= leverage_adx_super:
-                    leverage = leverage_max
-                elif float(adx) >= leverage_adx_strong:
-                    # 線形補間: super で max, strong で max*0.5
-                    leverage = 1.0 + (leverage_max - 1.0) * 0.5
+                adx_val = float(adx)
+                if adx_val >= leverage_adx_super:
+                    leverage = leverage_max          # 例: 3.0
+                elif adx_val >= leverage_adx_strong:
+                    leverage = 1.0 + (leverage_max - 1.0) * 0.66  # 例: 2.32
+                elif adx_val >= leverage_adx_min:    # v3.1: 低 ADX でも 1.5x
+                    leverage = 1.0 + (leverage_max - 1.0) * 0.33  # 例: 1.66
 
         # ─────────────────────────────
         # BTC 側
@@ -446,7 +456,7 @@ def run_bt_v24(
                 ach_value += qty * float(df.loc[date, "close"])
         total = btc_cash + btc_qty * price + ach_value + usdt_cash
 
-        # v3.0①: レバレッジ適用 (簡易モデル: 日次リターンを leverage 倍、funding cost 控除)
+        # v3.0①/v3.1: レバレッジ適用 (簡易モデル + 清算ストップ)
         if leverage > 1.0 and equity_curve:
             prev_eq = equity_curve[-1]["equity"]
             if prev_eq > 0:
@@ -455,8 +465,19 @@ def run_bt_v24(
                 funding = (leverage - 1.0) * 0.00025
                 day_ret_leveraged = day_ret_1x * leverage - funding
                 total = prev_eq * (1 + day_ret_leveraged)
-                # 内部状態は 1x のままだが equity だけ leverage 反映
-                # (簡易モデル: 完全な perp 再現ではないが方向性を捉える)
+                # v3.1: 清算ストップ - 元本の leverage_floor_pct 以下なら以後ロック
+                liq_floor = initial * leverage_floor_pct
+                if total < liq_floor:
+                    total = max(0.0, total)  # 0 未満は無し
+                    # 以降全資産ロック (現金待機相当)
+                    btc_qty = 0
+                    btc_cash = 0
+                    btc_peak = 0.0
+                    ach_positions = {}
+                    ach_cash = 0
+                    ach_peak = 0.0
+                    usdt_cash = total
+                    leverage_max = 1.0  # 以降レバ無効
 
         equity_curve.append({"ts": date, "equity": total})
 
