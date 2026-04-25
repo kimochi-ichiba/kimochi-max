@@ -244,11 +244,18 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
 .hm-leg-box{display:inline-block;width:16px;height:12px;border-radius:2px}
 
 .tpane{display:none}.tpane.on{display:block}
+.rep-btn{
+  background:var(--bg3);color:var(--text);border:1px solid var(--border);
+  padding:6px 12px;border-radius:8px;font-size:11px;font-weight:700;
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.rep-btn:hover{background:var(--bg4);border-color:var(--border2)}
+.rep-btn.rep-on{background:var(--blue-bg);color:var(--blue);border-color:var(--blue)}
 .loading{text-align:center;padding:40px 20px;color:var(--muted2);font-size:13px}
 
 /* ━━━ ボトムナビ (モバイルのみ) ━━━ */
-.bottomnav{display:none;position:fixed;bottom:0;left:0;right:0;height:62px;background:var(--bg2);border-top:1px solid var(--border);z-index:50;padding-bottom:env(safe-area-inset-bottom)}
-.bottomnav-inner{display:grid;grid-template-columns:repeat(6,1fr);height:62px}
+.bottomnav{display:none;position:fixed;bottom:0;left:0;right:0;height:62px;background:var(--bg2);border-top:1px solid var(--border);z-index:50;padding-bottom:env(safe-area-inset-bottom);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.bottomnav-inner{display:grid;grid-template-columns:repeat(7,minmax(60px,1fr));height:62px;min-width:100%}
 .bn{display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;color:var(--muted2);transition:.15s;padding:4px 2px}
 .bn.on{color:var(--blue)}
 .bn-ic{font-size:20px;line-height:1}
@@ -276,6 +283,9 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
   .bottomnav{display:block}
   body{padding-bottom:66px}
   .badge-grid{grid-template-columns:1fr 1fr 1fr}
+  /* レポート iframe を画面に合わせる */
+  #rep-iframe{height:65vh !important;min-height:480px}
+  .rep-btn{padding:8px 10px;font-size:11px}
 }
 </style>
 </head>
@@ -284,11 +294,11 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
 <!-- ヘッダー -->
 <div class="hdr">
   <div class="live-dot"></div>
-  <div class="hdr-logo">気持ち<em>マックス</em> v2.2</div>
+  <div class="hdr-logo">気持ち<em>マックス</em> v2.5</div>
   <div class="hbadge hb-sim">SIM</div>
   <div class="hbadge hb-sym" style="display:none">BTC·ACH·USDT</div>
   <div class="hbadge hb-lev">35/35/30</div>
-  <div class="hbadge hb-strat">ハイブリッド</div>
+  <div class="hbadge hb-strat">multi_lb</div>
   <div class="hbadge" id="ws-badge" style="background:#3a3a3a;color:#999;border:1px solid #555">WS…</div>
   <div class="hdr-right">
     <span class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">🌙</span>
@@ -345,6 +355,7 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
   <div class="tb" id="t-proj" onclick="sw('proj')">🔮 予測</div>
   <div class="tb" id="t-strat" onclick="sw('strat')">⚙️ 戦略</div>
   <div class="tb" id="t-verify" onclick="sw('verify')">🔍 検証</div>
+  <div class="tb" id="t-reports" onclick="sw('reports')">📑 レポート</div>
 </div>
 
 <div class="main">
@@ -567,6 +578,25 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
       </div>
     </div>
 
+    <!-- レポートタブ (各種 HTML レポート集約) -->
+    <div class="tpane" id="p-reports">
+      <div class="chart-wrap">
+        <div class="chart-toolbar"><span class="chart-title">📑 過去のレポート集約</span></div>
+        <div style="padding:10px 14px;display:flex;flex-wrap:wrap;gap:6px">
+          <button class="rep-btn rep-on" data-rep="bear_test_report.html" onclick="swReport(this)">🐻 ベア相場耐性</button>
+          <button class="rep-btn" data-rep="c3_verification_report.html" onclick="swReport(this)">📊 Top2 採用根拠</button>
+          <button class="rep-btn" data-rep="backtest_chart_verify.html" onclick="swReport(this)">📈 BTバックテスト</button>
+          <button class="rep-btn" data-rep="fire_plan.html" onclick="swReport(this)">🔥 FIRE 計画</button>
+          <button class="rep-btn" data-rep="autostart_setup.html" onclick="swReport(this)">⚙️ 自動起動</button>
+          <button class="rep-btn" data-rep="discord_setup.html" onclick="swReport(this)">💬 Discord 通知</button>
+        </div>
+        <div style="padding:0 8px 14px">
+          <iframe id="rep-iframe" src="bear_test_report.html"
+            style="width:100%;height:75vh;border:1px solid var(--border);border-radius:8px;background:var(--bg2)"></iframe>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- 右パネル: ログ -->
@@ -585,6 +615,7 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
     <div class="bn" data-tab="timeline" onclick="sw('timeline')"><div class="bn-ic">📜</div><div class="bn-lbl">日記</div></div>
     <div class="bn" data-tab="badge" onclick="sw('badge')"><div class="bn-ic">🏆</div><div class="bn-lbl">バッジ</div></div>
     <div class="bn" data-tab="verify" onclick="sw('verify')"><div class="bn-ic">🔍</div><div class="bn-lbl">検証</div></div>
+    <div class="bn" data-tab="reports" onclick="sw('reports')"><div class="bn-ic">📑</div><div class="bn-lbl">レポート</div></div>
   </div>
 </div>
 
@@ -690,6 +721,16 @@ function sw(tab){
   if(tab === 'heat') renderHeatmap();
   if(tab === 'timeline') renderTimeline();
   if(tab === 'badge') renderBadges();
+}
+
+// レポート切替 (iframe の src を変える)
+function swReport(btn){
+  const src = btn.dataset.rep;
+  if(!src) return;
+  document.querySelectorAll('.rep-btn').forEach(e=>e.classList.remove('rep-on'));
+  btn.classList.add('rep-on');
+  const ifr = document.getElementById('rep-iframe');
+  if(ifr) ifr.src = src;
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1066,7 +1107,7 @@ function renderTimeline(){
   if(d.started_at){
     events.push({
       ts: d.started_at, type:'info', icon:'🚀',
-      msg: '気持ちマックス v2 起動',
+      msg: '気持ちマックス v2.5 起動',
       detail: `初期資金 ${formatMoneyCompact(d.initial_capital)} でデモ運用開始`
     });
   }
