@@ -283,6 +283,84 @@ def main():
     OUT_JSON.write_text(json.dumps(summary, indent=2, ensure_ascii=False, default=str))
     print(f"\n💾 {OUT_JSON}")
 
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # Phase 3.3: DB dual-write (record_run へ追加保存)
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    try:
+        from db.repositories.runs_repo import normalize_metrics, record_run
+        import ulid as _ulid
+
+        trial_group_id = str(_ulid.new())
+        n_trials = 2 + 2 * len(period_results)  # v21/v22 × full + 各期間
+        common_kwargs = dict(
+            run_type="single_backtest",
+            universe=universe,
+            trial_group_id=trial_group_id,
+            n_trials_in_group=n_trials,
+            cost_model_id="binance_spot_taker_v1",
+            script_name="_iter59_v22_verify.py",
+        )
+
+        # 全期間 (2020-2024) の v2.1 と v2.2 を記録
+        rid_full_v21 = record_run(
+            strategy_id="iter59::v21::full_2020_2024",
+            params={"BTC_W": 0.35, "ACH_W": 0.35, "USDT_W": 0.30,
+                    "ACH_BEAR_IMMEDIATE": False},
+            period=("2020-01-01", "2024-12-31"),
+            metrics=normalize_metrics({
+                "cagr": v21["cagr"] / 100, "max_dd": v21["max_dd"] / 100,
+                "sharpe": v21.get("sharpe", 0),
+                "total_ret": v21["total_ret"] / 100,
+                "n_trades": v21["n_trades"],
+                "final_equity": v21["final"], "initial_equity": 10000,
+            }),
+            yearly={int(y): float(r) for y, r in v21["yearly"].items()},
+            notes="v2.1 baseline (bear 退避 OFF) - migrated from JSON",
+            **common_kwargs,
+        )
+        rid_full_v22 = record_run(
+            strategy_id="iter59::v22::full_2020_2024",
+            params={"BTC_W": 0.35, "ACH_W": 0.35, "USDT_W": 0.30,
+                    "ACH_BEAR_IMMEDIATE": True},
+            period=("2020-01-01", "2024-12-31"),
+            metrics=normalize_metrics({
+                "cagr": v22["cagr"] / 100, "max_dd": v22["max_dd"] / 100,
+                "sharpe": v22.get("sharpe", 0),
+                "total_ret": v22["total_ret"] / 100,
+                "n_trades": v22["n_trades"],
+                "final_equity": v22["final"], "initial_equity": 10000,
+            }),
+            yearly={int(y): float(r) for y, r in v22["yearly"].items()},
+            parent_run_id=rid_full_v21,
+            notes="v2.2 (bear 退避 ON) - migrated from JSON",
+            **common_kwargs,
+        )
+
+        # 期間別 (3 期間 × v2.1/v2.2)
+        for label, pres in period_results.items():
+            for ver, r in pres.items():
+                if r.get("total_ret") is None:
+                    continue
+                record_run(
+                    strategy_id=f"iter59::{ver}::{label}",
+                    params={"BTC_W": 0.35, "ACH_W": 0.35, "USDT_W": 0.30,
+                            "ACH_BEAR_IMMEDIATE": ver == "v22"},
+                    period=("period_label", label),
+                    metrics=normalize_metrics({
+                        "max_dd": r.get("max_dd", 0) / 100,
+                        "total_ret": r["total_ret"] / 100,
+                        "n_trades": r.get("n_trades"),
+                    }),
+                    parent_run_id=rid_full_v22 if ver == "v22" else rid_full_v21,
+                    notes=f"{ver} period={label}",
+                    **common_kwargs,
+                )
+
+        print(f"\n💾 DB: {n_trials} runs recorded (trial_group_id={trial_group_id[:8]}...)")
+    except (ImportError, Exception) as e:
+        # DB 基盤が無い環境でも JSON 出力は成功扱い (後方互換)
+        print(f"\n⚠️ DB dual-write skipped: {e}")
+
 
 if __name__ == "__main__":
     main()
