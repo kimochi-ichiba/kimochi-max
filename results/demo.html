@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#060d17">
-<title>気持ちマックス v2.4 Bot — BTC/ACH/USDT</title>
+<title>気持ちマックス v2.5 Bot — BTC/ACH/USDT</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon.png">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -244,11 +244,18 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
 .hm-leg-box{display:inline-block;width:16px;height:12px;border-radius:2px}
 
 .tpane{display:none}.tpane.on{display:block}
+.rep-btn{
+  background:var(--bg3);color:var(--text);border:1px solid var(--border);
+  padding:6px 12px;border-radius:8px;font-size:11px;font-weight:700;
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.rep-btn:hover{background:var(--bg4);border-color:var(--border2)}
+.rep-btn.rep-on{background:var(--blue-bg);color:var(--blue);border-color:var(--blue)}
 .loading{text-align:center;padding:40px 20px;color:var(--muted2);font-size:13px}
 
 /* ━━━ ボトムナビ (モバイルのみ) ━━━ */
-.bottomnav{display:none;position:fixed;bottom:0;left:0;right:0;height:62px;background:var(--bg2);border-top:1px solid var(--border);z-index:50;padding-bottom:env(safe-area-inset-bottom)}
-.bottomnav-inner{display:grid;grid-template-columns:repeat(6,1fr);height:62px}
+.bottomnav{display:none;position:fixed;bottom:0;left:0;right:0;height:62px;background:var(--bg2);border-top:1px solid var(--border);z-index:50;padding-bottom:env(safe-area-inset-bottom);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.bottomnav-inner{display:grid;grid-template-columns:repeat(7,minmax(60px,1fr));height:62px;min-width:100%}
 .bn{display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;color:var(--muted2);transition:.15s;padding:4px 2px}
 .bn.on{color:var(--blue)}
 .bn-ic{font-size:20px;line-height:1}
@@ -276,6 +283,9 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
   .bottomnav{display:block}
   body{padding-bottom:66px}
   .badge-grid{grid-template-columns:1fr 1fr 1fr}
+  /* レポート iframe を画面に合わせる */
+  #rep-iframe{height:65vh !important;min-height:480px}
+  .rep-btn{padding:8px 10px;font-size:11px}
 }
 </style>
 </head>
@@ -284,11 +294,11 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
 <!-- ヘッダー -->
 <div class="hdr">
   <div class="live-dot"></div>
-  <div class="hdr-logo">気持ち<em>マックス</em> v2.2</div>
+  <div class="hdr-logo">気持ち<em>マックス</em> v2.5</div>
   <div class="hbadge hb-sim">SIM</div>
   <div class="hbadge hb-sym" style="display:none">BTC·ACH·USDT</div>
   <div class="hbadge hb-lev">35/35/30</div>
-  <div class="hbadge hb-strat">ハイブリッド</div>
+  <div class="hbadge hb-strat">multi_lb</div>
   <div class="hbadge" id="ws-badge" style="background:#3a3a3a;color:#999;border:1px solid #555">WS…</div>
   <div class="hdr-right">
     <span class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">🌙</span>
@@ -345,6 +355,7 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
   <div class="tb" id="t-proj" onclick="sw('proj')">🔮 予測</div>
   <div class="tb" id="t-strat" onclick="sw('strat')">⚙️ 戦略</div>
   <div class="tb" id="t-verify" onclick="sw('verify')">🔍 検証</div>
+  <div class="tb" id="t-reports" onclick="sw('reports')">📑 レポート</div>
 </div>
 
 <div class="main">
@@ -515,11 +526,11 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
         </table>
       </div>
       <div class="sig-section">
-        <div class="sig-ttl">🏆 気持ちマックス v2.4 バックテスト実績 (過去5年)</div>
+        <div class="sig-ttl">🏆 気持ちマックス v2.5 Walk-Forward 検証結果 (iter71e: 4 窓中 3/4 OOS 勝ち)</div>
         <div class="tf3">
-          <div class="tfbox"><div class="tfn">5年リターン</div><div class="tfd g">+8,931%</div><div class="tfs">iter56 損失最小化</div></div>
-          <div class="tfbox"><div class="tfn">最大DD</div><div class="tfd y">70.5%</div><div class="tfs">2022年</div></div>
-          <div class="tfbox"><div class="tfn">年率CAGR</div><div class="tfd g">+86.5%</div><div class="tfs">複利</div></div>
+          <div class="tfbox"><div class="tfn">2022 ベア</div><div class="tfd g">+9.6%</div><div class="tfs">v2.4 +5.9% から改善</div></div>
+          <div class="tfbox"><div class="tfn">2024 ブル</div><div class="tfd r">+225%</div><div class="tfs">v2.4 +270% に負け (-46pt)</div></div>
+          <div class="tfbox"><div class="tfn">2025 Q1 chop</div><div class="tfd g">-36.6%</div><div class="tfs">v2.4 -45% から改善</div></div>
         </div>
       </div>
     </div>
@@ -527,11 +538,11 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
     <!-- 戦略タブ -->
     <div class="tpane" id="p-strat">
       <div class="sig-section">
-        <div class="sig-ttl">⚙️ 気持ちマックス v2.4 戦略パラメータ</div>
+        <div class="sig-ttl">⚙️ 気持ちマックス v2.5 戦略パラメータ (iter71e WF 検証で 75 点)</div>
         <div class="tf3">
-          <div class="tfbox"><div class="tfn">BTC枠</div><div class="tfd o">35%</div><div class="tfs">EMA200</div></div>
-          <div class="tfbox"><div class="tfn">ACH枠</div><div class="tfd g">35%→60%</div><div class="tfs">Top2 + trail30%</div></div>
-          <div class="tfbox"><div class="tfn">USDT枠</div><div class="tfd b">30%</div><div class="tfs">クッション強化</div></div>
+          <div class="tfbox"><div class="tfn">BTC枠</div><div class="tfd o">35%</div><div class="tfs">EMA200 (v2.4 から据え置き)</div></div>
+          <div class="tfbox"><div class="tfn">ACH枠</div><div class="tfd g">35%→60%</div><div class="tfs">Top2 + trail30% + multi_lb (v2.5 新規)</div></div>
+          <div class="tfbox"><div class="tfn">USDT枠</div><div class="tfd b">30%</div><div class="tfs">クッション (v2.4 から据え置き)</div></div>
         </div>
         <div class="tf3">
           <div class="tfbox"><div class="tfn">初期資金</div><div class="tfd">$10,000</div><div class="tfs">仮想</div></div>
@@ -541,15 +552,15 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
         <div class="sig-ttl" style="margin-top:20px">📖 戦略解説</div>
         <div style="padding:10px 14px;background:var(--bg3);border-radius:8px;margin-bottom:10px">
           <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">🪙 BTC枠 35% — EMA200戦略</div>
-          <div style="font-size:12px;color:var(--muted2);line-height:1.6">BTC価格が200日移動平均の上で自動買い、下で自動売り。「コツコツ型」。</div>
+          <div style="font-size:12px;color:var(--muted2);line-height:1.6">BTC価格が200日移動平均の上で自動買い、下で自動売り。「コツコツ型」。v2.5 でも据え置き。</div>
         </div>
         <div style="padding:10px 14px;background:var(--bg3);border-radius:8px;margin-bottom:10px">
-          <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">⚡ ACH枠 35%→60% — Top2モメンタム (v2.4: dynamic_regime + trail_stop)</div>
-          <div style="font-size:12px;color:var(--muted2);line-height:1.6">62銘柄（5ソース検証済）の過去25日リターン上位2銘柄を momentum 加重で保有。<strong style="color:var(--green)">週次リバランス</strong>。Bull 相場では ACH 比率を 60% に引き上げ（USDT から補充）、BTC&lt;EMA200 を検知した瞬間に全売却→USDT 退避。さらに <strong style="color:var(--red)">ACH 時価が高値から 30% 下落</strong>すると全 USDT 退避（trail_stop_ach）、<strong style="color:var(--red)">BTC も高値から 20% 下落で全売却</strong>（trail_stop_btc）。</div>
+          <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">⚡ ACH枠 35%→60% — Top2モメンタム (v2.5: multi_lookback + dynamic_regime + trail_stop)</div>
+          <div style="font-size:12px;color:var(--muted2);line-height:1.6">62銘柄（5ソース検証済）の <strong style="color:var(--green)">過去 25+45+90 日の平均リターン</strong>上位2銘柄を momentum 加重で保有 (v2.5 multi_lookback)。<strong style="color:var(--green)">週次リバランス</strong>。Bull 相場では ACH 比率を 60% に引き上げ（USDT から補充）、BTC&lt;EMA200 を検知した瞬間に全売却→USDT 退避。さらに <strong style="color:var(--red)">ACH 時価が高値から 30% 下落</strong>すると全 USDT 退避（trail_stop_ach）、<strong style="color:var(--red)">BTC も高値から 20% 下落で全売却</strong>（trail_stop_btc）。<strong style="color:var(--green)">iter71e WF 検証で 4 窓中 3/4 OOS 勝ち (75 点級)</strong>。</div>
         </div>
         <div style="padding:10px 14px;background:var(--bg3);border-radius:8px;margin-bottom:10px">
           <div style="color:var(--yellow);font-weight:700;margin-bottom:4px">💵 USDT枠 30% — 現金クッション</div>
-          <div style="font-size:12px;color:var(--muted2);line-height:1.6">大暴落時の「買い増しチャンス資金」。年3%ステーキング金利想定。</div>
+          <div style="font-size:12px;color:var(--muted2);line-height:1.6">大暴落時の「買い増しチャンス資金」。年3%ステーキング金利想定。v2.5 でも据え置き (配分変更単独は WF 検証で OOS 2/4 のみ勝ち = 効果限定的と判明したため)。</div>
         </div>
       </div>
     </div>
@@ -564,6 +575,25 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
       </div>
       <div style="padding:14px" id="verify-content">
         <div class="loading">検証データ読み込み中...</div>
+      </div>
+    </div>
+
+    <!-- レポートタブ (各種 HTML レポート集約) -->
+    <div class="tpane" id="p-reports">
+      <div class="chart-wrap">
+        <div class="chart-toolbar"><span class="chart-title">📑 過去のレポート集約</span></div>
+        <div style="padding:10px 14px;display:flex;flex-wrap:wrap;gap:6px">
+          <button class="rep-btn rep-on" data-rep="bear_test_report.html" onclick="swReport(this)">🐻 ベア相場耐性</button>
+          <button class="rep-btn" data-rep="c3_verification_report.html" onclick="swReport(this)">📊 Top2 採用根拠</button>
+          <button class="rep-btn" data-rep="backtest_chart_verify.html" onclick="swReport(this)">📈 BTバックテスト</button>
+          <button class="rep-btn" data-rep="fire_plan.html" onclick="swReport(this)">🔥 FIRE 計画</button>
+          <button class="rep-btn" data-rep="autostart_setup.html" onclick="swReport(this)">⚙️ 自動起動</button>
+          <button class="rep-btn" data-rep="discord_setup.html" onclick="swReport(this)">💬 Discord 通知</button>
+        </div>
+        <div style="padding:0 8px 14px">
+          <iframe id="rep-iframe" src="bear_test_report.html"
+            style="width:100%;height:75vh;border:1px solid var(--border);border-radius:8px;background:var(--bg2)"></iframe>
+        </div>
       </div>
     </div>
 
@@ -585,6 +615,7 @@ html[data-theme="light"] .proj-card.highlight{background:linear-gradient(135deg,
     <div class="bn" data-tab="timeline" onclick="sw('timeline')"><div class="bn-ic">📜</div><div class="bn-lbl">日記</div></div>
     <div class="bn" data-tab="badge" onclick="sw('badge')"><div class="bn-ic">🏆</div><div class="bn-lbl">バッジ</div></div>
     <div class="bn" data-tab="verify" onclick="sw('verify')"><div class="bn-ic">🔍</div><div class="bn-lbl">検証</div></div>
+    <div class="bn" data-tab="reports" onclick="sw('reports')"><div class="bn-ic">📑</div><div class="bn-lbl">レポート</div></div>
   </div>
 </div>
 
@@ -690,6 +721,16 @@ function sw(tab){
   if(tab === 'heat') renderHeatmap();
   if(tab === 'timeline') renderTimeline();
   if(tab === 'badge') renderBadges();
+}
+
+// レポート切替 (iframe の src を変える)
+function swReport(btn){
+  const src = btn.dataset.rep;
+  if(!src) return;
+  document.querySelectorAll('.rep-btn').forEach(e=>e.classList.remove('rep-on'));
+  btn.classList.add('rep-on');
+  const ifr = document.getElementById('rep-iframe');
+  if(ifr) ifr.src = src;
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1066,7 +1107,7 @@ function renderTimeline(){
   if(d.started_at){
     events.push({
       ts: d.started_at, type:'info', icon:'🚀',
-      msg: '気持ちマックス v2 起動',
+      msg: '気持ちマックス v2.5 起動',
       detail: `初期資金 ${formatMoneyCompact(d.initial_capital)} でデモ運用開始`
     });
   }
